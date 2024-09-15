@@ -12,7 +12,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <form action="search" method="GET">
+        <form action="searchUser" method="GET">
     <input type="text" name="query" placeholder="Search">
     <button type="submit">Search</button>
 </form>
