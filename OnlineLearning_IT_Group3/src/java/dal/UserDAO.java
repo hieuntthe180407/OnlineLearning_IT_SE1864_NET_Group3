@@ -19,7 +19,7 @@ public class UserDAO extends DBContext {
     public Map<Integer, User> getAllUser(){
         Map<Integer, User> list = new HashMap<>();
         try {
-            String sql = "Select * from User";
+            String sql = "Select * from [dbo].[User]";
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()){
@@ -40,11 +40,35 @@ public class UserDAO extends DBContext {
     public Map<Integer, User> searchUser(String str){
         Map<Integer, User> list = new HashMap<>();
         try {
-            String sql = "SELECT * FROM User WHERE FullName LIKE '%?%' OR Phone LIKE '%?%' OR Email LIKE '%?%'" ;
+            String sql = "SELECT * FROM [dbo].[User] WHERE FullName LIKE '%?%' OR Phone LIKE '%?%' OR Email LIKE '%?%'" ;
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, str);
             st.setString(2, str);
             st.setString(3, str);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()){
+               User u = new User();
+                u.setUserID(rs.getInt("userID"));
+                u.setFullName(rs.getString("fullName"));
+                list.put(u.getUserID(), u);
+            }
+            rs.close();
+            st.close();            
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return list;
+    }
+    public Map<Integer, User> filterUser(String gender, String role, String status ){
+        Map<Integer, User> list = new HashMap<>();
+        try {
+            String sql = "SELECT u.*, r.roleName FROM [dbo].[User] AS u LEFT JOIN Role AS r ON u.roleID = r.roleID"
+                    + "WHERE Gender LIKE '%?%' AND roleName LIKE '%?%' AND isVerify LIKE '%?%'";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, gender);
+            st.setString(2, role);
+            st.setString(3, status);
             ResultSet rs = st.executeQuery();
             while (rs.next()){
                User u = new User();

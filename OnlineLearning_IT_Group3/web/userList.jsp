@@ -44,6 +44,7 @@
     <link href="css/style.css" rel="stylesheet">
     </head>
     <body>
+        <%@include file="header.jsp" %>
         <!-- search xog se ve servlet searchUser r quay lai trang nay -->
         <form action="searchUser" method="GET">
     <input type="text" name="query" placeholder="Search">
@@ -60,6 +61,13 @@
     
     
 </form>
+            
+            
+            
+            
+            
+     <%@include file="footer.jsp" %>       
+            
              <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="lib/wow/wow.min.js"></script>
