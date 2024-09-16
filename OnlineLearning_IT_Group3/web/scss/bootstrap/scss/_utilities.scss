@@ -429,7 +429,7 @@ $utilities: map-merge(
     "font-family": (
       property: font-family,
       class: font,
-      values: (monospace: var(--#{$variable-prefix}font-monospace))
+      values: (monospace: var(-#{$variable-prefix}font-monospace))
     ),
     "font-size": (
       rfs: true,
@@ -531,7 +531,7 @@ $utilities: map-merge(
     "gradient": (
       property: background-image,
       class: bg,
-      values: (gradient: var(--#{$variable-prefix}gradient))
+      values: (gradient: var(-#{$variable-prefix}gradient))
     ),
     // scss-docs-start utils-interaction
     "user-select": (
