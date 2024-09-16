@@ -20,20 +20,17 @@ import model.User;
  *
  * @author trong
  */
-@WebServlet(name="searchUser", urlPatterns={"/searchUser"})
-public class searchUser extends HttpServlet {
+@WebServlet(name="userList", urlPatterns={"/userList"})
+public class userList extends HttpServlet {
    
     
-   
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String info = request.getParameter("query");
-        UserDAO uDAO = new UserDAO();
-        Map<Integer, User> list = uDAO.searchUser("query");
-         request.setAttribute("list", list);
+         UserDAO uDao = new UserDAO();
+        Map<Integer, User> list = uDao.getAllUser();
+        request.setAttribute("list", list);
         request.getRequestDispatcher("userList.jsp").forward(request, response);
     } 
 
-    
 }
