@@ -107,3 +107,32 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     font-weight: normal;
     border-radius: 0px;
 }
+.btn {
+    background-color: #fb873f;
+    border: none;
+}
+
+.btn a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.btn:hover {
+    background: transparent;
+    color: var(--primary) !important;
+    border: 1px solid var(--primary);
+}
+
+.btn:hover a {
+    color: var(--primary) !important;
+}
+
+.btn-light {
+    background-color: var(--light);
+}
+
+.btn-light:hover {
+    background: transparent;
+    color: var(--light) !important;
+    border: 1px solid var(--light);
+}
