@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="java.util.Map"%>
+<%@page import="java.util.*"%>
 <%@page import="model.User"%>
 <!DOCTYPE html>
 <html>
@@ -183,7 +183,7 @@
 </style>
 
 <%
-    Map<Integer, User> list = (Map<Integer, User>) request.getAttribute("list");
+    List<User> list = (List<User>) request.getAttribute("list");
     if (list == null || list.size() == 0) {
         out.println("<div class='empty-list'>Empty list of Users</div>");
     } else {
@@ -229,11 +229,11 @@
             <th>Gender</th>
         </tr>
         <%
-            for (int id : list.keySet()) {
-                User u = list.get(id);
+            for (User u : list) {
+                
         %>
         <tr>
-            <td><%= id %></td>
+            <td><%= u.getUserID() %></td>
             <td><%= u.getFullName() %></td>
             <td><%= u.getEmail() %></td>
             <td><%= u.getPhone() %></td>

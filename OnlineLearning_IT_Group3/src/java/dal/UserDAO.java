@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.*;
 import java.util.Map;
 import model.User;
 
@@ -16,28 +17,58 @@ import model.User;
  * @author trong
  */
 public class UserDAO extends DBContext {
-    public Map<Integer, User> getAllUser(){
-        Map<Integer, User> list = new HashMap<>();
+//    public Map<Integer, User> getAllUser(){
+//        Map<Integer, User> list = new HashMap<>();
+//        try {
+//            String sql = "Select * from [dbo].[User]";
+//            Statement st = connection.createStatement();
+//            ResultSet rs = st.executeQuery(sql);
+//            while (rs.next()){
+//                User u = new User();
+//                u.setUserID(rs.getInt("userID"));
+//                 u.setFullName(rs.getString("fullName"));
+//                u.setEmail(rs.getString("Email"));
+//                u.setPassword(rs.getString("Password"));
+//                u.setAddress(rs.getString("Address"));
+//                u.setRoleID(rs.getInt("RoleID"));
+//                list.put(u.getUserID(), u);
+//            }
+//            rs.close();
+//            st.close();
+//        }
+//        catch (Exception e){
+//            System.out.println(e.getMessage());
+//        }
+//        return list;
+//    }
+    public List<User> getAllUser() {
+
+        List<User> list = new ArrayList<>();
+
+        String sql = "Select * from [dbo].[User]";
+               
+
         try {
-            String sql = "Select * from [dbo].[User]";
-            Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            while (rs.next()){
-                User u = new User();
+
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+               User u = new User();
                 u.setUserID(rs.getInt("userID"));
                  u.setFullName(rs.getString("fullName"));
                 u.setEmail(rs.getString("Email"));
                 u.setPassword(rs.getString("Password"));
                 u.setAddress(rs.getString("Address"));
                 u.setRoleID(rs.getInt("RoleID"));
-                list.put(u.getUserID(), u);
+
+                list.add(u);
             }
-            rs.close();
-            st.close();
+
+        } catch (Exception e) {
+            System.out.println(e);
         }
-        catch (Exception e){
-            System.out.println(e.getMessage());
-        }
+
         return list;
     }
     

@@ -13,7 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Map;
+import java.util.*;
 import model.User;
 
 /**
@@ -28,7 +28,7 @@ public class userList extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
          UserDAO uDao = new UserDAO();
-        Map<Integer, User> list = uDao.getAllUser();
+        List<User> list = uDao.getAllUser();
         request.setAttribute("list", list);
         request.getRequestDispatcher("userList.jsp").forward(request, response);
     } 
