@@ -30,7 +30,7 @@ public class searchUser extends HttpServlet {
     throws ServletException, IOException {
         String info = request.getParameter("query");
         UserDAO uDAO = new UserDAO();
-        Map<Integer, User> list = uDAO.searchUser("query");
+        Map<Integer, User> list = uDAO.searchUser(info);
          request.setAttribute("list", list);
         request.getRequestDispatcher("userList.jsp").forward(request, response);
     } 

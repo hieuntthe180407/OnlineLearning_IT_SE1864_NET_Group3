@@ -20,11 +20,14 @@ public class User {
         private String address;
          private String gender;
          private int roleID;
+         private String roleName;
+         
+         
 
     public User() {
     }
 
-    public User(int userID, String fullName, String email, String password, String phone, String address, String gender, int roleID) {
+    public User(int userID, String fullName, String email, String password, String phone, String address, String gender, int roleID,String roleName) {
         this.userID = userID;
         this.fullName = fullName;
         this.email = email;
@@ -33,6 +36,7 @@ public class User {
         this.address = address;
         this.gender = gender;
         this.roleID = roleID;
+        this.roleName = roleName;
     }
 
     public int getUserID() {
@@ -97,6 +101,14 @@ public class User {
 
     public void setRoleID(int roleID) {
         this.roleID = roleID;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
          
     
