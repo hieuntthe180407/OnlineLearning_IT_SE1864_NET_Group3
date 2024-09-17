@@ -21,13 +21,13 @@ public class User {
     private String phone;
     private String address;
     private String gender;
-    private int roleID;
+    private Role role;
     private String avatar;
-    
+
     public User() {
     }
 
-    public User(int userID, String fullName, String dateOfBirth, String email, String password, String phone, String address, String gender, int roleID, String avatar) {
+    public User(int userID, String fullName, String dateOfBirth, String email, String password, String phone, String address, String gender, Role role, String avatar) {
         this.userID = userID;
         this.fullName = fullName;
         this.dateOfBirth = dateOfBirth;
@@ -36,10 +36,17 @@ public class User {
         this.phone = phone;
         this.address = address;
         this.gender = gender;
-        this.roleID = roleID;
+        this.role = role;
         this.avatar = avatar;
     }
-    
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
     public String getDateOfBirth() {
         return dateOfBirth;
@@ -113,19 +120,9 @@ public class User {
         this.gender = gender;
     }
 
-    public int getRoleID() {
-        return roleID;
-    }
-
-    public void setRoleID(int roleID) {
-        this.roleID = roleID;
-    }
-
     @Override
     public String toString() {
-        return "User{" + "userID=" + userID + ", fullName=" + fullName + ", dateOfBirth=" + dateOfBirth + ", email=" + email + ", password=" + password + ", phone=" + phone + ", address=" + address + ", gender=" + gender + ", roleID=" + roleID + ", avatar=" + avatar + '}';
+        return "User{" + "userID=" + userID + ", fullName=" + fullName + ", dateOfBirth=" + dateOfBirth + ", email=" + email + ", password=" + password + ", phone=" + phone + ", address=" + address + ", gender=" + gender + ", role=" + role + ", avatar=" + avatar + '}';
     }
-
-    
 
 }

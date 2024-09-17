@@ -32,8 +32,8 @@ public class filterUser extends HttpServlet {
         String role = request.getParameter("role");
         String status = request.getParameter("status");
        UserDAO uDao = new UserDAO();
-        List<User> list = uDao.filterUser(gender,role,status);
-        request.setAttribute("list", list);
+//        List<User> list = uDao.filterUser(gender,role,status);
+//        request.setAttribute("list", list);
         request.getRequestDispatcher("userList.jsp").forward(request, response);
     } 
 
