@@ -64,7 +64,7 @@ public class userProfile extends HttpServlet {
         Integer id = (Integer) session.getAttribute("userID");
         UserDAO u = new UserDAO();
         try {
-            User profile = u.getUserProfilebyId(1);
+            User profile = u.getUserProfilebyId(id);
             request.setAttribute("profile", profile);
             request.getRequestDispatcher("userProfile.jsp").forward(request, response);
         } catch (Exception e) {
