@@ -13,7 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Map;
+import java.util.List;
 import model.User;
 
 /**
@@ -32,7 +32,7 @@ public class filterUser extends HttpServlet {
         String role = request.getParameter("role");
         String status = request.getParameter("status");
        UserDAO uDao = new UserDAO();
-        Map<Integer, User> list = uDao.filterUser(gender,role,status);
+        List<User> list = uDao.filterUser(gender,role,status);
         request.setAttribute("list", list);
         request.getRequestDispatcher("userList.jsp").forward(request, response);
     } 

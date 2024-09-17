@@ -13,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Map;
 import model.User;
 
@@ -30,7 +31,7 @@ public class searchUser extends HttpServlet {
     throws ServletException, IOException {
         String info = request.getParameter("query");
         UserDAO uDAO = new UserDAO();
-        Map<Integer, User> list = uDAO.searchUser(info);
+        List<User> list = uDAO.searchUser(info);
          request.setAttribute("list", list);
         request.getRequestDispatcher("userList.jsp").forward(request, response);
     } 

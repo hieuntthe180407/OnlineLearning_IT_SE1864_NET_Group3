@@ -59,6 +59,8 @@ public class UserDAO extends DBContext {
                  u.setFullName(rs.getString("fullName"));
                 u.setEmail(rs.getString("Email"));
                 u.setPassword(rs.getString("Password"));
+                u.setGender(rs.getString("Gender"));
+                u.setPhone(rs.getString("Phone"));
                 u.setAddress(rs.getString("Address"));
                 u.setRoleID(rs.getInt("RoleID"));
 
@@ -72,8 +74,8 @@ public class UserDAO extends DBContext {
         return list;
     }
     
-    public Map<Integer, User> searchUser(String str) {
-    Map<Integer, User> list = new HashMap<>();
+    public List<User> searchUser(String str) {
+    List<User> list = new ArrayList<>();
     try {
      
         String sql = "SELECT * FROM [dbo].[User] WHERE FullName LIKE ? OR Phone LIKE ? OR Email LIKE ?";
@@ -93,10 +95,12 @@ public class UserDAO extends DBContext {
                 u.setUserID(rs.getInt("userID"));
                 u.setFullName(rs.getString("fullName"));
                 u.setEmail(rs.getString("Email"));
+                u.setGender(rs.getString("Gender"));
                 u.setPassword(rs.getString("Password"));
                 u.setAddress(rs.getString("Address"));
+                 u.setPhone(rs.getString("Phone"));
                 u.setRoleID(rs.getInt("RoleID"));
-            list.put(u.getUserID(), u);
+            list.add(u);
         }
         rs.close();
         st.close();
@@ -106,8 +110,8 @@ public class UserDAO extends DBContext {
     return list;
 }
 
-    public Map<Integer, User> filterUser(String gender, String role, String status ){
-        Map<Integer, User> list = new HashMap<>();
+    public List<User> filterUser(String gender, String role, String status ){
+       List<User> list = new ArrayList<>();
         try {
             String sql = "SELECT u.*, r.roleName FROM [dbo].[User] AS u LEFT JOIN Role AS r ON u.roleID = r.roleID WHERE Gender LIKE ? AND roleName LIKE ? AND isVerify LIKE ?";
                   
@@ -125,9 +129,11 @@ public class UserDAO extends DBContext {
                 u.setEmail(rs.getString("Email"));
                 u.setPassword(rs.getString("Password"));
                 u.setAddress(rs.getString("Address"));
+                u.setGender(rs.getString("Gender"));
+                 u.setPhone(rs.getString("Phone"));
                 u.setRoleName(rs.getString("RoleName"));
                 u.setRoleID(rs.getInt("RoleID"));
-                list.put(u.getUserID(), u);
+                list.add(u);
             }
             rs.close();
             st.close();            
@@ -138,11 +144,5 @@ public class UserDAO extends DBContext {
         return list;
     }
     
-     public static void main(String[] args) {
-        UserDAO cDAO = new UserDAO();
-        Map<Integer, User> list = cDAO.filterUser("Male","","");
-          for(User u: list.values()){
-              System.out.println(u);
-          }
-        }
+    
 }
