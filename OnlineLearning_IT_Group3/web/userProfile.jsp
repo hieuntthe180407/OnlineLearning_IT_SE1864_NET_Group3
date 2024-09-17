@@ -40,7 +40,7 @@
                         </div>
                         <div class="ms-3" style="margin-top: 130px;">
                             <h5 style="color: white">${profile.fullName}</h5>
-                            <p>Role: ${profile.role.getRoleName}</p>
+                            <p>Role: ${profile.role.getRoleName()}</p>
                         </div>
                     </div>
                     <div class="p-4 text-black bg-body-tertiary">
