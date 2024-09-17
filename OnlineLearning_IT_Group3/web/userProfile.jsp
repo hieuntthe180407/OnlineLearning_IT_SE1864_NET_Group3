@@ -16,6 +16,7 @@
     </head>
     <%@include file= "header.jsp" %>
     <body>
+        <c:set var="profile" value="${requestScope.profile}"/>
         <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center">
                 <div class="col col-lg-9 col-xl-8">
@@ -23,7 +24,7 @@
                         <div class="rounded-top text-white d-flex flex-row" style="background-color: #000; height:200px;">
                             <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
 
-                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+                                <img src="${profile.avatar}"
                                      alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
                                      style="width: 150px; z-index: 1">
 
@@ -38,8 +39,8 @@
                                 </a>
                             </div>
                             <div class="ms-3" style="margin-top: 130px;">
-                                <h5 style="color: white">nguyen van a</h5>
-                                <p>Role: Student</p>
+                                <h5 style="color: white">${profile.fullName}</h5>
+                                <p>Role: ${profile.role.getRoleName()}</p>
                             </div>
                         </div>
                         <div class="p-4 text-black bg-body-tertiary">
@@ -59,13 +60,13 @@
                                         </div>
                                         <div information-user-right>
                                             <ul class="information-content-right">
-                                                <li class="information-content-item">0001</li>
-                                                <li class="information-content-item">nguyen van a</li>
-                                                <li class="information-content-item">10/10/2004</li>
-                                                <li class="information-content-item">abc@gmail.com</li>
-                                                <li class="information-content-item">0123456789</li>
-                                                <li class="information-content-item">Ha Noi</li>
-                                                <li class="information-content-item">Nam</li>
+                                                <li class="information-content-item">${profile.userID}</li>
+                                                <li class="information-content-item">${profile.fullName}</li>
+                                                <li class="information-content-item">${profile.dateOfBirth}</li>
+                                                <li class="information-content-item">${profile.email}</li>
+                                                <li class="information-content-item">${profile.phone}</li>
+                                                <li class="information-content-item">${profile.address}</li>
+                                                <li class="information-content-item">${profile.gender}</li>
                                             </ul>
                                         </div>
                                     </div>

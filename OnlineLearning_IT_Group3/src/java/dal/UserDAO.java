@@ -157,4 +157,34 @@ public class UserDAO extends DBContext {
 //        }
 //        return list;
 //    }
+    public User getUserProfilebyId(int id) {
+        String sql = "Select u.[UserID], u.[FullName], u.[DateOfBirth], u.[Email], u.[Password], u.[Phone], u.[Address],u.[Gender], r.[RoleName], u.[Avatar]\n"
+                + "from [dbo].[User] u, [dbo].[Role] r\n"
+                + "where r.RoleID = u.RoleID AND u.[UserID] = ?;";
+        User u = new User();
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+
+                u.setUserID(rs.getInt("userID"));
+                u.setFullName(rs.getString("fullName"));
+                u.setDateOfBirth(rs.getString("DateOfBirth"));
+                u.setEmail(rs.getString("Email"));
+                u.setPassword(rs.getString("Password"));
+                u.setGender(rs.getString("Gender"));
+                u.setPhone(rs.getString("Phone"));
+                u.setAddress(rs.getString("Address"));
+                Role role = new Role();
+                role.setRoleName(rs.getString("RoleName"));
+                u.setRole(role);
+                u.setAvatar(rs.getString("Avatar"));
+
+            }
+        } catch (Exception e) {
+        }
+        return u;
+
+    }
 }
