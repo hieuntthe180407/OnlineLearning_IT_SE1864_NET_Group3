@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 package model;
 
 /**
@@ -11,32 +10,51 @@ package model;
  */
 import java.util.*;
 import java.lang.*;
+
 public class User {
+
     private int userID;
     private String fullName;
-     private String email;
-      private String password;
-       private String phone;
-        private String address;
-         private String gender;
-         private int roleID;
-         private String roleName;
-         
-         
-
+    private String dateOfBirth;
+    private String email;
+    private String password;
+    private String phone;
+    private String address;
+    private String gender;
+    private int roleID;
+    private String avatar;
+    
     public User() {
     }
 
-    public User(int userID, String fullName, String email, String password, String phone, String address, String gender, int roleID,String roleName) {
+    public User(int userID, String fullName, String dateOfBirth, String email, String password, String phone, String address, String gender, int roleID, String avatar) {
         this.userID = userID;
         this.fullName = fullName;
+        this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.password = password;
         this.phone = phone;
         this.address = address;
         this.gender = gender;
         this.roleID = roleID;
-        this.roleName = roleName;
+        this.avatar = avatar;
+    }
+    
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public int getUserID() {
@@ -103,13 +121,11 @@ public class User {
         this.roleID = roleID;
     }
 
-    public String getRoleName() {
-        return roleName;
+    @Override
+    public String toString() {
+        return "User{" + "userID=" + userID + ", fullName=" + fullName + ", dateOfBirth=" + dateOfBirth + ", email=" + email + ", password=" + password + ", phone=" + phone + ", address=" + address + ", gender=" + gender + ", roleID=" + roleID + ", avatar=" + avatar + '}';
     }
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
-         
     
+
 }
