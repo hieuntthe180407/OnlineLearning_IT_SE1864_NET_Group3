@@ -66,7 +66,7 @@ public class editProfile extends HttpServlet {
         try {
             User profile = u.getUserProfilebyId(user.getUserID());
             request.setAttribute("profile", profile);
-            request.getRequestDispatcher("userProfile.jsp").forward(request, response);
+            request.getRequestDispatcher("editProfile.jsp").forward(request, response);
 
         } catch (Exception e) {
             System.out.println(e);
