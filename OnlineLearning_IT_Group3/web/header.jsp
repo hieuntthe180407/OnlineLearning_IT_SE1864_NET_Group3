@@ -58,13 +58,8 @@
                 <a href="#" class="nav-item nav-link active">Home</a>
                 <a href="#" class="nav-item nav-link">About</a>
                 <a href="#" class="nav-item nav-link">Courses</a>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                    <div class="dropdown-menu fade-down m-0">
-                        <a href="#" class="dropdown-item">Our Team</a>
-                        <a href="#" class="dropdown-item">Testimonial</a>
-
-                    </div>
+                <a href="#" class="nav-item nav-link">Blog</a>
+            </div>
                 </div>
                 <a href="#" class="nav-item nav-link">Contact</a>
                 <a href="#" class="nav-item nav-link"><i class="fa fa-user"></i></a>
