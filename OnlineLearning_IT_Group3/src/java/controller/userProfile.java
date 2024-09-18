@@ -61,10 +61,10 @@ public class userProfile extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        Integer id = (Integer) session.getAttribute("userID");
+        User user = (User) session.getAttribute("User");
         UserDAO u = new UserDAO();
         try {
-            User profile = u.getUserProfilebyId(id);
+            User profile = u.getUserProfilebyId(user.getUserID());
             request.setAttribute("profile", profile);
             request.getRequestDispatcher("userProfile.jsp").forward(request, response);
         } catch (Exception e) {
