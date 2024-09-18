@@ -62,9 +62,35 @@
                                 </div>
                             </div>
                         </div>
-
-                        
+                        <!-- Address -->
+                        <div class="col-12">
+                            <div class="row g-xl-0">
+                                <div class="col-lg-4">
+                                    <h6 class="mb-lg-0">Your address <span class="text-danger">*</span></h6>
+                                </div>
+                                <div class="col-lg-8">
+                                    <textarea name="address" class="form-control" rows="3" placeholder=""></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Avatar -->
+                        <div class="col-12">
+                            <div class="row g-xl-0 align-items-center">
+                                <div class="col-lg-4">
+                                    <h6 class="mb-lg-0">Avatar</span></h6>
+                                </div>
+                                <div class="col-lg-8">
+                                    <input type="file" class="form-control" name="avatar" value="">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Button -->
+                        <div class="col-12 text-end">
+                            <button class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
                 </div>
-
-                </body>
-                </html>
+            </div>
+        </div>
+    </body>
+</html>
