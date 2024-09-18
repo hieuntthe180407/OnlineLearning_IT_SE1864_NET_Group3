@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -61,6 +62,15 @@ public class editProfile extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("User");
+        UserDAO u = new UserDAO();
+        try {
+            User profile = u.getUserProfilebyId(user.getUserID());
+            request.setAttribute("profile", profile);
+            request.getRequestDispatcher("userProfile.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     /**
