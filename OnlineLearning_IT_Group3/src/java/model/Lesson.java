@@ -9,43 +9,53 @@ package model;
  * @author trong
  */
 public class Lesson {
-    private int LessionID;
-    private String LessionURL;
-     private String LessionName;
+    private int LessonID;
+    private int MoocID;
+    private String LessonURL;
+     private String LessonName;
       private String Description;
 
     public Lesson() {
     }
 
-    public Lesson(int LessionID, String LessionURL, String LessionName, String Description) {
-        this.LessionID = LessionID;
-        this.LessionURL = LessionURL;
-        this.LessionName = LessionName;
+    public Lesson(int LessonID, int MoocID, String LessonURL, String LessonName, String Description) {
+        this.LessonID = LessonID;
+        this.MoocID = MoocID;
+        this.LessonURL = LessonURL;
+        this.LessonName = LessonName;
         this.Description = Description;
     }
 
-    public int getLessionID() {
-        return LessionID;
+    public int getLessonID() {
+        return LessonID;
     }
 
-    public void setLessionID(int LessionID) {
-        this.LessionID = LessionID;
+    public void setLessonID(int LessonID) {
+        this.LessonID = LessonID;
     }
 
-    public String getLessionURL() {
-        return LessionURL;
+    public int getMoocID() {
+        return MoocID;
     }
 
-    public void setLessionURL(String LessionURL) {
-        this.LessionURL = LessionURL;
+    public void setMoocID(int MoocID) {
+        this.MoocID = MoocID;
     }
 
-    public String getLessionName() {
-        return LessionName;
+    public String getLessonURL() {
+        return LessonURL;
     }
 
-    public void setLessionName(String LessionName) {
-        this.LessionName = LessionName;
+    public void setLessonURL(String LessonURL) {
+        this.LessonURL = LessonURL;
+    }
+
+    public String getLessonName() {
+        return LessonName;
+    }
+
+    public void setLessonName(String LessonName) {
+        this.LessonName = LessonName;
     }
 
     public String getDescription() {
@@ -56,6 +66,6 @@ public class Lesson {
         this.Description = Description;
     }
 
-  
+    
       
 }

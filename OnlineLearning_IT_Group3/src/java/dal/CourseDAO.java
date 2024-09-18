@@ -62,4 +62,11 @@ public class CourseDAO extends DBContext {
         }
         return null;
     }
+          public static void main(String[] args) {
+        CourseDAO cDAO = new CourseDAO();
+        List<Course> list = cDAO.getAllCourse();
+        for (Course u : list) {
+            System.out.println(u);
+        }
+    }
 }

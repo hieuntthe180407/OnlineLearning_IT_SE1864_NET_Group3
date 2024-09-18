@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.util.*"%>
+<%@page import="model.*"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -45,67 +47,52 @@
         <%@include file="header.jsp" %>
         
          <div class="container" id="Curriculum">
-
                             <h2 class="mt-4">
                                 Syllabus
                             </h2>
+              <% 
+                    List<Mooc> listm = (List<Mooc>) request.getAttribute("listm");
+                    List<Lesson> listl = (List<Lesson>) request.getAttribute("listl");
+                    if (listm == null || listm.size() == 0 || listl == null || listl.size() == 0 ) {
+                        out.println("Empty list ");
+                    } else {
+                        for (Mooc m : listm) {
+                           
+                %>  
+
+                            
                             <div class="accordion accordion-flush" id="accordionFlushExample">
+                                
+                                
+                                
                                 <div class="accordion-item">
                                   <h2 class="accordion-header">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                        Elements and Structure
+                                        <%= m.getMoocName()%>
                                     
                                     </button>
                                   </h2>
-                                  <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                    
+                                    
+                                  <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="
+                                       
                                     <div class="accordion-body"><ul>
-                                        <li><i class="fa fa-video text-danger"></i> Introduction to HTML</li>
-                                        <li><i class="fa fa-video text-danger"></i> HTMl Document Standards</li>
+                                          <% for(Lesson l : listl) {
+                                            if(l.getMoocID()== m.getMoocID()){
+                                        %>
+                                        <li><i class="fa fa-video text-danger"></i><%=l.getLessonURL()%></li>
+                                        
+                                        <%}}%>
                                     </ul></div>
+                                  
                                   </div>
                                 </div>
-                                <div class="accordion-item">
-                                  <h2 class="accordion-header">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                                       Tables
-                                    </button>
-                                  </h2>
-                                  <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body"><ul>
-                                        <li><i class="fa fa-video text-danger"></i> HTML Tables</li>
-                                    </ul></div>
-                                  </div>
-                                </div>  
-                                <div class="accordion-item">
-                                  <h2 class="accordion-header">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                                       Forms
-                                    </button>
-                                  </h2>
-                                  <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body"><ul>
-                                        <li><i class="fa fa-video text-danger"></i> HTML Forms</li>
-                                        <li><i class="fa fa-video text-danger"></i> Form Validation</li>
-                                    </ul></div>
-                                  </div>
-                                </div>
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                                         Semantic HTML
-                                      </button>
-                                    </h2>
-                                    <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                                      <div class="accordion-body"><ul>
-                                          <li><i class="fa fa-video text-danger"></i> Semantic HTML</li>
-                                      </ul></div>
-                                    </div>
-                                  </div>
-                              </div>
+                                    <%}}%>
+                               </div>
 
 
 
-                        </div>
+                     
         
         
         
