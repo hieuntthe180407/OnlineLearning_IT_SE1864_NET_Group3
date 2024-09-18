@@ -41,4 +41,25 @@ public class CourseDAO extends DBContext {
 
         return list;
     }
+        
+         public Course getCourseByID(int id){
+        try {
+            String sql = "Select * from Course where CourseID = " + id;
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            if (rs.next()){
+                Course c = new Course();
+                c.setCourseID(rs.getInt("CourseID"));
+                c.setDuration(rs.getInt("Duration"));
+                c.setReport(rs.getInt("Report"));
+                c.setCourseName(rs.getString("CourseName"));
+                c.setCourseImg(rs.getString("courseIMG"));
+                return c;
+            }
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
 }

@@ -5,6 +5,7 @@
 
 package controller;
 
+import dal.CourseDAO;
 import dal.LessonDAO;
 import dal.MoocDAO;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
+import model.Course;
 import model.Lesson;
 import model.Mooc;
 
@@ -22,8 +24,8 @@ import model.Mooc;
  *
  * @author trong
  */
-@WebServlet(name="courseDeatail", urlPatterns={"/courseDeatail"})
-public class courseDeatail extends HttpServlet {
+@WebServlet(name="courseDetail", urlPatterns={"/courseDetail"})
+public class courseDetail extends HttpServlet {
    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -32,11 +34,17 @@ public class courseDeatail extends HttpServlet {
           MoocDAO m = new MoocDAO();
         List<Mooc> listm = m.getAllMoocByCourseID(courseID);
         request.setAttribute("listm", listm);
-        request.getRequestDispatcher("courseDetail.jsp").forward(request, response);
+        
         
           LessonDAO l = new LessonDAO();
         List<Lesson> listl = l.getAlllessonBycourseID(courseID);
         request.setAttribute("listl", listl);
+        
+        
+        CourseDAO cDAO = new CourseDAO();
+        Course c = cDAO.getCourseByID(courseID);
+        request.setAttribute("Course", c);
+        
         request.getRequestDispatcher("courseDetail.jsp").forward(request, response);
     } 
 
