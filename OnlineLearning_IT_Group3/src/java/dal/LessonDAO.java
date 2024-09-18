@@ -35,14 +35,14 @@ public class LessonDAO extends DBContext {
         return null;
     }
     
-    public List<Lesson> getAllMoocByCourseID(int MoocID) {
+    public List<Lesson> getAlllessonBycourseID(int CourseID) {
 
         List<Lesson> list = new ArrayList<>();
 
         try {
-            String sql = "Select * from Mooc WHERE moocID=?";
+            String sql = "Select * from Mooc m,Lessons l,Course c WHERE m.CourseID=c.CourseID AND l.MoocID=m.MoocID AND c.CourseID=?";
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, MoocID);
+            st.setInt(1, CourseID);
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
@@ -63,5 +63,36 @@ public class LessonDAO extends DBContext {
 
         return list;
     }
-    
+     public boolean updateLesson(int id, String name,String url){
+        try {
+            String sql = "update Lessons set LessonName = ?, LessonURL = ?, where id = ?";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, name);
+            st.setString(2, url);
+            st.setInt(3, id);            
+            st.executeUpdate();
+            st.close();
+            return true;
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+      public boolean addLesson(String name,String url){
+        try {
+            String sql = "Insert into Lessons(LessonName,LessonURL) values(?,?)";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, name);
+            st.setString(2, url);
+                       
+            st.executeUpdate();
+            st.close();
+            return true;
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
 }

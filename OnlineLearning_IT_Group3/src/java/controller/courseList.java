@@ -5,6 +5,8 @@
 
 package controller;
 
+import dal.CourseDAO;
+import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,19 +14,23 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import model.Course;
 
 /**
  *
  * @author trong
  */
-@WebServlet(name="addLesson", urlPatterns={"/addLesson"})
-public class addLesson extends HttpServlet {
+@WebServlet(name="courseList", urlPatterns={"/courseList"})
+public class courseList extends HttpServlet {
    
-    
-    @Override
+   @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-    }
-    
+         CourseDAO c = new CourseDAO();
+        List<Course> list = c.getAllCourse();
+        request.setAttribute("list", list);
+        request.getRequestDispatcher("courseList.jsp").forward(request, response);
+    } 
 
 }
