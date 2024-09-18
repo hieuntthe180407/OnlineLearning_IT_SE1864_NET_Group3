@@ -393,10 +393,10 @@ CREATE TABLE [dbo].[User](
 	[Address] [varchar](255) NULL,
 	[Gender] [varchar](10) NULL,
 	[RoleID] [int] NULL,
-	[Reason] [text] NULL,
+	
 	[TimeBan] [datetime] NULL,
 	[Avatar] [varchar](255) NULL,
-	[IsVerify] [bit] NULL,
+	[Status] [varchar](255) NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[UserID] ASC
@@ -447,8 +447,7 @@ GO
 
 ALTER TABLE [dbo].[Review] ADD  DEFAULT ((0)) FOR [IsReport]
 GO
-ALTER TABLE [dbo].[User] ADD  DEFAULT ((0)) FOR [IsVerify]
-GO
+
 
 ALTER TABLE [dbo].[Blogs]  WITH CHECK ADD FOREIGN KEY([CategoryId])
 REFERENCES [dbo].[CategoriesBlog] ([CategoryId])
