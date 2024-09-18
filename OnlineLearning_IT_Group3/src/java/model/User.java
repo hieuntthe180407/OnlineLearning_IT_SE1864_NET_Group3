@@ -2,45 +2,54 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 package model;
+
+import java.util.Date;
 
 /**
  *
- * @author ADMIN
+ * @author DTC
  */
-import java.util.*;
-import java.lang.*;
 public class User {
-    private int userID;
+    private int userId;
     private String fullName;
-     private String email;
-      private String password;
-       private String phone;
-        private String address;
-         private String gender;
-         private int roleID;
+    private Date dateOfBirth;
+    private String email;
+    private String password;
+    private String phone;
+    private String address;
+     private Boolean gender;
+    private model.Role roleid;
+    private String reason;
+    private java.sql.Date timeBan;
+    private String avatar;
+    private Boolean isVerify;
 
     public User() {
     }
 
-    public User(int userID, String fullName, String email, String password, String phone, String address, String gender, int roleID) {
-        this.userID = userID;
+    public User(int userId, String fullName, Date dateOfBirth, String email, String password, String phone, String address, Boolean gender, Role roleid, String reason, java.sql.Date timeBan, String avatar, Boolean isVerify) {
+        this.userId = userId;
         this.fullName = fullName;
+        this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.password = password;
         this.phone = phone;
         this.address = address;
         this.gender = gender;
-        this.roleID = roleID;
+        this.roleid = roleid;
+        this.reason = reason;
+        this.timeBan = timeBan;
+        this.avatar = avatar;
+        this.isVerify = isVerify;
     }
 
-    public int getUserID() {
-        return userID;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getFullName() {
@@ -49,6 +58,14 @@ public class User {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getEmail() {
@@ -83,21 +100,54 @@ public class User {
         this.address = address;
     }
 
-    public String getGender() {
+    public Boolean getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Boolean gender) {
         this.gender = gender;
     }
 
-    public int getRoleID() {
-        return roleID;
+    public Role getRoleid() {
+        return roleid;
     }
 
-    public void setRoleID(int roleID) {
-        this.roleID = roleID;
+    public void setRoleid(Role roleid) {
+        this.roleid = roleid;
     }
-         
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public java.sql.Date getTimeBan() {
+        return timeBan;
+    }
+
+    public void setTimeBan(java.sql.Date timeBan) {
+        this.timeBan = timeBan;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public Boolean getIsVerify() {
+        return isVerify;
+    }
+
+    public void setIsVerify(Boolean isVerify) {
+        this.isVerify = isVerify;
+    }
     
+    
+ 
 }
