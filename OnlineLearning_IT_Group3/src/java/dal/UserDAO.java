@@ -6,10 +6,13 @@ package dal;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.*;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Role;
 import model.User;
 
@@ -187,5 +190,56 @@ public class UserDAO extends DBContext {
         }
         return u;
 
+    }
+    public User getUserByEmail(String email){
+        User u = null;
+        
+        PreparedStatement st = null;
+        ResultSet rs= null;
+        
+        try {
+            String sql ="SELECT * FROM [User] WHERE Email= ? AND isVerify = 1";
+            st = connection.prepareStatement(sql);
+            st.setString(1, email);
+            
+            rs = st.executeQuery();
+            
+            if(rs.next()){
+                int userId = rs.getInt("UserID");
+                String fullName = rs.getString("FullName");
+                Date dateOfBirth = rs.getDate("DateOfBirth");
+                String password = rs.getString("Password");
+                String phone = rs.getString("Phone");
+                String address = rs.getString("Address");
+                Boolean gender = rs.getBoolean("Gender");
+                String reason = rs.getString("Reason");
+                Date timeBan = rs.getDate("TimeBan");
+                String avatar = rs.getString("Avatar");
+                int roleId = rs.getInt("RoleID");
+                
+                Role role = new RoleDAO().selecById(roleId);
+                
+                u = new User(userId, fullName, avatar, email, password, phone, address, avatar, role, avatar);
+            }
+
+        } catch (Exception e) {
+         e.printStackTrace();
+        } finally {
+            // Đảm bảo tài nguyên được đóng đúng cách
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return u;
     }
 }
