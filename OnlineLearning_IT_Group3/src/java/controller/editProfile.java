@@ -59,7 +59,8 @@ public class editProfile extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("User");
     }
 
     /**
