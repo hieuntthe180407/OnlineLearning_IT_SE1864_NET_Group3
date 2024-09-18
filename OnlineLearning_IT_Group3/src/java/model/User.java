@@ -23,7 +23,7 @@ public class User {
     private String gender;
     private Role role;
     private String avatar;
-
+    
     public User() {
     }
 
