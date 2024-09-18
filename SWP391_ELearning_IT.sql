@@ -444,7 +444,8 @@ GO
 ALTER TABLE [dbo].[Purchase] ADD  DEFAULT (getdate()) FOR [PurchaseDate]
 GO
 
-
+ALTER TABLE [dbo].[User] ADD  DEFAULT (('Active')) FOR [Status]
+GO
 ALTER TABLE [dbo].[Review] ADD  DEFAULT ((0)) FOR [IsReport]
 GO
 
