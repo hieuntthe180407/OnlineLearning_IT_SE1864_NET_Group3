@@ -12,5 +12,39 @@ public class Mooc {
     private int moocID;
     private String moocName;
     private int moocNumber;
+
+    public Mooc() {
+    }
+
+    public Mooc(int moocID, String moocName, int moocNumber) {
+        this.moocID = moocID;
+        this.moocName = moocName;
+        this.moocNumber = moocNumber;
+    }
+
+    public int getMoocID() {
+        return moocID;
+    }
+
+    public void setMoocID(int moocID) {
+        this.moocID = moocID;
+    }
+
+    public String getMoocName() {
+        return moocName;
+    }
+
+    public void setMoocName(String moocName) {
+        this.moocName = moocName;
+    }
+
+    public int getMoocNumber() {
+        return moocNumber;
+    }
+
+    public void setMoocNumber(int moocNumber) {
+        this.moocNumber = moocNumber;
+    }
+    
     
 }
