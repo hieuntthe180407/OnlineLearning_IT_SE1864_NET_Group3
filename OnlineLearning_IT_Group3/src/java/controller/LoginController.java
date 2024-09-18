@@ -5,6 +5,7 @@
 
 package controller;
 
+import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -109,7 +110,24 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        //processRequest(request, response);
+        
+        String url = request.getScheme() +"://" +request.getServerName() + ":" +request.getServletPath();
+        HttpSession session = request.getSession();
+        session.setMaxInactiveInterval(600);
+        
+        String email = request.getParameter("username");
+        String password = request.getParameter("password");
+        String checked[] = request.getParameterValues("check");
+        
+        String c = "checked";
+        if(checked == null){
+         c = "notchecked";
+        }
+        
+        UserDAO ud = new UserDAO();
+        
+        
     }
 
     /** 
