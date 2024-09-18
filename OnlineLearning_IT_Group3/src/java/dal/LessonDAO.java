@@ -22,10 +22,11 @@ public class LessonDAO extends DBContext {
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()){
                 Lesson u = new Lesson();
-                u.setLessionID(rs.getInt("LessonID"));
-                u.setLessionName(rs.getString("LessonName"));
+                u.setLessonID(rs.getInt("LessonID"));
+                u.setMoocID(rs.getInt("MoocID"));
+                u.setLessonName(rs.getString("LessonName"));
                 u.setDescription(rs.getString("Description"));
-                u.setLessionURL(rs.getString("LessonURL"));
+                u.setLessonURL(rs.getString("LessonURL"));
                 return u;
             }
         }
@@ -47,10 +48,11 @@ public class LessonDAO extends DBContext {
 
             while (rs.next()) {
               Lesson u = new Lesson();
-                u.setLessionID(rs.getInt("LessonID"));
-                u.setLessionName(rs.getString("LessonName"));
+                u.setLessonID(rs.getInt("LessonID"));
+                u.setLessonName(rs.getString("LessonName"));
+                 u.setMoocID(rs.getInt("MoocID"));
                 u.setDescription(rs.getString("Description"));
-                u.setLessionURL(rs.getString("LessonURL"));
+                u.setLessonURL(rs.getString("LessonURL"));
                
                 
                 list.add(u);

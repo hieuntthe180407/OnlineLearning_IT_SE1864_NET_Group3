@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.util.*"%>
+<%@page import="model.Course"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -85,17 +87,26 @@
                 <h1 class="mb-5" style="color: #fb873f;">Explore new and trending free online courses</h1>
             </div>
             <div class="row g-4 py-2"> <!-- 2 vi du nay de lam list nhet vao loop cho de so sanh -->
+                 <% 
+                    List<Course>list = (List<Course>) request.getAttribute("list");
+                    if (list == null || list.size() == 0) {
+                        out.println("Empty list ");
+                    } else {
+                        for (Course c : list) {
+                           
+                %>  
+                
                 <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="course-item shadow">
                         <div class="position-relative overflow-hidden text-light image">
-                            <img class="img-fluid" src="img/course-1.jpg" alt="">
+                            <img class="img-fluid" src="<%= c.getCourseImg() %>" alt="">
                             <div style="position:absolute;top: 15px;left: 16px; font-size:12px; border-radius:3px; background-color:#fb873f;"
                                 class="px-2 py-1 fw-bold text-uppercase">FREE</div>
 
                         </div>
                         <div class="p-2 pb-0">
 
-                            <h5 class="mb-1"><a href="single.html" class="text-dark">HTML Course for Beginners</a> </h5>
+                            <h5 class="mb-1"><a href="courseDetail?courseID=<%= c.getCourseID() %>" class="text-dark"><%= c.getCourseName()%></a> </h5>
                         </div>
                         <div class="d-flex">
                             <small class="flex-fill text-center py-1 px-2"><i class="fa fa-star text-warning me-2"></i>
@@ -107,45 +118,19 @@
                                     class="fa fa-user me-2"></i>Beginner</small>
                         </div>
                         <div class="d-flex">
-                            <small class="flex-fill text-left p-2 px-2"><i class="fa fa-clock me-2"></i>2.0
-                                Hrs</small>
+                            <small class="flex-fill text-left p-2 px-2"><i class="fa fa-clock me-2"></i> <%= c.getDuration()%></small>
                             <small class="py-1 px-2 fw-bold fs-6 text-center">₹ 0</small>
                             <small class=" text-primary py-1 px-2 fw-bold fs-6" style="float:right;"><a href="#">Enroll
                                     Now </a><i class="fa fa-chevron-right me-2 fs-10"></i></small>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="course-item shadow">
-                        <div class="position-relative overflow-hidden text-light image">
-                            <img class="img-fluid" src="img/course-2.jpg" alt="">
-                            <div style="position:absolute;top: 15px;left: 16px; font-size:12px; border-radius:3px; background-color:#0ed44c;"
-                                class="px-2 py-1 fw-bold text-uppercase">PAID</div>
-
-                        </div>
-                        <div class="p-2 pb-0">
-
-                            <h5 class="mb-1">Front End Development-CSS
-                            </h5>
-                        </div>
-                        <div class="d-flex">
-                            <small class="flex-fill text-center py-1 px-2"><i class="fa fa-star text-warning me-2"></i>
-                                4.55</small>
-                            <small class="flex-fill text-center py-1 px-2"><i class="fa fa-user-graduate me-2"></i>5.2L+
-                                Learners
-                            </small>
-                            <small class="flex-fill text-center py-1 px-2"><i
-                                    class="fa fa-user me-2"></i>Beginner</small>
-                        </div>
-                        <div class="d-flex">
-                            <small class="flex-fill text-left p-2 px-2"><i class="fa fa-clock me-2"></i>4.0
-                                Hrs</small>
-                            <small class="py-1 px-2 fw-bold fs-6 text-center">₹ 199</small>
-                            <small class=" text-primary py-1 px-2 fw-bold fs-6" style="float:right;"><a href="#">Enroll
-                                    Now </a><i class="fa fa-chevron-right me-2 fs-10"></i></small>
-                        </div>
-                    </div>
-                </div>
+                <% }} %>
+                
+                
+                
+                
+                
                 
                     </div>
                 </div>
