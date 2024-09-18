@@ -5,7 +5,6 @@
 
 package controller;
 
-import dal.CourseDAO;
 import dal.LessonDAO;
 import dal.MoocDAO;
 import java.io.IOException;
@@ -16,7 +15,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import model.Course;
 import model.Lesson;
 import model.Mooc;
 
@@ -24,12 +22,9 @@ import model.Mooc;
  *
  * @author trong
  */
-@WebServlet(name="moocLessonList", urlPatterns={"/moocLessonList"})
-public class moocLessonList extends HttpServlet {
+@WebServlet(name="courseDeatail", urlPatterns={"/courseDeatail"})
+public class courseDeatail extends HttpServlet {
    
-    
-
-  
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
@@ -45,5 +40,4 @@ public class moocLessonList extends HttpServlet {
         request.getRequestDispatcher("courseDetail.jsp").forward(request, response);
     } 
 
-   
 }

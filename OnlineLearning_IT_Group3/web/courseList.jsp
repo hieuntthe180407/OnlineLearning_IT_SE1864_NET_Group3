@@ -84,7 +84,7 @@
                 <h6 class="section-title bg-white text-center px-3">Popular Courses</h6>
                 <h1 class="mb-5" style="color: #fb873f;">Explore new and trending free online courses</h1>
             </div>
-            <div class="row g-4 py-2">
+            <div class="row g-4 py-2"> <!-- 2 vi du nay de lam list nhet vao loop cho de so sanh -->
                 <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="course-item shadow">
                         <div class="position-relative overflow-hidden text-light image">

@@ -48,20 +48,12 @@
         <!--Main container start -->
 	<main class="ttr-wrapper">
 		<div class="container-fluid">
-			<div class="db-breadcrumb">
-				<h4 class="breadcrumb-title">Add listing</h4>
-				<ul class="db-breadcrumb-list">
-					<li><a href="#"><i class="fa fa-home"></i>Home</a></li>
-					<li>Add listing</li>
-				</ul>
-			</div>	
+			
 			<div class="row">
 				<!-- Your Profile Views Chart -->
 				<div class="col-lg-12 m-b30">
 					<div class="widget-box">
-						<div class="wc-title">
-							<h4>Add listing</h4>
-						</div>
+						
 						<div class="widget-inner">
 							<form class="edit-profile m-b30">
 								<div class="row">
@@ -71,35 +63,18 @@
 										</div>
 									</div>
 									<div class="form-group col-6">
-										<label class="col-form-label">Course title</label>
+										<label class="col-form-label">Lesson Name</label>
 										<div>
 											<input class="form-control" type="text" value="">
 										</div>
 									</div>
 									<div class="form-group col-6">
-										<label class="col-form-label">Course title</label>
+										<label class="col-form-label">Lesson URL</label>
 										<div>
 											<input class="form-control" type="text" value="">
 										</div>
 									</div>
-									<div class="form-group col-6">
-										<label class="col-form-label">Course start</label>
-										<div>
-											<input class="form-control" type="text" value="">
-										</div>
-									</div>
-									<div class="form-group col-6">
-										<label class="col-form-label">Course expire</label>
-										<div>
-											<input class="form-control" type="text" value="">
-										</div>
-									</div>
-									<div class="form-group col-6">
-										<label class="col-form-label">Teacher name</label>
-										<div>
-											<input class="form-control" type="text" value="">
-										</div>
-									</div>
+									
 									<div class="seperator"></div>
 									
 									<div class="col-12 m-t20">
@@ -108,7 +83,7 @@
 										</div>
 									</div>
 									<div class="form-group col-12">
-										<label class="col-form-label">Course description</label>
+										<label class="col-form-label">Lesson description</label>
 										<div>
 											<textarea class="form-control"> </textarea>
 										</div>

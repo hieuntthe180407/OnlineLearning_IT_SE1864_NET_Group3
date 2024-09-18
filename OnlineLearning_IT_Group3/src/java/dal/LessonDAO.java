@@ -63,5 +63,36 @@ public class LessonDAO extends DBContext {
 
         return list;
     }
-    
+     public boolean updateLesson(int id, String name,String url){
+        try {
+            String sql = "update Lessons set LessonName = ?, LessonURL = ?, where id = ?";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, name);
+            st.setString(2, url);
+            st.setInt(3, id);            
+            st.executeUpdate();
+            st.close();
+            return true;
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+      public boolean addLesson(String name,String url){
+        try {
+            String sql = "Insert into Lessons(LessonName,LessonURL) values(?,?)";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, name);
+            st.setString(2, url);
+                       
+            st.executeUpdate();
+            st.close();
+            return true;
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
 }
