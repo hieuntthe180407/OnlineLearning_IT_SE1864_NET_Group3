@@ -48,11 +48,9 @@
                                 <h6 class="mb-lg-0">Gender </h6>
                             </div>
                             <div class="col-lg-8">
-                                <select name="gender"
-                                        class="form-select js-choice z-index-9 rounded-3 border-0 bg-light"
-                                        aria-label=".form-select-sm">
-                                    <option value="male" <c:if test="${profile.gender == 'male'}">selected</c:if>>Male</option>
-                                    <option value="female" <c:if test="${profile.gender == 'female'}">selected</c:if>>Female</option> 
+                                <select name="gender" id="gender" class="form-select js-choice z-index-9 rounded-3 border-0 bg-light">
+                                    <option value="male" ${profile.gender == 'male' ? 'selected' : ''}>Male</option>
+                                    <option value="female" ${profile.gender == 'female' ? 'selected' : ''}>Female</option>
                                 </select>
                             </div>
                         </div>
