@@ -35,14 +35,14 @@ public class LessonDAO extends DBContext {
         return null;
     }
     
-    public List<Lesson> getAllMoocByCourseID(int MoocID) {
+    public List<Lesson> getAlllessonBycourseID(int CourseID) {
 
         List<Lesson> list = new ArrayList<>();
 
         try {
-            String sql = "Select * from Mooc WHERE moocID=?";
+            String sql = "Select * from Mooc m,Lessons l,Course c WHERE m.CourseID=c.CourseID AND l.MoocID=m.MoocID AND c.CourseID=?";
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, MoocID);
+            st.setInt(1, CourseID);
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
