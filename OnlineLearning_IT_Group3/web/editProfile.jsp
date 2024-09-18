@@ -67,7 +67,7 @@
                                 <div class="row g-2 g-sm-4">
                                     <div class="col-12">
                                         <input type="date" class="form-control" id="day"
-                                               value="${profile.gender == 'female'}" oninput="updateDays();" name="dateOFBirth" required>
+                                               value="${profile.dateOfBirth}" oninput="updateDays();" name="dateOFBirth" required>
                                     </div>
                                 </div>
                             </div>
