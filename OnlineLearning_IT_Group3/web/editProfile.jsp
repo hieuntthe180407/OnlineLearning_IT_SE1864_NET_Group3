@@ -66,8 +66,18 @@
                             <div class="col-lg-8">
                                 <div class="row g-2 g-sm-4">
                                     <div class="col-4">
-                                        <input type="date" class="form-control" id="day" placeholder="Day" min="1"
-                                                value="" oninput="updateDays();" name="dateOfBirth" required>
+                                        <input type="number" class="form-control" id="day" placeholder="Day" min="1"
+                                               max="31" value="" oninput="updateDays();" name="day" required>
+                                    </div>
+
+                                    <div class="col-4">
+                                        <input type="number" class="form-control" id="month" placeholder="Month" min="1"
+                                               max="12" value="" oninput="updateDays();" name="month" required>
+                                    </div>
+
+                                    <div class="col-4">
+                                        <input type="number" class="form-control" id="year" placeholder="Year"
+                                               min="1900" value=""  oninput="updateDays();" name="year" required>
                                     </div>
                                 </div>
                             </div>
@@ -115,4 +125,38 @@
                 </form>
             </div>
             </body>
+            <script>
+
+                function isLeapYear(year) {
+                    return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+                }
+
+                function updateDays() {
+                    const year = document.getElementById('year').value;
+                    const month = document.getElementById('month').value;
+                    const dayInput = document.getElementById('day');
+
+                    if (month && year) {
+                        let maxDays;
+                        switch (parseInt(month)) {
+                            case 2: // February
+                                maxDays = isLeapYear(year) ? 29 : 28;
+                                break;
+                            case 4:
+                            case 6:
+                            case 9:
+                            case 11: // April, June, September, November
+                                maxDays = 30;
+                                break;
+                            default: // All other months have 31 days
+                                maxDays = 31;
+                        }
+                        dayInput.max = maxDays;
+                        if (dayInput.value > maxDays) {
+                            dayInput.value = maxDays; // Adjust day input to maxDays if it exceeds
+                        }
+                    }
+                }
+
+            </script>
             </html>
