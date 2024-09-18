@@ -51,6 +51,37 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Date of birth -->
+                        <div class="col-12">
+                            <div class="row g-xl-0 align-items-center">
+                                <div class="col-lg-4">
+                                    <h6 class="mb-lg-0">Date of birth<span class="text-danger">*</span></h6>
+                                </div>
+                                <div class="col-lg-8">
+                                    <div class="row g-2 g-sm-4">
+                                        <div class="col-2">
+                                            <input type="number" class="form-control" id="day" placeholder="Day" min="1"
+                                                   max="31" value="1" oninput="updateDays(); updateDate();">
+                                        </div>
+
+                                        <div class="col-2">
+                                            <input type="number" class="form-control" id="month" placeholder="Month" min="1"
+                                                   max="12" value="12" oninput="updateDays(); updateDate();">
+                                        </div>
+
+                                        <div class="col-3">
+                                            <input type="number" class="form-control" id="year" placeholder="Year"
+                                                   min="1900" value="2000"  oninput="updateDays(); updateDate();">
+                                        </div>
+
+                                        <div class="col-5">
+                                            <input type="text" class="form-control" id="fullDate" placeholder="Date"
+                                                   name="fullDate" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <!-- Phone number -->
                         <div class="col-12">
                             <div class="row g-xl-0 align-items-center">
@@ -62,9 +93,96 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Address -->
+                        <div class="col-12">
+                            <div class="row g-xl-0">
+                                <div class="col-lg-4">
+                                    <h6 class="mb-lg-0">Your address <span class="text-danger">*</span></h6>
+                                </div>
+                                <div class="col-lg-8">
+                                    <textarea name="address" class="form-control" rows="3" placeholder=""></textarea>
+                                </div>
+                            </div>
+                        </div>
 
-                        
+                        <!-- Avatar -->
+                        <div class="col-12">
+                            <div class="row g-xl-0 align-items-center">
+                                <div class="col-lg-4">
+                                    <h6 class="mb-lg-0">Avatar</span></h6>
+                                </div>
+                                <div class="col-lg-8">
+                                    <input type="file" class="form-control" name="avatar" value="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Button -->
+                        <div class="col-12 text-end">
+                            <button class="btn btn-primary">Submit</button>
+                        </div>
+
+
+
                 </div>
 
                 </body>
+                <script>
+
+                    function isLeapYear(year) {
+                        return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+                    }
+
+                    function updateDays() {
+                        const year = document.getElementById('year').value;
+                        const month = document.getElementById('month').value;
+                        const dayInput = document.getElementById('day');
+
+                        if (month && year) {
+                            let maxDays;
+                            switch (parseInt(month)) {
+                                case 2: // February
+                                    maxDays = isLeapYear(year) ? 29 : 28;
+                                    break;
+                                case 4:
+                                case 6:
+                                case 9:
+                                case 11: // April, June, September, November
+                                    maxDays = 30;
+                                    break;
+                                default: // All other months have 31 days
+                                    maxDays = 31;
+                            }
+                            dayInput.max = maxDays;
+                            if (dayInput.value > maxDays) {
+                                dayInput.value = maxDays; // Adjust day input to maxDays if it exceeds
+                            }
+                        }
+                    }
+
+                    function updateDate() {
+                        const day = document.getElementById('day').value;
+                        const month = document.getElementById('month').value;
+                        const year = document.getElementById('year').value;
+
+                        let fullDate = '';
+
+                        if (day) {
+                            fullDate += `${day.padStart()}/`;
+                        }
+                        if (month) {
+                            fullDate += `${month.padStart()}/`;
+                        }
+                        if (year) {
+                            fullDate += `${year}`;
+                        }
+
+                        document.getElementById('fullDate').value = fullDate;
+                    }
+
+                    document.addEventListener('DOMContentLoaded', updateDate);
+
+
+
+                </script>
                 </html>
