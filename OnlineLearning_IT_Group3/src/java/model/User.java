@@ -23,6 +23,7 @@ public class User {
     private String gender;
     private Role role;
     private String avatar;
+    private String status;
 
     public User() {
     }
@@ -38,6 +39,14 @@ public class User {
         this.gender = gender;
         this.role = role;
         this.avatar = avatar;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Role getRole() {
