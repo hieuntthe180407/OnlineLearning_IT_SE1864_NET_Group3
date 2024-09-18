@@ -30,6 +30,7 @@ public class courseDetail extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        try{
         int courseID = Integer.parseInt(request.getParameter("courseID"));
           MoocDAO m = new MoocDAO();
         List<Mooc> listm = m.getAllMoocByCourseID(courseID);
@@ -44,6 +45,11 @@ public class courseDetail extends HttpServlet {
         CourseDAO cDAO = new CourseDAO();
         Course c = cDAO.getCourseByID(courseID);
         request.setAttribute("Course", c);
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            response.sendRedirect("courseDetail");        
+        }
         
         request.getRequestDispatcher("courseDetail.jsp").forward(request, response);
     } 

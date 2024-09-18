@@ -28,12 +28,20 @@ public class lessonEdit extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         try{
-        int id = Integer.parseInt(request.getParameter("LessonID"));
+        String idParam = request.getParameter("LessonID");
         LessonDAO lDAO = new LessonDAO();
+        if(idParam !=null){
+            int id = Integer.parseInt(idParam);
+        
         Lesson l = lDAO.getLessonByID(id);
+        
          request.setAttribute("lesson", l);
                 request.getRequestDispatcher("lessonEdit.jsp").forward(request, response);
         
+        }
+        else{
+             request.getRequestDispatcher("lessonEdit.jsp").forward(request, response);
+        }
         }
         catch (Exception e){
             System.out.println(e.getMessage());
@@ -48,20 +56,25 @@ public class lessonEdit extends HttpServlet {
     throws ServletException, IOException {
         try{
         String idParam = request.getParameter("LessonID");
-        String name = request.getParameter("LessonName");
-        String url = request.getParameter("LessonURL");
+        String name = request.getParameter("lessonName");
+        String url = request.getParameter("lessonUrl");
+        String des = request.getParameter("description");
+        int num = Integer.parseInt(request.getParameter("LessonNumber"));
         LessonDAO l = new LessonDAO();
         if(idParam !=null){
             int id = Integer.parseInt(idParam);
-            l.updateLesson(id, name, url);
+            l.updateLesson(id, name, url,des,1);
+             response.sendRedirect("courseList");    
         }
         else{
-            l.addLesson(name, url);
+            int moocID = Integer.parseInt(request.getParameter("MoocID"));
+            l.addLesson(name, url,moocID,des,1);
+           response.sendRedirect("courseList");    
         }
          }
         catch (Exception e){
             System.out.println(e.getMessage());
-            response.sendRedirect("lessonEdit.jsp");        
+            response.sendRedirect("lessonEdit");        
         }
     }
     

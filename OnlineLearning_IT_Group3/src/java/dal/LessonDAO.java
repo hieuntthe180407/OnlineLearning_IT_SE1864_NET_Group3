@@ -26,6 +26,7 @@ public class LessonDAO extends DBContext {
                 u.setMoocID(rs.getInt("MoocID"));
                 u.setLessonName(rs.getString("LessonName"));
                 u.setDescription(rs.getString("Description"));
+                u.setLessonNumber(rs.getInt("LessonNumber"));
                 u.setLessonURL(rs.getString("LessonURL"));
                 return u;
             }
@@ -52,6 +53,7 @@ public class LessonDAO extends DBContext {
                 u.setLessonName(rs.getString("LessonName"));
                  u.setMoocID(rs.getInt("MoocID"));
                 u.setDescription(rs.getString("Description"));
+                u.setLessonNumber(rs.getInt("LessonNumber"));
                 u.setLessonURL(rs.getString("LessonURL"));
                
                 
@@ -65,13 +67,15 @@ public class LessonDAO extends DBContext {
 
         return list;
     }
-     public boolean updateLesson(int id, String name,String url){
+     public boolean updateLesson(int id, String name,String url,String des,int num){
         try {
-            String sql = "update Lessons set LessonName = ?, LessonURL = ?, where id = ?";
+            String sql = "update Lessons set LessonName = ?, LessonURL = ?,Description=?, LessonNumber=? where LessonID = ?";
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, name);
             st.setString(2, url);
-            st.setInt(3, id);            
+             st.setString(3, des);
+            st.setInt(4, num); 
+            st.setInt(5, id);  
             st.executeUpdate();
             st.close();
             return true;
@@ -81,13 +85,16 @@ public class LessonDAO extends DBContext {
             return false;
         }
     }
-      public boolean addLesson(String name,String url){
+      public boolean addLesson(String name,String url, int MoocID,String des, int num){
         try {
-            String sql = "Insert into Lessons(LessonName,LessonURL) values(?,?)";
+            String sql = "Insert into Lessons(LessonName,LessonURL,MoocID,Description,LessonNumber) values(?,?,?,?,?)";
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, name);
             st.setString(2, url);
-                       
+            
+               st.setInt(3,MoocID); 
+               st.setString(4, des);
+               st.setInt(5,num); 
             st.executeUpdate();
             st.close();
             return true;
