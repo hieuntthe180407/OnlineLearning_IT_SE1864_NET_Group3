@@ -394,7 +394,7 @@ CREATE TABLE [dbo].[User](
 	[Gender] [varchar](10) NULL,
 	[RoleID] [int] NULL,
 	
-	[TimeBan] [datetime] NULL,
+	
 	[Avatar] [varchar](255) NULL,
 	[Status] [varchar](255) NULL,
 PRIMARY KEY CLUSTERED 
