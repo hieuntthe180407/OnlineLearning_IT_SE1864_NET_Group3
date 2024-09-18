@@ -49,8 +49,8 @@
                             </div>
                             <div class="col-lg-8">
                                 <select name="gender" id="gender" class="form-select js-choice z-index-9 rounded-3 border-0 bg-light">
-                                    <option value="male" ${profile.gender == 'male' ? 'selected' : ''}>Male</option>
-                                    <option value="female" ${profile.gender == 'female' ? 'selected' : ''}>Female</option>
+                                    <option value="male" ${profile.gender == 'Male'? 'selected' : ''}>Male</option>
+                                    <option value="female" ${profile.gender == 'Female'? 'selected' : ''}>Female</option>
                                 </select>
                             </div>
                         </div>
@@ -101,7 +101,13 @@
                                 <h6 class="mb-lg-0">Avatar</span></h6>
                             </div>
                             <div class="col-lg-8">
-                                <input type="file" class="form-control" name="avatar" value="${profile.avatar}" accept=".jpg, .jpeg, .png">
+                                <!-- Display existing avatar if available -->
+                                <div class="mb-2">
+                                    <c:if test="${profile.avatar != null}">
+                                        <img src="${profile.avatar}" alt="Current Avatar" class="img-thumbnail" style="max-width: 150px;">
+                                    </c:if>
+                                </div>
+                                <input type="file" class="form-control" name="avatar" accept=".jpg, .jpeg, .png">
                             </div>
                         </div>
                     </div>
