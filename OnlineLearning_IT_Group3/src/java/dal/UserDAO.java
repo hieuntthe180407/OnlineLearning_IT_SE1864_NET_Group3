@@ -194,7 +194,6 @@ public class UserDAO extends DBContext {
 
     }
 
-
     public User getUserByEmail(String email) {
         User u = null;
 
@@ -203,7 +202,7 @@ public class UserDAO extends DBContext {
 
         try {
 
-            String sql ="SELECT * FROM [User] WHERE Email= ? AND isVerify = 0";
+            String sql = "SELECT * FROM [User] WHERE Email= ? AND isVerify = 0";
 
             st = connection.prepareStatement(sql);
             st.setString(1, email);
@@ -282,18 +281,19 @@ public class UserDAO extends DBContext {
             System.out.println(e);
         }
     }
-    public boolean checkMailRegister(String email){
+
+    public boolean checkMailRegister(String email) {
         boolean check = false;
         try {
-            final String sql ="SELECT * FROM [User] WHERE Email=?";
-            
+            final String sql = "SELECT * FROM [User] WHERE Email=?";
+
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, email);
-            
+
             final ResultSet rs = st.executeQuery();
-            
-            while (rs.next()) {                
-                check =true;
+
+            while (rs.next()) {
+                check = true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -306,6 +306,7 @@ public class UserDAO extends DBContext {
         }
         return check;
     }
+
     public int updatePasswordByEmail(String email, String password) {
         int check = 0;
 
@@ -330,12 +331,9 @@ public class UserDAO extends DBContext {
         return check;
     }
 
-
-    
     public int getTotalUserCount() {
         String sql = "SELECT COUNT(*) FROM [dbo].[User]";
-        try (PreparedStatement st = connection.prepareStatement(sql);
-             ResultSet rs = st.executeQuery()) {
+        try (PreparedStatement st = connection.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
             if (rs.next()) {
                 return rs.getInt(1);
             }
@@ -344,19 +342,19 @@ public class UserDAO extends DBContext {
         }
         return 0; // Return 0 in case of any error
     }
-    
-     public List<User> getUsers(int offset, int limit) {
+
+    public List<User> getUsers(int offset, int limit) {
         List<User> list = new ArrayList<>();
-        
+
         try {
             String query = "SELECT * from [dbo].[User] u, Role r WHERE r.RoleID = u.RoleID  ORDER BY UserID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
-            
+
             PreparedStatement st = connection.prepareStatement(query);
             st.setInt(1, offset);
             st.setInt(2, limit);
             ResultSet rs = st.executeQuery();
-                while (rs.next()) {
-                      User u = new User();
+            while (rs.next()) {
+                User u = new User();
                 u.setUserID(rs.getInt("userID"));
                 u.setFullName(rs.getString("fullName"));
                 u.setEmail(rs.getString("Email"));
@@ -370,13 +368,42 @@ public class UserDAO extends DBContext {
                 u.setRole(role);
 
                 list.add(u);
-                }
+            }
             rs.close();
             st.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public void insertNewUserStudent(User user) {
+        PreparedStatement st = null;
+
+        try {
+            // SQL query for inserting a new user
+            String sql = "INSERT INTO [User] (FullName, Email, Password, Phone, Address, Gender, DateOfBirth, Avatar, RoleID, isVerify) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 2, 1)";
+
+            // Preparing the statement
+            st = connection.prepareStatement(sql);
+
+            // Setting parameters for the query
+            st.setString(1, user.getFullName());
+            st.setString(2, user.getEmail());
+            st.setString(3, user.getPassword());
+            st.setString(4, user.getPhone());
+            st.setString(5, user.getAddress());
+            st.setString(6, user.getGender());
+            st.setString(7, user.getDateOfBirth());
+            st.setString(8, user.getAvatar());
+
+            // Executing the update
+            st.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

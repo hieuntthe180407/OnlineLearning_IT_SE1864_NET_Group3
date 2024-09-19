@@ -11,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.User;
 
 /**
@@ -80,21 +81,27 @@ public class RegisterServlet extends HttpServlet {
         String dateOfBirth = request.getParameter("dateOfBirth");
         String password = request.getParameter("password");
 
+        // Check if phone number is exactly 10 digits
         if (phone.length() != 10) {
             request.setAttribute("errorMessageSignUp", "Phone number must be exactly 10 digits.");
             request.getRequestDispatcher("register.jsp").forward(request, response);
             return;
         }
 
-        request.setAttribute("tempInfoUser", new User(email, fullName, address, phone, gender, dateOfBirth, password));
+        // Create a User object
+        User tempUser = new User(email, fullName, address, phone, gender, dateOfBirth, password);
+
+        // Save User object in the session to persist across requests
+        HttpSession session = request.getSession();
+        session.setAttribute("tempInfoUser", tempUser);
+
+        // Redirect to verifyServlet to handle email verification
         response.sendRedirect("verifyServlet");
-        
-        
 
     }
 
-
-
+    
+    
     /**
      * Returns a short description of the servlet.
      *
