@@ -67,8 +67,9 @@
                                 
                                 <div class="accordion-item">
                                   <h2 class="accordion-header">
+                                     
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                        <%= m.getMoocName()%>
+                                        <%= m.getMoocName()%>  <a href="lessonEdit.jsp?MoocID=<%= m.getMoocID()%>"><input type="button" value="Add"/></a>
                                     
                                     </button>
                                   </h2>
@@ -80,8 +81,12 @@
                                           <% for(Lesson l : listl) {
                                             if(l.getMoocID()== m.getMoocID()){
                                         %>
-                                        <li><i class="fa fa-video text-danger"></i><%=l.getLessonURL()%></li>
-                                        
+                                        <li><i class="fa fa-video text-danger"></i>
+                                            
+                                            <%= l.getLessonName() %>
+                                            <a href="lessonEdit?LessonID=<%= l.getLessonID() %>">
+                                            <button type="button">Update</button>
+</a>
                                         <%}}%>
                                     </ul></div>
                                   

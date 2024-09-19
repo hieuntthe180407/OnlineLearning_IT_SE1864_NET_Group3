@@ -52,7 +52,7 @@ public class UserDAO extends DBContext {
 
         String sql = "Select u.[UserID], u.[FullName], u.[DateOfBirth], u.[Email], u.[Password], u.[Phone], u.[Address],u.[Gender], r.[RoleName]\n"
                 + "from [dbo].[User] u, [dbo].[Role] r\n"
-                + "where r.RoleID = u.RoleID;";
+                + "where r.RoleID = u.RoleID ;";
 
         try {
 
@@ -192,6 +192,7 @@ public class UserDAO extends DBContext {
 
     }
 
+
     public User getUserByEmail(String email) {
         User u = null;
 
@@ -278,6 +279,55 @@ public class UserDAO extends DBContext {
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+
+
+    
+    public int getTotalUserCount() {
+        String sql = "SELECT COUNT(*) FROM [dbo].[User]";
+        try (PreparedStatement st = connection.prepareStatement(sql);
+             ResultSet rs = st.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0; // Return 0 in case of any error
+    }
+    
+     public List<User> getUsers(int offset, int limit) {
+        List<User> list = new ArrayList<>();
+        
+        try {
+            String query = "SELECT * from [dbo].[User] u, Role r WHERE r.RoleID = u.RoleID  ORDER BY UserID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
+            
+            PreparedStatement st = connection.prepareStatement(query);
+            st.setInt(1, offset);
+            st.setInt(2, limit);
+            ResultSet rs = st.executeQuery();
+                while (rs.next()) {
+                      User u = new User();
+                u.setUserID(rs.getInt("userID"));
+                u.setFullName(rs.getString("fullName"));
+                u.setEmail(rs.getString("Email"));
+                u.setPassword(rs.getString("Password"));
+                u.setGender(rs.getString("Gender"));
+                u.setPhone(rs.getString("Phone"));
+                u.setAddress(rs.getString("Address"));
+
+                Role role = new Role();
+                role.setRoleName(rs.getString("RoleName"));
+                u.setRole(role);
+
+                list.add(u);
+                }
+            rs.close();
+            st.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 
 }

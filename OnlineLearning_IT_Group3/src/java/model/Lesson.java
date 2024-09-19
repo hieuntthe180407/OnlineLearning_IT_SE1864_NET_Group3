@@ -11,6 +11,7 @@ package model;
 public class Lesson {
     private int LessonID;
     private int MoocID;
+    private int LessonNumber;
     private String LessonURL;
      private String LessonName;
       private String Description;
@@ -18,13 +19,24 @@ public class Lesson {
     public Lesson() {
     }
 
-    public Lesson(int LessonID, int MoocID, String LessonURL, String LessonName, String Description) {
+    public Lesson(int LessonID, int MoocID, int LessonNumber, String LessonURL, String LessonName, String Description) {
         this.LessonID = LessonID;
         this.MoocID = MoocID;
+        this.LessonNumber = LessonNumber;
         this.LessonURL = LessonURL;
         this.LessonName = LessonName;
         this.Description = Description;
     }
+
+    public int getLessonNumber() {
+        return LessonNumber;
+    }
+
+    public void setLessonNumber(int LessonNumber) {
+        this.LessonNumber = LessonNumber;
+    }
+
+   
 
     public int getLessonID() {
         return LessonID;

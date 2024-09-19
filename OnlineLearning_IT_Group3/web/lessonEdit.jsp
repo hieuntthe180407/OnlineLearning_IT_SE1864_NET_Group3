@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="model.Lesson" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -47,31 +48,46 @@
         <%@include file= "header.jsp" %>
         <!--Main container start -->
 	<main class="ttr-wrapper">
+             <%
+                Lesson l = (Lesson)request.getAttribute("lesson");
+                if (l!=null){
+                 
+    int LessonID = Integer.parseInt(request.getParameter("LessonID"));
+   
+            %>
 		<div class="container-fluid">
-			
+                    
 			<div class="row">
 				<!-- Your Profile Views Chart -->
+                                
 				<div class="col-lg-12 m-b30">
 					<div class="widget-box">
 						
 						<div class="widget-inner">
-							<form class="edit-profile m-b30">
+                                                    <form class="edit-profile m-b30 " action="lessonEdit" method="post">
 								<div class="row">
 									<div class="col-12">
 										<div class="ml-auto">
 											<h3>1. Basic info</h3>
 										</div>
 									</div>
+                                                                    <input type="hidden" name="LessonID" value="<%= LessonID %>">
 									<div class="form-group col-6">
 										<label class="col-form-label">Lesson Name</label>
 										<div>
-											<input class="form-control" type="text" value="">
+											<input class="form-control" type="text" name="lessonName" value="<%=l.getLessonName()%>">
 										</div>
 									</div>
 									<div class="form-group col-6">
 										<label class="col-form-label">Lesson URL</label>
 										<div>
-											<input class="form-control" type="text" value="">
+											<input class="form-control" type="text" name="lessonUrl" value="<%=l.getLessonURL() %>">
+										</div>
+									</div>
+                                                                                <div class="form-group col-6">
+										<label class="col-form-label">Lesson Number</label>
+										<div>
+											<input class="form-control" type="number" name="LessonNumber" value="<%=l.getLessonNumber()%>">
 										</div>
 									</div>
 									
@@ -85,60 +101,96 @@
 									<div class="form-group col-12">
 										<label class="col-form-label">Lesson description</label>
 										<div>
-											<textarea class="form-control"> </textarea>
+											<input class="form-control" type="text" name="description" value="<%=l.getDescription() %>">
 										</div>
 									</div>
-									<div class="col-12 m-t20">
-										<div class="ml-auto">
-											<h3 class="m-form__section">3. Add Item</h3>
-										</div>
-									</div>
+									
 									<div class="col-12">
-										<table id="item-add" style="width:100%;">
-											<tr class="list-item">
-												<td>
-													<div class="row">
-														<div class="col-md-4">
-															<label class="col-form-label">Course Name</label>
-															<div>
-																<input class="form-control" type="text" value="">
-															</div>
-														</div>
-														<div class="col-md-3">
-															<label class="col-form-label">Course Category</label>
-															<div>
-																<input class="form-control" type="text" value="">
-															</div>
-														</div>
-														<div class="col-md-3">
-															<label class="col-form-label">Course Category</label>
-															<div>
-																<input class="form-control" type="text" value="">
-															</div>
-														</div>
-														<div class="col-md-2">
-															<label class="col-form-label">Close</label>
-															<div class="form-group">
-																<a class="delete" href="#"><i class="fa fa-close"></i></a>
-															</div>
-														</div>
-													</div>
-												</td>
-											</tr>
-										</table>
-									</div>
-									<div class="col-12">
-										<button type="button" class="btn-secondry add-item m-r5"><i class="fa fa-fw fa-plus-circle"></i>Add Item</button>
-										<button type="reset" class="btn">Save changes</button>
+										
+                                                                                <button type="submit" class="btn">Confirm</button>
 									</div>
 								</div>
 							</form>
 						</div>
 					</div>
 				</div>
-				<!-- Your Profile Views Chart END-->
-			</div>
+				
+			
+                        </div>
+                
 		</div>
+            <%} else{%>
+            <%
+    int MoocID = Integer.parseInt(request.getParameter("MoocID"));
+   
+%>
+                    <div class="container-fluid">
+                    
+			<div class="row">
+				<!-- Your Profile Views Chart -->
+                                
+				<div class="col-lg-12 m-b30">
+					<div class="widget-box">
+						
+						<div class="widget-inner">
+                                                    <form class="edit-profile m-b30 " action="lessonEdit" method="post">
+								<div class="row">
+									<div class="col-12">
+										<div class="ml-auto">
+											<h3>1. Basic info</h3>
+										</div>
+									</div>
+                                                                   <input type="hidden" name="MoocID" value="<%=MoocID%>">
+									<div class="form-group col-6">
+										<label class="col-form-label">Lesson Name</label>
+										<div>
+											<input class="form-control" type="text" name="lessonName" >
+										</div>
+									</div>
+									<div class="form-group col-6">
+										<label class="col-form-label">Lesson URL</label>
+										<div>
+											<input class="form-control" type="text" name="lessonUrl" >
+										</div>
+									</div>
+                                                                        <div class="form-group col-6">
+										<label class="col-form-label">Lesson Number</label>
+										<div>
+											<input class="form-control" type="number" name="LessonNumber">
+										</div>
+									</div>
+									
+									<div class="seperator"></div>
+									
+									<div class="col-12 m-t20">
+										<div class="ml-auto m-b5">
+											<h3>2. Description</h3>
+										</div>
+									</div>
+									<div class="form-group col-12">
+										<label class="col-form-label">Lesson description</label>
+										<div>
+											<input class="form-control" type="text" name="description" >
+										</div>
+									</div>
+									
+									<div class="col-12">
+										
+                                                                                <button type="submit" class="btn">Confirm</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				
+			
+                        </div>
+                
+		</div>
+            
+            
+            <%}%>
 	</main>
         <%@include file="footer.jsp" %>       
             
