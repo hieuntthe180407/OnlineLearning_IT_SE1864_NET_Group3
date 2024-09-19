@@ -5,6 +5,7 @@
 
 package controller;
 
+import dal.BlogDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -43,6 +44,13 @@ public class BlogListController extends HttpServlet {
             out.println("</html>");
         }
     } 
+    private static final int PAGE_SIZE=5;
+    private BlogDAO blogDAO;
+    
+    @Override
+    public void init() throws ServletException {
+        blogDAO = new BlogDAO();
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
