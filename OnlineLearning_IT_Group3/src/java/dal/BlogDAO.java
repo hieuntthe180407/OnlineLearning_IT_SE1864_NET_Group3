@@ -121,5 +121,33 @@ public class BlogDAO extends DBContext{
         }
         return blogs;
     }
+     public List<Blog> searchBlogs(String keyword, int page, int pageSize){
+        List<Blog> blogs = new ArrayList<>();
+        String query = "SELECT * FROM Blogs WHERE Title LIKE ? OR Content LIKE ? ORDER BY UpdatedAt DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setString(1, "%" + keyword + "%");
+            pstmt.setString(2, "%" + keyword + "%");
+            pstmt.setInt(3, (page - 1) * pageSize);
+            pstmt.setInt(4, pageSize);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Blog blog = new Blog();
+                    blog.setBlogId(rs.getInt("BlogId"));
+                    blog.setUserId(rs.getInt("UserId"));
+                    blog.setTitle(rs.getString("Title"));
+                    blog.setContent(rs.getString("Content"));
+                    blog.setStatus(rs.getString("Status"));
+                    blog.setFeaturedImage(rs.getString("FeaturedImage"));
+                    blog.setCreatedAt(rs.getTimestamp("CreatedAt"));
+                    blog.setUpdatedAt(rs.getTimestamp("UpdatedAt"));
+                    blogs.add(blog);
+                }
+            }
+        }catch(Exception e) {
+            System.out.println("Error: " + e);
+        }
+        return blogs;
+    }
     
 }
