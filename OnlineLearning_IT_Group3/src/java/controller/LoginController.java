@@ -15,6 +15,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.User;
+import util.PasswordEncryption;
 
 /**
  *
@@ -112,7 +116,7 @@ public class LoginController extends HttpServlet {
     throws ServletException, IOException {
         //processRequest(request, response);
         
-        String url = request.getScheme() +"://" +request.getServerName() + ":" +request.getServletPath();
+        String url = request.getScheme() +"://" +request.getServerName() + ":" +request.getServerPort() + request.getContextPath();
         HttpSession session = request.getSession();
         session.setMaxInactiveInterval(600);
         
@@ -126,7 +130,67 @@ public class LoginController extends HttpServlet {
         }
         
         UserDAO ud = new UserDAO();
+        User u = ud.getUserByEmail(email);
         
+        Cookie cuser = new Cookie("email", email);
+        Cookie puser = new Cookie("pass", password);
+        Cookie ruser = new Cookie("checked", c);
+        ruser.setMaxAge(60 * 60 * 24 * 7);//
+        response.addCookie(ruser);
+        if (u == null) {
+            url += "/login";
+            String failed = "Account is not registered!!! ";
+            request.setAttribute("failed", failed);
+            request.setAttribute("email", email);
+            cuser.setMaxAge(0);
+            puser.setMaxAge(0);
+         
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        } else {
+            if (!PasswordEncryption.verify(password, u.getPassword())) {
+                url += "/login";
+                String failed = "Password incorrect!";
+                request.setAttribute("failed", failed);
+                request.setAttribute("email", email);
+
+                cuser.setMaxAge(0);
+                puser.setMaxAge(0);
+                request.setAttribute("failed", failed);
+
+                
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            } else {
+                session.setAttribute("acc", u);
+                if (!c.equals("notchecked")) {
+                    cuser.setMaxAge(60 * 60 * 24 * 7);
+                    puser.setMaxAge(60 * 60 * 24 * 7);
+                    response.addCookie(cuser);
+                    response.addCookie(puser);
+                } else {
+                    cuser.setMaxAge(0);
+                    puser.setMaxAge(0);
+                }
+                if (u.getRole().getRoleId() == 1) {
+                    session.setAttribute("acc", u);
+                    url += "/home.jsp";
+                } else if (u.getRole().getRoleId() == 2) {
+                    session.setAttribute("teacher", u);
+                    url += "/home.jsp";
+                } else if (u.getRole().getRoleId() == 3) {
+                    session.setAttribute("admin", u);
+                    url += "/Admin.jsp";
+                } else {
+                    try {
+                        throw new Exception();
+                    } catch (Exception ex) {
+                        Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+                response.sendRedirect(url);
+            }
+
+        }
         
     }
 

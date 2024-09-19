@@ -19,7 +19,7 @@ public class RoleDAO extends DBContext{
             String sql ="SELECT * FROM Role WHERE RoleID=?";
             
             PreparedStatement st = connection.prepareStatement(sql);
-            
+            st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             
             

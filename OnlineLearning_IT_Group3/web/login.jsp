@@ -110,12 +110,15 @@
           
             <div class="row g-4 wow fadeInUp" data-wow-delay="0.5s ">
                 <center>
-                    <form class="shadow p-4" style="max-width: 550px;">
+                    <form action="login" method="post" class="shadow p-4" style="max-width: 550px;">
                         <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
                             <h1 class="mb-5 bg-white text-center px-3">Login</h1>
             
                         </div>
                         <div class="row g-3">
+                            <div class="col-12" style="color: red" >
+                                ${failed}
+                            </div>
                             <div class="col-12">
                                 <div class="form-floating">
                                     <input type="email"   name="username" class="form-control" id="email" placeholder="Email Address">
