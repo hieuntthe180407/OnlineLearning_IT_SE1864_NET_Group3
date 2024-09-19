@@ -393,7 +393,7 @@ CREATE TABLE [dbo].[User](
 	[Address] [varchar](255) NULL,
 	[Gender] [varchar](10) NULL,
 	[RoleID] [int] NULL,
-	
+	[Reason] [text] NULL,
 	
 	[Avatar] [varchar](255) NULL,
 	[Status] [varchar](255) NULL,
