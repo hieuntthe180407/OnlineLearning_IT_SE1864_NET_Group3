@@ -65,8 +65,9 @@
                                 <div class="row g-2 g-sm-4">
                                     <div class="col-12">
                                         <input type="date" class="form-control" 
-                                               value="<fmt:formatDate value='${profile.dateOfBirth}' pattern='yyyy-MM-dd' />" 
+                                               value="${profile.dateOfBirth}" 
                                                name="dateOfBirth" required>
+
                                     </div>
                                 </div>
                             </div>
@@ -99,7 +100,7 @@
                     <div class="col-12">
                         <div class="row g-xl-0 align-items-center">
                             <div class="col-lg-4">
-                                <h6 class="mb-lg-0">Avatar</span></h6>
+                                <h6 class="mb-lg-0">Avatar(.jpg only)</h6>
                             </div>
                             <div class="col-lg-8">
                                 <!-- Display existing avatar if available -->
@@ -108,7 +109,7 @@
                                         <img src="${profile.avatar}" alt="Current Avatar" class="img-thumbnail" style="max-width: 150px;">
                                     </c:if>
                                 </div>
-                                <input type="file" class="form-control"  name="avatar" accept=".jpg, .jpeg, .png">
+                                <input type="file" class="form-control"  name="avatar" accept=".jpg">
                                 <!-- Store old avatar URL -->
                                 <input type="hidden" name="oldAvatar" value="${profile.avatar}">
                             </div>
