@@ -21,6 +21,8 @@ import model.User;
  * @author trong
  */
 public class UserDAO extends DBContext {
+
+    private Object ex;
 //    public Map<Integer, User> getAllUser(){
 //        Map<Integer, User> list = new HashMap<>();
 //        try {
@@ -279,6 +281,53 @@ public class UserDAO extends DBContext {
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+    public boolean checkMailRegister(String email){
+        boolean check = false;
+        try {
+            final String sql ="SELECT * FROM [User] WHERE Email=?";
+            
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, email);
+            
+            final ResultSet rs = st.executeQuery();
+            
+            while (rs.next()) {                
+                check =true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return check;
+    }
+    public int updatePasswordByEmail(String email, String password) {
+        int check = 0;
+
+        try {
+            final String sql = "UPDATE [User]\n"
+                    + "SET  Password=? \n"
+                    + "WHERE Email=?;";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, password);
+            st.setString(2, email);
+            check = st.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return check;
     }
 
 

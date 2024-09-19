@@ -101,6 +101,7 @@ public class LoginController extends HttpServlet {
         request.setAttribute("msg1", msg1);
         session.removeAttribute("msg1");
         
+        request.getSession().removeAttribute("mess");
         request.getRequestDispatcher("login.jsp").forward(request, response);
     } 
 
@@ -114,7 +115,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        ;
+        
         
         String url = request.getScheme() +"://" +request.getServerName() + ":" +request.getServerPort() + request.getContextPath();
         HttpSession session = request.getSession();

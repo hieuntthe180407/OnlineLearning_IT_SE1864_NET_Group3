@@ -1,46 +1,53 @@
 <%-- 
-    Document   : login
-    Created on : 13 thg 9, 2024, 13:43:25
+    Document   : forgotPassword
+    Created on : Sep 19, 2024, 6:58:28 PM
     Author     : DTC
 --%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <title>Secret Coder : Login</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+        <meta charset="utf-8">
+        <title>Secret Coder : Forgot Password</title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="" name="keywords">
+        <meta content="" name="description">
 
-    <!-- Favicon -->
-    <link href="img/icon.png" rel="icon">
+        <!<!-- pop up -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.all.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.min.css" rel="stylesheet">
+        <!-- Favicon -->
+        <link href="img/icon.png" rel="icon">
 
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap"
-        rel="stylesheet">
+        <!-- Google Web Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap"
+            rel="stylesheet">
 
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+        <!-- Icon Font Stylesheet -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- Libraries Stylesheet -->
-    <link href="lib/animate/animate.min.css" rel="stylesheet">
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+        <!-- Libraries Stylesheet -->
+        <link href="../lib/animate/animate.min.css" rel="stylesheet">
+        <link href="../lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
 
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+        <!-- Customized Bootstrap Stylesheet -->
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Template Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
+        <!-- Template Stylesheet -->
+        <link href="../css/style.css" rel="stylesheet">
 
 
-</head>
+    </head>
 
 <body>
     <!-- Spinner Start -->
@@ -62,11 +69,11 @@
             <div class="container py-5">
                 <div class="row justify-content-center">
                     <div class="col-lg-10 text-center">
-                        <h1 class="display-3 text-white animated slideInDown">Login</h1>
+                        <h1 class="display-3 text-white animated slideInDown">Forgot Password</h1>
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb justify-content-center">
                                 <li class="breadcrumb-item"><a class="text-white" href="index.html">Home</a></li>
-                                <li class="breadcrumb-item text-white active" aria-current="page">Login</li>
+                                <li class="breadcrumb-item text-white active" aria-current="page">Forgot Password</li>
                             </ol>
                         </nav>
                     </div>
@@ -83,41 +90,32 @@
           
             <div class="row g-4 wow fadeInUp" data-wow-delay="0.5s ">
                 <center>
-                    <form action="login" method="post" class="shadow p-4" style="max-width: 550px;">
-                        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                            <h1 class="mb-5 bg-white text-center px-3">Login</h1>
-            
-                        </div>
-                        <div class="row g-3">
-                            <div class="col-12" style="color: red" >
-                                ${failed}
-                            </div>
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <input type="email"   name="username" class="form-control" id="email" placeholder="Email Address">
-                                    <label for="email">Email Address</label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <input type="password" name="password" class="form-control" id="password" placeholder="Password">
-                                    <label for="password">Password</label>
-                                </div>
-                            </div>
+                     <form action="${pageContext.request.contextPath}/forgot" method="post" class="shadow p-4" style="max-width: 550px;">
+                            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                                <h1 class="mb-5 bg-white text-center px-3">Forgot Password</h1>
 
-                            <div class="col-12">
-                                <p><a href="forgotPassword.jsp">Forgot password?</a></p>
-                            </div>
-                            
-                            <div class="col-12">
-                                <button class="btn text-light w-100 py-3" type="submit">Login</button>
-                            </div>
+                            </div
 
-                            <div class="col-12 text-center">
-                                <p>Don't have an account? <a class="text-decoration-none" href="signup.html">Signup</a></p>
+
+                            <div class="row g-3">
+
+                               
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <input type="email" name="email" class="form-control" id="email" placeholder="Email Address">
+                                        <label for="email">Email Address</label>
+                                    </div>
+                                </div>
+
+
+                              
+                                <div class="col-12">
+                                    <button class="btn text-light w-100 py-3" type="submit">Send</button>
+                                </div>
+
+
                             </div>
-                        </div>
-                    </form>
+                        </form>
                 </center>     
                
 
@@ -125,7 +123,20 @@
         </div>
     </div>
     <!-- Login End -->
-
+    <c:if test="${not empty mess}">
+    <script>
+        Swal.fire({
+            title: 'Notification',
+            text: '${fn:escapeXml(mess)}',
+            icon: 'info',
+            confirmButtonText: 'OK'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '${pageContext.request.contextPath}/login'; 
+            }
+        });
+    </script>
+</c:if>
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
@@ -198,3 +209,4 @@
 </body>
 
 </html>
+
