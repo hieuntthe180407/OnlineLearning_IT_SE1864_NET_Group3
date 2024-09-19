@@ -45,6 +45,7 @@
     </head>
     <body>
         <%@include file="header.jsp" %>
+        
         <!-- Header Start -->
     <div class="container-fluid bg-primary py-5 mb-5 page-header">
         <div class="container py-5">
@@ -183,7 +184,7 @@
 </style>
 
 <%
-    List<User> list = (List<User>) request.getAttribute("list");
+    List<User> list = (List<User>) request.getAttribute("users");
     if (list == null || list.size() == 0) {
         out.println("<div class='empty-list'>Empty list of Users</div>");
     } else {
@@ -227,6 +228,8 @@
             <th>Phone</th>
             <th>Address</th>
             <th>Gender</th>
+            <th>Role</th>
+            <th>More Detail</th>
         </tr>
         <%
             for (User u : list) {
@@ -239,6 +242,8 @@
             <td><%= u.getPhone() %></td>
             <td><%= u.getAddress() %></td>
             <td><%= u.getGender() %></td>
+            <td><%= u.getRole().getRoleName() %></td>
+            <td><a href="userDetail?userId=<%=u.getUserID()%>"><input type="button" value="View"/></a></td>
         </tr>
         <%
             }
@@ -248,7 +253,73 @@
     }
 %>
 
+    <!-- Pagination Controls -->
     
+   <% 
+    int currentPage = (Integer) request.getAttribute("currentPage");
+    int totalPages = (Integer) request.getAttribute("totalPages");
+%>
+
+<!-- Pagination Controls -->
+<div class="pagination">
+    <ul>
+        <%
+            if (currentPage > 1) {
+        %>
+        <li><a href="userList?page=<%= currentPage - 1 %>">&laquo; Previous</a></li>
+        <%
+            }
+
+            for (int i = 1; i <= totalPages; i++) {
+                if (i == currentPage) {
+        %>
+        <li><span><%= i %></span></li>
+        <%
+                } else {
+        %>
+        <li><a href="userList?page=<%= i %>"><%= i %></a></li>
+        <%
+                }
+            }
+
+            if (currentPage < totalPages) {
+        %>
+        <li><a href="userList?page=<%= currentPage + 1 %>">Next &raquo;</a></li>
+        <%
+            }
+        %>
+    </ul>
+</div>
+
+<!-- Pagination Styles -->
+<style>
+.pagination ul {
+    list-style-type: none;
+    padding: 0;
+}
+.pagination ul li {
+    display: inline;
+    margin: 0 5px;
+}
+.pagination ul li a {
+    text-decoration: none;
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 5px;
+}
+.pagination ul li span {
+    padding: 8px 16px;
+    background-color: #ddd;
+    color: black;
+    border-radius: 5px;
+}
+.pagination ul li a:hover {
+    background-color: #45a049;
+}
+</style>
+
+
 
             
             

@@ -63,12 +63,12 @@ public class lessonEdit extends HttpServlet {
         LessonDAO l = new LessonDAO();
         if(idParam !=null){
             int id = Integer.parseInt(idParam);
-            l.updateLesson(id, name, url,des,1);
+            l.updateLesson(id, name, url,des,num);
              response.sendRedirect("courseList");    
         }
         else{
             int moocID = Integer.parseInt(request.getParameter("MoocID"));
-            l.addLesson(name, url,moocID,des,1);
+            l.addLesson(name, url,moocID,des,num);
            response.sendRedirect("courseList");    
         }
          }
