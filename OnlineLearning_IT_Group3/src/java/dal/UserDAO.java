@@ -191,21 +191,23 @@ public class UserDAO extends DBContext {
         return u;
 
     }
-    
-    public User getUserByEmail(String email){
+
+    public User getUserByEmail(String email) {
         User u = null;
-        
+
         PreparedStatement st = null;
-        ResultSet rs= null;
-        
+        ResultSet rs = null;
+
         try {
+
             String sql ="SELECT * FROM [User] WHERE Email= ? AND isVerify = 0";
+
             st = connection.prepareStatement(sql);
             st.setString(1, email);
-            
+
             rs = st.executeQuery();
-            
-            if(rs.next()){
+
+            if (rs.next()) {
                 int userId = rs.getInt("UserID");
                 String fullName = rs.getString("FullName");
                 Date dateOfBirth = rs.getDate("DateOfBirth");
@@ -217,14 +219,14 @@ public class UserDAO extends DBContext {
                 Date timeBan = rs.getDate("TimeBan");
                 String avatar = rs.getString("Avatar");
                 int roleId = rs.getInt("RoleID");
-                
+
                 Role role = new RoleDAO().selecById(roleId);
-                
+
                 u = new User(userId, fullName, avatar, email, password, phone, address, avatar, role, avatar);
             }
 
         } catch (Exception e) {
-         e.printStackTrace();
+            e.printStackTrace();
         } finally {
             // Đảm bảo tài nguyên được đóng đúng cách
             try {
@@ -243,6 +245,39 @@ public class UserDAO extends DBContext {
         }
         return u;
     }
+
+    public void updateUserProfile(User user) {
+        String sql = "UPDATE [dbo].[User] "
+                + "SET [FullName] = ?, [DateOfBirth] = ?, [Phone] = ?, [Address] = ?, [Gender] = ?, [Avatar] = ? "
+                + "WHERE [UserID] = ?;";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, user.getFullName());
+            st.setString(2, user.getDateOfBirth());
+            st.setString(3, user.getPhone());
+            st.setString(4, user.getAddress());
+            st.setString(5, user.getGender());
+            st.setString(6, user.getAvatar());
+            st.setInt(7, user.getUserID());
+            st.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public void updatePasswordById(int userId, String newPassword) {
+        String sql = "UPDATE [dbo].[User] SET [Password] = ? WHERE [UserID] = ?;";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, newPassword);  // Set the new password
+            st.setInt(2, userId);          // Set the user ID
+
+            st.executeUpdate();  // Execute the update
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
 }
-
-
