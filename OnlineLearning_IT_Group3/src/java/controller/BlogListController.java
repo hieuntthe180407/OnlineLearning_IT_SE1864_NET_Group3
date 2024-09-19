@@ -13,6 +13,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import model.Blog;
+import model.CategoryBlog;
 
 /**
  *
@@ -61,9 +64,37 @@ public class BlogListController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
     throws ServletException, IOException {
-        processRequest(request, response);
+        String searchKeyword = req.getParameter("search");
+        int page = 1;
+        try {
+            page = Integer.parseInt(req.getParameter("page"));
+        } catch (NumberFormatException e) {
+        }
+        List<Blog> blogs;
+        int totalBlogs;
+        
+        if (searchKeyword != null && !searchKeyword.trim().isEmpty()) {
+            blogs = blogDAO.searchBlogs(searchKeyword, page, PAGE_SIZE);
+            totalBlogs = blogDAO.getSearchBlogCount(searchKeyword);
+        } else {
+            blogs = blogDAO.getBlogs(page, PAGE_SIZE);
+            totalBlogs = blogDAO.getTotalBlogCount();
+        }
+
+        int totalPages = (int) Math.ceil((double) totalBlogs / PAGE_SIZE);
+        List<CategoryBlog> categories = blogDAO.getCategories();
+        List<Blog> latestBlogs = blogDAO.getLatestBlogs(5);
+
+        req.setAttribute("blogs", blogs);
+        req.setAttribute("totalPages", totalPages);
+        req.setAttribute("currentPage", page);
+        req.setAttribute("categories", categories);
+        req.setAttribute("latestBlogs", latestBlogs);
+        req.setAttribute("searchKeyword", searchKeyword); 
+
+        req.getRequestDispatcher("blogList.jsp").forward(req, resp);
     } 
 
     /** 
