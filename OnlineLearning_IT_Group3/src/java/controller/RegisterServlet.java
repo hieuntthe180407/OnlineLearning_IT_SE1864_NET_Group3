@@ -86,11 +86,6 @@ public class RegisterServlet extends HttpServlet {
             return;
         }
 
-        if (!isValidEmail(email)) {
-            request.setAttribute("errorMessageSignUp", "Email is not valid");
-            request.getRequestDispatcher("register.jsp").forward(request, response);
-            return;
-        }
         request.setAttribute("tempInfoUser", new User(email, fullName, address, phone, gender, dateOfBirth, password));
         response.sendRedirect("verifyServlet");
         
@@ -98,10 +93,7 @@ public class RegisterServlet extends HttpServlet {
 
     }
 
-    private boolean isValidEmail(String email) {
-        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-        return email.matches(emailRegex);
-    }
+
 
     /**
      * Returns a short description of the servlet.
