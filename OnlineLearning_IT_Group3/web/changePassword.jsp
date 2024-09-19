@@ -14,6 +14,11 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <%
+                
+ String error = (String) request.getAttribute("errorChangePassWord");
+            
+        %>
         <%@include file= "header.jsp" %>
         <div class="container-xxl py-2 mt-4">
             <div class="container">
@@ -43,6 +48,8 @@
                                         <label for="password">Confirm Password</label>
                                     </div>
                                 </div>
+                                <h3 style="color: red"> <%=(error != null) ? error : ""%> </h3>
+
 
                                 <div class="col-12">
                                     <button class="btn text-light w-100 py-3" type="submit">Change Password</button>
