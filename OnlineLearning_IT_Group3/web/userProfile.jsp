@@ -33,7 +33,7 @@
                                 Edit profile
                             </a>
                             <br>
-                            <a href="#" class="btn btn-outline-dark text-body" style="z-index: 1;"
+                            <a href="changePassword" class="btn btn-outline-dark text-body" style="z-index: 1;"
                                data-mdb-ripple-init data-mdb-ripple-color="dark">
                                 Change password
                             </a>
