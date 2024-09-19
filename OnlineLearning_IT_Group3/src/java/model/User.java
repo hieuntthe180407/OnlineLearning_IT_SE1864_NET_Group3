@@ -134,4 +134,13 @@ public class User {
         return "User{" + "userID=" + userID + ", fullName=" + fullName + ", dateOfBirth=" + dateOfBirth + ", email=" + email + ", password=" + password + ", phone=" + phone + ", address=" + address + ", gender=" + gender + ", role=" + role + ", avatar=" + avatar + '}';
     }
 
+    public User(String email, String fullName, String address, String phone, String gender, String dateOfBirth, String password) {
+        this.email = email;
+        this.fullName = fullName;
+        this.address = address;
+        this.phone = phone;
+        this.gender = gender;
+        this.dateOfBirth = dateOfBirth;
+        this.password = password;
+    }
 }
