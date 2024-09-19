@@ -100,5 +100,26 @@ public class BlogDAO extends DBContext{
         }
         return categories;
     }
+    public List<Blog> getLatestBlogs(int count) {
+        List<Blog> blogs = new ArrayList<>();
+        String query = "SELECT TOP (?) * FROM Blogs ORDER BY UpdatedAt DESC";
+        try (
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            
+            stmt.setInt(1, count);
+            ResultSet rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                Blog blog = new Blog();
+                blog.setBlogId(rs.getInt("BlogId"));
+                blog.setTitle(rs.getString("Title"));
+                blog.setFeaturedImage(rs.getString("FeaturedImage"));
+                blogs.add(blog);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return blogs;
+    }
     
 }
