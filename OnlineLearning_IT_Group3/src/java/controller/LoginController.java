@@ -62,7 +62,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        //processRequest(request, response);
+        
         Cookie [] cookies = request.getCookies();
         
         String email ="";
@@ -114,7 +114,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        //processRequest(request, response);
+        ;
         
         String url = request.getScheme() +"://" +request.getServerName() + ":" +request.getServerPort() + request.getContextPath();
         HttpSession session = request.getSession();
