@@ -149,5 +149,21 @@ public class BlogDAO extends DBContext{
         }
         return blogs;
     }
+     public int getSearchBlogCount(String keyword) {
+        String query = "SELECT COUNT(*) FROM Blogs WHERE Title LIKE ? OR Content LIKE ?";
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setString(1, "%" + keyword + "%");
+            pstmt.setString(2, "%" + keyword + "%");
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        }catch(Exception e) {
+            System.out.println("Error: " + e);
+        }
+        return 0;
+    }
     
 }
