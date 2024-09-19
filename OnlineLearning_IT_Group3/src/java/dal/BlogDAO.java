@@ -7,6 +7,7 @@ package dal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import model.Blog;
@@ -65,6 +66,20 @@ public class BlogDAO extends DBContext{
             e.printStackTrace();
         }
         return blogs;
+    }
+    public int getTotalBlogCount() {
+        String query = "SELECT COUNT(*) FROM Blogs";
+        try (
+             Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
     
 }
