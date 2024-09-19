@@ -28,7 +28,7 @@
                                  alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
                                  style="width: 150px; z-index: 1">
 
-                            <a href="#" class="btn btn-outline-dark text-body" style="z-index: 1;"
+                            <a href="editProfile" class="btn btn-outline-dark text-body" style="z-index: 1;"
                                data-mdb-ripple-init data-mdb-ripple-color="dark">
                                 Edit profile
                             </a>
