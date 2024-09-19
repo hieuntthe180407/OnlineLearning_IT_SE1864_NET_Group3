@@ -243,6 +243,7 @@ public class UserDAO extends DBContext {
         }
         return u;
     }
+
     public void updateUserProfile(User user) {
         String sql = "UPDATE [dbo].[User] "
                 + "SET [FullName] = ?, [DateOfBirth] = ?, [Phone] = ?, [Address] = ?, [Gender] = ?, [Avatar] = ? "
@@ -257,6 +258,20 @@ public class UserDAO extends DBContext {
             st.setString(6, user.getAvatar());
             st.setInt(7, user.getUserID());
             st.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public void updatePasswordById(int userId, String newPassword) {
+        String sql = "UPDATE [dbo].[User] SET [Password] = ? WHERE [UserID] = ?;";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, newPassword);  // Set the new password
+            st.setInt(2, userId);          // Set the user ID
+
+            st.executeUpdate();  // Execute the update
 
         } catch (Exception e) {
             System.out.println(e);
