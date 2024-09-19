@@ -33,19 +33,6 @@ public class editProfile extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet editProfile</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet editProfile at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -86,6 +73,34 @@ public class editProfile extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("User");
+        UserDAO u = new UserDAO();
+        try {
+            String fullName = request.getParameter("fullName");
+            String gender = request.getParameter("gender");
+            String dateOfBirth = request.getParameter("dateOfBirth");
+            String phone = request.getParameter("phone");
+            String address = request.getParameter("address");
+            String avatar = request.getParameter("avatar");
+            String oldAvatar = request.getParameter("oldAvatar");
+
+            //check is there are any new avatar
+            if (avatar.isEmpty()) {
+                avatar = oldAvatar;
+            }
+
+            User pf = u.getUserProfilebyId(user.getUserID());
+            pf.setFullName(fullName);
+            pf.setGender(gender);
+            pf.setDateOfBirth(dateOfBirth);
+            pf.setPhone(phone);
+            pf.setAddress(address);
+            pf.setAvatar(avatar);
+            u.updateUserProfile(pf);
+            response.sendRedirect("userProfile");
+        } catch (Exception e) {
+            System.out.println(e);
+
+        }
     }
 
     /**

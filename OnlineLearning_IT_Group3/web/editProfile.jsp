@@ -37,7 +37,7 @@
                                 <h6 class="mb-lg-0">Student full name <span class="text-danger">*</span></h6>
                             </div>
                             <div class="col-lg-8">
-                                <input type="text" class="form-control" name="fullName" value="${profile.fullName}">
+                                <input type="text" class="form-control" name="fullName" value="${profile.fullName}" required>
                             </div>
                         </div>
                     </div>
@@ -48,9 +48,9 @@
                                 <h6 class="mb-lg-0">Gender </h6>
                             </div>
                             <div class="col-lg-8">
-                                <select name="gender" id="gender" class="form-select js-choice z-index-9 rounded-3 border-0 bg-light">
-                                    <option value="male" ${profile.gender == 'Male'? 'selected' : ''}>Male</option>
-                                    <option value="female" ${profile.gender == 'Female'? 'selected' : ''}>Female</option>
+                                <select  name="gender" id="gender" class="form-select js-choice z-index-9 rounded-3 border-0 bg-light">
+                                    <option value="Male" ${profile.gender == 'Male'? 'selected' : ''}>Male</option>
+                                    <option value="Female" ${profile.gender == 'Female'? 'selected' : ''}>Female</option>
                                 </select>
                             </div>
                         </div>
@@ -64,8 +64,9 @@
                             <div class="col-lg-8">
                                 <div class="row g-2 g-sm-4">
                                     <div class="col-12">
-                                        <input type="date" class="form-control" id="day"
-                                               value="${profile.dateOfBirth}" oninput="updateDays();" name="dateOFBirth" required>
+                                        <input type="date" class="form-control" 
+                                               value="<fmt:formatDate value='${profile.dateOfBirth}' pattern='yyyy-MM-dd' />" 
+                                               name="dateOfBirth" required>
                                     </div>
                                 </div>
                             </div>
@@ -78,7 +79,7 @@
                                 <h6 class="mb-lg-0">Phone number <span class="text-danger">*</span></h6>
                             </div>
                             <div class="col-lg-8">
-                                <input type="text" class="form-control" name="phone" value="${profile.phone}">
+                                <input type="number" class="form-control" name="phone" value="${profile.phone}">
                             </div>
                         </div>
                     </div>
@@ -89,7 +90,7 @@
                                 <h6 class="mb-lg-0">Your address <span class="text-danger">*</span></h6>
                             </div>
                             <div class="col-lg-8">
-                                <textarea name="address" class="form-control" rows="3" placeholder="${profile.address}"></textarea>
+                                <textarea name="address" class="form-control" rows="3"">${profile.address}</textarea>
                             </div>
                         </div>
                     </div>
@@ -107,7 +108,9 @@
                                         <img src="${profile.avatar}" alt="Current Avatar" class="img-thumbnail" style="max-width: 150px;">
                                     </c:if>
                                 </div>
-                                <input type="file" class="form-control" name="avatar" accept=".jpg, .jpeg, .png">
+                                <input type="file" class="form-control"  name="avatar" accept=".jpg, .jpeg, .png">
+                                <!-- Store old avatar URL -->
+                                <input type="hidden" name="oldAvatar" value="${profile.avatar}">
                             </div>
                         </div>
                     </div>
