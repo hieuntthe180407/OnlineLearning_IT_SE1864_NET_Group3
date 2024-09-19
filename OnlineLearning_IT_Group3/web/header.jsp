@@ -62,7 +62,7 @@
             </div>
                 </div>
                 <a href="#" class="nav-item nav-link">Contact</a>
-                <a href="#" class="nav-item nav-link"><i class="fa fa-user"></i></a>
+                <a href="/OnlineLearning_IT_Group3/login.jsp" class="nav-item nav-link"><i class="fa fa-user"></i></a>
                 <a href="#" class="nav-item nav-link">
 
                 <div id="google_translate_element">

@@ -199,7 +199,7 @@ public class UserDAO extends DBContext {
         ResultSet rs= null;
         
         try {
-            String sql ="SELECT * FROM [User] WHERE Email= ? AND isVerify = 1";
+            String sql ="SELECT * FROM [User] WHERE Email= ? AND isVerify = 0";
             st = connection.prepareStatement(sql);
             st.setString(1, email);
             
