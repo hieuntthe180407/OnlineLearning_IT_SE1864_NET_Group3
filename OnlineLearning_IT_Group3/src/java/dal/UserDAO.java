@@ -88,16 +88,17 @@ public class UserDAO extends DBContext {
     public static void main(String[] args) {
         UserDAO cDAO = new UserDAO();
         List<User> list = cDAO.getAllUser();
+        
         for (User u : list) {
             System.out.println(u);
         }
     }
 
-    public List<User> searchUser(String str) {
+    public List<User> searchUser(String str,int offset, int limit) {
         List<User> list = new ArrayList<>();
         try {
 
-            String sql = "SELECT * FROM [dbo].[User] WHERE FullName LIKE ? OR Phone LIKE ? OR Email LIKE ?";
+            String sql = "SELECT * FROM [dbo].[User] WHERE FullName LIKE ? OR Phone LIKE ? OR Email LIKE ? ORDER BY UserID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
             PreparedStatement st = connection.prepareStatement(sql);
 
             String searchTerm = "%" + str + "%";
@@ -105,7 +106,8 @@ public class UserDAO extends DBContext {
             st.setString(1, searchTerm);
             st.setString(2, searchTerm);
             st.setString(3, searchTerm);
-
+            st.setInt(4, offset);
+            st.setInt(5, limit);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 User u = new User();
@@ -129,16 +131,18 @@ public class UserDAO extends DBContext {
         return list;
     }
 
-    public List<User> filterUser(String gender, String role, String status) {
+    public List<User> filterUser(String gender, String role, String status, int offset, int limit ) {
         List<User> list = new ArrayList<>();
         try {
-            String sql = "SELECT u.*, r.roleName FROM [dbo].[User] AS u LEFT JOIN Role AS r ON u.roleID = r.roleID WHERE Gender LIKE ? AND roleName LIKE ? AND isVerify LIKE ?";
+            String sql = "SELECT u.*, r.roleName FROM [dbo].[User] AS u LEFT JOIN Role AS r ON u.roleID = r.roleID WHERE Gender LIKE ? AND roleName LIKE ? AND Status LIKE ? ORDER BY UserID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
 
             PreparedStatement st = connection.prepareStatement(sql);
 
             st.setString(1, "%" + gender + "%");
             st.setString(2, "%" + role + "%");
             st.setString(3, "%" + status + "%");
+            st.setInt(4, offset);
+            st.setInt(5, limit);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 User u = new User();
@@ -334,6 +338,42 @@ public class UserDAO extends DBContext {
     public int getTotalUserCount() {
         String sql = "SELECT COUNT(*) FROM [dbo].[User]";
         try (PreparedStatement st = connection.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0; // Return 0 in case of any error
+    }
+    public int getTotalUserSearchCount(String str) {
+        String sql = "SELECT COUNT(*) FROM [dbo].[User] WHERE FullName LIKE ? OR Phone LIKE ? OR Email LIKE ? ";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql); 
+             String searchTerm = "%" + str + "%";
+
+            st.setString(1, searchTerm);
+            st.setString(2, searchTerm);
+            st.setString(3, searchTerm);
+            ResultSet rs = st.executeQuery() ;
+           
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0; // Return 0 in case of any error
+    }
+    public int getTotalUserFilterCount(String gender, String role, String status) {
+        String sql = "SELECT COUNT(*)  FROM [dbo].[User] AS u LEFT JOIN Role AS r ON u.roleID = r.roleID WHERE Gender LIKE ? AND roleName LIKE ? AND Status LIKE ? ";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql); 
+              st.setString(1, "%" + gender + "%");
+            st.setString(2, "%" + role + "%");
+            st.setString(3, "%" + status + "%");
+            ResultSet rs = st.executeQuery() ;
+           
             if (rs.next()) {
                 return rs.getInt(1);
             }

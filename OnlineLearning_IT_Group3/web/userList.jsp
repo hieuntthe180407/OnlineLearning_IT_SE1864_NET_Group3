@@ -94,7 +94,7 @@
     <select name="status" id="status" onchange="document.getElementById('userFilterForm').submit()">
         <option value="">All Statuses</option>
         <option value="active" ${param.status == 'active' ? 'selected' : ''}>Active</option>
-        <option value="inactive" ${param.status == 'inactive' ? 'selected' : ''}>Inactive</option>
+        <option value="banned" ${param.status == 'banned' ? 'selected' : ''}>Banned</option>
         <option value="pending" ${param.status == 'pending' ? 'selected' : ''}>Pending</option>
     </select>
 </form>

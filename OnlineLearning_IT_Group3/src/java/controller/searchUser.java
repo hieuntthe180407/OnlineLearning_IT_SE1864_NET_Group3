@@ -30,9 +30,22 @@ public class searchUser extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         String info = request.getParameter("query");
-        UserDAO uDAO = new UserDAO();
-        List<User> list = uDAO.searchUser(info);
-         request.setAttribute("list", list);
+        UserDAO uDao = new UserDAO();
+         int page = 1;
+        int recordsPerPage = 10;
+        if (request.getParameter("page") != null) {
+            page = Integer.parseInt(request.getParameter("page"));
+        }
+
+// Get total number of users
+        int totalRecords = uDao.getTotalUserSearchCount(info);
+        List<User> users = uDao.searchUser(info,(page - 1) * recordsPerPage, recordsPerPage);
+          int totalPages = (int) Math.ceil(totalRecords * 1.0 / recordsPerPage);
+
+// Set attributes for pagination
+        request.setAttribute("users", users);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
         request.getRequestDispatcher("userList.jsp").forward(request, response);
     } 
 
