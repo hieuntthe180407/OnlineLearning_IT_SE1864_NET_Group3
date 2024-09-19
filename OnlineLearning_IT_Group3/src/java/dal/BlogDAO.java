@@ -11,6 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import model.Blog;
+import model.CategoryBlog;
 
 /**
  *
@@ -80,6 +81,24 @@ public class BlogDAO extends DBContext{
             e.printStackTrace();
         }
         return 0;
+    }
+    public List<CategoryBlog> getCategories() {
+        List<CategoryBlog> categories = new ArrayList<>();
+        String query = "SELECT * FROM CategoriesBlog";
+        try (
+             Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            
+            while (rs.next()) {
+                CategoryBlog category = new CategoryBlog();
+                category.setCategoryId(rs.getInt("CategoryId"));
+                category.setCategoryName(rs.getString("CategoryName"));
+                categories.add(category);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return categories;
     }
     
 }
