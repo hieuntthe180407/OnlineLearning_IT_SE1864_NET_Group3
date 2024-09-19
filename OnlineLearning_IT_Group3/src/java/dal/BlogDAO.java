@@ -41,5 +41,30 @@ public class BlogDAO extends DBContext{
         }
         return blogs;
     }
+    public List<Blog> getBlogs(int page, int pageSize) {
+        List<Blog> blogs = new ArrayList<>();
+        String query = "SELECT * FROM Blogs ORDER BY UpdatedAt DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try (
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            
+            stmt.setInt(1, (page - 1) * pageSize);
+            stmt.setInt(2, pageSize);
+            ResultSet rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                Blog blog = new Blog();
+                blog.setBlogId(rs.getInt("BlogId"));
+                blog.setTitle(rs.getString("Title"));
+                blog.setContent(rs.getString("Content"));
+                blog.setFeaturedImage(rs.getString("FeaturedImage"));
+                blog.setCreatedAt(rs.getTimestamp("CreatedAt"));
+                blog.setUpdatedAt(rs.getTimestamp("UpdatedAt"));
+                blogs.add(blog);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return blogs;
+    }
     
 }
