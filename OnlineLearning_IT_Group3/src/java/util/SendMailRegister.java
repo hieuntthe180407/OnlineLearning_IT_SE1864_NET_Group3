@@ -1,15 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
+
+
 package util;
 
-/**
- *
- * @author ADMIN
- */
-import java.util.*;
-import java.lang.*;
+import java.util.Properties;
 import jakarta.mail.Authenticator;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
@@ -19,51 +13,44 @@ import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import java.util.Date;
-import java.util.Properties;
+
 import java.util.logging.Level;
+
 import java.util.logging.Logger;
-import static util.SendMail.from;
-import static util.SendMail.password;
+
 
 public class SendMailRegister {
 
-    static final String from = "vinhdubai10@gmail.com";
-    static final String password = "obpd tqix maif sevz";
-
+    static final String from = "keeplearnedunow@gmail.com";
+    static final String password = "lkhi egjt gwxo pqta"; // Use app password if 2FA is enabled
 
     public static boolean sendMailRegister(String to, String verificationCode) {
         Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com"); //smtp host
-        props.put("mail.smtp.port", "587");   //tls 597, ssl465
+        props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+        props.put("mail.smtp.host", "smtp.gmail.com"); // SMTP host
+        props.put("mail.smtp.port", "587"); // TLS port
         props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.starttls.enable", "true"); // Enable STARTTLS
 
-        //authen
+        // Authenticator for password authentication
         Authenticator auth = new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(from, password);
             }
-
         };
 
-        //session new
+        // Create session with authenticator
         Session session = Session.getInstance(props, auth);
 
-        //send mail
-        //tao tin nhan moi
-        MimeMessage message = new MimeMessage(session);
-
         try {
-            //noi dung
-            // message.addHeader("Content-type", "text/HTML; charset=UTF-8");
-            //nguoi gui
-            message.setFrom(from);
-            //nguoi nhan
+            // Create a new email message
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(from)); // Correct format for sender
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to, false));
-            //tieu de
-            message.setSubject("Password Reset");
+            message.setSubject("Email Verification");
 
+            // Create HTML content for the email
             String htmlContent = "<!doctype html>\n"
                     + "<html lang=\"en-US\">\n"
                     + "<head>\n"
@@ -79,24 +66,19 @@ public class SendMailRegister {
                     + "    <p>Please enter this code to verify your email address.</p>\n"
                     + "</body>\n"
                     + "</html>";
-            message.setSentDate(new Date());
-            //quy dinh phan hoi 
-            message.setReplyTo(null);
-            //noi dung chu
-            // message.setText("hiii");
-            message.setContent(htmlContent, "text/HTML; charset=UTF-8");
 
-            //gui mail
+            message.setContent(htmlContent, "text/HTML; charset=UTF-8");
+            message.setSentDate(new Date());
+            message.setReplyTo(InternetAddress.parse(from, false)); // Set reply-to address
+
+            // Send the message
             Transport.send(message);
-            System.out.println("Send successfully");
+            System.out.println("Email sent successfully!");
             return true;
         } catch (MessagingException ex) {
-            System.out.println("Send failed!");
-
-            Logger.getLogger(SendMail.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SendMailRegister.class.getName()).log(Level.SEVERE, "Email sending failed", ex);
             return false;
         }
     }
+
 }
-
-

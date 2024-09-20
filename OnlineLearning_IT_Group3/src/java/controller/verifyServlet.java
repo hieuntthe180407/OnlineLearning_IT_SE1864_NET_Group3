@@ -24,8 +24,6 @@ import util.SendMailRegister;
 @WebServlet(name = "verifyServlet", urlPatterns = {"/verifyServlet"})
 public class verifyServlet extends HttpServlet {
 
-    private String code = getRandomNumberString();
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -66,6 +64,8 @@ public class verifyServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("tempInfoUser");
+        String code = getRandomNumberString();
+        session.setAttribute("verificationCode", code);
         SendMailRegister.sendMailRegister(user.getEmail(), code);
         request.getRequestDispatcher("verifyEmail.jsp").forward(request, response);
     }
@@ -83,20 +83,19 @@ public class verifyServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         String enteredCode = request.getParameter("verificationCode");
+        String generatedCode = (String) session.getAttribute("verificationCode");
 
         // Check if the entered code matches the generated code
-        if (enteredCode.equals(code)) {
-            // If the code matches, user is verified
-            // You can now save the user info into the database or mark them as verified
+        if (enteredCode.equals(generatedCode)) {
             User user = (User) session.getAttribute("tempInfoUser");
             UserDAO userDao = new UserDAO();
-            // Code to save user to the database or mark them as verified (pseudo-code)
-             userDao.insertNewUserStudent(user);
-             
-            // Clear the temporary user info from session
-            session.removeAttribute("tempInfoUser");
+            userDao.insertNewUserStudent(user);
 
-            // Redirect to a success page or login page
+            // Clear session data
+            session.removeAttribute("tempInfoUser");
+            session.removeAttribute("verificationCode");
+
+            // Redirect to success or login page
             request.getRequestDispatcher("login.jsp").forward(request, response);
         } else {
             // If the code doesn't match, display an error

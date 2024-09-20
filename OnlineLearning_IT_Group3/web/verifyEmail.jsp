@@ -18,7 +18,7 @@ String error = (String) request.getAttribute("errorCode");
             
         %>
     <center>
-        <form action="verifyCode" method="post" class="shadow p-4" style="max-width: 550px;">
+        <form action="verifyServlet" method="post" class="shadow p-4" style="max-width: 550px;">
             <h1 class="mb-5">Verify Code</h1>
             <div class="form-floating">
                 <input type="text" name="verificationCode" class="form-control" placeholder="Enter Verification Code" required>
@@ -35,7 +35,7 @@ String error = (String) request.getAttribute("errorCode");
         <div class="col-6">
             <a href="https://mail.google.com/mail/u/0/#inbox" class="btn text-light w-100 py-3" target="_blank" rel="noopener noreferrer">Check my email</a>
         </div>
-        <form action="verifyCode" method="get">
+        <form action="verifyServlet" method="get">
             <div class="col-6">
                 <button class="btn text-light w-100 py-3" type="submit">Re-send</button>
             </div>

@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -81,6 +82,14 @@ public class RegisterServlet extends HttpServlet {
         String dateOfBirth = request.getParameter("dateOfBirth");
         String password = request.getParameter("password");
 
+        UserDAO userDAO = new UserDAO();
+
+        if (userDAO.checkEmailDAO(email)) {
+            request.setAttribute("errorMessageSignUp", "This email is already registered.");
+            request.getRequestDispatcher("register.jsp").forward(request, response);
+            return;
+        }
+
         // Check if phone number is exactly 10 digits
         if (phone.length() != 10) {
             request.setAttribute("errorMessageSignUp", "Phone number must be exactly 10 digits.");
@@ -100,8 +109,6 @@ public class RegisterServlet extends HttpServlet {
 
     }
 
-    
-    
     /**
      * Returns a short description of the servlet.
      *
