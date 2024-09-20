@@ -41,11 +41,6 @@
                         <li class="list-group-item">Featured 3</li>
                     </ul>
                 </div>
-                <div class="mb-4">
-                    <h5>Contact</h5>
-                    <p>Email: contact@example.com</p>
-                    <p>Phone: +123456789</p>
-                </div>
             </div>
             <!-- Main Content -->
             <div class="col-md-9">
