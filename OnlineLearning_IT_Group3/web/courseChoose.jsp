@@ -90,7 +90,7 @@
                 briefInfo: "This course covers advanced topics in JavaScript...",
                 originalPrice: "$200",
                 salePrice: "$150",
-                description: "In this course, you will learn about closures, prototypes, and more...",
+                description: "In this course, you will learn about closures, prototypes, and more..."
             };
 
             document.getElementById('courseTitle').innerText = courseData.title;
