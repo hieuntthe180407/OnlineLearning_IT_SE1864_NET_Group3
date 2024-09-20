@@ -21,7 +21,7 @@ import model.CategoryBlog;
  *
  * @author ADMIN
  */
-@WebServlet(name="BlogListController", urlPatterns={"/BlogListController"})
+@WebServlet(name="BlogListController", urlPatterns={"/blogs"})
 public class BlogListController extends HttpServlet {
    
     /** 
