@@ -29,7 +29,7 @@
                 <!-- Title -->
                 <h2 class="mb-3">Personal information</h2>
                 <!-- Form START -->
-                <form class="row g-3" action="editProfile" method="post">
+                <form class="row g-3" action="editProfile" method="post" enctype='multipart/form-data'>
                     <!-- Full name -->
                     <div class="col-12">
                         <div class="row g-xl-0 align-items-center">
