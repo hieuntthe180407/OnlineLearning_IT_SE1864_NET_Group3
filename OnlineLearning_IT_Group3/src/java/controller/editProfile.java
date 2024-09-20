@@ -8,11 +8,16 @@ import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
+import java.nio.file.Path;
+import java.nio.file.Files;
+
 import model.User;
 
 /**
@@ -20,6 +25,7 @@ import model.User;
  * @author ADMIN
  */
 @WebServlet(name = "editProfile", urlPatterns = {"/editProfile"})
+@MultipartConfig
 public class editProfile extends HttpServlet {
 
     /**
@@ -80,12 +86,26 @@ public class editProfile extends HttpServlet {
             String dateOfBirth = request.getParameter("dateOfBirth");
             String phone = request.getParameter("phone");
             String address = request.getParameter("address");
-            String avatar = request.getParameter("avatar");
+
+            String avatar;
             String oldAvatar = request.getParameter("oldAvatar");
+            Part imagePart = request.getPart("avatar");
 
             //check is there are any new avatar
-            if (avatar.isEmpty()) {
+            if (imagePart == null) {
                 avatar = oldAvatar;
+            } else {
+
+                String realPath = request.getServletContext().getRealPath("/img");
+                String fileName = Path.of(imagePart.getSubmittedFileName()).getFileName().toString();
+                if (!Files.exists(Path.of(realPath))) {
+
+                    Files.createDirectory(Path.of(realPath));
+
+                }
+                imagePart.write(realPath + "\\" + fileName);
+                avatar = realPath.substring(realPath.length() - 3, realPath.length()) + "/" + fileName;
+
             }
 
             User pf = u.getUserProfilebyId(user.getUserID());
