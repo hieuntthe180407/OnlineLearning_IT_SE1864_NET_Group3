@@ -98,7 +98,7 @@ public class UserDAO extends DBContext {
         List<User> list = new ArrayList<>();
         try {
 
-            String sql = "SELECT * FROM [dbo].[User] WHERE FullName LIKE ? OR Phone LIKE ? OR Email LIKE ? ORDER BY UserID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
+            String sql = "SELECT u.*, r.roleName FROM [dbo].[User] AS u LEFT JOIN Role AS r ON u.roleID = r.roleID WHERE FullName LIKE ? OR Phone LIKE ? OR Email LIKE ? ORDER BY UserID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
             PreparedStatement st = connection.prepareStatement(sql);
 
             String searchTerm = "%" + str + "%";
@@ -120,6 +120,7 @@ public class UserDAO extends DBContext {
                 u.setPhone(rs.getString("Phone"));
                 Role role = new Role();
                 role.setRoleId(rs.getInt("RoleID"));
+                 role.setRoleName(rs.getString("RoleName"));
                 u.setRole(role);
                 list.add(u);
             }
