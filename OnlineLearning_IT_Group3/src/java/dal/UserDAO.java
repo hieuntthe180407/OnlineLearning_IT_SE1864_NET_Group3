@@ -406,4 +406,26 @@ public class UserDAO extends DBContext {
         }
     }
 
+    public boolean checkEmailDAO(String email) {
+        boolean exists = false;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            String sql = "SELECT * FROM [User] WHERE Email = ?";
+            st = connection.prepareStatement(sql);
+            st.setString(1, email);  // Set the email parameter
+
+            rs = st.executeQuery();  // Execute query
+
+            // If a result is returned, email exists
+            if (rs.next()) {
+                exists = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return  exists;
+}
+    
 }
