@@ -98,7 +98,7 @@ public class RegisterServlet extends HttpServlet {
         }
 
         // Create a User object
-        User tempUser = new User(email, fullName, address, phone, gender, dateOfBirth, password);
+        User tempUser = new User(email, fullName, address, phone, gender, dateOfBirth, password, "img/default-avatar.jpg");
 
         // Save User object in the session to persist across requests
         HttpSession session = request.getSession();
