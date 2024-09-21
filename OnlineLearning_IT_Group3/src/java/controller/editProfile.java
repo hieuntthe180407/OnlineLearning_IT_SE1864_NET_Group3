@@ -90,6 +90,11 @@ public class editProfile extends HttpServlet {
             String avatar;
             String oldAvatar = request.getParameter("oldAvatar");
             Part imagePart = request.getPart("avatar");
+            if (phone.length() != 10) {
+                request.setAttribute("errorEditProfile", "Phone number must be exactly 10 digits.");
+                request.getRequestDispatcher("editProfile.jsp").forward(request, response);
+                return;
+            }
 
             //check is there are any new avatar
             if (imagePart == null) {
