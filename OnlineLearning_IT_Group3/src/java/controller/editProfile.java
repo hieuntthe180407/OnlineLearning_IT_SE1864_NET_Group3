@@ -54,7 +54,7 @@ public class editProfile extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("User");
+        User user = (User) session.getAttribute("acc");
         UserDAO u = new UserDAO();
         try {
             User profile = u.getUserProfilebyId(user.getUserID());
@@ -78,7 +78,7 @@ public class editProfile extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("User");
+        User user = (User) session.getAttribute("acc");
         UserDAO u = new UserDAO();
         try {
             String fullName = request.getParameter("fullName");

@@ -61,7 +61,7 @@ public class userProfile extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("User");
+        User user = (User) session.getAttribute("acc");
         UserDAO u = new UserDAO();
         try {
             User profile = u.getUserProfilebyId(user.getUserID());
