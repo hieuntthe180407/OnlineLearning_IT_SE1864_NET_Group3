@@ -81,7 +81,7 @@ public class ResetPassword extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             if (isResetSuccessful!=0) {
                 out.println("<html><body><h2>Password reset successfully!</h2>");
-                out.println("<p><a href='login'>Go to Login</a></p>");
+                    out.println("<p><a href='login'>Go to Login</a></p>");
                 out.println("</body></html>");
             } else {
                 out.println("<html><body><h2>Error resetting password. Please try again.</h2>");
