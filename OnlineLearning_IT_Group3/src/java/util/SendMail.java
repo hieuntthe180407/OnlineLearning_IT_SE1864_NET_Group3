@@ -115,7 +115,7 @@ public class SendMail {
                     + "                                            style=\"background:#138496;text-decoration:none !important;    cursor: pointer; font-weight:600; margin-top:65px; color:#fff;text-transform:uppercase; font-size:14px;padding:20px 70px;display:inline-block;\">Reset \n"
                     + "                                            Password</a>\n"
                     + "                                      <p style=\"color:#da2222; font-size:15px;line-height:24px; margin-top:20px;\">\n"
-                    + "                                            *This email is only valid for 30 minutes from the time it is sent.\n"
+                    + "                                            *This email is only valid for 1 minutes from the time it is sent.\n"
                     + "                                        </p>\n"
                     + "                                    </td>\n"
                     + "                                </tr>\n"
