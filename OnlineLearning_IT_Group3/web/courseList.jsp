@@ -1,12 +1,3 @@
-<%-- 
-    Document   : courseList
-    Created on : Sep 18, 2024, 1:43:51 PM
-    Author     : trong
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="java.util.*"%>
-<%@page import="model.Course"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -54,7 +45,9 @@
     <!-- Spinner End -->
 
 
-    <%@include file="header.jsp" %>
+    <!-- Navbar Start -->
+     <%@include file= "header.jsp" %>
+    <!-- Navbar End -->
 
     <!-- Header Start -->
     <div class="container-fluid bg-primary py-5 mb-5 page-header">
@@ -64,7 +57,7 @@
                     <h1 class="display-3 text-white animated slideInDown">Courses</h1>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb justify-content-center">
-                            <li class="breadcrumb-item"><a class="text-white" href="index.html">Home</a></li>
+                            <li class="breadcrumb-item"><a class="text-white" href="/OnlineLearning_IT_Group3/home.jsp">Home</a></li>
                             <li class="breadcrumb-item text-white active" aria-current="page">Courses</li>
                         </ol>
                     </nav>
@@ -75,7 +68,33 @@
     <!-- Header End -->
 
 
-    
+    <!-- Categories Start -->
+    <div class="container-xxl py-5 category">
+        <div class="container">
+            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                <h6 class="section-title bg-white text-center px-3">Categories</h6>
+                <h1 class="mb-5" style="color: #fb873f;">Popular Topics to Explore</h1>
+            </div>
+            <div class="row g-2 m-2">
+             
+                
+                <c:forEach items="${listTop10Category}" var="listTop10Category">
+                    
+                       <div class="col-lg-3 col-md-6  text-center">
+                    <div class="content shadow p-3 mb-2 wow fadeInUp" data-wow-delay="0.3s">
+
+                        <img src="img/cat8.png" class="img-fluid" alt="categories"></i>
+
+                        <h5 class="my-2">
+                            <a href="#" class="text-center">${listTop10Category.categoryName}</a>
+                        </h5>
+                    </div>
+                </div>
+                </c:forEach>
+            </div>
+        </div>
+    </div>
+    <!-- Categories End -->
 
 
 
@@ -86,62 +105,101 @@
                 <h6 class="section-title bg-white text-center px-3">Popular Courses</h6>
                 <h1 class="mb-5" style="color: #fb873f;">Explore new and trending free online courses</h1>
             </div>
-            <div class="row g-4 py-2"> <!-- 2 vi du nay de lam list nhet vao loop cho de so sanh -->
-                 <% 
-                    List<Course>list = (List<Course>) request.getAttribute("list");
-                    if (list == null || list.size() == 0) {
-                        out.println("Empty list ");
-                    } else {
-                        for (Course c : list) {
-                           
-                %>  
+            <div class="row g-4 py-2">
+               
                 
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                <c:forEach items="${listCourse}" var="listCourse" >
+                    
+                      <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="course-item shadow">
                         <div class="position-relative overflow-hidden text-light image">
-                            <img class="img-fluid" src="<%= c.getCourseImg() %>" alt="">
+                            <img class="img-fluid" src="img/course-12.png" alt="">
                             <div style="position:absolute;top: 15px;left: 16px; font-size:12px; border-radius:3px; background-color:#fb873f;"
                                 class="px-2 py-1 fw-bold text-uppercase">FREE</div>
 
                         </div>
                         <div class="p-2 pb-0">
 
-                            <h5 class="mb-1"><a href="courseDetail?courseID=<%= c.getCourseID() %>" class="text-dark"><%= c.getCourseName()%></a> </h5>
+                            <h5 class="mb-1"> <a href="#" class="text-dark">${listCourse.courseName}</a></h5>
                         </div>
                         <div class="d-flex">
                             <small class="flex-fill text-center py-1 px-2"><i class="fa fa-star text-warning me-2"></i>
-                                4.55</small>
-                            <small class="flex-fill text-center py-1 px-2"><i class="fa fa-user-graduate me-2"></i>5.8L+
+                                4.5</small>
+                            <small class="flex-fill text-center py-1 px-2"><i class="fa fa-user-graduate me-2"></i>1.1L+
                                 Learners
                             </small>
                             <small class="flex-fill text-center py-1 px-2"><i
                                     class="fa fa-user me-2"></i>Beginner</small>
                         </div>
                         <div class="d-flex">
-                            <small class="flex-fill text-left p-2 px-2"><i class="fa fa-clock me-2"></i> <%= c.getDuration()%></small>
-                            <small class="py-1 px-2 fw-bold fs-6 text-center">₹ 0</small>
+                            <small class="flex-fill text-left p-2 px-2"><i class="fa fa-clock me-2"></i>${listCourse.duration}
+                                Hrs</small>
+                            <small class="py-1 px-2 fw-bold fs-6 text-center">? 0</small>
                             <small class=" text-primary py-1 px-2 fw-bold fs-6" style="float:right;"><a href="#">Enroll
                                     Now </a><i class="fa fa-chevron-right me-2 fs-10"></i></small>
                         </div>
                     </div>
                 </div>
-                <% }} %>
-                
-                
-                
-                
-                
-                
-                    </div>
-                </div>
+                </c:forEach>
             </div>
 
-        
-    
+        </div>
+    </div>
     <!-- Courses End -->
 
 
-    <%@include file="footer.jsp" %>
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <div class="row g-5">
+                <div class="col-lg-4 col-md-6">
+                    <h4 class="text-white mb-3">Quick Link</h4>
+                    <p><a class="text-light" href="about.html">About Us</a></p>
+                    <p><a class="text-light" href="contact.html">Contact Us</a></p>
+                    <p><a class="text-light" href="">Privacy Policy</a></p>
+                    <p><a class="text-light" href="">Terms & Condition</a></p>
+                    <p><a class="text-light" href="">FAQs & Help</a></p>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h4 class="text-white mb-3">Contact</h4>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, Bangalore, Karnataka</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+91 8683045908</p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>secretcoder@gmail.com</p>
+                    <div class="d-flex pt-2">
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <h4 class="text-white mb-3">Subscribe to our Newsletter</h4>
+                    <p>Subscribe now and join our growing community of learners committed to lifelong education! </p>
+                    <div class="position-relative mx-auto" style="max-width: 400px;">
+                        <form action="#">
+                            <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="email"
+                                placeholder="Your email" required>
+                            <button type="submit"
+                                class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2"><a
+                                    href="mailto:keertidvcorai@gmail.com">Subscribe</a></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="copyright">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy; <a class="border-bottom" href="index.html">Secret Coder</a>, All Right Reserved.
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
 
 
     <!-- Back to Top -->
