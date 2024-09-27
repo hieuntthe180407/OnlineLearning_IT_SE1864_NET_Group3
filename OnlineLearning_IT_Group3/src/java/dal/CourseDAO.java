@@ -5,6 +5,7 @@
 package dal;
 import java.sql.*;
 import java.util.*;
+import model.Category;
 import model.Course;
 /**
  *
@@ -62,6 +63,33 @@ public class CourseDAO extends DBContext {
         }
         return null;
     }
+         
+         public List<Category> getTop8Category() {
+             List<Category> categories = new ArrayList<>();
+             
+             String sql="SELECT TOP 8 CategoryID, CategoryName FROM Category";
+             
+             try {
+                 PreparedStatement st = connection.prepareCall(sql);
+                 ResultSet rs = st.executeQuery();
+                 
+                 while (rs.next()) {                     
+                     
+                     Category category = new Category();
+                     
+                     category.setCategoryID(rs.getInt("CategoryID"));
+                     category.setCategoryName(rs.getString("CategoryName"));
+                     categories.add(category);
+                 }
+             } catch (Exception e) {
+                 System.out.println(e);
+             }
+             return categories;
+         }
+        
+         
+         
+         
           public static void main(String[] args) {
         CourseDAO cDAO = new CourseDAO();
         List<Course> list = cDAO.getAllCourse();
