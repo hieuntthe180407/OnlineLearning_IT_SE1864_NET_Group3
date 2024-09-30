@@ -46,6 +46,22 @@
     <body>
         <%@include file="header.jsp" %>
         
+        <%
+            Course c = (Course)request.getAttribute("Course");
+        %>
+         <div class="tab-content mt-4">
+
+                        <div class="tab-pane container active" id="Overview">
+                            <h2>About this Course</h2>
+                            <p><%= c.getDescription()%></p>
+
+                           
+                       
+                            
+                            
+
+                        </div>
+        
          <div class="container" id="Curriculum">
                             <h2 class="mt-4">
                                 Syllabus
