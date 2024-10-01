@@ -86,7 +86,24 @@ public class CourseDAO extends DBContext {
              }
              return categories;
          }
-        
+         
+        public List<Category> getTop10Category() {
+        List<Category> categories = new ArrayList<>();
+        String sql = "SELECT TOP 10 CategoryID, CategoryName FROM Category";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Category category = new Category();
+                category.setCategoryID(rs.getInt("CategoryID"));
+                category.setCategoryName(rs.getString("CategoryName"));
+                categories.add(category);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return categories;
+    }
          
          
          
