@@ -1,11 +1,11 @@
 <%-- 
-    Document   : lessonAdd
-    Created on : Sep 17, 2024, 6:21:49 PM
+    Document   : courseEdit
+    Created on : Sep 30, 2024, 1:54:11 PM
     Author     : trong
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="model.Lesson" %>
+<%@page import="model.Course" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -49,17 +49,17 @@
         <!--Main container start -->
 	<main class="ttr-wrapper">
              <%
-                Lesson l = (Lesson)request.getAttribute("lesson");
-                if (l!=null){
+                 Course c = (Course)request.getAttribute("Course");
+                if (c!=null){
                  
-    int LessonID = Integer.parseInt(request.getParameter("LessonID"));
+    int courseID = Integer.parseInt(request.getParameter("courseID"));
    
             %>
             <div class="container-fluid bg-primary py-5 mb-5 page-header">
         <div class="container py-5">
             <div class="row justify-content-center">
                 <div class="col-lg-10 text-center">
-                    <h1 class="display-3 text-white animated slideInDown">Lesson Update</h1>
+                    <h1 class="display-3 text-white animated slideInDown">Course Edit</h1>
                     
                 </div>
             </div>
@@ -74,44 +74,45 @@
 					<div class="widget-box">
 						
 						<div class="widget-inner">
-                                                    <form class="edit-profile m-b30 " action="lessonEdit" method="post">
+                                                    <form class="edit-profile m-b30 " action="courseEdit" method="post">
 								<div class="row">
 									<div class="col-12">
 										<div class="ml-auto">
-											<h3>1. Basic info</h3>
+											<h3>1. Category</h3>
 										</div>
 									</div>
-                                                                    <input type="hidden" name="LessonID" value="<%= LessonID %>">
+                                                                    <input type="hidden" name="CourseID" value="<%= courseID %>">
 									<div class="form-group col-6">
-										<label class="col-form-label">Lesson Name</label>
+										
 										<div>
-											<input class="form-control" type="text" name="lessonName" value="<%=l.getLessonName()%>">
+											<input class="form-control" type="text" name="lessonName" value="">
 										</div>
 									</div>
+                                                                                
+                                                                                <div class="ml-auto">
+											<h3>2.Course Name</h3>
+										</div>
+									</div>
+                                                                    
 									<div class="form-group col-6">
-										<label class="col-form-label">Lesson URL</label>
+										
 										<div>
-											<input class="form-control" type="text" name="lessonUrl" value="<%=l.getLessonURL() %>">
+											<input class="form-control" type="text" name="lessonName" value="<%=c.getCourseName()%>">
 										</div>
 									</div>
-                                                                                <div class="form-group col-6">
-										<label class="col-form-label">Lesson Number</label>
-										<div>
-											<input class="form-control" type="number" name="LessonNumber" value="<%=l.getLessonNumber()%>">
-										</div>
-									</div>
+									
 									
 									<div class="seperator"></div>
 									
 									<div class="col-12 m-t20">
 										<div class="ml-auto m-b5">
-											<h3>2. Description</h3>
+											<h3>3. Description</h3>
 										</div>
 									</div>
 									<div class="form-group col-12">
-										<label class="col-form-label">Lesson description</label>
+										
 										<div>
-											<input class="form-control" type="text" name="description" value="<%=l.getDescription() %>">
+											<input class="form-control" type="text" name="description" value="<%=c.getDescription()%>">
 										</div>
 									</div>
 									
@@ -128,17 +129,13 @@
 			
                         </div>
                 
-		</div>
+		
             <%} else{%>
-            <%
-    int MoocID = Integer.parseInt(request.getParameter("MoocID"));
-   
-%>
-  <div class="container-fluid bg-primary py-5 mb-5 page-header">
+           <div class="container-fluid bg-primary py-5 mb-5 page-header">
         <div class="container py-5">
             <div class="row justify-content-center">
                 <div class="col-lg-10 text-center">
-                    <h1 class="display-3 text-white animated slideInDown">Add lesson</h1>
+                    <h1 class="display-3 text-white animated slideInDown">Add Course</h1>
                     
                 </div>
             </div>
@@ -153,44 +150,45 @@
 					<div class="widget-box">
 						
 						<div class="widget-inner">
-                                                    <form class="edit-profile m-b30 " action="lessonEdit" method="post">
+                                                    <form class="edit-profile m-b30 " action="courseEdit" method="post">
 								<div class="row">
 									<div class="col-12">
 										<div class="ml-auto">
-											<h3>1. Basic info</h3>
+											<h3>1. Category</h3>
 										</div>
 									</div>
-                                                                   <input type="hidden" name="MoocID" value="<%=MoocID%>">
+                                                                    
 									<div class="form-group col-6">
-										<label class="col-form-label">Lesson Name</label>
+										
 										<div>
-											<input class="form-control" type="text" name="lessonName" >
+											<input class="form-control" type="text" name="lessonName" value="">
 										</div>
 									</div>
+                                                                                
+                                                                                <div class="ml-auto">
+											<h3>2.Course Name</h3>
+										</div>
+									</div>
+                                                                    
 									<div class="form-group col-6">
-										<label class="col-form-label">Lesson URL</label>
+										
 										<div>
-											<input class="form-control" type="text" name="lessonUrl" >
+											<input class="form-control" type="text" name="lessonName" value="">
 										</div>
 									</div>
-                                                                        <div class="form-group col-6">
-										<label class="col-form-label">Lesson Number</label>
-										<div>
-											<input class="form-control" type="number" name="LessonNumber">
-										</div>
-									</div>
+									
 									
 									<div class="seperator"></div>
 									
 									<div class="col-12 m-t20">
 										<div class="ml-auto m-b5">
-											<h3>2. Description</h3>
+											<h3>3. Description</h3>
 										</div>
 									</div>
 									<div class="form-group col-12">
-										<label class="col-form-label">Lesson description</label>
+										
 										<div>
-											<input class="form-control" type="text" name="description" >
+											<input class="form-control" type="text" name="description" value="">
 										</div>
 									</div>
 									
@@ -207,8 +205,7 @@
 			
                         </div>
                 
-		</div>
-            
+		
             
             <%}%>
 	</main>
@@ -225,3 +222,4 @@
     <script src="js/main.js"></script>
     </body>
 </html>
+

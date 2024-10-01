@@ -46,6 +46,27 @@
     <body>
         <%@include file="header.jsp" %>
         
+        <%
+            Course c = (Course)request.getAttribute("Course");
+        %>
+        <div class="container-fluid bg-primary py-5 mb-5 page-header">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-10 text-center">
+                    <h1 class="display-3 text-white animated slideInDown"><%=c.getCourseName()%></h1>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+         <div class="tab-content mt-4">
+
+                        <div class="tab-pane container active" id="Overview">
+                            <h2>About this Course</h2>
+                            <p><%= c.getDescription()%></p>
+
+                        </div>
+        
          <div class="container" id="Curriculum">
                             <h2 class="mt-4">
                                 Syllabus
@@ -86,6 +107,7 @@
                                             <%= l.getLessonName() %>
                                             <a href="lessonEdit?LessonID=<%= l.getLessonID() %>">
                                             <button type="button">Update</button>
+                                            
 </a>
                                         <%}}%>
                                     </ul></div>
