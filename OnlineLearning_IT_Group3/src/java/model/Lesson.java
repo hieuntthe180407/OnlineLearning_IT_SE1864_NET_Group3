@@ -15,17 +15,19 @@ public class Lesson {
     private String LessonURL;
      private String LessonName;
       private String Description;
+      private String Status;
 
     public Lesson() {
     }
 
-    public Lesson(int LessonID, int MoocID, int LessonNumber, String LessonURL, String LessonName, String Description) {
+    public Lesson(int LessonID, int MoocID, int LessonNumber, String LessonURL, String LessonName, String Description,String Status) {
         this.LessonID = LessonID;
         this.MoocID = MoocID;
         this.LessonNumber = LessonNumber;
         this.LessonURL = LessonURL;
         this.LessonName = LessonName;
         this.Description = Description;
+        this.Status= Status;
     }
 
     public int getLessonNumber() {
@@ -76,6 +78,14 @@ public class Lesson {
 
     public void setDescription(String Description) {
         this.Description = Description;
+    }
+
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String Status) {
+        this.Status = Status;
     }
 
     
