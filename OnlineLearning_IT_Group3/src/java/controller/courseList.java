@@ -21,7 +21,7 @@ import model.Course;
  *
  * @author trong
  */
-@WebServlet(name="courseList", urlPatterns={"/courseList"})
+@WebServlet(name="courseList", urlPatterns={"/courseList1"})
 public class courseList extends HttpServlet {
    
    @Override
