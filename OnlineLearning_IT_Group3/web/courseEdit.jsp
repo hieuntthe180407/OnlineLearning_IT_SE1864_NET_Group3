@@ -81,7 +81,7 @@
 											<h3>1. Category</h3>
 										</div>
 									</div>
-                                                                    <input type="hidden" name="LessonID" value="<%= courseID %>">
+                                                                    <input type="hidden" name="CourseID" value="<%= courseID %>">
 									<div class="form-group col-6">
 										
 										<div>
@@ -129,7 +129,83 @@
 			
                         </div>
                 
-		</div>
+		
+            <%} else{%>
+           <div class="container-fluid bg-primary py-5 mb-5 page-header">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-10 text-center">
+                    <h1 class="display-3 text-white animated slideInDown">Add Course</h1>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+                    <div class="container-fluid">
+                    
+			<div class="row">
+				<!-- Your Profile Views Chart -->
+                                
+				<div class="col-lg-12 m-b30">
+					<div class="widget-box">
+						
+						<div class="widget-inner">
+                                                    <form class="edit-profile m-b30 " action="courseEdit" method="post">
+								<div class="row">
+									<div class="col-12">
+										<div class="ml-auto">
+											<h3>1. Category</h3>
+										</div>
+									</div>
+                                                                    
+									<div class="form-group col-6">
+										
+										<div>
+											<input class="form-control" type="text" name="lessonName" value="">
+										</div>
+									</div>
+                                                                                
+                                                                                <div class="ml-auto">
+											<h3>2.Course Name</h3>
+										</div>
+									</div>
+                                                                    
+									<div class="form-group col-6">
+										
+										<div>
+											<input class="form-control" type="text" name="lessonName" value="">
+										</div>
+									</div>
+									
+									
+									<div class="seperator"></div>
+									
+									<div class="col-12 m-t20">
+										<div class="ml-auto m-b5">
+											<h3>3. Description</h3>
+										</div>
+									</div>
+									<div class="form-group col-12">
+										
+										<div>
+											<input class="form-control" type="text" name="description" value="">
+										</div>
+									</div>
+									
+									<div class="col-12">
+										
+                                                                                <button type="submit" class="btn">Confirm</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				
+			
+                        </div>
+                
+		
             
             <%}%>
 	</main>

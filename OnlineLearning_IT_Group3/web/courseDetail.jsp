@@ -102,6 +102,13 @@
                                             <%= l.getLessonName() %>
                                             <a href="lessonEdit?LessonID=<%= l.getLessonID() %>">
                                             <button type="button">Update</button>
+                                            <% if(l.getStatus().equals("Active")) {%>
+                                            <a href="deactiveLesson?LessonID=<%= l.getLessonID() %>">
+                                            <button type="button">Deactivate</button>
+                                            <%}else{%>
+                                            <a href="activeLesson?LessonID=<%= l.getLessonID() %>">
+                                            <button type="button" >Activate</button>
+                                            <%}%>
 </a>
                                         <%}}%>
                                     </ul></div>
