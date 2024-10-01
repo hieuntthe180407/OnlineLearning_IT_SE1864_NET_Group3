@@ -207,7 +207,7 @@ public class UserDAO extends DBContext {
 
         try {
 
-            String sql = "SELECT * FROM [User] WHERE Email= ? AND isVerify = 0";
+            String sql = "SELECT * FROM [User] WHERE Email= ? AND Status = 'Active'";
 
             st = connection.prepareStatement(sql);
             st.setString(1, email);
@@ -217,19 +217,19 @@ public class UserDAO extends DBContext {
             if (rs.next()) {
                 int userId = rs.getInt("UserID");
                 String fullName = rs.getString("FullName");
-                Date dateOfBirth = rs.getDate("DateOfBirth");
+                String dateOfBirth = rs.getString("DateOfBirth");
                 String password = rs.getString("Password");
                 String phone = rs.getString("Phone");
                 String address = rs.getString("Address");
-                Boolean gender = rs.getBoolean("Gender");
+                String gender = rs.getString("Gender");
                 String reason = rs.getString("Reason");
-                Date timeBan = rs.getDate("TimeBan");
+                
                 String avatar = rs.getString("Avatar");
                 int roleId = rs.getInt("RoleID");
 
                 Role role = new RoleDAO().selecById(roleId);
 
-                u = new User(userId, fullName, avatar, email, password, phone, address, avatar, role, avatar);
+                u = new User(userId, fullName, dateOfBirth, email, password, phone, address, avatar, role, avatar);
             }
 
         } catch (Exception e) {
@@ -423,8 +423,8 @@ public class UserDAO extends DBContext {
 
         try {
             // SQL query for inserting a new user
-            String sql = "INSERT INTO [User] (FullName, Email, Password, Phone, Address, Gender, DateOfBirth, Avatar, RoleID, isVerify) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 2, 1)";
+            String sql = "INSERT INTO [User] (FullName, Email, Password, Phone, Address, Gender, DateOfBirth, Avatar, RoleID, Status) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 2, 'Active')";
 
             // Preparing the statement
             st = connection.prepareStatement(sql);
