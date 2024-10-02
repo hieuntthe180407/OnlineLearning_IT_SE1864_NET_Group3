@@ -105,7 +105,32 @@ public class CourseDAO extends DBContext {
         }
         return categories;
     }
-         
+        public List<Course> searchCourseByName(String courseName) {
+        List<Course> list = new ArrayList<>();
+        String sql = "SELECT * FROM Course WHERE CourseName LIKE ?";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, "%" + courseName + "%"); // Thêm ký tự % để tìm kiếm phần
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                Course c = new Course();
+                c.setCourseID(rs.getInt("courseID"));
+                c.setDuration(rs.getInt("Duration"));
+                c.setReport(rs.getInt("Report"));
+                c.setCourseImg(rs.getString("courseIMG"));
+                c.setCourseName(rs.getString("courseName"));
+                c.setDescription(rs.getString("Description"));
+                list.add(c);
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return list;
+    } 
          
          
           public static void main(String[] args) {
