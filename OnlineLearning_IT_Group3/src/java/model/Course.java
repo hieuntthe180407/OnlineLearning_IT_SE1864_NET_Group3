@@ -1,33 +1,30 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
-/**
- *
- * @author trong
- */
 public class Course {
     private int courseID;
     private int duration;
     private int report;
     private String courseImg;
     private String courseName;
-    private String Description;
+    private String description;
+    private Price price;  // Thêm thuộc tính Price
 
+    // Constructor không đối số
     public Course() {
     }
 
-    public Course(int courseID, int duration, int report, String courseImg, String courseName, String Description) {
+    // Constructor với đối số
+    public Course(int courseID, int duration, int report, String courseImg, String courseName, String description, Price price) {
         this.courseID = courseID;
         this.duration = duration;
         this.report = report;
         this.courseImg = courseImg;
         this.courseName = courseName;
-        this.Description = Description;
+        this.description = description;
+        this.price = price;  // Gán giá cho thuộc tính Price
     }
 
+    // Getter và Setter cho các thuộc tính
     public int getCourseID() {
         return courseID;
     }
@@ -69,13 +66,32 @@ public class Course {
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
-    public void setDescription(String Description) {
-        this.Description = Description;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-   
-    
+    public Price getPrice() {
+        return price;
+    }
+
+    public void setPrice(Price price) {
+        this.price = price;
+    }
+
+    // Phương thức toString
+    @Override
+    public String toString() {
+        return "Course{" +
+                "courseID=" + courseID +
+                ", duration=" + duration +
+                ", report=" + report +
+                ", courseImg='" + courseImg + '\'' +
+                ", courseName='" + courseName + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                '}';
+    }
 }
