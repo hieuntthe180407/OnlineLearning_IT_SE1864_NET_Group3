@@ -76,7 +76,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Choices](
 	[ChoiceID] [int] IDENTITY(1,1) NOT NULL,
-	[QuizID] [int] NOT NULL,
+	[QuestionID] [int] NOT NULL,
 	[Description] [varchar](255) NULL,
 	[IsTrue] [bit] NULL,
 	[Comment] [text] NULL,
@@ -287,18 +287,23 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Quiz]    Script Date: 9/14/2024 10:13:41 PM ******/
+/****** Object:  Table [dbo].[Question]    Script Date: 9/14/2024 10:13:41 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[Quiz](
-	[QuizID] [int] IDENTITY(1,1) NOT NULL,
-	[QuizContent] [text] NULL,
-	[ExamID] [int] NOT NULL,
+CREATE TABLE [dbo].[Question](
+	[QuestionID] [int] IDENTITY(1,1) NOT NULL,
+	[QuestionContent] [text] NULL,
+	[QuestionType] NVARCHAR(255) NOT NULL,
+	[QuestionImgOrVideo] NVARCHAR(255) NULL,
+	[Level] NVARCHAR(10) CHECK (level IN ('Easy', 'Medium', 'Hard')) NOT NULL,
+	[Status] NVARCHAR(10) CHECK (status IN ('Visible', 'Hidden')) NOT NULL DEFAULT 'Visible',
+	[CorrectAnswer] NVARCHAR(255) NOT NULL,
+	[CourseID] [int] NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
-	[QuizID] ASC
+	[QuestionID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
@@ -475,8 +480,8 @@ GO
 ALTER TABLE [dbo].[Certificate]  WITH CHECK ADD FOREIGN KEY([UserID])
 REFERENCES [dbo].[User] ([UserID])
 GO
-ALTER TABLE [dbo].[Choices]  WITH CHECK ADD FOREIGN KEY([QuizID])
-REFERENCES [dbo].[Quiz] ([QuizID])
+ALTER TABLE [dbo].[Choices]  WITH CHECK ADD FOREIGN KEY([QuestionID])
+REFERENCES [dbo].[Question] ([QuestionID])
 GO
 
 ALTER TABLE [dbo].[CommentsBlog]  WITH CHECK ADD FOREIGN KEY([BlogId])
@@ -535,8 +540,8 @@ GO
 ALTER TABLE [dbo].[Purchase]  WITH CHECK ADD FOREIGN KEY([UserID])
 REFERENCES [dbo].[User] ([UserID])
 GO
-ALTER TABLE [dbo].[Quiz]  WITH CHECK ADD FOREIGN KEY([ExamID])
-REFERENCES [dbo].[Exam] ([ExamID])
+ALTER TABLE [dbo].[Question]  WITH CHECK ADD FOREIGN KEY([CourseID])
+REFERENCES [dbo].[CourseID] ([CourseID])
 GO
 
 GO
