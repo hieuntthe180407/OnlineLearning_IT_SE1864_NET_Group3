@@ -60,16 +60,37 @@ public class CourseListController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
          CourseDAO cDao = new CourseDAO();
-       
-       //List<Category> listTop8Category = cDao.getTop8Category();
-       
-       //request.setAttribute("listTop10Category", listTop8Category);
-       
-       List<Course> listAllCourse = cDao.getAllCourse();
-       
-       request.setAttribute("listCourse", listAllCourse);
-       
-       request.getRequestDispatcher("/courseList.jsp").forward(request, response);
+        List<Category> listTop8Category = cDao.getTop8Category();
+        request.setAttribute("listTop10Category", listTop8Category);
+
+        List<Course> listAllCourse = null;
+        String action = request.getParameter("action");
+
+        // Check if action is null or empty
+        if (action == null || action.isEmpty()) {
+
+            listAllCourse = cDao.getAllCourse();
+
+        } else if (action.equalsIgnoreCase("search")) {
+            String text = request.getParameter("text");
+            listAllCourse = cDao.getAllCourseBySearch(text);
+        } else if (action.equalsIgnoreCase("category")) {
+            String name = request.getParameter("name");
+            listAllCourse = cDao.getAllCoursesByCategory(name);
+        } else if (action.equalsIgnoreCase("filterPrice")) {
+           double minPrice = Double.parseDouble(request.getParameter("minPrice"));
+           double maxPrice = Double.parseDouble(request.getParameter("maxPrice"));
+           listAllCourse = cDao.getCourseByMinMaxPrice(minPrice,maxPrice);
+
+        }
+
+        double maxPrice = cDao.getMaxPrice();
+        request.setAttribute("maxPrice", maxPrice);
+        double minPrice = cDao.getMinPrice();
+        request.setAttribute("minPrice", minPrice);
+
+        request.setAttribute("listCourse", listAllCourse);
+        request.getRequestDispatcher("/courseList.jsp").forward(request, response);
     
     } 
 
