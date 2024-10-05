@@ -541,7 +541,7 @@ ALTER TABLE [dbo].[Purchase]  WITH CHECK ADD FOREIGN KEY([UserID])
 REFERENCES [dbo].[User] ([UserID])
 GO
 ALTER TABLE [dbo].[Question]  WITH CHECK ADD FOREIGN KEY([CourseID])
-REFERENCES [dbo].[CourseID] ([CourseID])
+REFERENCES [dbo].[Course] ([CourseID])
 GO
 
 GO
