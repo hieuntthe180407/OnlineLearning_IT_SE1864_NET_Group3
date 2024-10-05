@@ -1,30 +1,73 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package model;
 
+/**
+ *
+ * @author trong
+ */
 public class Course {
     private int courseID;
     private int duration;
     private int report;
     private String courseImg;
     private String courseName;
-    private String description;
-    private Price price;  // Thêm thuộc tính Price
+    private String Description;
+    private double price;
+    private double salePrice;
+    private boolean isActive;
 
-    // Constructor không đối số
     public Course() {
     }
 
-    // Constructor với đối số
-    public Course(int courseID, int duration, int report, String courseImg, String courseName, String description, Price price) {
+    public Course(int courseID, int duration, int report, String courseImg, String courseName, String Description) {
         this.courseID = courseID;
         this.duration = duration;
         this.report = report;
         this.courseImg = courseImg;
         this.courseName = courseName;
-        this.description = description;
-        this.price = price;  // Gán giá cho thuộc tính Price
+        this.Description = Description;
     }
 
-    // Getter và Setter cho các thuộc tính
+    public Course(int courseID, int duration, int report, String courseImg, String courseName, String Description, double price, double salePrice, boolean isActive) {
+        this.courseID = courseID;
+        this.duration = duration;
+        this.report = report;
+        this.courseImg = courseImg;
+        this.courseName = courseName;
+        this.Description = Description;
+        this.price = price;
+        this.salePrice = salePrice;
+        this.isActive = isActive;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public double getSalePrice() {
+        return salePrice;
+    }
+
+    public void setSalePrice(double salePrice) {
+        this.salePrice = salePrice;
+    }
+
+    public boolean isIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+    
+
     public int getCourseID() {
         return courseID;
     }
@@ -66,32 +109,13 @@ public class Course {
     }
 
     public String getDescription() {
-        return description;
+        return Description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescription(String Description) {
+        this.Description = Description;
     }
 
-    public Price getPrice() {
-        return price;
-    }
-
-    public void setPrice(Price price) {
-        this.price = price;
-    }
-
-    // Phương thức toString
-    @Override
-    public String toString() {
-        return "Course{" +
-                "courseID=" + courseID +
-                ", duration=" + duration +
-                ", report=" + report +
-                ", courseImg='" + courseImg + '\'' +
-                ", courseName='" + courseName + '\'' +
-                ", description='" + description + '\'' +
-                ", price=" + price +
-                '}';
-    }
+   
+    
 }
