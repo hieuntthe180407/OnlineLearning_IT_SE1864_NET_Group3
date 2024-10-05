@@ -36,6 +36,31 @@
         <!-- Template Stylesheet -->
         <link href="css/style.css" rel="stylesheet">
 
+        <style>
+            #paginationNumbers .btn.active {
+                background-color: #007bff; /* Active button color */
+                color: white; /* Text color for active button */
+            }
+            .sidebar {
+                padding: 20px;
+                background-color: #f8f9fa; /* Light background for the sidebar */
+                border-right: 1px solid #ddd; /* Border to separate the sidebar */
+            }
+
+            .sidebar h4 {
+                margin-bottom: 15px; /* Spacing for section titles */
+            }
+
+            .sidebar .form-control {
+                width: 100%; /* Full width for input */
+            }
+
+            .list-group-item {
+                border: none; /* Remove border from list items */
+            }
+
+
+        </style>
     </head>
 
     <body>
@@ -72,35 +97,7 @@
         </div>
         <!-- Header End -->
 
-      
-        
-        
-        <!-- Search with Filter Start -->
-<div class="container-xxl py-2">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8 col-md-10">
-                <form action="search" method="get" class="input-group">
-                    <input type="text" name="searchKeyword" class="form-control" placeholder="Search ">
 
-                    <!-- Dropdown for Sorting -->
-                    <select name="sortBy" class="form-select">
-                        <option value="" disabled selected>Sort by</option>
-                        <option value="priceAsc">Price: Low to High</option>
-                        <option value="priceDesc">Price: High to Low</option>
-                        <option value="preference">By Preference</option>
-                        <option value="promotion">Promotions</option>
-                    </select>
-                    
-                    <button type="submit" class="btn btn-primary">Search</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Search with Filter End -->
-
-        
         <!-- Categories Start -->
         <div class="container-xxl py-5 category">
             <div class="container">
@@ -117,7 +114,7 @@
                                 <img src="img/cat1.png" class="img-fluid" alt="categories"></i>
 
                                 <h5 class="my-2">
-                                    <a href="#" class="text-center">${listTop10Category.categoryName}</a>
+                                    <a href="courseList?action=category&name=${listTop10Category.categoryName}" class="text-center">${listTop10Category.categoryName}</a>
                                 </h5>
                             </div>
                         </div>
@@ -130,58 +127,233 @@
         </div>
         <!-- Categories End -->
 
+        <!-- Sidebar Start -->
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-3 col-md-4">
+                    <div class="sidebar">
+                        <h4 class="mb-4">Search Courses</h4>
+                        <form action="courseList" method="get" class="mb-4">
+                            <input name="action" value="search" hidden="">
+                            <input type="text" name="text" class="form-control" placeholder="Search...">
+                            <button type="submit" class="btn btn-primary mt-2">Search</button>
+                        </form>
 
+                        <h4 class="mb-4">Price Range</h4>
+                        <form action="courseList" method="get">
+                            <!-- Hidden input for the action -->
+                            <input name="action" value="filterPrice" hidden="">
 
-        <!-- Courses Start -->
-        <div class="container-xxl py-5">
-            <div class="container">
-                <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                    <h6 class="section-title bg-white text-center px-3">Popular Courses</h6>
-                    <h1 class="mb-5" style="color: #fb873f;">Explore new and trending free online courses</h1>
-                </div>
-                <div class="row g-4 py-2">
-
-
-                    <c:forEach items="${listCourse}" var="listCourse">
-
-                        <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                            <div class="course-item shadow">
-                                <div class="position-relative overflow-hidden text-light image">
-                                    <img class="img-fluid" src="${listCourse.courseImg}" alt="${listCourse.courseName}">
-                                    <div style="position:absolute;top: 15px;left: 16px; font-size:12px; border-radius:3px; background-color:#fb873f;"
-                                         class="px-2 py-1 fw-bold text-uppercase">FREE</div>
-
-                                </div>
-                                <div class="p-2 pb-0">
-
-                                    <h5 class="mb-1"><a href="single.html" class="text-dark">${listCourse.courseName}</a> </h5>
-                                </div>
-                                <div class="d-flex">
-                                    <small class="flex-fill text-center py-1 px-2"><i class="fa fa-star text-warning me-2"></i>
-                                        4.55</small>
-                                    <small class="flex-fill text-center py-1 px-2"><i class="fa fa-user-graduate me-2"></i>5.8L+
-                                        Learners
-                                    </small>
-                                    <small class="flex-fill text-center py-1 px-2"><i
-                                            class="fa fa-user me-2"></i>Begin</small>
-                                </div>
-                                <div class="d-flex">
-                                    <small class="flex-fill text-left p-2 px-2"><i class="fa fa-clock me-2"></i>${listCourse.duration}
-                                        Hrs</small>
-                                    <small class="py-1 px-2 fw-bold fs-6 text-center">₹ 0</small>
-                                    <small class=" text-primary py-1 px-2 fw-bold fs-6" style="float:right;"><a href="#">Enroll
-                                            Now </a><i class="fa fa-chevron-right me-2 fs-10"></i></small>
-                                </div>
+                            <div class="range-slider">
+                                <input type="range" name="minPrice" class="form-range" 
+                                       min="${minPrice}" max="${maxPrice}" 
+                                       id="minPriceSlider" value="${minPrice}" oninput="updateRangeSlider()">
+                                <input type="range" name="maxPrice" class="form-range" 
+                                       min="${minPrice}" max="${maxPrice}" 
+                                       id="maxPriceSlider" value="${maxPrice}" oninput="updateRangeSlider()">
                             </div>
+
+                            <p>Selected Price Range: <span id="minPriceValue">${minPrice}</span> - <span id="maxPriceValue">${maxPrice}</span></p>
+
+                            <button type="submit" class="btn btn-primary mt-2">Filter by Price</button>
+                        </form>
+
+                        <script>
+                            // Update the displayed price range values and ensure the sliders don't overlap
+                            function updateRangeSlider() {
+                                let minSlider = document.getElementById('minPriceSlider');
+                                let maxSlider = document.getElementById('maxPriceSlider');
+                                let minPrice = Math.min(parseInt(minSlider.value), parseInt(maxSlider.value) - 1);
+                                let maxPrice = Math.max(parseInt(maxSlider.value), parseInt(minSlider.value) + 1);
+
+                                // Update slider values
+                                minSlider.value = minPrice;
+                                maxSlider.value = maxPrice;
+
+                                // Update displayed values
+                                document.getElementById('minPriceValue').textContent = minPrice;
+                                document.getElementById('maxPriceValue').textContent = maxPrice;
+                            }
+
+                            // Initialize the range slider display values
+                            updateRangeSlider();
+                        </script>
+
+
+
+                        <h4 class="mb-4">Categories</h4>
+                        <ul class="list-group">
+                            <c:forEach items="${listTop10Category}" var="category">
+                                <li class="list-group-item"><a href="courseList?action=category&name=${category.categoryName}" class="text-dark">${category.categoryName}</a></li>
+                                </c:forEach>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-9 col-md-8">
+                    <!-- Courses Start -->
+                    <div class="container py-5">
+                        <div class="text-center" data-wow-delay="0.1s">
+                            <h6 class="section-title bg-white text-center px-3">Popular Courses</h6>
+                            <h1 class="mb-5" style="color: #fb873f;">Explore new and trending free online courses</h1>
+                        </div>
+                        <div class="row g-4 py-2" id="courseContainer">
+                            <c:forEach items="${listCourse}" var="listCourse">
+                                <div class="col-lg-3 col-md-6 course-item">
+                                    <div class="shadow">
+                                        <div class="position-relative overflow-hidden text-light image">
+                                            <img class="img-fluid" src="${listCourse.courseImg}" alt="${listCourse.courseName}">
+                                            <div style="position:absolute;top: 15px;left: 16px; font-size:12px; border-radius:3px; background-color:#fb873f;" class="px-2 py-1 fw-bold text-uppercase">FREE</div>
+                                        </div>
+                                        <div class="p-2 pb-0">
+                                            <h5 class="mb-1"><a href="single.html" class="text-dark">${listCourse.courseName}</a></h5>
+                                        </div>
+                                        <div class="d-flex">
+                                            <small class="flex-fill text-center py-1 px-2"><i class="fa fa-star text-warning me-2"></i>4.55</small>
+                                            <small class="flex-fill text-center py-1 px-2"><i class="fa fa-user-graduate me-2"></i>5.8L+ Learners</small>
+                                            <small class="flex-fill text-center py-1 px-2"><i class="fa fa-user me-2"></i>Begin</small>
+                                        </div>
+                                        <div class="d-flex">
+                                            <small class="flex-fill text-left p-2 px-2"><i class="fa fa-clock me-2"></i>${listCourse.duration} Hrs</small>
+                                            <small class="py-1 px-2 fw-bold fs-6 text-center">₹ 0</small>
+                                            <small class="text-primary py-1 px-2 fw-bold fs-6" style="float:right;"><a href="#">Enroll Now </a><i class="fa fa-chevron-right me-2 fs-10"></i></small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </c:forEach>
                         </div>
 
-                    </c:forEach>
+                        <!-- Pagination Controls -->
+                        <div class="text-center my-4">
+                            <button id="prevBtn" class="btn btn-primary" onclick="changePage(-1)">Previous</button>
+                            <span id="pageInfo"></span>
 
+                            <!-- Page Number Controls -->
+                            <div id="paginationNumbers" class="d-inline-block mx-3"></div>
 
+                            <button id="nextBtn" class="btn btn-primary" onclick="changePage(1)">Next</button>
+                        </div>
+                    </div>
+                    <!-- Courses End -->
                 </div>
-
             </div>
         </div>
+        <!-- Sidebar End -->
+
+
+
+
+        <script>
+            const itemsPerPage = 12; // Number of items to display per page
+            let currentPage = 1;
+
+            const items = document.querySelectorAll('.course-item'); // Select all course items
+            const totalPages = Math.ceil(items.length / itemsPerPage); // Calculate total pages
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageInfo = document.getElementById('pageInfo');
+
+            function updatePaginationNumbers() {
+                const paginationNumbers = document.getElementById('paginationNumbers');
+                paginationNumbers.innerHTML = ''; // Clear existing numbers
+
+                // Show page numbers based on the current page
+                const startPage = Math.max(1, currentPage - 1); // start from currentPage - 1, but not less than 1
+                const endPage = Math.min(totalPages, currentPage + 1); // end at currentPage + 1, but not more than totalPages
+
+                // Always show first page
+                if (startPage > 1) {
+                    const firstPage = document.createElement('button');
+                    firstPage.className = 'btn btn-outline-primary mx-1';
+                    firstPage.innerText = '1';
+                    firstPage.onclick = () => {
+                        currentPage = 1;
+                        showPage(currentPage);
+                    };
+                    paginationNumbers.appendChild(firstPage);
+
+                    if (startPage > 2) { // Show ... if there's a gap
+                        const ellipsis = document.createElement('span');
+                        ellipsis.innerText = '...';
+                        paginationNumbers.appendChild(ellipsis);
+                    }
+                }
+
+                // Loop through page numbers
+                for (let i = startPage; i <= endPage; i++) {
+                    const pageNum = document.createElement('button');
+                    pageNum.className = 'btn btn-outline-primary mx-1';
+                    pageNum.innerText = i;
+                    pageNum.onclick = () => {
+                        currentPage = i;
+                        showPage(currentPage);
+                    };
+
+                    // Highlight the current page
+                    if (i === currentPage) {
+                        pageNum.classList.add('active');
+                    }
+
+                    paginationNumbers.appendChild(pageNum);
+                }
+
+                // Always show the last page
+                if (endPage < totalPages) {
+                    if (endPage < totalPages - 1) { // Show ... if there's a gap
+                        const ellipsis = document.createElement('span');
+                        ellipsis.innerText = '...';
+                        paginationNumbers.appendChild(ellipsis);
+                    }
+
+                    const lastPage = document.createElement('button');
+                    lastPage.className = 'btn btn-outline-primary mx-1';
+                    lastPage.innerText = totalPages;
+                    lastPage.onclick = () => {
+                        currentPage = totalPages;
+                        showPage(currentPage);
+                    };
+                    paginationNumbers.appendChild(lastPage);
+                }
+            }
+
+
+            function showPage(page) {
+                // Hide all items
+                items.forEach((item, index) => {
+                    item.style.display = 'none'; // Initially hide all items
+                    // Show items for the current page
+                    if (index >= (page - 1) * itemsPerPage && index < page * itemsPerPage) {
+                        item.style.display = 'block'; // Show items for the current page
+                    }
+                });
+
+                // Update page information
+                pageInfo.innerText = `Page ${page} of ${totalPages}`;
+
+                // Enable/disable buttons
+                prevBtn.disabled = page === 1; // Disable prev button on first page
+                nextBtn.disabled = page === totalPages; // Disable next button on last page
+
+                // Update pagination numbers
+                updatePaginationNumbers();
+            }
+
+            function changePage(direction) {
+                const newPage = currentPage + direction;
+
+                // Ensure the new page is within valid bounds
+                if (newPage >= 1 && newPage <= totalPages) {
+                    currentPage = newPage;
+                    showPage(currentPage); // Show the new page
+                }
+            }
+
+            // Display the first page when loading
+            document.addEventListener('DOMContentLoaded', function () {
+                showPage(currentPage);
+            });
+        </script>
+
         <!-- Courses End -->
 
 
