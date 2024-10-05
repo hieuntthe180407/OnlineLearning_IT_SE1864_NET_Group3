@@ -76,7 +76,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Choices](
 	[ChoiceID] [int] IDENTITY(1,1) NOT NULL,
-	[QuestionID] [int] NOT NULL,
+	[ExamQuestionID] [int] NOT NULL,
 	[Description] [varchar](255) NULL,
 	[IsTrue] [bit] NULL,
 	[Comment] [text] NULL,
@@ -441,6 +441,27 @@ PRIMARY KEY CLUSTERED
 ) ON [PRIMARY]
 GO
 
+/****** Object:  Table [dbo].[Exam_Question] ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Exam_Question](
+	[ExamQuestionID] [int] NOT NULL,
+	[QuestionID] [int] NOT NULL,
+	[ExamID] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ExamQuestionID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[Exam_Question]  WITH CHECK ADD FOREIGN KEY([QuestionID])
+REFERENCES [dbo].[Question] ([QuestionID])
+GO
+ALTER TABLE [dbo].[Exam_Question]  WITH CHECK ADD FOREIGN KEY([ExamID])
+REFERENCES [dbo].[Exam] ([ExamID])
+GO
 
 
 ALTER TABLE [dbo].[Course] ADD  DEFAULT ((1)) FOR [Publish]
@@ -480,8 +501,8 @@ GO
 ALTER TABLE [dbo].[Certificate]  WITH CHECK ADD FOREIGN KEY([UserID])
 REFERENCES [dbo].[User] ([UserID])
 GO
-ALTER TABLE [dbo].[Choices]  WITH CHECK ADD FOREIGN KEY([QuestionID])
-REFERENCES [dbo].[Question] ([QuestionID])
+ALTER TABLE [dbo].[Choices]  WITH CHECK ADD FOREIGN KEY([ExamQuestionID])
+REFERENCES [dbo].[Exam_Question] ([ExamQuestionID])
 GO
 
 ALTER TABLE [dbo].[CommentsBlog]  WITH CHECK ADD FOREIGN KEY([BlogId])
