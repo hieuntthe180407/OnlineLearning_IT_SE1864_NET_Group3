@@ -101,7 +101,7 @@ public class editProfile extends HttpServlet {
                 avatar = oldAvatar;
             } else {
 
-                String realPath = request.getServletContext().getRealPath("/img");
+                String realPath = request.getServletContext().getRealPath("/imgavatar");
                 String fileName = Path.of(imagePart.getSubmittedFileName()).getFileName().toString();
                 if (!Files.exists(Path.of(realPath))) {
 
@@ -109,7 +109,7 @@ public class editProfile extends HttpServlet {
 
                 }
                 imagePart.write(realPath + "\\" + fileName);
-                avatar = realPath.substring(realPath.length() - 3, realPath.length()) + "/" + fileName;
+                avatar = realPath.substring(realPath.length() - 9, realPath.length()) + "/" + fileName;
 
             }
 
