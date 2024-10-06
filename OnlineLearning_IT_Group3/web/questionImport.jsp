@@ -71,7 +71,7 @@
     <body>
         <div class="container">
             <h1>Import Questions</h1>
-            <form action="action">           
+            <form action="ImportServlet" method="post" enctype="multipart/form-data">           
                 <!-- Add to Course Input -->
                 <div class="form-group">
                     <label for="">Add to Course:</label>
@@ -80,13 +80,12 @@
 
                 <!-- Form Group for File Upload -->
                 <div class="form-group">
-                    <label for="">Select file to import (.csv, .xlsx):</label>
-                    <input type="file" id="fileInput" accept=".xlsx">
-                    <span class="error-message" id="errorMessage"></span>
+                    <label for="">Select file to import (.xlsx):</label>
+                    <input type="file" name="fileInput" accept=".xlsx" >
                 </div>
 
                 <!-- Import Button -->
-                <button class="import-btn">Import Questions</button>
+                <button type="submit" class="import-btn">Import Questions</button>
             </form>
         </div>
 
