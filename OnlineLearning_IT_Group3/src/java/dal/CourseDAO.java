@@ -414,6 +414,25 @@ public class CourseDAO extends DBContext {
 
         return courses;
     }
+    
+    public boolean updateCourse(int id,String Category, String name,String des){
+        try {
+            String sql = "update Lessons set LessonName = ?, LessonURL = ?,Description=?, LessonNumber=? where LessonID = ?";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, name);
+            st.setString(2, url);
+             st.setString(3, des);
+            st.setInt(4, num); 
+            st.setInt(5, id);  
+            st.executeUpdate();
+            st.close();
+            return true;
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
 
     public static void main(String[] args) {
         CourseDAO dao = new CourseDAO();

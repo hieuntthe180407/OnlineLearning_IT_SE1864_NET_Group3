@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="model.Course" %>
+<%@page import="model.*" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -45,6 +45,25 @@
     </head>
     </head>
     <body>
+        <script>
+function previewImage(event) {
+    const imageInput = event.target;
+    const imagePreview = document.getElementById('imagePreview');
+    
+    if (imageInput.files && imageInput.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            imagePreview.src = e.target.result;
+            imagePreview.style.display = 'block'; // Show the image
+        }
+        
+        reader.readAsDataURL(imageInput.files[0]); // Read the image file
+    } else {
+        imagePreview.style.display = 'none'; // Hide image preview if no file selected
+    }
+}
+</script>
         <%@include file= "header.jsp" %>
         <!--Main container start -->
 	<main class="ttr-wrapper">
@@ -81,12 +100,20 @@
 											<h3>1. Category</h3>
 										</div>
 									</div>
+                                                                    <div class="col-12">
+   
+
+
                                                                     <input type="hidden" name="CourseID" value="<%= courseID %>">
 									<div class="form-group col-6">
+										<select id="categorySelect" name="category" class="form-control">
+        <option value="">-- Select a Category --</option>
+        <option value="category1">Category 1</option>
+        <option value="category2">Category 2</option>
+        <option value="category3">Category 3</option>
+        <!-- Add more options as needed -->
+    </select>
 										
-										<div>
-											<input class="form-control" type="text" name="lessonName" value="">
-										</div>
 									</div>
                                                                                 
                                                                                 <div class="ml-auto">
@@ -164,7 +191,15 @@
 											<input class="form-control" type="text" name="lessonName" value="">
 										</div>
 									</div>
-                                                                                
+                                                                     <div class="col-12">
+    <label for="imageUpload">Upload Image:</label>
+    <input type="file" id="imageUpload" name="image" accept="image/*" class="form-control" onchange="previewImage(event)">
+</div>
+
+<div class="col-12 mt-3">
+    <img id="imagePreview" src="#" alt="Image Preview" style="max-width: 100px; display: none;">
+</div>
+                                                                         <div class="col-12 m-t20">       
                                                                                 <div class="ml-auto">
 											<h3>2.Course Name</h3>
 										</div>
@@ -176,7 +211,14 @@
 											<input class="form-control" type="text" name="lessonName" value="">
 										</div>
 									</div>
-									
+									<div class="col-12">
+    <label for="imageUpload">Upload Image:</label>
+    <input type="file" id="imageUpload" name="image" accept="image/*" class="form-control" onchange="previewImage(event)">
+</div>
+
+<div class="col-12 mt-3">
+    <img id="imagePreview" src="#" alt="Image Preview" style="max-width: 100px; display: none;">
+</div>
 									
 									<div class="seperator"></div>
 									

@@ -48,6 +48,32 @@ public class courseEdit extends HttpServlet {
         }
         
     } 
+     @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        try{
+        String idParam = request.getParameter("LessonID");
+        String name = request.getParameter("lessonName");
+        String url = request.getParameter("lessonUrl");
+        String des = request.getParameter("description");
+        int num = Integer.parseInt(request.getParameter("LessonNumber"));
+        CourseDAO l = new CourseDAO();
+        if(idParam !=null){
+            int id = Integer.parseInt(idParam);
+            l.update(id, name, url,des,num);
+             response.sendRedirect("courseList");    
+        }
+        else{
+            int moocID = Integer.parseInt(request.getParameter("MoocID"));
+            l.addLesson(name, url,moocID,des,num);
+           response.sendRedirect("courseList");    
+        }
+         }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            response.sendRedirect("lessonEdit");        
+        }
+    }
     
 
 }
