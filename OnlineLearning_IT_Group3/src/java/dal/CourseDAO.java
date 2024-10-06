@@ -415,15 +415,32 @@ public class CourseDAO extends DBContext {
         return courses;
     }
     
-    public boolean updateCourse(int id,String Category, String name,String des){
+    public boolean updateCourse(int id,int Category, String name,String des){
+         String sql = "update Course set CategoryID=? , courseName = ?, Description=?  where CourseID = ?";
+         try{
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, Category);
+            st.setString(2, name);
+             st.setString(3, des);
+            st.setInt(4, id);  
+            st.executeUpdate();
+            st.close();
+            return true;
+         }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+     public boolean addCourse(String name, int CategoryID,String des){
         try {
-            String sql = "update Lessons set LessonName = ?, LessonURL = ?,Description=?, LessonNumber=? where LessonID = ?";
+            String sql = "Insert into Course(CourseName,CategoryID,Description) values(?,?,?)";
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, name);
-            st.setString(2, url);
-             st.setString(3, des);
-            st.setInt(4, num); 
-            st.setInt(5, id);  
+            st.setInt(2, CategoryID);
+            
+               st.setString(3,des); 
+              
             st.executeUpdate();
             st.close();
             return true;
@@ -443,6 +460,8 @@ public class CourseDAO extends DBContext {
             System.out.println(c.isIsActive());
             System.out.println("------------------");
         }
+        dao.updateCourse(4, 1, "bruh", "tron");
+        
     }
 
 }

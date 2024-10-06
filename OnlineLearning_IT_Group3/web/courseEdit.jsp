@@ -6,6 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.*" %>
+<%@page import="java.util.*" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -67,12 +69,12 @@ function previewImage(event) {
         <%@include file= "header.jsp" %>
         <!--Main container start -->
 	<main class="ttr-wrapper">
-             <%
+             <% List<Category> list = (List<Category>) request.getAttribute("listCa");
                  Course c = (Course)request.getAttribute("Course");
                 if (c!=null){
                  
     int courseID = Integer.parseInt(request.getParameter("courseID"));
-   
+    
             %>
             <div class="container-fluid bg-primary py-5 mb-5 page-header">
         <div class="container py-5">
@@ -106,12 +108,20 @@ function previewImage(event) {
 
                                                                     <input type="hidden" name="CourseID" value="<%= courseID %>">
 									<div class="form-group col-6">
-										<select id="categorySelect" name="category" class="form-control">
+	<select id="categorySelect" name="category" class="form-control">
         <option value="">-- Select a Category --</option>
-        <option value="category1">Category 1</option>
-        <option value="category2">Category 2</option>
-        <option value="category3">Category 3</option>
-        <!-- Add more options as needed -->
+       <% 
+            
+            if (list != null) {
+                for (Category ca : list) {
+        %>
+                    <option name = "CategoryID" value="<%= ca.getCategoryID() %>"><%= ca.getCategoryName() %></option>
+        <% 
+                }
+            }
+
+
+        %>
     </select>
 										
 									</div>
@@ -119,12 +129,13 @@ function previewImage(event) {
                                                                                 <div class="ml-auto">
 											<h3>2.Course Name</h3>
 										</div>
+    <img src="img/Course/course1.jpg" />
 									</div>
                                                                     
 									<div class="form-group col-6">
 										
 										<div>
-											<input class="form-control" type="text" name="lessonName" value="<%=c.getCourseName()%>">
+											<input class="form-control" type="text" name="courseName" value="<%=c.getCourseName()%>">
 										</div>
 									</div>
 									
@@ -187,18 +198,23 @@ function previewImage(event) {
                                                                     
 									<div class="form-group col-6">
 										
-										<div>
-											<input class="form-control" type="text" name="lessonName" value="">
-										</div>
-									</div>
-                                                                     <div class="col-12">
-    <label for="imageUpload">Upload Image:</label>
-    <input type="file" id="imageUpload" name="image" accept="image/*" class="form-control" onchange="previewImage(event)">
-</div>
+										<select id="categorySelect" name="category" class="form-control">
+        <option value="">-- Select a Category --</option>
+       <% 
+            
+            if (list != null) {
+                for (Category ca : list) {
+        %>
+                    <option value="<%= ca.getCategoryID() %>"><%= ca.getCategoryName() %></option>
+        <% 
+                }
+            }
 
-<div class="col-12 mt-3">
-    <img id="imagePreview" src="#" alt="Image Preview" style="max-width: 100px; display: none;">
-</div>
+
+        %>
+    </select>
+									</div>
+                                                                     
                                                                          <div class="col-12 m-t20">       
                                                                                 <div class="ml-auto">
 											<h3>2.Course Name</h3>
@@ -208,7 +224,7 @@ function previewImage(event) {
 									<div class="form-group col-6">
 										
 										<div>
-											<input class="form-control" type="text" name="lessonName" value="">
+											<input class="form-control" type="text" name="courseName" value="">
 										</div>
 									</div>
 									<div class="col-12">

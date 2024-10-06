@@ -35,4 +35,12 @@ public class CategoryDAO extends DBContext {
 
         return list;
     }
+    public static void main(String[] args) {
+        CategoryDAO ca = new CategoryDAO();
+        List<Category> c = ca.getAllCategory();
+        for(Category yyy : c)
+        {
+            System.out.println(yyy);
+        }
+    }
 }
