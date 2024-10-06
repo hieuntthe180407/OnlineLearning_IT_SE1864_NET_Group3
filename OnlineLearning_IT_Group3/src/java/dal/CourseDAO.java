@@ -82,7 +82,7 @@ public class CourseDAO extends DBContext {
         try {
             String sql = "  SELECT \n"
                     + "    c.[CourseID],\n"
-                    + "    c.[UserID],\n"
+                    
                     + "    c.[CategoryID],\n"
                     + "    c.[CourseImg],\n"
                     + "    c.[CourseName],\n"
@@ -110,7 +110,7 @@ public class CourseDAO extends DBContext {
                     + "         [PriceID] = (SELECT MAX([PriceID]) \n"
                     + "                      FROM [dbo].[Price] p2 \n"
                     + "                      WHERE p2.[CourseID] = p1.[CourseID])\n"
-                    + "    ) p ON c.[CourseID] = p.[CourseID] where CourseID = " + id;
+                    + "    ) p ON c.[CourseID] = p.[CourseID] where c.CourseID = " + id;
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
@@ -123,6 +123,7 @@ public class CourseDAO extends DBContext {
                 c.setPrice(rs.getDouble("ListPrice"));
                 c.setSalePrice(rs.getDouble("SalePrice"));
                 c.setIsActive(rs.getBoolean("IsActive"));
+                c.setDescription(rs.getString("Description"));
                 return c;
             }
         } catch (Exception e) {

@@ -104,4 +104,66 @@ public class LessonDAO extends DBContext {
             return false;
         }
     }
-}
+       public List<Lesson> getLessons(int offset, int limit,int courseID) {
+        List<Lesson> list = new ArrayList<>();
+
+        try {
+            String query = "Select * from Mooc m,Lessons l,Course c WHERE m.CourseID=c.CourseID AND l.MoocID=m.MoocID AND c.CourseID=?  ORDER BY LessonID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
+
+            PreparedStatement st = connection.prepareStatement(query);
+            st.setInt(1, courseID);
+            st.setInt(2, offset);
+            st.setInt(3, limit);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                  Lesson u = new Lesson();
+                u.setLessonID(rs.getInt("LessonID"));
+                u.setLessonName(rs.getString("LessonName"));
+                 u.setMoocID(rs.getInt("MoocID"));
+                u.setDescription(rs.getString("Description"));
+                u.setLessonNumber(rs.getInt("LessonNumber"));
+                u.setLessonURL(rs.getString("LessonURL"));
+               
+                
+                list.add(u);
+
+              
+               
+            }
+            rs.close();
+            st.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+       public int getTotalLessonCount(int courseID) {
+        
+       try {
+            String sql =  "SELECT COUNT(*) from Mooc m,Lessons l,Course c WHERE m.CourseID=c.CourseID AND l.MoocID=m.MoocID AND c.CourseID=?";
+
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, courseID);
+           
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+
+              
+               
+            }
+            rs.close();
+            st.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0; // Return 0 in case of any error
+    }
+       public static void main(String[] args) {
+        LessonDAO l = new LessonDAO();
+           System.out.println(l.getTotalLessonCount(3));
+        
+       
+        }
+    }
+
