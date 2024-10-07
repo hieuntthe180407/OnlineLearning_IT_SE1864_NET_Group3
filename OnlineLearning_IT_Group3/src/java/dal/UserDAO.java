@@ -233,7 +233,7 @@ public class UserDAO extends DBContext {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e);
             
         } 
         
@@ -430,7 +430,7 @@ public class UserDAO extends DBContext {
             st.executeUpdate();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
     }
 
@@ -451,7 +451,7 @@ public class UserDAO extends DBContext {
                 exists = true;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
         return  exists;
 }

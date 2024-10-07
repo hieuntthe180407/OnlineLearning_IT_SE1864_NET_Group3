@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.CourseDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -74,7 +75,7 @@ public class ImportServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String course = request.getParameter("course");
-        
+
         Part filePart = request.getPart("fileInput"); // lấy file từ form
         InputStream fileContent = filePart.getInputStream();
 
@@ -82,6 +83,14 @@ public class ImportServlet extends HttpServlet {
         Sheet sheet = workbook.getSheetAt(0);
 
         boolean hasErrors = false;
+
+        //Check xem có course trong database
+        CourseDAO courseDAO = new CourseDAO();
+        if (!courseDAO.checkCourseByName(course)) {
+            request.setAttribute("errorImport", "Wrong course to add.");
+            request.getRequestDispatcher("questionImport.jsp").forward(request, response);
+            return;
+        }
 
         for (int i = 1; i <= sheet.getLastRowNum(); i++) { // Bắt đầu từ hàng 1, bỏ qua tiêu đề
             Row row = sheet.getRow(i);
@@ -91,7 +100,7 @@ public class ImportServlet extends HttpServlet {
 
             String questionContent = getCellValue(row, 0);
             String questionType = getCellValue(row, 1);
-            String questionPath =getCellValue(row, 2);
+            String questionPath = getCellValue(row, 2);
             String level = getCellValue(row, 3);
             String correctAnswer = getCellValue(row, 4);
 
@@ -112,13 +121,13 @@ public class ImportServlet extends HttpServlet {
             }
 
             if (!error.isEmpty()) {
-            //Từ đây xử lý in ra cột bên cạnh khi có lỗi
+                //Từ đây xử lý in ra cột bên cạnh khi có lỗi
                 hasErrors = true;
                 Cell errorCell = row.createCell(row.getLastCellNum());
                 errorCell.setCellValue(error);
-            }else{
+            } else {
                 //Từ đây cho question vào database
-                
+
             }
         }
 

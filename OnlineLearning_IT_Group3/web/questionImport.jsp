@@ -68,6 +68,11 @@
             text-decoration: underline;
         }
     </style>
+    <%
+                
+String error = (String) request.getAttribute("errorImport");
+            
+    %>
     <body>
         <div class="container">
             <h1>Import Questions</h1>
@@ -81,8 +86,10 @@
                 <!-- Form Group for File Upload -->
                 <div class="form-group">
                     <label for="">Select file to import (.xlsx):</label>
-                    <input type="file" name="fileInput" accept=".xlsx" >
+                    <input type="file" name="fileInput" accept=".xlsx, .xls" required>
                 </div>
+                <h3 style="color: red"> <%=(error != null) ? error : ""%> </h3>
+
 
                 <!-- Import Button -->
                 <button type="submit" class="import-btn">Import Questions</button>

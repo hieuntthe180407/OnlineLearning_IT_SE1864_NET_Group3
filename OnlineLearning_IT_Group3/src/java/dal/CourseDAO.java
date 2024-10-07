@@ -3,18 +3,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package dal;
+
 import java.sql.*;
 import java.util.*;
 import model.Category;
 import model.Course;
 import model.Price;
+
 /**
  *
  * @author trong
  */
 public class CourseDAO extends DBContext {
 
-        public List<Course> getAllCourse() {
+    public List<Course> getAllCourse() {
 
         List<Course> list = new ArrayList<>();
 
@@ -77,8 +79,7 @@ public class CourseDAO extends DBContext {
         return list;
     }
 
-
-         public Course getCourseByID(int id) {
+    public Course getCourseByID(int id) {
         try {
             String sql = "  SELECT \n"
                     + "    c.[CourseID],\n"
@@ -130,8 +131,8 @@ public class CourseDAO extends DBContext {
         }
         return null;
     }
-         
-       public List<Category> getTop10Category() {
+
+    public List<Category> getTop10Category() {
         List<Category> categories = new ArrayList<>();
         String sql = "SELECT TOP 10 CategoryID, CategoryName FROM Category";
         try {
@@ -424,5 +425,26 @@ public class CourseDAO extends DBContext {
             System.out.println("------------------");
         }
     }
+
+    public boolean checkCourseByName(String courseName) {
+        boolean exists = false;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            String sql = "SELECT * FROM [Course] WHERE CourseName = ?";
+            st = connection.prepareStatement(sql);
+            st.setString(1, courseName); 
+            rs = st.executeQuery();  
+            if (rs.next()) {
+                exists = true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return exists;
+    }
+    
+    
 
 }
