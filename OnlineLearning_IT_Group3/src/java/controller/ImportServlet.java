@@ -73,6 +73,8 @@ public class ImportServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String course = request.getParameter("course");
+        
         Part filePart = request.getPart("fileInput"); // lấy file từ form
         InputStream fileContent = filePart.getInputStream();
 
@@ -89,6 +91,7 @@ public class ImportServlet extends HttpServlet {
 
             String questionContent = getCellValue(row, 0);
             String questionType = getCellValue(row, 1);
+            String questionPath =getCellValue(row, 2);
             String level = getCellValue(row, 3);
             String correctAnswer = getCellValue(row, 4);
 
@@ -109,10 +112,13 @@ public class ImportServlet extends HttpServlet {
             }
 
             if (!error.isEmpty()) {
-            //Từ đây xử lý lưu vào database
+            //Từ đây xử lý in ra cột bên cạnh khi có lỗi
                 hasErrors = true;
                 Cell errorCell = row.createCell(row.getLastCellNum());
                 errorCell.setCellValue(error);
+            }else{
+                //Từ đây cho question vào database
+                
             }
         }
 

@@ -234,22 +234,9 @@ public class UserDAO extends DBContext {
 
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            // Đảm bảo tài nguyên được đóng đúng cách
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (st != null) {
-                    st.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+            
+        } 
+        
         return u;
     }
 
