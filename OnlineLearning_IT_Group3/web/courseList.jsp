@@ -111,7 +111,7 @@
                         <div class="col-lg-3 col-md-6  text-center">
                             <div class="content shadow p-3 mb-2 wow fadeInUp" data-wow-delay="0.3s">
 
-                                <img src="img/cat1.png" class="img-fluid" alt="categories"></i>
+                                <img src="${listTop10Category.image}" class="img-fluid" alt="categories"></i>
 
                                 <h5 class="my-2">
                                     <a href="courseList?action=category&name=${listTop10Category.categoryName}" class="text-center">${listTop10Category.categoryName}</a>
@@ -215,7 +215,12 @@
                                         </div>
                                         <div class="d-flex">
                                             <small class="flex-fill text-left p-2 px-2"><i class="fa fa-clock me-2"></i>${listCourse.duration} Hrs</small>
-                                            <small class="py-1 px-2 fw-bold fs-6 text-center">₹ 0</small>
+                                            <small class="py-1 px-2 fw-bold fs-6 text-center">
+                                                <span style="color:red; text-decoration: line-through;">
+                                                    ${listCourse.salePrice > 0 ? listCourse.price : ''}
+                                                </span>
+                                                ${listCourse.salePrice > 0 ? listCourse.salePrice : listCourse.price} VND
+                                            </small>
                                             <small class="text-primary py-1 px-2 fw-bold fs-6" style="float:right;"><a href="#">Enroll Now </a><i class="fa fa-chevron-right me-2 fs-10"></i></small>
                                         </div>
                                     </div>

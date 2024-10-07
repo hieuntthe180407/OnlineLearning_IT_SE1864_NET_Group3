@@ -9,7 +9,7 @@ package model;
  * @author trong
  */
 public class Course {
-    private int courseID;
+   private int courseID;
     private int duration;
     private int report;
     private String courseImg;
@@ -18,9 +18,24 @@ public class Course {
     private double price;
     private double salePrice;
     private boolean isActive;
+    private User userId;
 
     public Course() {
     }
+
+    public Course(int courseID, int duration, int report, String courseImg, String courseName, String Description, double price, double salePrice, boolean isActive, User userId) {
+        this.courseID = courseID;
+        this.duration = duration;
+        this.report = report;
+        this.courseImg = courseImg;
+        this.courseName = courseName;
+        this.Description = Description;
+        this.price = price;
+        this.salePrice = salePrice;
+        this.isActive = isActive;
+        this.userId = userId;
+    }
+    
 
     public Course(int courseID, int duration, int report, String courseImg, String courseName, String Description) {
         this.courseID = courseID;
@@ -42,6 +57,15 @@ public class Course {
         this.salePrice = salePrice;
         this.isActive = isActive;
     }
+
+    public User getUserId() {
+        return userId;
+    }
+
+    public void setUserId(User userId) {
+        this.userId = userId;
+    }
+    
 
     public double getPrice() {
         return price;
@@ -116,6 +140,7 @@ public class Course {
         this.Description = Description;
     }
 
+   
    
     
 }
