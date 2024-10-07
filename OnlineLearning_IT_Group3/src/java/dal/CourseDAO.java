@@ -8,13 +8,14 @@ import java.util.*;
 import model.Category;
 import model.Course;
 import model.Price;
+import model.User;
 /**
  *
  * @author trong
  */
 public class CourseDAO extends DBContext {
 
-        public List<Course> getAllCourse() {
+       public List<Course> getAllCourse() {
 
         List<Course> list = new ArrayList<>();
 
@@ -77,8 +78,7 @@ public class CourseDAO extends DBContext {
         return list;
     }
 
-
-         public Course getCourseByID(int id) {
+    public Course getCourseByID(int id) {
         try {
             String sql = "  SELECT \n"
                     + "    c.[CourseID],\n"
@@ -130,8 +130,8 @@ public class CourseDAO extends DBContext {
         }
         return null;
     }
-         
-       public List<Category> getTop10Category() {
+
+    public List<Category> getTop10Category() {
         List<Category> categories = new ArrayList<>();
         String sql = "SELECT TOP 10 CategoryID, CategoryName FROM Category";
         try {
@@ -151,7 +151,7 @@ public class CourseDAO extends DBContext {
 
     public List<Category> getTop8Category() {
         List<Category> categories = new ArrayList<>();
-        String sql = "SELECT TOP 8 CategoryID, CategoryName FROM Category";
+        String sql = "SELECT TOP 8 * FROM Category";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
@@ -159,6 +159,7 @@ public class CourseDAO extends DBContext {
                 Category category = new Category();
                 category.setCategoryID(rs.getInt("CategoryID"));
                 category.setCategoryName(rs.getString("CategoryName"));
+                category.setImage(rs.getString("Image"));
                 categories.add(category);
             }
         } catch (Exception e) {
@@ -318,7 +319,7 @@ public class CourseDAO extends DBContext {
 
     public double getMaxPrice() {
         double maxPrice = 0;
-        String sql = "SELECT MAX(ListPrice) AS MaxPrice FROM [testElearning5].[dbo].[Price]";
+        String sql = "SELECT MAX(ListPrice) AS MaxPrice FROM [SWP391_FALL2024].[dbo].[Price]";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -336,7 +337,7 @@ public class CourseDAO extends DBContext {
 
     public double getMinPrice() {
         double minPrice = 0;
-        String sql = "SELECT MIN(ListPrice) AS MinPrice FROM [testElearning5].[dbo].[Price]";
+        String sql = "SELECT MIN(ListPrice) AS MinPrice FROM [SWP391_FALL2024].[dbo].[Price]";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -414,15 +415,59 @@ public class CourseDAO extends DBContext {
         return courses;
     }
 
+    public List<Course> getCoursesByTeacher(int teacherId) {
+        List<Course> courses = new ArrayList<>();
+        String sql = "SELECT c.[CourseID], c.[UserID], c.[CategoryID], c.[CourseImg], c.[CourseName], "
+                + "c.[Publish], c.[Duration], c.[Report], c.[IsDiscontinued], c.[NewVersionId], "
+                + "c.[Description], p.[ListPrice], p.[SalePrice], p.[IsActive] "
+                + "FROM [dbo].[Course] c "
+                + "LEFT JOIN (SELECT [PriceID], [CourseID], [ListPrice], [SalePrice], [IsActive] "
+                + "            FROM [dbo].[Price] p1 "
+                + "            WHERE [PriceID] = (SELECT MAX([PriceID]) FROM [dbo].[Price] p2 "
+                + "                             WHERE p2.[CourseID] = p1.[CourseID]) ) p "
+                + "ON c.[CourseID] = p.[CourseID] WHERE c.UserID = ?"; // Adjust as necessary for your schema
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, teacherId); // Set the teacher's UserID parameter
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    Course c = new Course();
+                    c.setCourseID(rs.getInt("courseID"));
+                    
+                    UserDAO uDao = new UserDAO();
+                    User user = uDao.getUserById(teacherId);
+                    c.setUserId(user);
+                    
+                    
+                    c.setDuration(rs.getInt("Duration"));
+                    c.setReport(rs.getInt("Report"));
+                    c.setCourseImg(rs.getString("courseIMG"));
+                    c.setCourseName(rs.getString("courseName"));
+                    c.setDescription(rs.getString("Description"));
+                    c.setPrice(rs.getDouble("ListPrice"));
+                    c.setSalePrice(rs.getDouble("SalePrice"));
+                    c.setIsActive(rs.getBoolean("IsActive"));
+                    courses.add(c);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error while fetching courses by teacher ID: " + e.getMessage());
+        }
+
+        return courses;
+    }
+
     public static void main(String[] args) {
         CourseDAO dao = new CourseDAO();
-        List<Course> list = dao.getAllCourse();
-        for (Course c : list) {
-            System.out.println(c.getPrice());
-            System.out.println(c.getSalePrice());
-            System.out.println(c.isIsActive());
+  List<Course> courses =dao.getCoursesByTeacher(1);
+          
+          for (Course c : courses) {
+            System.out.println(c.getUserId().getFullName());
+           
             System.out.println("------------------");
         }
     }
 
 }
+
+

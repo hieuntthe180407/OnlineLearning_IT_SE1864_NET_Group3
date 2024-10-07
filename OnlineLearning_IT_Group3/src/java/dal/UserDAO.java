@@ -469,4 +469,39 @@ public class UserDAO extends DBContext {
         return  exists;
 }
     
+    public User getUserById(int userId) {
+        User user = null;
+        String sql = "SELECT u.[UserID], u.[FullName], u.[DateOfBirth], u.[Email], u.[Password], u.[Phone], u.[Address], u.[Gender], r.[RoleName], u.[Avatar] "
+                + "FROM [dbo].[User] u "
+                + "JOIN [dbo].[Role] r ON u.RoleID = r.RoleID "
+                + "WHERE u.[UserID] = ?";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, userId);
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next()) {
+                user = new User();
+                user.setUserID(rs.getInt("UserID"));
+                user.setFullName(rs.getString("FullName"));
+                user.setDateOfBirth(rs.getString("DateOfBirth"));
+                user.setEmail(rs.getString("Email"));
+                user.setPassword(rs.getString("Password"));
+                user.setPhone(rs.getString("Phone"));
+                user.setAddress(rs.getString("Address"));
+                user.setGender(rs.getString("Gender"));
+
+                Role role = new Role();
+                role.setRoleName(rs.getString("RoleName"));
+                user.setRole(role);
+                user.setAvatar(rs.getString("Avatar"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error while getting user by ID: " + e.getMessage());
+        }
+
+        return user;
+    }
+    
 }
