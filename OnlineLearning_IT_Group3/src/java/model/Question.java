@@ -18,20 +18,20 @@ public class Question {
     private String questionType;
     private String questionImgOrVideo;
     private String level;
-    private String Statusl;
+    private String Status;
     private String correctAnswer;
     private Course course;
 
     public Question() {
     }
 
-    public Question(int questionId, String questionContent, String questionType, String questionImgOrVideo, String level, String Statusl, String correctAnswer, Course course) {
+    public Question(int questionId, String questionContent, String questionType, String questionImgOrVideo, String level, String Status, String correctAnswer, Course course) {
         this.questionId = questionId;
         this.questionContent = questionContent;
         this.questionType = questionType;
         this.questionImgOrVideo = questionImgOrVideo;
         this.level = level;
-        this.Statusl = Statusl;
+        this.Status = Status;
         this.correctAnswer = correctAnswer;
         this.course = course;
     }
@@ -76,12 +76,12 @@ public class Question {
         this.level = level;
     }
 
-    public String getStatusl() {
-        return Statusl;
+    public String getStatus() {
+        return Status;
     }
 
-    public void setStatusl(String Statusl) {
-        this.Statusl = Statusl;
+    public void setStatus(String Status) {
+        this.Status = Status;
     }
 
     public String getCorrectAnswer() {
@@ -106,7 +106,7 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question{" + "questionId=" + questionId + ", questionContent=" + questionContent + ", questionType=" + questionType + ", questionImgOrVideo=" + questionImgOrVideo + ", level=" + level + ", Statusl=" + Statusl + ", correctAnswer=" + correctAnswer + ", course=" + course.getCourseName() + '}';
+        return "Question{" + "questionId=" + questionId + ", questionContent=" + questionContent + ", questionType=" + questionType + ", questionImgOrVideo=" + questionImgOrVideo + ", level=" + level + ", Statusl=" + Status + ", correctAnswer=" + correctAnswer + ", course=" + course.getCourseName() + '}';
     }
     
     

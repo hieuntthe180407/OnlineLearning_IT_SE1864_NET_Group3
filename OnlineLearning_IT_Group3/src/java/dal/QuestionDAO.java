@@ -27,7 +27,7 @@ public class QuestionDAO extends DBContext {
                     + ",[Status]"
                     + ",CorrectAnswer"
                     + ",CourseID)\n"
-                    + "VALUES (?,?,?,?,'Visible',?,?)";
+                    + "VALUES (?,?,?,?,?,?,?)";
 
             st = connection.prepareStatement(sql);
 
@@ -35,8 +35,9 @@ public class QuestionDAO extends DBContext {
             st.setString(2, question.getQuestionType());
             st.setString(3, question.getQuestionImgOrVideo());
             st.setString(4, question.getLevel());
-            st.setString(5, question.getCorrectAnswer());
-            st.setInt(6, question.getCourse().getCourseID());
+            st.setString(5, question.getStatus());
+            st.setString(6, question.getCorrectAnswer());
+            st.setInt(7, question.getCourse().getCourseID());
             st.executeUpdate();
 
         } catch (Exception e) {

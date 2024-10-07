@@ -434,8 +434,8 @@ public class CourseDAO extends DBContext {
         try {
             String sql = "SELECT * FROM [Course] WHERE CourseName = ?";
             st = connection.prepareStatement(sql);
-            st.setString(1, courseName); 
-            rs = st.executeQuery();  
+            st.setString(1, courseName);
+            rs = st.executeQuery();
             if (rs.next()) {
                 exists = true;
             }
@@ -444,7 +444,27 @@ public class CourseDAO extends DBContext {
         }
         return exists;
     }
-    
-    
+
+    public int courseIdByCourseName(String courseName) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        int courseId = 0;
+
+        try {
+            String sql = "SELECT CourseID FROM Course WHERE CourseName = ?";
+            st = connection.prepareStatement(sql);
+
+            st.setString(1, courseName);
+            rs = st.executeQuery();
+
+            if (rs.next()) {
+                courseId = rs.getInt("CourseID");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace(); // Handle exceptions appropriately in a real application
+        }
+        return courseId;
+    }
 
 }

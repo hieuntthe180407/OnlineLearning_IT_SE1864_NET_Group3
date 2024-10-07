@@ -5,6 +5,7 @@
 package controller;
 
 import dal.CourseDAO;
+import dal.QuestionDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -19,6 +20,8 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import model.Course;
+import model.Question;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -91,6 +94,7 @@ public class ImportServlet extends HttpServlet {
             request.getRequestDispatcher("questionImport.jsp").forward(request, response);
             return;
         }
+        int courseID = courseDAO.courseIdByCourseName(course);
 
         for (int i = 1; i <= sheet.getLastRowNum(); i++) { // Bắt đầu từ hàng 1, bỏ qua tiêu đề
             Row row = sheet.getRow(i);
@@ -108,16 +112,16 @@ public class ImportServlet extends HttpServlet {
 
             // Kiểm tra các trường bắt buộc
             if (questionContent == null || questionContent.isEmpty()) {
-                error += "Thiếu nội dung câu hỏi. ";
+                error += "Missing question content. ";
             }
             if (questionType == null || questionType.isEmpty()) {
-                error += "Thiếu loại câu hỏi. ";
+                error += "Missing question type. ";
             }
             if (level == null || (!level.equals("Easy") && !level.equals("Medium") && !level.equals("Hard"))) {
-                error += "'Level' chỉ nhận 'Easy', 'Medium', 'Hard'. ";
+                error += "'Level' must be 'Easy', 'Medium', 'Hard'. ";
             }
             if (correctAnswer == null || correctAnswer.isEmpty()) {
-                error += "Thiếu câu trả lời đúng.";
+                error += "Missing correct answer.";
             }
 
             if (!error.isEmpty()) {
@@ -127,7 +131,20 @@ public class ImportServlet extends HttpServlet {
                 errorCell.setCellValue(error);
             } else {
                 //Từ đây cho question vào database
-
+                Question importedQuestion = new Question();
+                importedQuestion.setQuestionContent(questionContent);
+                importedQuestion.setQuestionType(questionType);
+                importedQuestion.setQuestionImgOrVideo(questionPath);
+                importedQuestion.setLevel(level);
+                importedQuestion.setStatus("Visible");
+                importedQuestion.setCorrectAnswer(correctAnswer);
+                Course questionCourse = new Course();
+                questionCourse.setCourseID(courseID);
+                importedQuestion.setCourse(questionCourse);
+                QuestionDAO questionDAO = new QuestionDAO();
+                questionDAO.importQuestion(importedQuestion);
+                Cell correctCell = row.createCell(row.getLastCellNum());
+                correctCell.setCellValue("Question has been save to database. You can delete this question row");
             }
         }
 
@@ -138,13 +155,18 @@ public class ImportServlet extends HttpServlet {
                 workbook.write(outputStream);
                 workbook.close();
             }
+
         } else {
             // Xử lý nếu không có lỗi
-            response.getWriter().println("File không có lỗi.");
+            request.setAttribute("errorImport", "Success Import with no error.");
+            request.getRequestDispatcher("questionImport.jsp").forward(request, response);
+            return;
+
         }
     }
 
     private String getCellValue(Row row, int cellIndex) {
+        //Lấy giá trị trong 1 cell
         Cell cell = row.getCell(cellIndex);
         return (cell == null) ? null : cell.toString();
     }
