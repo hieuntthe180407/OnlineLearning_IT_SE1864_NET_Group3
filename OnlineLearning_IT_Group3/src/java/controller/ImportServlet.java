@@ -18,6 +18,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import model.Course;
@@ -130,6 +132,25 @@ public class ImportServlet extends HttpServlet {
                 Cell errorCell = row.createCell(row.getLastCellNum());
                 errorCell.setCellValue(error);
             } else {
+                if (questionPath != null && !questionPath.isEmpty()
+                        //Check xem có đúng dạng ảnh không
+                        && !((questionPath.endsWith(".jpg") || (questionPath.endsWith(".png"))))) {
+                    String realPath = request.getServletContext().getRealPath("/imgQuestion");
+
+                    if (!Files.exists(Path.of(realPath))) {
+
+                        Files.createDirectory(Path.of(realPath));
+
+                    }
+
+                    String fileName = Path.of(questionPath).getFileName().toString();
+                    Path targetPath = Path.of(realPath, fileName); // Path to save the file
+
+                    Path sourcePath = Path.of(questionPath);
+
+                    questionPath = "imgQuestion" + "/" + fileName;
+
+                }
                 //Từ đây cho question vào database
                 Question importedQuestion = new Question();
                 importedQuestion.setQuestionContent(questionContent);
