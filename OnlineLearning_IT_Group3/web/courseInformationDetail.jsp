@@ -299,8 +299,14 @@
 
                         <div class="buttons">
 
-                            <a href="#"
-                               class="text-decoration-none text-white btn p-3 w-100 mb-2">ENROLL NOW</a>
+                            <!--                           <button 
+                                class="text-decoration-none text-white btn p-3 w-100 mb-2" 
+                                data-toggle="modal" 
+                                data-target="#enrollModal">
+                                ENROLL NOW
+                            </button>-->
+                            <a class="text-decoration-none text-white btn p-3 w-100 mb-2" data-bs-toggle="modal" data-bs-target="#enroll_modal">
+                                ENROLL NOW</a>
 
 
 
@@ -377,13 +383,13 @@
                         <h4 class="text-white mb-3">Subscribe to our Newsletter</h4>
                         <p>Subscribe now and join our growing community of learners committed to lifelong education! </p>
                         <div class="position-relative mx-auto" style="max-width: 400px;">
-                            <form action="#">
-                                <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="email"
-                                       placeholder="Your email" required>
-                                <button type="submit"
-                                        class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2"><a
-                                        href="mailto:keertidvcorai@gmail.com">Subscribe</a></button>
-                            </form>
+                            <!--                            <form action="#">
+                                                            <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="email"
+                                                                   placeholder="Your email" required>
+                                                            <button type="submit"
+                                                                    class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2"><a
+                                                                    href="mailto:keertidvcorai@gmail.com">Subscribe</a></button>
+                                                        </form>-->
                         </div>
                     </div>
                 </div>
@@ -395,6 +401,52 @@
                             &copy; <a class="border-bottom" href="index.html">Secret Coder</a>, All Right Reserved.
 
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="enroll_modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="enrollModalLabel">User Registration Information</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="enrollForm">
+                            <!-- Full Name -->
+                            <div class="form-group">
+                                <label for="userNameRegistration">Full Name</label>
+                                <input type="text" class="form-control" id="userNameRegistration" name="userNameRegistration" placeholder="Enter your name" required>
+                            </div>
+                            <!-- Email -->
+                            <div class="form-group">
+                                <label for="userEmailRegistration">Email</label>
+                                <input type="email" class="form-control" id="userEmailRegistration" name="userEmailRegistration" placeholder="Enter your email" required>
+                            </div>
+                            <!-- Mobile -->
+                            <div class="form-group">
+                                <label for="userPhoneRegistration">Mobile</label>
+                                <input type="text" class="form-control" id="userPhoneRegistration" name="userPhoneRegistration" placeholder="Enter your phone number" required>
+                            </div>
+                            <!-- Gender -->
+                            <div class="form-group">
+                                <label for="userGenderRegistration">Gender</label>
+                                <select class="form-control" id="userGenderRegistration" required>
+                                    <option value="" disabled selected>Select your gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="submitEnroll">Enroll</button>
                     </div>
                 </div>
             </div>
