@@ -5,6 +5,7 @@
 
 package controller;
 
+import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.User;
 
 /**
  *
@@ -26,6 +28,11 @@ public class userDetail extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        int userId = Integer.parseInt(request.getParameter("userid"));
+        UserDAO uDAO = new UserDAO();
+        User u =uDAO.getUserProfilebyId(userId);
+        request.setAttribute("user", u);
+        request.getRequestDispatcher("userDetail").forward(request, response);
         
     } 
 
