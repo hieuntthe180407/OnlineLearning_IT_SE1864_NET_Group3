@@ -53,19 +53,17 @@ function previewImage(event) {
     const imagePreview = document.getElementById('imagePreview');
     
     if (imageInput.files && imageInput.files[0]) {
-        const reader = new FileReader();
+        const file = imageInput.files[0];
+        const imageURL = URL.createObjectURL(file); // Create a URL for the file
         
-        reader.onload = function(e) {
-            imagePreview.src = e.target.result;
-            imagePreview.style.display = 'block'; // Show the image
-        }
-        
-        reader.readAsDataURL(imageInput.files[0]); // Read the image file
+        imagePreview.src = imageURL; // Use the URL as the source for the image preview
+        imagePreview.style.display = 'block'; // Show the image preview
     } else {
         imagePreview.style.display = 'none'; // Hide image preview if no file selected
     }
 }
 </script>
+
         <%@include file= "header.jsp" %>
         <!--Main container start -->
 	<main class="ttr-wrapper">

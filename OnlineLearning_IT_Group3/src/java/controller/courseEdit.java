@@ -62,8 +62,9 @@ public class courseEdit extends HttpServlet {
         try{
         String idParam = request.getParameter("CourseID");
         String name = request.getParameter("courseName");
-        int CategoryID = Integer.parseInt(request.getParameter("CategoryID"));
+        int CategoryID = Integer.parseInt(request.getParameter("category"));
         String des = request.getParameter("description");
+        String img = request.getParameter("image");
                 CourseDAO c = new CourseDAO();
         if(idParam !=null){
             int id = Integer.parseInt(idParam);
@@ -72,7 +73,7 @@ public class courseEdit extends HttpServlet {
         }
         else{
             
-            c.addCourse(name, CategoryID, des);
+            c.addCourse(name, CategoryID, des,img);
            response.sendRedirect("courseList");    
         }
          }
