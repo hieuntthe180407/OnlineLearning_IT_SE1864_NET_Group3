@@ -159,6 +159,38 @@ public class LessonDAO extends DBContext {
         }
         return 0; // Return 0 in case of any error
     }
+       
+        public boolean activeLessonStatus(int id,String active){
+        try {
+            String sql = "update Lessons set Status=? where LessonID = ?";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, active);
+            st.setInt(2, id);  
+            st.executeUpdate();
+            st.close();
+            return true;
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+         public boolean deactiveLessonStatus(int id,String deactive){
+        try {
+            String sql = "update Lessons set Status=? where LessonID = ?";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, deactive);
+            st.setInt(2, id);  
+            st.executeUpdate();
+            st.close();
+            return true;
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+       
        public static void main(String[] args) {
         LessonDAO l = new LessonDAO();
            System.out.println(l.getTotalLessonCount(3));
