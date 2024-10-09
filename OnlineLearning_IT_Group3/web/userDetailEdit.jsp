@@ -99,12 +99,26 @@
     <body>
         <%@include file="header.jsp" %>
         
-        <%User u = (User)request.getAttribute("user");%>
+        <%User u = (User)request.getAttribute("user");
+            String noti = (String)request.getAttribute("noti");
+            if(noti != null){
+            %>
+            <h3 style="color: red; text-align: center; font-weight: bold;">
+        <%= noti %>
+    </h3>
+            
+            <%
+            }
+            
+        %>
+        <form  action="userAdminEdit" method="get">
         <div class="container">
-        
+           <input type="hidden" name="userID" value="<%= u.getUserID() %>">
 
         <div class="detail-panel">
-            <div class="avatar">AVATAR</div>
+            <div class="avatar">AVATAR
+            
+            </div>
             <div class="info">
                 <div>
                     <label for="fullName">Full Name:</label>
@@ -134,7 +148,7 @@
     <label for="role">Role:</label>
     <input type="text" id="role" disabled style="width: 100%; flex: 1;" value="<%=u.getRole().getRoleName()%>">
     <select id="roleSelect" name="role" class="form-control" style="width: auto;"> 
-        <option value="">Edit</option>
+        <option value="<%=u.getRole().getRoleId()%>">Edit</option>
         <option value="1">Admin</option>
         <option value="2">Expert</option>
         <option value="3">User</option>
@@ -144,10 +158,10 @@
     <label for="status">Status:</label>
     <input type="text" id="status" disabled style="width: 100%; flex: 1;" value="<%=u.getStatus()%>">
     <select id="statusSelect" name="status" class="form-control" style="width: auto;" > 
-        <option value="">Edit</option>
-        <option value="1">Active</option>
-        <option value="2">Inactive</option>
-        <option value="3">Pending</option>
+        <option value="<%=u.getStatus()%>">Edit</option>
+        <option value="Active">Active</option>
+        <option value="Inactive">Inactive</option>
+        <option value="Pending">Pending</option>
     </select>
 </div>
 
@@ -156,8 +170,9 @@
         </div>
     </div>
         
-        
-        
+        <button type="submit" class="btn">Confirm</button>
+        </form>
+    
         <%@include file="footer.jsp" %>
     </body>
 </html>
