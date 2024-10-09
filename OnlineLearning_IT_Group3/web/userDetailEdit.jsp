@@ -44,6 +44,15 @@
     <body>
         <%@include file="header.jsp" %>
         
+        
+        
+        <select id="roleSelect" name="role" class="form-control">
+        <option value=""></option>
+       
+                    <option name = "role" value="1">Admin</option>
+                    <option name = "role" value="2">Expert</option>
+                    <option name = "role" value="3">User</option>
+    </select>
         <%@include file="footer.jsp" %>
     </body>
 </html>
