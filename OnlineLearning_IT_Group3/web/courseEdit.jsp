@@ -5,7 +5,9 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="model.Course" %>
+<%@page import="model.*" %>
+<%@page import="java.util.*" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -45,15 +47,32 @@
     </head>
     </head>
     <body>
+        <script>
+function previewImage(event) {
+    const imageInput = event.target;
+    const imagePreview = document.getElementById('imagePreview');
+    
+    if (imageInput.files && imageInput.files[0]) {
+        const file = imageInput.files[0];
+        const imageURL = URL.createObjectURL(file); // Create a URL for the file
+        
+        imagePreview.src = imageURL; // Use the URL as the source for the image preview
+        imagePreview.style.display = 'block'; // Show the image preview
+    } else {
+        imagePreview.style.display = 'none'; // Hide image preview if no file selected
+    }
+}
+</script>
+
         <%@include file= "header.jsp" %>
         <!--Main container start -->
 	<main class="ttr-wrapper">
-             <%
+             <% List<Category> list = (List<Category>) request.getAttribute("listCa");
                  Course c = (Course)request.getAttribute("Course");
                 if (c!=null){
                  
     int courseID = Integer.parseInt(request.getParameter("courseID"));
-   
+    
             %>
             <div class="container-fluid bg-primary py-5 mb-5 page-header">
         <div class="container py-5">
@@ -81,23 +100,40 @@
 											<h3>1. Category</h3>
 										</div>
 									</div>
+                                                                    <div class="col-12">
+   
+
+
                                                                     <input type="hidden" name="CourseID" value="<%= courseID %>">
 									<div class="form-group col-6">
+	<select id="categorySelect" name="category" class="form-control">
+        <option value="">-- Select a Category --</option>
+       <% 
+            
+            if (list != null) {
+                for (Category ca : list) {
+        %>
+                    <option name = "CategoryID" value="<%= ca.getCategoryID() %>"><%= ca.getCategoryName() %></option>
+        <% 
+                }
+            }
+
+
+        %>
+    </select>
 										
-										<div>
-											<input class="form-control" type="text" name="lessonName" value="">
-										</div>
 									</div>
                                                                                 
                                                                                 <div class="ml-auto">
 											<h3>2.Course Name</h3>
 										</div>
+    <img src="img/Course/course1.jpg" />
 									</div>
                                                                     
 									<div class="form-group col-6">
 										
 										<div>
-											<input class="form-control" type="text" name="lessonName" value="<%=c.getCourseName()%>">
+											<input class="form-control" type="text" name="courseName" value="<%=c.getCourseName()%>">
 										</div>
 									</div>
 									
@@ -160,11 +196,24 @@
                                                                     
 									<div class="form-group col-6">
 										
-										<div>
-											<input class="form-control" type="text" name="lessonName" value="">
-										</div>
+										<select id="categorySelect" name="category" class="form-control">
+        <option value="">-- Select a Category --</option>
+       <% 
+            
+            if (list != null) {
+                for (Category ca : list) {
+        %>
+                    <option value="<%= ca.getCategoryID() %>"><%= ca.getCategoryName() %></option>
+        <% 
+                }
+            }
+
+
+        %>
+    </select>
 									</div>
-                                                                                
+                                                                     
+                                                                         <div class="col-12 m-t20">       
                                                                                 <div class="ml-auto">
 											<h3>2.Course Name</h3>
 										</div>
@@ -173,10 +222,17 @@
 									<div class="form-group col-6">
 										
 										<div>
-											<input class="form-control" type="text" name="lessonName" value="">
+											<input class="form-control" type="text" name="courseName" value="">
 										</div>
 									</div>
-									
+									<div class="col-12">
+    <label for="imageUpload">Upload Image:</label>
+    <input type="file" id="imageUpload" name="image" accept="image/*" class="form-control" onchange="previewImage(event)">
+</div>
+
+<div class="col-12 mt-3">
+    <img id="imagePreview" src="#" alt="Image Preview" style="max-width: 100px; display: none;">
+</div>
 									
 									<div class="seperator"></div>
 									

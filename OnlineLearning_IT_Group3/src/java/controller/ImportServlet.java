@@ -7,7 +7,7 @@ package controller;
 import dal.CourseDAO;
 import dal.QuestionDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -16,10 +16,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import java.io.FileOutputStream;
+
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 import model.Course;
 import model.Question;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -130,6 +131,25 @@ public class ImportServlet extends HttpServlet {
                 Cell errorCell = row.createCell(row.getLastCellNum());
                 errorCell.setCellValue(error);
             } else {
+                if ((questionPath.endsWith(".jpg") || questionPath.endsWith(".png"))) {
+                    String realPath = request.getServletContext().getRealPath("/imgQuestion");
+
+                    if (!Files.exists(Path.of(realPath))) {
+
+                        Files.createDirectory(Path.of(realPath));
+
+                    }
+                    
+                    String fileName = Path.of(questionPath).getFileName().toString();// Lấy tên tệp
+                    Path targetPath = Path.of(realPath, fileName); // kết hợp đường dẫn project với tên tệp
+
+                    Path sourcePath = Path.of(questionPath);// đường dẫn gốc của tệp
+                    //Copy đường dẫn gốc sang nơi muốn lưu tệp
+                    Files.copy(sourcePath, targetPath);
+                    //Ghi đường dẫn vào database
+                    questionPath = "imgQuestion" + "/" + fileName;
+
+                }
                 //Từ đây cho question vào database
                 Question importedQuestion = new Question();
                 importedQuestion.setQuestionContent(questionContent);

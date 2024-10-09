@@ -106,11 +106,50 @@
                                             
                                             <%= l.getLessonName() %>
                                             <a href="lessonEdit?LessonID=<%= l.getLessonID() %>">
-                                            <button type="button">Update</button>
-                                            
-</a>
+                                                <button type="button">Update</button></a>
+                                                <br> 
+                                                <img src="img/lesson/image1.jpg"/>
+                                        </li>
+                                        
                                         <%}}%>
-                                    </ul></div>
+                                        
+                                    </ul>
+                                   <% 
+    int currentPage = (Integer) request.getAttribute("currentPage");
+    int totalPages = (Integer) request.getAttribute("totalPages");
+%>
+
+<!-- Pagination Controls -->
+<div class="pagination">
+    <ul>
+        <%
+            if (currentPage > 1) {
+        %>
+        <li><a href="courseDetail?page=<%= currentPage - 1 %>&courseID=<%= c.getCourseID()%>">&laquo; Previous</a></li>
+        <%
+            }
+
+            for (int i = 1; i <= totalPages; i++) {
+                if (i == currentPage) {
+        %>
+        <li><span><%= i %></span></li>
+        <%
+                } else {
+        %>
+        <li><a href="courseDetail?page=<%= i %>&courseID=<%= c.getCourseID()%>"><%= i %></a></li>
+        <%
+                }
+            }
+
+            if (currentPage < totalPages) {
+        %>
+        <li><a href="courseDetail?page=<%= currentPage + 1 %>&courseID=<%= c.getCourseID()%>">Next &raquo;</a></li>
+        <%
+            }
+        %>
+    </ul>
+</div>     
+                                  </div>
                                   
                                   </div>
                                 </div>

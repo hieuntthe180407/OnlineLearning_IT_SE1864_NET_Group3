@@ -38,8 +38,28 @@ public class courseDetail extends HttpServlet {
         
         
           LessonDAO l = new LessonDAO();
-        List<Lesson> listl = l.getAlllessonBycourseID(courseID);
-        request.setAttribute("listl", listl);
+       
+        
+         int page = 1;
+        int recordsPerPage =3;
+        if (request.getParameter("page") != null) {
+            page = Integer.parseInt(request.getParameter("page"));
+        }
+
+// Get total number of users
+        int totalRecords = l.getTotalLessonCount(courseID);
+
+// Fetch users for the current page
+        List<Lesson> users = l.getLessons((page - 1) * recordsPerPage, recordsPerPage,courseID);
+
+// Calculate the number of total pages
+        int totalPages = (int) Math.ceil(totalRecords * 1.0 / recordsPerPage);
+
+// Set attributes for pagination
+        request.setAttribute("listl", users);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+        
         
         
         CourseDAO cDAO = new CourseDAO();
@@ -48,7 +68,7 @@ public class courseDetail extends HttpServlet {
         }
         catch (Exception e){
             System.out.println(e.getMessage());
-            response.sendRedirect("courseDetail");        
+            response.sendRedirect("courseDetail.");        
         }
         
         request.getRequestDispatcher("courseDetail.jsp").forward(request, response);

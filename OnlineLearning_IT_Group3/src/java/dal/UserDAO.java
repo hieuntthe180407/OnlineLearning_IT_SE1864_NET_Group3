@@ -491,4 +491,18 @@ public class UserDAO extends DBContext {
         return user;
     }
     
+     public void updateUserRoleStatus(int id, int role, String Status) {
+        String sql = "UPDATE [dbo].[User] set roleID=?, Status=? WHERE userID=? ";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, role);
+            st.setString(2, Status);
+            st.setInt(3, id);
+            st.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+    
 }

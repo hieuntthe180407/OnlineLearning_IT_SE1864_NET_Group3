@@ -23,6 +23,7 @@ public class Course {
     public Course() {
     }
 
+
     public Course(int courseID, int duration, int report, String courseImg, String courseName, String Description, double price, double salePrice, boolean isActive, User userId) {
         this.courseID = courseID;
         this.duration = duration;
@@ -37,26 +38,9 @@ public class Course {
     }
     
 
-    public Course(int courseID, int duration, int report, String courseImg, String courseName, String Description) {
-        this.courseID = courseID;
-        this.duration = duration;
-        this.report = report;
-        this.courseImg = courseImg;
-        this.courseName = courseName;
-        this.Description = Description;
-    }
+  
 
-    public Course(int courseID, int duration, int report, String courseImg, String courseName, String Description, double price, double salePrice, boolean isActive) {
-        this.courseID = courseID;
-        this.duration = duration;
-        this.report = report;
-        this.courseImg = courseImg;
-        this.courseName = courseName;
-        this.Description = Description;
-        this.price = price;
-        this.salePrice = salePrice;
-        this.isActive = isActive;
-    }
+    
 
     public User getUserId() {
         return userId;
