@@ -28,7 +28,7 @@ public class userAdminEdit extends HttpServlet {
     throws ServletException, IOException {
        int role = Integer.parseInt(request.getParameter("role"));
        String status = request.getParameter("status");
-       int id = Integer.parseInt(request.getParameter("userID"));
+       int id = Integer.parseInt(request.getParameter("userId"));
        String noti;
        UserDAO u = new UserDAO();
        

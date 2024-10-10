@@ -113,7 +113,7 @@
         %>
         <form  action="userAdminEdit" method="get">
         <div class="container">
-           <input type="hidden" name="userID" value="<%= u.getUserID() %>">
+           <input type="hidden" name="userId" value="<%= u.getUserID() %>">
 
         <div class="detail-panel">
             <div class="avatar">AVATAR
