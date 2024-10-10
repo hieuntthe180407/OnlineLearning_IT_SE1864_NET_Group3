@@ -28,7 +28,7 @@ public class userDetail extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        int userId = Integer.parseInt(request.getParameter("userID"));
+        int userId = Integer.parseInt(request.getParameter("userId"));
         
         UserDAO uDAO = new UserDAO();
         User u =uDAO.getUserProfilebyId(userId);

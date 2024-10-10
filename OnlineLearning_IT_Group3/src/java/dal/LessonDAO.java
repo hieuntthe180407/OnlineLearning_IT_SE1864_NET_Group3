@@ -55,6 +55,7 @@ public class LessonDAO extends DBContext {
                 u.setDescription(rs.getString("Description"));
                 u.setLessonNumber(rs.getInt("LessonNumber"));
                 u.setLessonURL(rs.getString("LessonURL"));
+                u.setStatus(rs.getString("Status"));
                
                 
                 list.add(u);
@@ -123,7 +124,7 @@ public class LessonDAO extends DBContext {
                 u.setDescription(rs.getString("Description"));
                 u.setLessonNumber(rs.getInt("LessonNumber"));
                 u.setLessonURL(rs.getString("LessonURL"));
-               
+               u.setStatus(rs.getString("Status"));
                 
                 list.add(u);
 
@@ -194,7 +195,7 @@ public class LessonDAO extends DBContext {
        public static void main(String[] args) {
         LessonDAO l = new LessonDAO();
            System.out.println(l.getTotalLessonCount(3));
-        
+        l.activeLessonStatus(2, "Active");
        
         }
     }

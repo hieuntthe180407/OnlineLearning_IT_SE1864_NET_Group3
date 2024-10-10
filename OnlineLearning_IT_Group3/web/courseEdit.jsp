@@ -71,7 +71,7 @@ function previewImage(event) {
                  Course c = (Course)request.getAttribute("Course");
                 if (c!=null){
                  
-    int courseID = Integer.parseInt(request.getParameter("courseID"));
+    
     
             %>
             <div class="container-fluid bg-primary py-5 mb-5 page-header">
@@ -84,6 +84,13 @@ function previewImage(event) {
             </div>
         </div>
     </div>
+            <% String noti = (String) request.getParameter("noti");
+                if (noti != null){ %>
+             <h3 style="color: red; text-align: center; font-weight: bold;">
+        <%= noti %>
+    </h3>
+                
+            <%}%>
 		<div class="container-fluid">
                     
 			<div class="row">
@@ -93,7 +100,7 @@ function previewImage(event) {
 					<div class="widget-box">
 						
 						<div class="widget-inner">
-                                                    <form class="edit-profile m-b30 " action="courseEdit" method="post">
+                                                    <form class="edit-profile m-b30 " action="courseEditSubmit" method="get">
 								<div class="row">
 									<div class="col-12">
 										<div class="ml-auto">
@@ -104,10 +111,10 @@ function previewImage(event) {
    
 
 
-                                                                    <input type="hidden" name="CourseID" value="<%= courseID %>">
+                                                                    <input type="hidden" name="CourseID" value="<%= c.getCourseID() %>">
 									<div class="form-group col-6">
 	<select id="categorySelect" name="category" class="form-control">
-        <option value="">-- Select a Category --</option>
+        <option value="100">-- Select a Category --</option>
        <% 
             
             if (list != null) {
@@ -177,6 +184,13 @@ function previewImage(event) {
             </div>
         </div>
     </div>
+           <% String noti = (String) request.getParameter("noti");
+                if (noti != null){ %>
+             <h3 style="color: red; text-align: center; font-weight: bold;">
+        <%= noti %>
+        
+    </h3>
+            <%}%>
                     <div class="container-fluid">
                     
 			<div class="row">
@@ -186,7 +200,7 @@ function previewImage(event) {
 					<div class="widget-box">
 						
 						<div class="widget-inner">
-                                                    <form class="edit-profile m-b30 " action="courseEdit" method="post">
+                                                    <form class="edit-profile m-b30 " action="courseEditSubmit" method="get">
 								<div class="row">
 									<div class="col-12">
 										<div class="ml-auto">
@@ -197,7 +211,7 @@ function previewImage(event) {
 									<div class="form-group col-6">
 										
 										<select id="categorySelect" name="category" class="form-control">
-        <option value="">-- Select a Category --</option>
+        <option value="100">-- Select a Category --</option>
        <% 
             
             if (list != null) {
