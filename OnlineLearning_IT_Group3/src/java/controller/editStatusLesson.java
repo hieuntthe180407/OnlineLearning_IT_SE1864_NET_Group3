@@ -27,17 +27,20 @@ public class editStatusLesson extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         String status = request.getParameter("status");
-        int id = Integer.parseInt(request.getParameter("lessonID"));
+        int id = Integer.parseInt(request.getParameter("LessonID"));
+        int cid =Integer.parseInt(request.getParameter("courseID"));
         LessonDAO lDAO = new LessonDAO();
         
-        if(status.equals("active"))
+        if(status.equals("Active"))
         {
             lDAO.activeLessonStatus(id, status);
         }
-        else if(status.equals("deactive"))
+        else if(status.equals("Deactive"))
         {
              lDAO.deactiveLessonStatus(id, status);
         }
+        
+       response.sendRedirect("courseDetail?courseID=" + cid);
         
     } 
 
