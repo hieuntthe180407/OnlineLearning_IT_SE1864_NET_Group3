@@ -92,6 +92,8 @@ public class UserDAO extends DBContext {
         for (User u : list) {
             System.out.println(u);
         }
+        
+        cDAO.updateUserRoleStatus(2, 2, "Inactive");
     }
 
     public List<User> searchUser(String str,int offset, int limit) {
@@ -169,7 +171,7 @@ public class UserDAO extends DBContext {
     }
 
     public User getUserProfilebyId(int id) {
-        String sql = "Select u.[UserID], u.[FullName], u.[DateOfBirth], u.[Email], u.[Password], u.[Phone], u.[Address],u.[Gender], r.[RoleName], u.[Avatar]\n"
+        String sql = "Select u.[UserID],u.[Status], u.[FullName], u.[DateOfBirth], u.[Email], u.[Password], u.[Phone], u.[Address],u.[Gender], r.[RoleName], r.[RoleID], u.[Avatar]\n"
                 + "from [dbo].[User] u, [dbo].[Role] r\n"
                 + "where r.RoleID = u.RoleID AND u.[UserID] = ?;";
         User u = new User();
@@ -187,8 +189,10 @@ public class UserDAO extends DBContext {
                 u.setGender(rs.getString("Gender"));
                 u.setPhone(rs.getString("Phone"));
                 u.setAddress(rs.getString("Address"));
+                u.setStatus(rs.getString("Status"));
                 Role role = new Role();
                 role.setRoleName(rs.getString("RoleName"));
+                role.setRoleId(rs.getInt("RoleID"));
                 u.setRole(role);
                 u.setAvatar(rs.getString("Avatar"));
 

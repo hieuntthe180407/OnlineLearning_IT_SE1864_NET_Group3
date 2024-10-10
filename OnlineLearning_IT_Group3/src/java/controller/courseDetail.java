@@ -68,7 +68,7 @@ public class courseDetail extends HttpServlet {
         }
         catch (Exception e){
             System.out.println(e.getMessage());
-            response.sendRedirect("courseDetail.");        
+            response.sendRedirect("courseDetail");        
         }
         
         request.getRequestDispatcher("courseDetail.jsp").forward(request, response);
