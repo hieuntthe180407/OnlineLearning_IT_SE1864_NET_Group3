@@ -131,7 +131,7 @@ public class ImportServlet extends HttpServlet {
                 Cell errorCell = row.createCell(row.getLastCellNum());
                 errorCell.setCellValue(error);
             } else {
-                if ((questionPath.endsWith(".jpg") || questionPath.endsWith(".png"))) {
+                if (questionPath != null &&(questionPath.endsWith(".jpg") || questionPath.endsWith(".png") || questionPath.endsWith(".mp4"))) {
                     String realPath = request.getServletContext().getRealPath("/imgQuestion");
 
                     if (!Files.exists(Path.of(realPath))) {
@@ -139,11 +139,18 @@ public class ImportServlet extends HttpServlet {
                         Files.createDirectory(Path.of(realPath));
 
                     }
-                    
+
                     String fileName = Path.of(questionPath).getFileName().toString();// Lấy tên tệp
                     Path targetPath = Path.of(realPath, fileName); // kết hợp đường dẫn project với tên tệp
-
+                    
                     Path sourcePath = Path.of(questionPath);// đường dẫn gốc của tệp
+
+                    // Kiểm tra xem tệp đã tồn tại chưa
+                    if (Files.exists(targetPath)) {
+                        // Nếu tệp đã tồn tại, tạo tên mới cho tệp
+                        String newFileName = System.currentTimeMillis() + "_" + fileName; // Thêm timestamp
+                        targetPath = Path.of(realPath, newFileName); // Cập nhật đường dẫn đích
+                    }
                     //Copy đường dẫn gốc sang nơi muốn lưu tệp
                     Files.copy(sourcePath, targetPath);
                     //Ghi đường dẫn vào database

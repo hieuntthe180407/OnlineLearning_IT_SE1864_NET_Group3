@@ -5,6 +5,10 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -75,7 +79,7 @@
 
             th,
             td {
-                padding: 12px;
+                padding: 8px;
                 text-align: center;
                 border-bottom: 1px solid #ddd;
             }
@@ -117,8 +121,10 @@
             <form action="QuestionListServlet" method="post">
                 <!-- Filter Section -->
                 <div class="filter-section">
-                    <input type="text" name="questionContent" id="search-content" placeholder="Search content...">
-                    <input type="text" name="questionCourse" id="search-course" placeholder="Search by course...">
+                    <!-- Tìm question qua content  -->
+                    <input type="text" name="questionContent" value="" id="search-content" placeholder="Search content...">
+                    <!-- Tìm question qua course  -->
+                    <input type="text" name="questionCourse" value="" id="search-course" placeholder="Search by course...">
                     <select id="level" name="questionLevel">
                         <option value="">Level</option>
                         <option value="easy">Easy</option>
@@ -138,77 +144,99 @@
                             <option value="15">15 per page</option>
                         </select>
                     </div>
-
-                    <!-- Questions Per Page and Column Visibility -->
-                    <div class="settings-section">
-                        <label>Columns to display:</label>
-                        <label><input type="checkbox" name="visibleCol" value="id" checked> ID</label>
-                        <label><input type="checkbox" name="visibleCol" value="content" checked> Content</label>
-                        <label><input type="checkbox" name="visibleCol" value="course" checked> Course</label>
-                        <label><input type="checkbox" name="visibleCol" value="level" checked> Level</label>
-                        <label><input type="checkbox" name="visibleCol" value="status" checked> Status</label>
-                        <label><input type="checkbox" name="visibleCol" value="actions" checked> Actions</label>
-                    </div>
                     <button type="submit">Add filter</button>
-                </div>
-
-
             </form>
 
 
-            <!-- Questions Table -->
-            <table id="questions-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Content</th>
-                        <th>Course</th>
-                        <th>Level</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="questions-body">
-                    <tr>
-                        <td>1</td>
-                        <td>What is HTML?</td>
-                        <td>Web Development</td>
-                        <td>Easy</td>
-                        <td>Visible</td>
-                        <td>
-                            <button>Show</button>
-                            <button>Hide</button>
-                            <button>Edit</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>What is a variable?</td>
-                        <td>Programming</td>
-                        <td>Medium</td>
-                        <td>Hidden</td>
-                        <td>
-                            <button>Show</button>
-                            <button>Hide</button>
-                            <button>Edit</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <!-- Questions Per Page and Column Visibility -->
+            <form action="ShowPageServlet" method="post">            
+                <div class="settings-section">
+                    <label>Columns to display:</label>
+                    <label><input type="checkbox" name="visibleCol" value="id" <c:if test="${visibleColumns.contains('id')}">checked</c:if>> ID</label>
+                    <label><input type="checkbox" name="visibleCol" value="content" <c:if test="${visibleColumns.contains('content')}">checked</c:if>> Content</label>
+                    <label><input type="checkbox" name="visibleCol" value="course" <c:if test="${visibleColumns.contains('course')}">checked</c:if>> Course</label>
+                    <label><input type="checkbox" name="visibleCol" value="level" <c:if test="${visibleColumns.contains('level')}">checked</c:if>> Level</label>
+                    <label><input type="checkbox" name="visibleCol" value="status" <c:if test="${visibleColumns.contains('status')}">checked</c:if>> Status</label>
+                    <label><input type="checkbox" name="visibleCol" value="actions" <c:if test="${visibleColumns.contains('actions')}">checked</c:if>> Actions</label>
+                        <button type="submit">Apply</button>
+                    </div>
+                </form>
 
-            <!-- Import question -->
-            <a href="ImportServlet"><button type="button">Import Question</button>
-            </a>
-
-
-            <!-- Pagination -->
-            <div class="pagination" id="pagination">
-                <a href="#" class="active">1</a>
-                <a href="#">2</a>
-                <a href="#">Next</a>
             </div>
-        </div>
 
-    </body>
+
+
+            <!-- Questions Table -->
+            <table>
+                <tr>
+                <c:if test="${visibleColumns.contains('id')}"><th>ID</th></c:if>
+                <c:if test="${visibleColumns.contains('content')}"><th>Content</th></c:if>
+                <c:if test="${visibleColumns.contains('course')}"><th>Course</th></c:if>
+                <c:if test="${visibleColumns.contains('level')}"><th>Level</th></c:if>
+                <c:if test="${visibleColumns.contains('status')}"><th>Status</th></c:if>
+                <c:if test="${visibleColumns.contains('actions')}"><th>Actions</th></c:if>
+                </tr>
+            <c:forEach items="${listQuestion}" var="q">
+                <tr>
+                    <c:if test="${visibleColumns.contains('id')}"> <td>${q.questionId}</td></c:if>
+                    <c:if test="${visibleColumns.contains('content')}">
+                        <td>${q.questionContent}
+                            <c:if test="${not empty q.questionImgOrVideo}">
+                                <c:choose>
+                                    <c:when test="${fn:endsWith(q.questionImgOrVideo, '.mp4')}">
+                                        <video style="width: 80px;" controls src="${q.questionImgOrVideo}" type="video/mp4"></video>
+                                        </c:when>
+                                        <c:otherwise>
+                                        <img style="width: 80px;" src="${q.questionImgOrVideo}" alt="No image"/>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:if>
+                        </td>
+                    </c:if>
+
+                    <c:if test="${  visibleColumns.contains('course')}"><td>${q.course.courseName}</td></c:if>
+                    <c:if test="${  visibleColumns.contains('level')}"><td>${q.level}</td></c:if>
+                    <c:if test="${  visibleColumns.contains('status')}"><td>${q.status}</td></c:if>
+                    <c:if test="${  visibleColumns.contains('actions')}">
+                        <td>
+                            <!-- Thay đổi status question qua  questionListShowHide -->
+                            <form action="questionListShowHide" method="post">
+                                <input type="hidden" name="questionId" value="${q.questionId}">
+                                <button type="submit" name="actionQuestion" value="show">Show</button>
+                                <button type="submit" name="actionQuestion" value="hide">Hide</button>
+                            </form>
+                            <a href="QuestionDetail"><button>Edit</button></a> <!-- Question Detail chưa có -->
+                        </td>
+                    </c:if>
+
+
+                </tr>
+            </c:forEach>
+
+        </table>
+
+        <!-- Import question -->
+        <a href="ImportServlet"><button type="button">Import Question</button>
+        </a>
+
+
+        <!-- Pagination -->
+        <div class="pagination" id="pagination">
+            <!-- Ở page 1 không hiện Previous  -->
+            <c:if test="${page > 1}">
+                <a href="?page=${page - 1}&questionPerPage=${param.questionPerPage}">Previous</a>
+            </c:if>
+            <!-- Hiện tất cả các trang hiện có và add style active cho trang hiện tại  -->
+            <c:forEach begin="1" end="${totalPages}" var="i">
+                <a href="?page=${i}&questionPerPage=${param.questionPerPage}" class="${i == page ? 'active' : ''}">${i}</a>
+            </c:forEach>
+            <!-- Ở page cuối không hiện Previous  -->
+            <c:if test="${page < totalPages}">
+                <a href="?page=${page + 1}&questionPerPage=${param.questionPerPage}">Next</a>
+            </c:if>
+        </div>
+    </div>
+
+</body>
 
 </html>

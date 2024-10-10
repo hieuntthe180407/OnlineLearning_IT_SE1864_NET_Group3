@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.QuestionDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,6 +12,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import model.Question;
 
 /**
  *
@@ -30,8 +33,7 @@ public class QuestionListServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        }
-    
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -45,6 +47,35 @@ public class QuestionListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        QuestionDAO qDao = new QuestionDAO();
+
+        // Kiểm tra tham số "page"
+        String pageParam = request.getParameter("page");
+        int page = 1; // Giá trị mặc định
+        if (pageParam != null && !pageParam.isEmpty()) {
+            try {
+                page = Integer.parseInt(pageParam);
+            } catch (NumberFormatException e) {
+                page = 1;
+            }
+        }
+
+        // Kiểm tra tham số "questionPerPage"
+        String questionPerPageParam = request.getParameter("questionPerPage");
+        int questionPerPage = 10; // Giá trị mặc định
+        if (questionPerPageParam != null && !questionPerPageParam.isEmpty()) {
+            try {
+                questionPerPage = Integer.parseInt(questionPerPageParam);
+            } catch (NumberFormatException e) {
+                questionPerPage = 10;
+            }
+        }
+
+        // Lấy danh sách câu hỏi với các tham số đã xác định
+        List<Question> listQuestion = qDao.getFilteredQuestions(null, null, null, null, page, questionPerPage);
+        request.setAttribute("listQuestion", listQuestion);
+        request.setAttribute("page", page);
+        request.setAttribute("totalPages", qDao.getTotalPages(questionPerPage));
         request.getRequestDispatcher("questionList.jsp").forward(request, response);
     }
 
@@ -59,7 +90,21 @@ public class QuestionListServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        String questionContent = request.getParameter("questionContent");
+        String questionCourse = request.getParameter("questionCourse");
+        String questionLevel = request.getParameter("questionLevel");
+        String questionStatus = request.getParameter("questionStatus");
+        int page = Integer.parseInt(request.getParameter("page") != null ? request.getParameter("page") : "1");
+        int questionPerPage = Integer.parseInt(request.getParameter("questionPerPage") != null ? request.getParameter("questionPerPage") : "10");
+
+        QuestionDAO qDao = new QuestionDAO();
+        List<Question> listQuestion = qDao.getFilteredQuestions(questionContent, questionCourse, questionLevel, questionStatus, page, questionPerPage);
+
+        request.setAttribute("page", page);
+        request.setAttribute("totalPages", qDao.getTotalPages(questionPerPage));
+        request.setAttribute("listQuestion", listQuestion);
+        request.getRequestDispatcher("questionList.jsp").forward(request, response);
+
     }
 
     /**
