@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import model.Blog;
@@ -164,6 +165,50 @@ public class BlogDAO extends DBContext{
             System.out.println("Error: " + e);
         }
         return 0;
+    }
+     
+      public boolean updateBlog(Blog blog) {
+        String query = "UPDATE Blogs SET Title = ?, Content = ?, Status = ?, FeaturedImage = ?, UpdatedAt = ? WHERE BlogId = ?";
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setString(1, blog.getTitle());
+            pstmt.setString(2, blog.getContent());
+            pstmt.setString(3, blog.getStatus());
+            pstmt.setString(4, blog.getFeaturedImage());
+            pstmt.setTimestamp(5, new Timestamp(System.currentTimeMillis())); 
+            pstmt.setInt(6, blog.getBlogId());
+
+            int rowsUpdated = pstmt.executeUpdate();
+            return rowsUpdated > 0; 
+        } catch (Exception e) {
+            System.out.println("Error updating blog: " + e);
+            return false;
+        }
+    }
+
+    public Blog viewBlogDetail(int blogId) {
+        Blog blog = null;
+        String query = "SELECT * FROM Blogs WHERE BlogId = ?";
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setInt(1, blogId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    blog = new Blog();
+                    blog.setBlogId(rs.getInt("BlogId"));
+                    blog.setUserId(rs.getInt("UserId"));
+                    blog.setTitle(rs.getString("Title"));
+                    blog.setContent(rs.getString("Content"));
+                    blog.setStatus(rs.getString("Status"));
+                    blog.setFeaturedImage(rs.getString("FeaturedImage"));
+                    blog.setCreatedAt(rs.getTimestamp("CreatedAt"));
+                    blog.setUpdatedAt(rs.getTimestamp("UpdatedAt"));
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error retrieving blog details: " + e);
+        }
+        return blog;
     }
     
 }

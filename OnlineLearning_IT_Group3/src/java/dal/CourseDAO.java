@@ -556,6 +556,29 @@ public class CourseDAO extends DBContext {
         }
         return courseId;
     }
+    
+    public List<Course> getFeaturedCourses() {
+        List<Course> courses = new ArrayList<>();
+        String sql = "SELECT TOP 6 CourseID, CategoryID, CourseImg, CourseName, Publish, Duration, Report, IsDiscontinued, NewVersionId, Description "
+                + "FROM Course WHERE Publish = 1 AND IsDiscontinued = 0";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Course c = new Course();
+                c.setCourseID(rs.getInt("courseID"));
+                c.setDuration(rs.getInt("Duration"));
+                c.setReport(rs.getInt("Report"));
+                c.setCourseImg(rs.getString("courseIMG"));
+                c.setCourseName(rs.getString("courseName"));
+                c.setDescription(rs.getString("Description"));
+                courses.add(c);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return courses;
+    }
 
 }
 
