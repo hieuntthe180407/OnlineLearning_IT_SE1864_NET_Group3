@@ -108,29 +108,13 @@
                 background-color: #007bff;
                 color: white;
             }
-
-            @media (max-width: 768px) {
-
-                .filter-section,
-                .settings-section {
-                    flex-direction: column;
-                    align-items: flex-start;
-                }
-
-                input,
-                select,
-                button {
-                    margin-bottom: 10px;
-                    width: 100%;
-                }
-            }
         </style>
     </head>
 
     <body>
         <div class="container">
             <h1>Questions List</h1>
-            <form action="action" method="post">
+            <form action="QuestionListServlet" method="post">
                 <!-- Filter Section -->
                 <div class="filter-section">
                     <input type="text" name="questionContent" id="search-content" placeholder="Search content...">
@@ -154,19 +138,21 @@
                             <option value="15">15 per page</option>
                         </select>
                     </div>
-                    <button>Add filter</button>
+
+                    <!-- Questions Per Page and Column Visibility -->
+                    <div class="settings-section">
+                        <label>Columns to display:</label>
+                        <label><input type="checkbox" name="visibleCol" value="id" checked> ID</label>
+                        <label><input type="checkbox" name="visibleCol" value="content" checked> Content</label>
+                        <label><input type="checkbox" name="visibleCol" value="course" checked> Course</label>
+                        <label><input type="checkbox" name="visibleCol" value="level" checked> Level</label>
+                        <label><input type="checkbox" name="visibleCol" value="status" checked> Status</label>
+                        <label><input type="checkbox" name="visibleCol" value="actions" checked> Actions</label>
+                    </div>
+                    <button type="submit">Add filter</button>
                 </div>
 
-                <!-- Questions Per Page and Column Visibility -->
-                <div class="settings-section">
-                    <label>Columns to display:</label>
-                    <label><input type="checkbox" name="visibleCol" value="id" checked> ID</label>
-                    <label><input type="checkbox" name="visibleCol" value="content" checked> Content</label>
-                    <label><input type="checkbox" name="visibleCol" value="course" checked> Course</label>
-                    <label><input type="checkbox" name="visibleCol" value="level" checked> Level</label>
-                    <label><input type="checkbox" name="visibleCol" value="status" checked> Status</label>
-                    <label><input type="checkbox" name="visibleCol" value="actions" checked> Actions</label>
-                </div>
+
             </form>
 
 
@@ -209,6 +195,11 @@
                     </tr>
                 </tbody>
             </table>
+
+            <!-- Import question -->
+            <a href="ImportServlet"><button type="button">Import Question</button>
+            </a>
+
 
             <!-- Pagination -->
             <div class="pagination" id="pagination">
