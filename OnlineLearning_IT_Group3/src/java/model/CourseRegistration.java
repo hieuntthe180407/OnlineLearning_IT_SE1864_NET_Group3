@@ -31,6 +31,23 @@ public class CourseRegistration {
         this.status = status;
         this.validFrom = validFrom;
         this.validTo = validTo;
+        
+    }
+    User user;
+    Course course;
+    public CourseRegistration() {
+    }
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
+    public Course getCourse() {
+        return course;
+    }
+    public void setCourse(Course course) {
+        this.course = course;
     }
     // Getter và setter
     public int getUserId() {

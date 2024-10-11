@@ -437,7 +437,8 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="enrollForm">
+                        <form id="enrollForm" action="CourseRegisterController" method="post">
+                            <input type="hidden" name="courseID" value="${course.courseID}"/>
                             <!-- Full Name -->
                             <div class="form-group">
                                 <label for="userNameRegistration">Full Name</label>
