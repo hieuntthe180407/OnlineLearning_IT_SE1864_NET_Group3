@@ -110,28 +110,58 @@ public class ImportServlet extends HttpServlet {
             String correctAnswer = getCellValue(row, 4);
 
             String error = "";
+            String errorContent = "";
+            String errorType = "";
+            String errorLevel = "";
+            String errorAnswer = "";
 
             // Kiểm tra các trường bắt buộc
             if (questionContent == null || questionContent.isEmpty()) {
                 error += "Missing question content. ";
+                errorContent += "Missing question content. ";
+
             }
             if (questionType == null || questionType.isEmpty()) {
                 error += "Missing question type. ";
+                errorType += "Missing question type. ";
+
             }
             if (level == null || (!level.equals("Easy") && !level.equals("Medium") && !level.equals("Hard"))) {
                 error += "'Level' must be 'Easy', 'Medium', 'Hard'. ";
+                errorLevel += "'Level' must be 'Easy', 'Medium', 'Hard'. ";
+
             }
             if (correctAnswer == null || correctAnswer.isEmpty()) {
                 error += "Missing correct answer.";
+                errorAnswer += "Missing correct answer.";
+
             }
 
             if (!error.isEmpty()) {
                 //Từ đây xử lý in ra cột bên cạnh khi có lỗi
                 hasErrors = true;
-                Cell errorCell = row.createCell(row.getLastCellNum());
-                errorCell.setCellValue(error);
+//                Cell errorCell = row.createCell(row.getLastCellNum());
+//                errorCell.setCellValue(error);
+                if (!errorContent.isEmpty()) {
+                    Cell showErrorContent = row.createCell(0);
+                    showErrorContent.setCellValue(errorContent);
+                }
+                if (!errorType.isEmpty()) {
+                    Cell showErrorType = row.createCell(1);
+                    showErrorType.setCellValue(errorType);
+                }
+                if (!errorLevel.isEmpty()) {
+                    Cell showErrorLevel = row.createCell(3);
+                    showErrorLevel.setCellValue(errorLevel);
+                }
+
+                if (!errorAnswer.isEmpty()) {
+                    Cell showErrorAnswer = row.createCell(4);
+                    showErrorAnswer.setCellValue(errorAnswer);
+                }
+
             } else {
-                if ((questionPath.endsWith(".jpg") || questionPath.endsWith(".png"))) {
+                if (questionPath != null && (questionPath.endsWith(".jpg") || questionPath.endsWith(".png") || questionPath.endsWith(".mp4"))) {
                     String realPath = request.getServletContext().getRealPath("/imgQuestion");
 
                     if (!Files.exists(Path.of(realPath))) {
@@ -139,11 +169,18 @@ public class ImportServlet extends HttpServlet {
                         Files.createDirectory(Path.of(realPath));
 
                     }
-                    
+
                     String fileName = Path.of(questionPath).getFileName().toString();// Lấy tên tệp
                     Path targetPath = Path.of(realPath, fileName); // kết hợp đường dẫn project với tên tệp
 
                     Path sourcePath = Path.of(questionPath);// đường dẫn gốc của tệp
+
+                    // Kiểm tra xem tệp đã tồn tại chưa
+                    if (Files.exists(targetPath)) {
+                        // Nếu tệp đã tồn tại, tạo tên mới cho tệp
+                        String newFileName = System.currentTimeMillis() + "_" + fileName; // Thêm timestamp
+                        targetPath = Path.of(realPath, newFileName); // Cập nhật đường dẫn đích
+                    }
                     //Copy đường dẫn gốc sang nơi muốn lưu tệp
                     Files.copy(sourcePath, targetPath);
                     //Ghi đường dẫn vào database
@@ -163,8 +200,13 @@ public class ImportServlet extends HttpServlet {
                 importedQuestion.setCourse(questionCourse);
                 QuestionDAO questionDAO = new QuestionDAO();
                 questionDAO.importQuestion(importedQuestion);
-                Cell correctCell = row.createCell(row.getLastCellNum());
-                correctCell.setCellValue("Question has been save to database. You can delete this question row");
+                int rowIndex = row.getRowNum();
+                int lastRowNum = sheet.getLastRowNum();
+                sheet.removeRow(row);
+
+                if (rowIndex >= 0 && rowIndex < lastRowNum) {
+                    sheet.shiftRows(rowIndex + 1, lastRowNum, -1);
+                }
             }
         }
 

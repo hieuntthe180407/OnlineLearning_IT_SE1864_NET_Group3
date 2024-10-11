@@ -41,21 +41,30 @@
             font-weight: bold;
         }
 
-        .import-btn {
+        .import-btn, .back-btn {
             width: 100%;
             padding: 10px;
-            background-color: #007bff;
-            border: none;
-            color: white;
-            cursor: pointer;
             font-size: 16px;
+            border: none;
+            cursor: pointer;
             border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .import-btn {
+            background-color: #007bff;
+            color: white;
         }
 
         .import-btn:hover {
             background-color: #0056b3;
         }
 
+        .back-btn {
+            background-color: #6c757d;
+            color: white;
+            margin-bottom: 20px;
+        }
         .download-template {
             display: block;
             text-align: center;
@@ -67,6 +76,11 @@
         .download-template:hover {
             text-decoration: underline;
         }
+
+        h3.error-message {
+            color: red;
+            text-align: center;
+        }
     </style>
     <%
                 
@@ -76,6 +90,11 @@ String error = (String) request.getAttribute("errorImport");
     <body>
         <div class="container">
             <h1>Import Questions</h1>
+            <!-- Back Button -->
+            <a href="QuestionListServlet">
+                <button type="button" class="back-btn">Back</button>
+            </a>
+            
             <form action="ImportServlet" method="post" enctype="multipart/form-data">           
                 <!-- Add to Course Input -->
                 <div class="form-group">

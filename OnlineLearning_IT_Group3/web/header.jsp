@@ -59,11 +59,12 @@
                     <a href="#" class="nav-item nav-link">About</a>
                     <a href="/OnlineLearning_IT_Group3/courseList" class="nav-item nav-link">Courses</a>
                     <a href="#" class="nav-item nav-link">Blog</a>
+                    <a href="QuestionListServlet" class="nav-item nav-link">Question Bank</a>
                 </div>
             </div>
             <a href="#" class="nav-item nav-link">Contact</a>
 
-           <div class="nav-item dropdown" style="position: relative;">
+            <div class="nav-item dropdown" style="position: relative;">
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa fa-user"></i>
                 </a>
@@ -72,7 +73,7 @@
                     <c:choose>
                         <c:when test="${not empty sessionScope.acc}">
                             <li>
-                                <a class="dropdown-item" href="#">Welcome, ${sessionScope.acc.fullName}</a>
+                                <a class="dropdown-item" href="userProfile">Welcome, ${sessionScope.acc.fullName}</a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="logout">Logout</a>

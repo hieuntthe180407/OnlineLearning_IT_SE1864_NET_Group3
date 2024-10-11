@@ -13,30 +13,34 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.User;
 
 /**
  *
  * @author trong
  */
-@WebServlet(name="userDetail", urlPatterns={"/userDetail"})
-public class userDetail extends HttpServlet {
+@WebServlet(name="userAdminEdit", urlPatterns={"/userAdminEdit"})
+public class userAdminEdit extends HttpServlet {
    
-    
-
+   
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        int userId = Integer.parseInt(request.getParameter("userId"));
-        
-        UserDAO uDAO = new UserDAO();
-        User u =uDAO.getUserProfilebyId(userId);
-        request.setAttribute("user", u);
-        request.getRequestDispatcher("userDetailEdit.jsp").forward(request, response);
-        
+       int role = Integer.parseInt(request.getParameter("role"));
+       String status = request.getParameter("status");
+       int id = Integer.parseInt(request.getParameter("userId"));
+       String noti;
+       UserDAO u = new UserDAO();
+       
+       try{
+       u.updateUserRoleStatus(id, role, status);
+       noti = "Update successfully";
+       }
+       catch (Exception e){
+          noti = "There are some errors";
+       }
+       request.setAttribute("noti", noti);
+       request.getRequestDispatcher("userDetail").forward(request, response);
     } 
-
-    
 
 }

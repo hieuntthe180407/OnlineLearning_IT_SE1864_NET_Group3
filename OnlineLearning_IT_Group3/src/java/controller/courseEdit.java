@@ -40,48 +40,21 @@ public class courseEdit extends HttpServlet {
        
         request.setAttribute("listCa", listCa);
          request.setAttribute("Course", c);
-                request.getRequestDispatcher("courseEdit.jsp").forward(request, response);
+                
         
         }
         else{
            
         request.setAttribute("listCa", listCa);
-             request.getRequestDispatcher("courseEdit.jsp").forward(request, response);
+            
         }
         }
         catch (Exception e){
             System.out.println(e.getMessage());
             
-            response.sendRedirect("courseDetail");
         }
-        
+         request.getRequestDispatcher("courseEdit.jsp").forward(request, response);
     } 
-   @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        try{
-        String idParam = request.getParameter("CourseID");
-        String name = request.getParameter("courseName");
-        int CategoryID = Integer.parseInt(request.getParameter("category"));
-        String des = request.getParameter("description");
-        String img = request.getParameter("image");
-                CourseDAO c = new CourseDAO();
-        if(idParam !=null){
-            int id = Integer.parseInt(idParam);
-            c.updateCourse(id, CategoryID, name, des);
-             response.sendRedirect("courseList");    
-        }
-        else{
-            
-            c.addCourse(name, CategoryID, des,img);
-           response.sendRedirect("courseList");    
-        }
-         }
-        catch (Exception e){
-            System.out.println(e.getMessage());
-            response.sendRedirect("lessonEdit");        
-        }
-    }
-    
+   
 
 }

@@ -53,7 +53,7 @@
         <div class="container py-5">
             <div class="row justify-content-center">
                 <div class="col-lg-10 text-center">
-                    <h1 class="display-3 text-white animated slideInDown"><%=c.getCourseName()%></h1>
+                    <h1 class="display-3 text-white animated slideInDown">Edit Course Detail</h1>
                     
                 </div>
             </div>
@@ -93,6 +93,8 @@
                                         <%= m.getMoocName()%>  <a href="lessonEdit.jsp?MoocID=<%= m.getMoocID()%>"><input type="button" value="Add"/></a>
                                     
                                     </button>
+                                        
+                                        
                                   </h2>
                                     
                                     
@@ -107,6 +109,13 @@
                                             <%= l.getLessonName() %>
                                             <a href="lessonEdit?LessonID=<%= l.getLessonID() %>">
                                                 <button type="button">Update</button></a>
+                                                
+                                                    <%if(l.getStatus().equals("Active")){   %>
+                                                    <a type="button" href="editStatusLesson?LessonID=<%= l.getLessonID() %>&status=Deactive&courseID=<%=c.getCourseID()%>" > Deactive</a>
+                                                <%} else if(l.getStatus().equals("Deactive")) {%>
+                                                    <a type="button" href="editStatusLesson?LessonID=<%= l.getLessonID() %>&status=Active&courseID=<%=c.getCourseID()%>" > Active</a>
+                                                    <%}%>
+                                               
                                                 <br> 
                                                 <img src="img/lesson/image1.jpg"/>
                                         </li>
