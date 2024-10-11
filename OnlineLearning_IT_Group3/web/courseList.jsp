@@ -203,7 +203,9 @@
                                     <div class="shadow">
                                         <div class="position-relative overflow-hidden text-light image">
                                             <img class="img-fluid" src="${listCourse.courseImg}" alt="${listCourse.courseName}">
-                                            <div style="position:absolute;top: 15px;left: 16px; font-size:12px; border-radius:3px; background-color:#fb873f;" class="px-2 py-1 fw-bold text-uppercase">FREE</div>
+                                            <c:if test="${listCourse.price == 0}">
+                                                        <div style="position:absolute;top: 15px;left: 16px; font-size:12px; border-radius:3px; background-color:#fb873f;" class="px-2 py-1 fw-bold text-uppercase">FREE</div>
+                                                    </c:if>
                                         </div>
                                         <div class="p-2 pb-0">
                                             <h5 class="mb-1"><a href="single.html" class="text-dark">${listCourse.courseName}</a></h5>
@@ -217,10 +219,21 @@
                                             <small class="flex-fill text-left p-2 px-2"><i class="fa fa-clock me-2"></i>${listCourse.duration} Hrs</small>
                                             <small class="py-1 px-2 fw-bold fs-6 text-center">
                                                 <span style="color:red; text-decoration: line-through;">
-                                                    ${listCourse.salePrice > 0 ? listCourse.price : ''}
+                                                    <!-- Chỉ hiển thị giá gốc nếu salePrice > 0 và price > 0 -->
+                                                    <c:if test="${listCourse.salePrice > 0 && listCourse.price > 0}">
+                                                        ${listCourse.price} VND
+                                                    </c:if>
                                                 </span>
-                                                ${listCourse.salePrice > 0 ? listCourse.salePrice : listCourse.price} VND
+
+                                                <!-- Chỉ hiển thị salePrice nếu salePrice > 0, ngược lại hiển thị price nếu price > 0 -->
+                                                <c:if test="${listCourse.salePrice > 0}">
+                                                    ${listCourse.salePrice} VND
+                                                </c:if>
+                                                <c:if test="${listCourse.salePrice == 0 && listCourse.price > 0}">
+                                                    ${listCourse.price} VND
+                                                </c:if>
                                             </small>
+
                                             <small class="text-primary py-1 px-2 fw-bold fs-6" style="float:right;"><a href="#">Enroll Now </a><i class="fa fa-chevron-right me-2 fs-10"></i></small>
                                         </div>
                                     </div>
