@@ -116,6 +116,7 @@
     </head>
 
     <body>
+        <%@include file= "header.jsp" %>
         <div class="container">
             <h1>Questions List</h1>
             <form action="QuestionListServlet" method="post">

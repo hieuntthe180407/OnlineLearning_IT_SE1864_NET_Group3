@@ -142,22 +142,37 @@ public class ImportServlet extends HttpServlet {
                 hasErrors = true;
 //                Cell errorCell = row.createCell(row.getLastCellNum());
 //                errorCell.setCellValue(error);
+                // Update the specific cells with error messages where necessary
                 if (!errorContent.isEmpty()) {
-                    Cell showErrorContent = row.createCell(0);
-                    showErrorContent.setCellValue(errorContent);
+                    Cell showErrorContent = row.getCell(0); // Check if the cell already exists
+                    if (showErrorContent == null) {
+                        showErrorContent = row.createCell(0); // Create the cell if it doesn't exist
+                    }
+                    showErrorContent.setCellValue(errorContent); // Set the error message
                 }
+
                 if (!errorType.isEmpty()) {
-                    Cell showErrorType = row.createCell(1);
-                    showErrorType.setCellValue(errorType);
+                    Cell showErrorType = row.getCell(1); // Check if the cell already exists
+                    if (showErrorType == null) {
+                        showErrorType = row.createCell(1); // Create the cell if it doesn't exist
+                    }
+                    showErrorType.setCellValue(errorType); // Set the error message
                 }
+
                 if (!errorLevel.isEmpty()) {
-                    Cell showErrorLevel = row.createCell(3);
-                    showErrorLevel.setCellValue(errorLevel);
+                    Cell showErrorLevel = row.getCell(3); // Check if the cell already exists
+                    if (showErrorLevel == null) {
+                        showErrorLevel = row.createCell(3); // Create the cell if it doesn't exist
+                    }
+                    showErrorLevel.setCellValue(errorLevel); // Set the error message
                 }
 
                 if (!errorAnswer.isEmpty()) {
-                    Cell showErrorAnswer = row.createCell(4);
-                    showErrorAnswer.setCellValue(errorAnswer);
+                    Cell showErrorAnswer = row.getCell(4); // Check if the cell already exists
+                    if (showErrorAnswer == null) {
+                        showErrorAnswer = row.createCell(4); // Create the cell if it doesn't exist
+                    }
+                    showErrorAnswer.setCellValue(errorAnswer); // Set the error message
                 }
 
             } else {
