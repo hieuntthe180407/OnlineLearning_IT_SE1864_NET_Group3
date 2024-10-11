@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="java.net.URLDecoder" %>
+<%@ page import="java.nio.charset.StandardCharsets" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -43,6 +45,28 @@
         <link href="css/style.css" rel="stylesheet">
         <link href="css/course_information_detail.css" rel="stylesheet">
     </head>
+    <%
+        
+    String fullName = "";
+    String email = "";
+    String phone = "";
+    String gender = "";
+    // Lấy tất cả cookie
+    Cookie[] cookies = request.getCookies();
+    if (cookies != null) {
+        for (Cookie cookie : cookies) {
+            if ("fullName".equals(cookie.getName())) {
+                fullName = URLDecoder.decode(cookie.getValue()); // Lấy giá trị cookie userCurent
+            } else if ("userEmai".equals(cookie.getName())) {
+                email = URLDecoder.decode(cookie.getValue()); // Lấy giá trị cookie email
+            } else if ("pass".equals(cookie.getName())) {
+                phone = URLDecoder.decode(cookie.getValue()); // Lấy giá trị cookie pass
+            } else if ("userGender".equals(cookie.getName())) {
+                gender = URLDecoder.decode(cookie.getValue()); // Lấy giá trị cookie gender
+            }
+        }
+    }
+    %>
     <body>
         <!-- Spinner Start -->
         <div id="spinner"
@@ -100,8 +124,7 @@
                             <ol class="breadcrumb justify-content-center">
                                 <li class="breadcrumb-item"><a class="text-white" href="index.html">Home</a></li>
                                 <li class="breadcrumb-item"><a class="text-white" href="courses.html">Course</a></li>
-                                <li class="breadcrumb-item text-white active" aria-current="page">HTML Course for Beginners</li>
-                            </ol>
+                                <li class="breadcrumb-item text-white active" aria-current="page">${course.courseName}</li>
                         </nav>
                     </div>
                 </div>
@@ -120,9 +143,8 @@
                             <div class="row g-5 justify-content-center">
 
                                 <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.3s">
-                                    <h2>HTML Course for Beginners</h2>
-                                    <p>Start at the beginning by learning HTML basics — an important foundation for building and editing web pages.
-
+                                    <h2>${course.courseName}</h2>
+                                    <p>
                                     </p>
                                     <div class="d-flex">
                                         <small><i class="fa fa-star text-warning"></i>
@@ -153,8 +175,7 @@
 
                                 <div class="tab-pane container active" id="Overview">
                                     <h2>About this Course</h2>
-                                    <p>Fun fact: all websites use HTML — even this one. It's a fundamental part of every web developer's toolkit. HTML provides the content that gives web pages structure, by using elements and tags, you can add text, images, videos, forms, and more. Learning HTML basics is an important first step in your web development journey and an essential skill for front- and back-end developers.</p>
-
+                                    <p>${course.description}</p>
 
 
                                     <h2 class="mt-4">
@@ -290,10 +311,10 @@
                             <img class="img-fluid mt-2" src="img/course-1.jpg" alt="" height="200px" width="500px">
                         </div>
 
-                        <h4 class="mt-2 p-2">Free <small></small></h4>
+                        <h4 class="mt-2 p-2">${course.salePrice}<small></small></h4>
 
                         <h4 class="mt-2 p-2">$
-                            <small><del>20</del></small>
+                            <small><del>${course.price}</del></small>
                         </h4>
 
 
@@ -314,7 +335,7 @@
                         <div class="list mt-2">
                             <div class="list1 d-flex justify-content-between pt-2 border-bottom">
                                 <p><i class="fa fa-clock"></i> Duration</p>
-                                <p>2.0 Hrs</p>
+                                <p>${course.duration} Hrs</p>
                             </div>
                             <div class="list2 d-flex justify-content-between pt-2 border-bottom">
                                 <p><i class="fa fa-book"></i> Lectures</p>
@@ -420,26 +441,23 @@
                             <!-- Full Name -->
                             <div class="form-group">
                                 <label for="userNameRegistration">Full Name</label>
-                                <input type="text" class="form-control" id="userNameRegistration" name="userNameRegistration" placeholder="Enter your name" required>
-                            </div>
+                                <input type="text" class="form-control" id="userNameRegistration" name="userNameRegistration" placeholder="Enter your name" value="<%= fullName %>" required>                            </div>
                             <!-- Email -->
                             <div class="form-group">
                                 <label for="userEmailRegistration">Email</label>
-                                <input type="email" class="form-control" id="userEmailRegistration" name="userEmailRegistration" placeholder="Enter your email" required>
-                            </div>
+                                <input type="email" class="form-control" id="userEmailRegistration" name="userEmailRegistration" placeholder="Enter your email"  value="<%= email %>" required>                            </div>
                             <!-- Mobile -->
                             <div class="form-group">
                                 <label for="userPhoneRegistration">Mobile</label>
-                                <input type="text" class="form-control" id="userPhoneRegistration" name="userPhoneRegistration" placeholder="Enter your phone number" required>
-                            </div>
+                                <input type="text" class="form-control" id="userPhoneRegistration" name="userPhoneRegistration" placeholder="Enter your phone number" value="<%= phone %>" required>                            </div>
                             <!-- Gender -->
                             <div class="form-group">
                                 <label for="userGenderRegistration">Gender</label>
                                 <select class="form-control" id="userGenderRegistration" required>
                                     <option value="" disabled selected>Select your gender</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                    <option value="other">Other</option>
+                                    <option value="male" <%= "male".equals(gender) ? "selected" : "" %>> Male</option>
+                                    <option value="female" <%= "female".equals(gender) ? "selected" : "" %>>Female</option>
+                                    <option value="other" <%= "other".equals(gender) ? "selected" : "" %>>Other</option>
                                 </select>
                             </div>
                         </form>
