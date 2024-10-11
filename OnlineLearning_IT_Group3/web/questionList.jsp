@@ -138,11 +138,7 @@
                     </select>
                     <!-- Questions Per Page -->
                     <div class="settings-section">
-                        <select id="questions-per-page" name="questionPerPage">
-                            <option value="5">5 per page</option>
-                            <option value="10" selected>10 per page</option>
-                            <option value="15">15 per page</option>
-                        </select>
+                        <input type="text" name="questionPerPage" value="" id="search-course" placeholder="Number question per page">
                     </div>
                     <button type="submit">Add filter</button>
             </form>
