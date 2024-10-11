@@ -94,8 +94,29 @@ public class QuestionListServlet extends HttpServlet {
         String questionCourse = request.getParameter("questionCourse");
         String questionLevel = request.getParameter("questionLevel");
         String questionStatus = request.getParameter("questionStatus");
-        int page = Integer.parseInt(request.getParameter("page") != null ? request.getParameter("page") : "1");
-        int questionPerPage = Integer.parseInt(request.getParameter("questionPerPage") != null ? request.getParameter("questionPerPage") : "10");
+        
+
+        // Kiểm tra tham số "page"
+        String pageParam = request.getParameter("page");
+        int page = 1; // Giá trị mặc định
+        if (pageParam != null && !pageParam.trim().isEmpty()) {
+            try {
+                page = Integer.parseInt(pageParam);
+            } catch (NumberFormatException e) {
+                page = 1;
+            }
+        }
+
+        // Kiểm tra tham số "questionPerPage"
+        String questionPerPageParam = request.getParameter("questionPerPage");
+        int questionPerPage = 10; // Giá trị mặc định
+        if (questionPerPageParam != null && !questionPerPageParam.trim().isEmpty()) {
+            try {
+                questionPerPage = Integer.parseInt(questionPerPageParam);
+            } catch (NumberFormatException e) {
+                questionPerPage = 10;
+            }
+        }
 
         QuestionDAO qDao = new QuestionDAO();
         List<Question> listQuestion = qDao.getFilteredQuestions(questionContent, questionCourse, questionLevel, questionStatus, page, questionPerPage);
