@@ -4,17 +4,19 @@
  */
 package controller;
 
+import dal.CourseDAO;
 import dal.CourseRegisDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import model.Course;
 import model.CourseRegistration;
-
+import model.User;
 /**
  *
  * @author laptop acer
@@ -96,7 +98,18 @@ public class CourseRegisterController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String courseId = request.getParameter("courseID");
+        HttpSession ses = request.getSession();
+        User u = (User) ses.getAttribute("acc");
+        if (u == null) {
+            response.sendRedirect(request.getContextPath() + "login.jsp");
+        }
+        CourseRegisDao cd = new CourseRegisDao();
+        cd.registCourse(u, courseId);
+        CourseDAO cDao = new CourseDAO();
+        List<Course> listAllCourse = cDao.getAllCourse();
+        request.setAttribute("listCourse", listAllCourse);
+        request.getRequestDispatcher("/courseList.jsp").forward(request, response);
     }
 
     /**
