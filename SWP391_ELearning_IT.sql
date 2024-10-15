@@ -1,4 +1,4 @@
-﻿USE [SWP391_FALL2024]
+﻿USE [SWP391_FALL20241]
 
 GO
 /****** Object:  Table [dbo].[Blogs]    Script Date: 9/14/2024 10:13:41 PM ******/
@@ -295,12 +295,12 @@ GO
 CREATE TABLE [dbo].[Question](
 	[QuestionID] [int] IDENTITY(1,1) NOT NULL,
 	[QuestionContent] [text] NULL,
-	[QuestionType] NVARCHAR(255) NOT NULL,
+	[QuestionType] NVARCHAR(255) NOT NULL CHECK (QuestionType IN ('Multiple Choice', 'Essay')),
 	[QuestionImgOrVideo] NVARCHAR(255) NULL,
 	[Level] NVARCHAR(10) CHECK (level IN ('Easy', 'Medium', 'Hard')) NOT NULL,
 	[Status] NVARCHAR(10) CHECK (status IN ('Visible', 'Hidden')) NOT NULL DEFAULT 'Visible',
-	[CorrectAnswer] NVARCHAR(255) NOT NULL,
 	[CourseID] [int] NOT NULL,
+	[Explanation] [text] NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[QuestionID] ASC
@@ -456,6 +456,29 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
+
+/****** Object:  Table [dbo].[Answer]  ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Answer](
+    [AnswerID] [int] IDENTITY(1,1) NOT NULL,
+    [QuestionID] [int] NOT NULL,
+    [OptionContent] [varchar](255) NOT NULL,
+    [IsCorrect] [bit] NOT NULL DEFAULT 0,
+PRIMARY KEY CLUSTERED 
+(
+    [AnswerID] ASC
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Answer]  WITH CHECK ADD FOREIGN KEY([QuestionID])
+REFERENCES [dbo].[Question] ([QuestionID])
+
+
 ALTER TABLE [dbo].[Exam_Question]  WITH CHECK ADD FOREIGN KEY([QuestionID])
 REFERENCES [dbo].[Question] ([QuestionID])
 GO
