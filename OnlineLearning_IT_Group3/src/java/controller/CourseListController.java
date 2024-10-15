@@ -61,7 +61,7 @@ public class CourseListController extends HttpServlet {
     throws ServletException, IOException {
          CourseDAO cDao = new CourseDAO();
         List<Category> listTop8Category = cDao.getTop8Category();
-        request.setAttribute("listTop10Category", listTop8Category);
+        request.setAttribute("listTop8Category", listTop8Category);
 
         List<Course> listAllCourse = null;
         String action = request.getParameter("action");
