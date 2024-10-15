@@ -42,25 +42,72 @@
     <link href="css/style.css" rel="stylesheet">
     </head>
     <body>
-        <%@include file="header.jsp" %>
+    <%@include file="header.jsp" %>
+ <div class="container-fluid bg-primary py-5 mb-5 page-header">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-10 text-center">
+                    <h1 class="display-3 text-white animated slideInDown">Admin Page</h1>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Admin Page Content -->
+    <div class="container my-5">
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-         <%@include file="footer.jsp" %>
-          <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <div class="row justify-content-center">
+            <!-- User List Card -->
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 text-center shadow-sm">
+                    <div class="card-body d-flex flex-column justify-content-end">
+                        <h5 class="card-title">User List</h5>
+                        
+                        <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+    <img src="img/admin/user-settings-icon.jpg" style="width: 250px; height: 250px;" />
+</div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="userList.jsp" class="btn btn-primary w-100">View Users</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Manage Course Card -->
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 text-center shadow-sm">
+                    <div class="card-body d-flex flex-column justify-content-end">
+                        <h5 class="card-title">Manage Course</h5>
+                        <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+    <img src="img/admin/course-settings-icon.png" style="width: 250px; height: 250px;" />
+</div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="manageCourse.jsp" class="btn btn-primary w-100">Manage Courses</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- List Questions Card -->
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 text-center shadow-sm">
+                    <div class="card-body d-flex flex-column justify-content-end">
+                        <h5 class="card-title">List Questions</h5>
+                         <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+    <img src="img/admin/list-question-icon.png" style="width: 250px; height: 250px;" />
+</div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="QuestionListServlet" class="btn btn-primary w-100">List Questions</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%@include file="footer.jsp" %>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="lib/wow/wow.min.js"></script>
     <script src="lib/easing/easing.min.js"></script>
@@ -69,4 +116,6 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+</body>
+
 </html>
