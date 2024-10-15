@@ -477,7 +477,7 @@ GO
 
 ALTER TABLE [dbo].[Answer]  WITH CHECK ADD FOREIGN KEY([QuestionID])
 REFERENCES [dbo].[Question] ([QuestionID])
-
+GO
 
 ALTER TABLE [dbo].[Exam_Question]  WITH CHECK ADD FOREIGN KEY([QuestionID])
 REFERENCES [dbo].[Question] ([QuestionID])
