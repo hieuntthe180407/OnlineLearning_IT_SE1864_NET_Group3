@@ -107,14 +107,14 @@
                 </div>
                 <div class="row g-2 m-2">
 
-                    <c:forEach items="${listTop10Category}" var="listTop10Category">
+                    <c:forEach items="${listTop8Category}" var="listTop8Category">
                         <div class="col-lg-3 col-md-6  text-center">
                             <div class="content shadow p-3 mb-2 wow fadeInUp" data-wow-delay="0.3s">
 
-                                <img src="${listTop10Category.image}" class="img-fluid" alt="categories"></i>
+                                <img src="${listTop8Category.image}" class="img-fluid" alt="categories"></i>
 
                                 <h5 class="my-2">
-                                    <a href="courseList?action=category&name=${listTop10Category.categoryName}" class="text-center">${listTop10Category.categoryName}</a>
+                                    <a href="courseList?action=category&name=${listTop8Category.categoryName}" class="text-center">${listTop8Category.categoryName}</a>
                                 </h5>
                             </div>
                         </div>
