@@ -15,6 +15,7 @@ public class Question {
     
     private int questionId;
     private String questionContent;
+    private String questionTitle;
     private String questionType;
     private String questionImgOrVideo;
     private String level;
@@ -25,9 +26,10 @@ public class Question {
     public Question() {
     }
 
-    public Question(int questionId, String questionContent, String questionType, String questionImgOrVideo, String level, String Status, String correctAnswer, Course course) {
+    public Question(int questionId, String questionContent, String questionTitle, String questionType, String questionImgOrVideo, String level, String Status, String correctAnswer, Course course) {
         this.questionId = questionId;
         this.questionContent = questionContent;
+        this.questionTitle = questionTitle;
         this.questionType = questionType;
         this.questionImgOrVideo = questionImgOrVideo;
         this.level = level;
@@ -35,6 +37,16 @@ public class Question {
         this.correctAnswer = correctAnswer;
         this.course = course;
     }
+
+    public String getQuestionTitle() {
+        return questionTitle;
+    }
+
+    public void setQuestionTitle(String questionTitle) {
+        this.questionTitle = questionTitle;
+    }
+
+
 
     public int getQuestionId() {
         return questionId;
