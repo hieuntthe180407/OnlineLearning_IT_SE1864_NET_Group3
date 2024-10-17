@@ -20,13 +20,12 @@ public class Question {
     private String questionImgOrVideo;
     private String level;
     private String Status;
-    private String correctAnswer;
     private Course course;
 
     public Question() {
     }
 
-    public Question(int questionId, String questionContent, String questionTitle, String questionType, String questionImgOrVideo, String level, String Status, String correctAnswer, Course course) {
+    public Question(int questionId, String questionContent, String questionTitle, String questionType, String questionImgOrVideo, String level, String Status, Course course) {
         this.questionId = questionId;
         this.questionContent = questionContent;
         this.questionTitle = questionTitle;
@@ -34,9 +33,10 @@ public class Question {
         this.questionImgOrVideo = questionImgOrVideo;
         this.level = level;
         this.Status = Status;
-        this.correctAnswer = correctAnswer;
         this.course = course;
     }
+
+
 
     public String getQuestionTitle() {
         return questionTitle;
@@ -96,13 +96,7 @@ public class Question {
         this.Status = Status;
     }
 
-    public String getCorrectAnswer() {
-        return correctAnswer;
-    }
 
-    public void setCorrectAnswer(String correctAnswer) {
-        this.correctAnswer = correctAnswer;
-    }
 
     public Course getCourse() {
         return course;
@@ -118,7 +112,7 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question{" + "questionId=" + questionId + ", questionContent=" + questionContent + ", questionType=" + questionType + ", questionImgOrVideo=" + questionImgOrVideo + ", level=" + level + ", Statusl=" + Status + ", correctAnswer=" + correctAnswer + ", course=" + course.getCourseName() + '}';
+        return "Question{" + "questionId=" + questionId + ", questionContent=" + questionContent + ", questionType=" + questionType + ", questionImgOrVideo=" + questionImgOrVideo + ", level=" + level + ", Statusl=" + Status  + ", course=" + course.getCourseName() + '}';
     }
     
     

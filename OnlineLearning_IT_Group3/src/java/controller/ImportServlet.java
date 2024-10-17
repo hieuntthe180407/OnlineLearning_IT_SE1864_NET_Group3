@@ -205,6 +205,7 @@ public class ImportServlet extends HttpServlet {
                 //Từ đây cho question vào database
                 Question importedQuestion = new Question();
                 importedQuestion.setQuestionContent(questionContent);
+                importedQuestion.setQuestionTitle(questionContent);
                 importedQuestion.setQuestionType(questionType);
                 importedQuestion.setQuestionImgOrVideo(questionPath);
                 importedQuestion.setLevel(level);
