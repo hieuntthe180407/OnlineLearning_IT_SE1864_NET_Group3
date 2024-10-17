@@ -294,7 +294,8 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Question](
 	[QuestionID] [int] IDENTITY(1,1) NOT NULL,
-	[QuestionContent] [text] NULL,
+	[QuestionContent] [text] NOT NULL,
+	[QuestionTitle] [text] NOT NULL,
 	[QuestionType] NVARCHAR(255) NOT NULL CHECK (QuestionType IN ('Multiple Choice', 'Essay')),
 	[QuestionImgOrVideo] NVARCHAR(255) NULL,
 	[Level] NVARCHAR(10) CHECK (level IN ('Easy', 'Medium', 'Hard')) NOT NULL,
