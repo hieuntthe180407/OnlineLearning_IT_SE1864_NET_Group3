@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import model.Course;
+
 import model.Review;
 import model.User;
 
@@ -72,7 +73,10 @@ public class ReviewDAO extends DBContext {
      
      public static void main(String[] args) {
         ReviewDAO r = new ReviewDAO();
+        List<Review> list = r.getAllReview();
         
-        r.getAllReview();
+        for (Review u : list) {
+            System.out.println(u);
+        }
     }
 }
