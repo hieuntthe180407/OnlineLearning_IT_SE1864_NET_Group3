@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <head>
+        
          <meta charset="utf-8">
     <meta name="google-translate-customization" content="9f841e7780177523-3214ceb76f765f38-gc38c6fe6f9d06436-c">
     </meta>
@@ -45,7 +45,7 @@
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
     </head>
-    </head>
+    
     <body>
         <script>
 function previewImage(event) {

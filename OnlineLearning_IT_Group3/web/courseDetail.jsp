@@ -259,16 +259,16 @@
                     <img class="img-fluid mt-2" src="img/course-1.jpg" alt="" height="200px" width="500px">
                 </div>
                 
-                <h4 class="mt-2 p-2">Free <small></small></h4>
+                <h4 class="mt-2 p-2"><%=c.getSalePrice()%> <small></small></h4>
                 
                 <h4 class="mt-2 p-2">$
-                    <small><del>20</del></small>
+                    <small><del><%=c.getListPrice()%></del></small>
                 </h4>
                 
 
                 <div class="buttons">
                     
-                    <a href="#"
+                    <a href="Enroll.jsp?CourseID=<%=c.getCourseID()%>"
                         class="text-decoration-none text-white btn p-3 w-100 mb-2">ENROLL NOW</a>
                     
                     
@@ -324,7 +324,7 @@
             
             <div class="owl-carousel testimonial-carousel position-relative">
                 <%if (listr == null || listr.size() == 0 ) {
-                        out.println("No REVIEW ");
+                        out.println("----------------No REVIEW for this Course yet ");
                     } else {
                         for (Review r : listr) {%>
                 <div class="testimonial-item text-center">
@@ -338,6 +338,22 @@
                <%}}%>
             </div>
 
+            <div class="col-lg-12 col-md-12 wow fadeInUp" data-wow-delay="0.5s">
+            <form action="ReviewAdd" method="get">
+            <div class="row g-3">
+        
+        <div class="col-12">
+            <div class="form-floating">
+                <textarea class="form-control" required placeholder="Leave a review here" id="message" style="height: 150px" name="ReviewContent"></textarea>
+                <label for="review">Your Review</label>
+            </div>
+        </div>
+        <div class="col-12">
+            <button class="btn btn-primary w-100 py-3" type="submit">Send Review</button>
+        </div>
+    </div>
+</form>
+            </div>
                
                         
                         
