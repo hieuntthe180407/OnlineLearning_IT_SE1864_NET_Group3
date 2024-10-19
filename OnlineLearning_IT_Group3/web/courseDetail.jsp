@@ -59,6 +59,41 @@
             </div>
         </div>
     </div>
+        <div class="container-xxl py-2">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 wow fadeInUp">
+
+                <div class="container">
+                    <div class="row g-5 justify-content-center">
+
+                        <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.3s">
+                            <h2><%=c.getCourseName()%></h2>
+                            <p>
+                                <%=c.getDescription()%>
+                            </p>
+                            <div class="d-flex">
+                                <small><i class="fa fa-star text-warning"></i>
+                                    4.6</small>
+                                <small style="margin-left: 15px;"><i class="fa fa-user-graduate"></i> 5.8L+
+                                    Learners
+                                </small>
+                                <small style="margin-left: 15px;"><i class="fa fa-user"></i>Beginner</small>
+                                <small style="margin-left: 15px;"><i class="fa fa-clock me-2"></i> 2.0 Hrs</small>
+
+                            </div>
+                            <div class="image-div text-left mt-3">
+                                <img src="img/testimonial-2.jpg" alt=""
+                                    style="height: 40px; width: 40px; border-radius: 50%;">
+                                <span style="margin-left: 10px;"><b>Instructor Name</b> - Zoe Bachman</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="container-fluid wow fadeInUp mt-5 tabs">
          <div class="tab-content mt-4">
 
                         <div class="tab-pane container active" id="Overview">
@@ -74,6 +109,7 @@
               <% 
                     List<Mooc> listm = (List<Mooc>) request.getAttribute("listm");
                     List<Lesson> listl = (List<Lesson>) request.getAttribute("listl");
+                    List<Review> listr = (List<Review>) request.getAttribute("listr");
                     if (listm == null || listm.size() == 0 || listl == null || listl.size() == 0 ) {
                         out.println("Empty list ");
                     } else {
@@ -166,6 +202,170 @@
                                </div>
 
 
+                               
+                               
+                               
+         <div class="container" id="Instructor">
+                            <h2 class="mt-4">About the Instructor</h2>
+                            <div class="image-div text-left mt-4">
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-6">
+                                        <img src="img/testimonial-2.jpg" alt=""
+                                            style="height: 150px; width: 150px; border-radius: 50%;">
+                                    </div>
+                                    <div class="col-lg-9 col-md-6 mt-2">
+                                        <h5>Zoe Bachman</h5>
+                                        <p>Developer</p>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p><i class="fa fa-star"></i>
+                                                    4.87 Instructor rating</p>
+                                            </div>
+                                            <div class="col-6">
+                                                <p> <i class="fa fa-check
+                                                    
+                                                    
+                                                     "></i>
+                                                    1,533 reviews</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p><i class="fa fa-user"></i>
+                                                    20 Students</p>
+                                            </div>
+                                            <div class="col-6">
+                                                <p><i class="fa fa-video"></i>
+                                                    29 courses</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="des mt-4 mb-5">
+                                    Curriculum Director at Codecademy and creative technologist. She has designed a range of Codecademy courses, including Learn HTML, Learn C#, Learn Alexa, and the beginner-friendly Learn How to Code.
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="col-lg-3 col-md-6 shadow wow fadeInUp" data-wow-delay="0.3s">
+
+                <div class="image text-center">
+                    <img class="img-fluid mt-2" src="img/course-1.jpg" alt="" height="200px" width="500px">
+                </div>
+                
+                <h4 class="mt-2 p-2">Free <small></small></h4>
+                
+                <h4 class="mt-2 p-2">$
+                    <small><del>20</del></small>
+                </h4>
+                
+
+                <div class="buttons">
+                    
+                    <a href="#"
+                        class="text-decoration-none text-white btn p-3 w-100 mb-2">ENROLL NOW</a>
+                    
+                    
+                   
+                </div>
+                <div class="list mt-2">
+                    <div class="list1 d-flex justify-content-between pt-2 border-bottom">
+                        <p><i class="fa fa-clock"></i> Duration</p>
+                        <p>2.0 Hrs</p>
+                    </div>
+                    <div class="list2 d-flex justify-content-between pt-2 border-bottom">
+                        <p><i class="fa fa-book"></i> Lectures</p>
+                        <p>4</p>
+                    </div>
+                    <div class="list3 d-flex justify-content-between pt-2 border-bottom">
+                        <p><i class="fa fa-bolt"></i> Enrolled</p>
+                        <p>240 students</p>
+                    </div>
+                    <div class="list4 d-flex justify-content-between pt-2 border-bottom">
+                        <p><i class="fa fa-google-translate"></i> Language</p>
+                        <p>English</p>
+                    </div>
+                    <div class="list5 d-flex justify-content-between pt-2 border-bottom">
+                        <p><i class="fa fa-list"></i> Skill Level</p>
+                        <p>Beginner</p>
+                    </div>
+                    <div class="list6 d-flex justify-content-between pt-2 border-bottom">
+                        <p><i class="fa fa-list"></i> Deadline</p>
+                        <p>Life Time</p>
+                    </div>
+                    <div class="list7 d-flex justify-content-between pt-2 border-bottom">
+                        <p><i class="fa fa-certificate"></i> Certificate</p>
+                        <p>Yes</p>
+                    </div>
+                    <div class="button pt-4 text-center mb-4">
+                        <i class="fa fa-share"></i><a href=""> Share this Course</a>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+ <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+        <div class="container">
+            <div class="text-center">
+                <h1 class=" bg-white text-center px-3" style="color: #fb873f;">Success stories</h1>
+                <p class="mb-5">Can Secret Coder courses help your career? Our learners tell us how.</p>
+            </div>
+            
+            
+            
+            <div class="owl-carousel testimonial-carousel position-relative">
+                <%if (listr == null || listr.size() == 0 ) {
+                        out.println("No REVIEW ");
+                    } else {
+                        for (Review r : listr) {%>
+                <div class="testimonial-item text-center">
+                    <img class="border rounded-circle p-2 mx-auto mb-3" src="img/testimonial-1.jpg"
+                        style="width: 80px; height: 80px;">
+                    <h5 class="mb-0">Sarah K.</h5>
+                    <div class="testimonial-text bg-light text-center p-4">
+                        <p class="mb-0"><%=r.getReviewContent()%></p>
+                    </div>
+                </div>
+               <%}}%>
+            </div>
+
+               
+                        
+                        
+                        
+                        
+        </div>
+    </div>                              
+                               
+                               
+                               
+                               
+                               
+                               
+                               
+                               
+                               
+                               
+                               
+                               
+                               
+                               
+                               
+</div>                       
+                               
+                               
+                               
+                               
+                               
 
                      
         

@@ -3,9 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller;
+package controller.mangager;
 
 import dal.CourseDAO;
+import dal.MoocDAO;
+import dal.ReviewDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,15 +16,16 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import model.Category;
 import model.Course;
+import model.Mooc;
+import model.Review;
 
 /**
  *
  * @author DTC
  */
-@WebServlet(name="CourseListController", urlPatterns={"/courseList"})
-public class CourseListController extends HttpServlet {
+@WebServlet(name="ManagerCourseDetail", urlPatterns={"/managerCourseDetail"})
+public class ManagerCourseDetail extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -39,10 +42,10 @@ public class CourseListController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CourseListController</title>");  
+            out.println("<title>Servlet ManagerCourseDetail</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CourseListController at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ManagerCourseDetail at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,39 +62,29 @@ public class CourseListController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-         CourseDAO cDao = new CourseDAO();
-        List<Category> listTop8Category = cDao.getTop8Category();
-        request.setAttribute("listTop8Category", listTop8Category);
-
-        List<Course> listAllCourse = null;
-        String action = request.getParameter("action");
-
-        // Check if action is null or empty
-        if (action == null || action.isEmpty()) {
-
-            listAllCourse = cDao.getAllCourse();
-
-        } else if (action.equalsIgnoreCase("search")) {
-            String text = request.getParameter("text");
-            listAllCourse = cDao.getAllCourseBySearch(text);
-        } else if (action.equalsIgnoreCase("category")) {
-            String name = request.getParameter("name");
-            listAllCourse = cDao.getAllCoursesByCategory(name);
-        } else if (action.equalsIgnoreCase("filterPrice")) {
-           double minPrice = Double.parseDouble(request.getParameter("minPrice"));
-           double maxPrice = Double.parseDouble(request.getParameter("maxPrice"));
-           listAllCourse = cDao.getCourseByMinMaxPrice(minPrice,maxPrice);
-
-        }
-
-        double maxPrice = cDao.getMaxPrice();
-        request.setAttribute("maxPrice", maxPrice);
-        double minPrice = cDao.getMinPrice();
-        request.setAttribute("minPrice", minPrice);
-
-        request.setAttribute("listCourse", listAllCourse);
-        request.getRequestDispatcher("/courseList.jsp").forward(request, response);
-    
+        int id = Integer.parseInt(request.getParameter("id"));
+        
+        MoocDAO mDao = new MoocDAO();
+        
+        List<Mooc> listMooc = mDao.getAllMoocByCourseID(id);
+        
+        //course detail
+        
+        CourseDAO cDao = new CourseDAO();
+        
+        Course course = cDao.getCourseByID(id);
+        
+        request.setAttribute("course",course);
+        
+        
+        //review
+        
+        ReviewDAO rDao = new ReviewDAO();
+        List<Review> review = rDao.getReviewByCourseId(id);
+        request.setAttribute("listReviews", review);
+        
+        request.getRequestDispatcher("managerCourseDetail.jsp").forward(request, response);
+        
     } 
 
     /** 
@@ -104,8 +97,9 @@ public class CourseListController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-      processRequest(request, response);
+        processRequest(request, response);
     }
+
     /** 
      * Returns a short description of the servlet.
      * @return a String containing servlet description
