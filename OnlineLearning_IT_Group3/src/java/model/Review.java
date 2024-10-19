@@ -4,55 +4,92 @@
  */
 package model;
 
+
+import java.time.LocalDateTime;
 /**
  *
- * @author trong
+ * @author DTC
  */
 public class Review {
-    private int ReviewID;
-    private String ReviewContent;
-    private User user;
-    private Course course;
+    private int reviewID;
+    private User userID;
+    
+    private Course courseID;
+    
+    private int rating;
+    
+    private LocalDateTime time;
+    private String reviewContent;
+    private int isReport;
+
+    public Review(int reviewID, User userID, Course courseID, int rating, LocalDateTime time, String reviewContent, int isReport) {
+        this.reviewID = reviewID;
+        this.userID = userID;
+        this.courseID = courseID;
+        this.rating = rating;
+        this.time = time;
+        this.reviewContent = reviewContent;
+        this.isReport = isReport;
+    }
 
     public Review() {
     }
 
-    public Review(int ReviewID, String ReviewContent) {
-        this.ReviewID = ReviewID;
-        this.ReviewContent = ReviewContent;
-    }
 
     public int getReviewID() {
-        return ReviewID;
+        return reviewID;
     }
 
-    public void setReviewID(int ReviewID) {
-        this.ReviewID = ReviewID;
+    public void setReviewID(int reviewID) {
+        this.reviewID = reviewID;
+    }
+
+    public User getUserID() {
+        return userID;
+    }
+
+    public void setUserID(User userID) {
+        this.userID = userID;
+    }
+
+    public Course getCourseID() {
+        return courseID;
+    }
+
+    public void setCourseID(Course courseID) {
+        this.courseID = courseID;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public LocalDateTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalDateTime time) {
+        this.time = time;
     }
 
     public String getReviewContent() {
-        return ReviewContent;
+        return reviewContent;
     }
 
-    public void setReviewContent(String ReviewContent) {
-        this.ReviewContent = ReviewContent;
+    public void setReviewContent(String reviewContent) {
+        this.reviewContent = reviewContent;
     }
 
-    public User getUser() {
-        return user;
+    public int getIsReport() {
+        return isReport;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setIsReport(int isReport) {
+        this.isReport = isReport;
     }
 
-    public Course getCourse() {
-        return course;
-    }
-
-    public void setCourse(Course course) {
-        this.course = course;
-    }
-    
-    
 }
