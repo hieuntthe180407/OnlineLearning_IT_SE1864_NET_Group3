@@ -36,8 +36,11 @@ public class courseDetail extends HttpServlet {
         int courseID = Integer.parseInt(request.getParameter("courseID"));
           MoocDAO m = new MoocDAO();
         List<Mooc> listm = m.getAllMoocByCourseID(courseID);
-        ReviewDAO rDAO = new ReviewDAO();
-       List<Review> listr = rDAO.getAllReview();
+      
+       ReviewDAO rDAO = new ReviewDAO();
+       List<Review> listr = rDAO.getReviewByCourseId(courseID);
+       
+       
        
        request.setAttribute("listr", listr);
         request.setAttribute("listm", listm);
