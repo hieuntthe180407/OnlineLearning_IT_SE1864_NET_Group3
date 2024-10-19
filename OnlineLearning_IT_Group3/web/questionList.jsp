@@ -74,23 +74,53 @@
             table {
                 width: 100%;
                 border-collapse: collapse;
-                margin-top: 15px;
+                margin: 20px 0;
+                font-size: 16px;
+                text-align: left;
             }
 
-            th,
-            td {
-                padding: 8px;
-                text-align: center;
-                border-bottom: 1px solid #ddd;
+            th, td {
+                padding: 12px 15px;
+                border: 1px solid #dddddd;
             }
 
             th {
-                background-color: #007bff;
-                color: white;
+                background-color: #f2f2f2;
+                color: #333;
             }
 
             tr:nth-child(even) {
                 background-color: #f9f9f9;
+            }
+
+            tr:hover {
+                background-color: #f1f1f1;
+            }
+
+            video, img {
+                display: block;
+                margin: 0 auto;
+            }
+
+            button {
+                background-color: #4CAF50; /* Green */
+                color: white;
+                padding: 8px 12px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            button:hover {
+                background-color: #45a049;
+            }
+
+            a button {
+                background-color: #008CBA;
+            }
+
+            a button:hover {
+                background-color: #005f6b;
             }
 
             .pagination {

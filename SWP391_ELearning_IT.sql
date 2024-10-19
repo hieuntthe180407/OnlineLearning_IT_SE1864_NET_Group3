@@ -1,4 +1,4 @@
-﻿USE [SWP391_FALL20241]
+﻿USE [SWP391_FALL2024]
 
 GO
 /****** Object:  Table [dbo].[Blogs]    Script Date: 9/14/2024 10:13:41 PM ******/

@@ -27,8 +27,9 @@ public class QuestionDAO extends DBContext {
                     + ",QuestionImgOrVideo"
                     + ",[Level]"
                     + ",[Status]"
+                    + ",QuestionTitle"
                     + ",CourseID)\n"
-                    + "VALUES (?,?,?,?,?,?)";
+                    + "VALUES (?,?,?,?,?,?,?)";
 
             st = connection.prepareStatement(sql);
 
@@ -37,7 +38,8 @@ public class QuestionDAO extends DBContext {
             st.setString(3, question.getQuestionImgOrVideo());
             st.setString(4, question.getLevel());
             st.setString(5, question.getStatus());
-            st.setInt(6, question.getCourse().getCourseID());
+            st.setString(6, question.getQuestionTitle());
+            st.setInt(7, question.getCourse().getCourseID());
             st.executeUpdate();
 
         } catch (Exception e) {
@@ -63,7 +65,7 @@ public class QuestionDAO extends DBContext {
     public List<Question> getFilteredQuestions(String content, String course, String level, String status, int page, int numberQuestion) {
         List<Question> listQuestion = new ArrayList<>();
         PreparedStatement st = null;
-        String sql = "SELECT q.QuestionID, q.QuestionContent, q.QuestionType, q.QuestionImgOrVideo, q.Level, q.Status, q.CorrectAnswer, c.CourseName FROM Question q, Course c WHERE q.CourseID = c.CourseID";
+        String sql = "SELECT q.QuestionID, q.QuestionContent, q.QuestionType, q.QuestionImgOrVideo, q.Level, q.Status, c.CourseName FROM Question q, Course c WHERE q.CourseID = c.CourseID";
         //Tạo list lưu câu lệnh
         List<String> params = new ArrayList<>();
 

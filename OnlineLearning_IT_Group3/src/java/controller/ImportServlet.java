@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.AnswerDAO;
 import dal.CourseDAO;
 import dal.QuestionDAO;
 import java.io.IOException;
@@ -20,6 +21,7 @@ import jakarta.servlet.http.Part;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import model.Answer;
 
 import model.Course;
 import model.Question;
@@ -210,10 +212,17 @@ public class ImportServlet extends HttpServlet {
                 importedQuestion.setQuestionImgOrVideo(questionPath);
                 importedQuestion.setLevel(level);
                 importedQuestion.setStatus("Visible");
-                importedQuestion.setCorrectAnswer(correctAnswer);
+
+                Answer answerQuestion = new Answer();
+                answerQuestion.setOptionContent(correctAnswer);
+                answerQuestion.setQuestion(importedQuestion);
+                AnswerDAO a = new AnswerDAO();
+                a.importAnswer(answerQuestion, true);
+
                 Course questionCourse = new Course();
                 questionCourse.setCourseID(courseID);
                 importedQuestion.setCourse(questionCourse);
+
                 QuestionDAO questionDAO = new QuestionDAO();
                 questionDAO.importQuestion(importedQuestion);
                 int rowIndex = row.getRowNum();
