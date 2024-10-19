@@ -212,7 +212,8 @@ public class ImportServlet extends HttpServlet {
                 importedQuestion.setQuestionImgOrVideo(questionPath);
                 importedQuestion.setLevel(level);
                 importedQuestion.setStatus("Visible");
-
+                importedQuestion.setExplanation("Nothing");
+                
                 Answer answerQuestion = new Answer();
                 answerQuestion.setOptionContent(correctAnswer);
                 answerQuestion.setQuestion(importedQuestion);
@@ -225,6 +226,8 @@ public class ImportServlet extends HttpServlet {
 
                 QuestionDAO questionDAO = new QuestionDAO();
                 questionDAO.importQuestion(importedQuestion);
+                
+                
                 int rowIndex = row.getRowNum();
                 int lastRowNum = sheet.getLastRowNum();
                 sheet.removeRow(row);

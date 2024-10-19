@@ -28,8 +28,9 @@ public class QuestionDAO extends DBContext {
                     + ",[Level]"
                     + ",[Status]"
                     + ",QuestionTitle"
-                    + ",CourseID)\n"
-                    + "VALUES (?,?,?,?,?,?,?)";
+                    + ",CourseID,"
+                    + "Explanation)\n"
+                    + "VALUES (?,?,?,?,?,?,?,?)";
 
             st = connection.prepareStatement(sql);
 
@@ -40,6 +41,8 @@ public class QuestionDAO extends DBContext {
             st.setString(5, question.getStatus());
             st.setString(6, question.getQuestionTitle());
             st.setInt(7, question.getCourse().getCourseID());
+            st.setString(8, question.getExplanation());
+
             st.executeUpdate();
 
         } catch (Exception e) {
