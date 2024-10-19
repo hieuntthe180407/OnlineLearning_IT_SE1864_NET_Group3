@@ -4,10 +4,81 @@
  */
 package model;
 
+import java.time.LocalDateTime;
+
 /**
  *
  * @author DTC
  */
 public class Review {
+    private int reviewID;
+    private User userID;
     
+    private Course courseID;
+    
+    private int rating;
+    
+    private LocalDateTime time;
+    private String reviewContent;
+    private int isReport;
+
+    public Review() {
+    }
+
+    public int getReviewID() {
+        return reviewID;
+    }
+
+    public void setReviewID(int reviewID) {
+        this.reviewID = reviewID;
+    }
+
+    public User getUserID() {
+        return userID;
+    }
+
+    public void setUserID(User userID) {
+        this.userID = userID;
+    }
+
+    public Course getCourseID() {
+        return courseID;
+    }
+
+    public void setCourseID(Course courseID) {
+        this.courseID = courseID;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public LocalDateTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalDateTime time) {
+        this.time = time;
+    }
+
+    public String getReviewContent() {
+        return reviewContent;
+    }
+
+    public void setReviewContent(String reviewContent) {
+        this.reviewContent = reviewContent;
+    }
+
+    public int getIsReport() {
+        return isReport;
+    }
+
+    public void setIsReport(int isReport) {
+        this.isReport = isReport;
+    }
+
 }
