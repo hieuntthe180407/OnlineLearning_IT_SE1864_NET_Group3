@@ -15,68 +15,54 @@ import model.User;
 
 /**
  *
- * @author trong
+ * @author DTC
  */
-public class ReviewDAO extends DBContext {
-    public List<Review> getAllReview() {
-
-        List<Review> list = new ArrayList<>();
-
-        String sql = "Select * from Review";
-
-        try {
-
-            PreparedStatement st = connection.prepareStatement(sql);
-            ResultSet rs = st.executeQuery();
-
-            while (rs.next()) {
-                Review r = new Review();
-                r.setReviewID(rs.getInt("ReviewID"));
-                r.setReviewContent(rs.getString("ReviewContent"));
-                
-
-                User u= new User();
-                u.setUserID(rs.getInt("UserID"));
-                r.setUser(u);
-                
-                Course c = new Course();
-                c.setCourseID(rs.getInt("courseID"));
-                r.setCourse(c);
-                list.add(r);
-            }
-
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-
-        return list;
-    }
+public class ReviewDAO extends  DBContext{
     
-     public boolean addReview(int uID, int cID, String content){
-        try {
-            String sql = "Insert into Review(UserID,CourseID,ReviewContent) values(?,?,?)";
-            PreparedStatement st = connection.prepareStatement(sql);
+   public  List<Review> getReviewByCourseId(int courseId){
+       List<Review> reviews = new ArrayList<>();
+       
+       String sql ="SELECT [ReviewID], [UserID], [CourseID],[Rating], [Time],[IsReport] "
+            +"FROM [dbo].[Review]"
+            +"WHERE [CourseID] = ?";
+       
+      
+       try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+           preparedStatement.setInt(1, courseId);
+           ResultSet rs = preparedStatement.executeQuery();
            
-            
-               st.setInt(1,uID); 
-               st.setInt(2, cID);
-               st.setString(3,content); 
-            st.executeUpdate();
-            st.close();
-            return true;
-        }
-        catch (Exception e){
-            System.out.println(e.getMessage());
-            return false;
-        }
-    }
-     
-     public static void main(String[] args) {
-        ReviewDAO r = new ReviewDAO();
-        List<Review> list = r.getAllReview();
-        
-        for (Review u : list) {
-            System.out.println(u);
-        }
-    }
+           while (rs.next()) {               
+               Review review = new  Review();
+               
+               review.setReviewID(rs.getInt("ReviewID"));
+               
+                // Assuming User and Course objects need to be fetched or created
+                // You'll need to implement a method to retrieve a User by ID
+                User user = new User();
+                user.setUserID(rs.getInt("UserID")); // Assuming User has a setUserID method
+                review.setUserID(user); // Set the user object
+
+                Course course = new Course();
+                course.setCourseID(rs.getInt("CourseID")); // Assuming Course has a setCourseID method
+                review.setCourseID(course); // Set the course object
+
+                review.setRating(rs.getInt("Rating"));
+                review.setTime(rs.getTimestamp("Time").toLocalDateTime()); // Convert to LocalDateTime
+                review.setReviewContent(rs.getString("ReviewContent"));
+                review.setIsReport(rs.getInt("IsReport"));
+
+                reviews.add(review);
+           }
+           
+       } catch (Exception e) {
+           
+           System.out.println("Error retrieving reviews: "+e.getMessage());
+       }
+       
+      return reviews;
+   }
 }
+
+    
+    
+   
