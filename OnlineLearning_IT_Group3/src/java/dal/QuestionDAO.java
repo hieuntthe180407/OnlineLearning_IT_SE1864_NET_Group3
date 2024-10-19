@@ -27,9 +27,8 @@ public class QuestionDAO extends DBContext {
                     + ",QuestionImgOrVideo"
                     + ",[Level]"
                     + ",[Status]"
-                    + ",CorrectAnswer"
                     + ",CourseID)\n"
-                    + "VALUES (?,?,?,?,?,?,?)";
+                    + "VALUES (?,?,?,?,?,?)";
 
             st = connection.prepareStatement(sql);
 
@@ -38,8 +37,7 @@ public class QuestionDAO extends DBContext {
             st.setString(3, question.getQuestionImgOrVideo());
             st.setString(4, question.getLevel());
             st.setString(5, question.getStatus());
-            st.setString(6, question.getCorrectAnswer());
-            st.setInt(7, question.getCourse().getCourseID());
+            st.setInt(6, question.getCourse().getCourseID());
             st.executeUpdate();
 
         } catch (Exception e) {
@@ -107,7 +105,6 @@ public class QuestionDAO extends DBContext {
                 qs.setQuestionImgOrVideo(rs.getString("QuestionImgOrVideo"));
                 qs.setLevel(rs.getString("Level"));
                 qs.setStatus(rs.getString("Status"));
-                qs.setCorrectAnswer(rs.getString("CorrectAnswer"));
                 Course cr = new Course();
                 cr.setCourseName(rs.getString("CourseName"));
                 qs.setCourse(cr);

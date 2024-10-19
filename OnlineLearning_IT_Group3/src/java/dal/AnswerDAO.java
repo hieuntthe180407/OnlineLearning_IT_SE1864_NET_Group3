@@ -13,7 +13,8 @@ import java.util.*;
 import java.lang.*;
 public class AnswerDAO extends DBContext{
     
-    public void importAnswer()
+    public void importAnswer(){
+    }
     
     
 

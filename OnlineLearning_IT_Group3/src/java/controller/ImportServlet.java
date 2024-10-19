@@ -81,10 +81,10 @@ public class ImportServlet extends HttpServlet {
         String course = request.getParameter("course");
 
         Part filePart = request.getPart("fileInput"); // lấy file từ form
-        InputStream fileContent = filePart.getInputStream();
+        InputStream fileContent = filePart.getInputStream(); // Lấy InputStream từ đối tượng filePart
 
-        Workbook workbook = new XSSFWorkbook(fileContent);
-        Sheet sheet = workbook.getSheetAt(0);
+        Workbook workbook = new XSSFWorkbook(fileContent); // Tạo một đối tượng Workbook để đại diện cho tệp Excel.
+        Sheet sheet = workbook.getSheetAt(0); // Lấy bảng tính (sheet) đầu tiên từ workbook
 
         boolean hasErrors = false;
 
