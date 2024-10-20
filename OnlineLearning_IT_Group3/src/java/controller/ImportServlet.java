@@ -123,7 +123,7 @@ public class ImportServlet extends HttpServlet {
                 errorContent += "Missing question content. ";
 
             }
-            if (questionType == null || questionType.isEmpty() || (!questionType.equals("Multiper Choice") && (!questionType.equals("Esay")))) {
+            if (questionType == null || questionType.isEmpty() || (!questionType.equals("Multiper Choice") && (!questionType.equals("Essay")))) {
                 error += "Question type must be Essay or Multiper Choice. ";
                 errorType += "Question type must be Essay or Multiper Choice. ";
 
@@ -214,20 +214,24 @@ public class ImportServlet extends HttpServlet {
                 importedQuestion.setStatus("Visible");
                 importedQuestion.setExplanation("Nothing");
                 
-                Answer answerQuestion = new Answer();
-                answerQuestion.setOptionContent(correctAnswer);
-                answerQuestion.setQuestion(importedQuestion);
-                AnswerDAO a = new AnswerDAO();
-                a.importAnswer(answerQuestion, true);
-
                 Course questionCourse = new Course();
                 questionCourse.setCourseID(courseID);
                 importedQuestion.setCourse(questionCourse);
 
+                // Lưu câu hỏi vào cơ sở dữ liệu
                 QuestionDAO questionDAO = new QuestionDAO();
-                questionDAO.importQuestion(importedQuestion);
-                
-                
+                int questionId = questionDAO.importQuestion(importedQuestion);
+                importedQuestion.setQuestionId(questionId);
+
+                // Tạo và thiết lập các thuộc tính cho câu trả lời
+                Answer answerQuestion = new Answer();
+                answerQuestion.setOptionContent(correctAnswer);
+                answerQuestion.setQuestion(importedQuestion);
+
+                // Lưu câu trả lời vào cơ sở dữ liệu
+                AnswerDAO answerDAO = new AnswerDAO();
+                answerDAO.importAnswer(answerQuestion, true);
+
                 int rowIndex = row.getRowNum();
                 int lastRowNum = sheet.getLastRowNum();
                 sheet.removeRow(row);
