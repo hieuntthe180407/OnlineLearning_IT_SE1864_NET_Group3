@@ -60,6 +60,7 @@
         </div>
     </div>
         <div class="container-xxl py-2">
+            <!-- Course Detail started -->
     <div class="container">
         <div class="row">
             <div class="col-lg-9 wow fadeInUp">
@@ -253,6 +254,7 @@
                 </div>
 
             </div>
+                               <!-- Enroll tag start -->
             <div class="col-lg-3 col-md-6 shadow wow fadeInUp" data-wow-delay="0.3s">
 
                 <div class="image text-center">
@@ -262,13 +264,13 @@
                 <h4 class="mt-2 p-2"><%=c.getSalePrice()%> <small></small></h4>
                 
                 <h4 class="mt-2 p-2">$
-                    <small><del><%=c.getListPrice()%></del></small>
+                    <small><del></del></small>
                 </h4>
                 
 
                 <div class="buttons">
                     
-                    <a href="Enroll.jsp?CourseID=<%=c.getCourseID()%>"
+                    <a href="Enroll.jsp?CourseID=<%=c.getCourseID()%>&Price=<%=c.getSalePrice()%>&CourseName=<%=c.getCourseName()%>"
                         class="text-decoration-none text-white btn p-3 w-100 mb-2">ENROLL NOW</a>
                     
                     
@@ -303,20 +305,20 @@
                         <p><i class="fa fa-certificate"></i> Certificate</p>
                         <p>Yes</p>
                     </div>
-                    <div class="button pt-4 text-center mb-4">
-                        <i class="fa fa-share"></i><a href=""> Share this Course</a>
-                    </div>
+                    
                 </div>
 
 
             </div>
+                        <!-- Enroll tag end -->
         </div>
     </div>
-
+                       <!-- Course Detail end -->
+    <!-- Reviews  -->
  <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
         <div class="container">
             <div class="text-center">
-                <h1 class=" bg-white text-center px-3" style="color: #fb873f;">Success stories</h1>
+                <h1 class=" bg-white text-center px-3" style="color: #fb873f;">Reviews</h1>
                 <p class="mb-5">Can Secret Coder courses help your career? Our learners tell us how.</p>
             </div>
             
@@ -361,43 +363,11 @@
                         
         </div>
     </div>                              
-                               
-                               
-                               
-                               
-                               
-                               
-                               
-                               
-                               
-                               
-                               
-                               
-                               
-                               
-                               
+            <!-- Reviews end -->                      
 </div>                       
                                
                                
-                               
-                               
-                               
-
-                     
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+    
          <%@include file="footer.jsp" %>
           <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
