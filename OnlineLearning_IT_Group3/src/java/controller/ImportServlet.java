@@ -239,6 +239,7 @@ public class ImportServlet extends HttpServlet {
                 if (rowIndex >= 0 && rowIndex < lastRowNum) {
                     sheet.shiftRows(rowIndex + 1, lastRowNum, -1);
                 }
+                i--;
             }
         }
 
@@ -254,7 +255,6 @@ public class ImportServlet extends HttpServlet {
             // Xử lý nếu không có lỗi
             request.setAttribute("errorImport", "Success Import with no error.");
             request.getRequestDispatcher("questionImport.jsp").forward(request, response);
-            return;
 
         }
     }
