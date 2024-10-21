@@ -61,6 +61,38 @@ public class ReviewDAO extends  DBContext{
        
       return reviews;
    }
+   public void addReview(int cID,String content, int uID)
+   {
+       try {
+            String sql = "Insert into Review(CourseID,UserID,ReviewContent) values(?,?,?)";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, cID);
+            st.setInt(2, uID);
+            
+              
+               st.setString(3, content);
+                
+            st.executeUpdate();
+            st.close();
+            
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            
+        }
+   }
+   
+   
+   
+    public static void main(String[] args) {
+        ReviewDAO rDAO = new ReviewDAO();
+        List<Review> r = rDAO.getReviewByCourseId(3);
+        for (Review re : r)
+        {
+            System.out.println(re);
+        }
+    }
+   
 }
 
     
