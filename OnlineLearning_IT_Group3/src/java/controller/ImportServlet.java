@@ -123,9 +123,9 @@ public class ImportServlet extends HttpServlet {
                 errorContent += "Missing question content. ";
 
             }
-            if (questionType == null || questionType.isEmpty() || (!questionType.equals("Multipe Choice") && (!questionType.equals("Essay")))) {
+            if (questionType == null || questionType.isEmpty() || (!questionType.equals("Multiple Choice") && (!questionType.equals("Essay")))) {
                 error += "Question type must be Essay or Multipe Choice. ";
-                errorType += "Question type must be Essay or Multiper Choice. ";
+                errorType += "Question type must be Essay or Multipe Choice. ";
 
             }
             if (level == null || (!level.equals("Easy") && !level.equals("Medium") && !level.equals("Hard"))) {
