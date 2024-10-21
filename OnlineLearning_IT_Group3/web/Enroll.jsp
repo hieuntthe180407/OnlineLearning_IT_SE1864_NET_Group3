@@ -75,9 +75,10 @@
                         <img src="img/lesson/image1.jpg"/> 
                         </div>
                         <% if(user == null){ %>
-                        <h5 class="mb-4" style="margin-top: 40px">Or You can participate in our 
+                        
+                        <div class="col-lg-6">
+                            <h5 class="mb4" style="margin-top: 40px">Or You can participate in our 
                             modern IT online learning system by creating a new account</h5>
-                        <div class="col-12">
                             <a href="register"
                                class="text-decoration-none text-white btn p-3 w-100 mb-2">JOIN NOW</a>
                         </div>
@@ -86,8 +87,9 @@
 
                     
                     <!-- input information form  for guest without login -->
-                    <div class="col-lg-6 col-md-12 wow fadeInUp" data-wow-delay="0.5s">
-                        <form action="ReviewAdd" method="get">
+                    <div class="col-lg-12 col-md-12 wow fadeInUp" data-wow-delay="0.5s">
+                        <form action="PurchaseAdd" method="get">
+                            <input type="hidden" name="CourseID" value="<%= cID %>">
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <div class="form-floating">
@@ -101,23 +103,29 @@
                                         <label for="email">Your Email</label>
                                     </div>
                                 </div>
+                                 <div class="col-md-12">
+                                    <div class="form-floating">
+                                        <input type="Address" class="form-control" id="Address" name="Address" required placeholder="Your Address">
+                                        <label for="Address">Your Address</label>
+                                    </div>
+                                </div>
 
                                 <!-- Multiple phone number inputs -->
                                 <div class="col-12">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="phone1" name="Phone[]" required placeholder="Phone number 1" oninput="updatePreferredPhone()">
+                                        <input type="number" class="form-control" id="phone1" name="Phone" required placeholder="Phone number 1" oninput="updatePreferredPhone()">
                                         <label for="phone1">Phone number 1</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="phone2" name="Phone[]" placeholder="Phone number 2" oninput="updatePreferredPhone()">
+                                        <input type="number" class="form-control" id="phone2" name="Phone" placeholder="Phone number 2" oninput="updatePreferredPhone()">
                                         <label for="phone2">Phone number 2</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="phone3" name="Phone[]" placeholder="Phone number 3" oninput="updatePreferredPhone()">
+                                        <input type="number" class="form-control" id="phone3" name="Phone" placeholder="Phone number 3" oninput="updatePreferredPhone()">
                                         <label for="phone3">Phone number 3</label>
                                     </div>
                                 </div>
@@ -136,36 +144,44 @@
                                 </div>
                             </div>
                         </form>
+                             <%}else{%>
+                             <form action="PurchaseAdd" method="get">
+                                 <input type="hidden" name="CourseID" value="<%= cID %>">
+                                 <div class="col-12">
+                                    <button class="btn btn-primary w-100 py-3" type="submit">Submit Register</button>
+                                </div>
+                             </form>  
+                             <%}%>
                     </div>
                 </div>
             </div>       
 
 
             <script>
-                function updatePreferredPhone() {
-                    const phoneNumbers = [
-                        document.getElementById('phone1').value,
-                        document.getElementById('phone2').value,
-                        document.getElementById('phone3').value
-                    ];
+function updatePreferredPhone() {
+    const phoneNumbers = [
+        document.getElementById('phone1').value,
+        document.getElementById('phone2').value,
+        document.getElementById('phone3').value
+    ];
 
-                    const selectDropdown = document.getElementById('preferredPhone');
-                    selectDropdown.innerHTML = '<option value="">Select your preferred phone number</option>'; // Clear existing options
+    const selectDropdown = document.getElementById('preferredPhone');
+    selectDropdown.innerHTML = '<option value="">Select your preferred phone number</option>'; // Clear existing options
 
-                    phoneNumbers.forEach((number, index) => {
-                        if (number) { // Only add the number if it's not empty
-                            const option = document.createElement('option');
-                            option.value = `phone${index + 1}`;
-                            option.textContent = number;
-                            selectDropdown.appendChild(option);
-                        }
-                    });
-                }
-            </script>
+    phoneNumbers.forEach((number, index) => {
+        if (number) { // Only add the number if it's not empty
+            const option = document.createElement('option');
+            option.value = number; // Set the value to the phone number
+            option.textContent = number; // Display the phone number as text
+            selectDropdown.appendChild(option);
+        }
+    });
+}
+</script>
 
 
         </div>
-        <%}%>
+       
 
         <%@include file= "footer.jsp" %>
     </body>
