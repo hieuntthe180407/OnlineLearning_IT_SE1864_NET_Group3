@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 package model;
 
 /**
@@ -11,29 +10,63 @@ package model;
  */
 import java.util.*;
 import java.lang.*;
+
 public class Question {
-    
+
     private int questionId;
     private String questionContent;
+    private String questionTitle;
     private String questionType;
     private String questionImgOrVideo;
     private String level;
     private String Status;
-    private String correctAnswer;
+    private String explanation;
     private Course course;
 
     public Question() {
     }
 
-    public Question(int questionId, String questionContent, String questionType, String questionImgOrVideo, String level, String Status, String correctAnswer, Course course) {
+    public Question(int questionId, String questionContent, String questionTitle, String questionType, String questionImgOrVideo, String level, String Status, Course course) {
         this.questionId = questionId;
         this.questionContent = questionContent;
+        this.questionTitle = questionTitle;
         this.questionType = questionType;
         this.questionImgOrVideo = questionImgOrVideo;
         this.level = level;
         this.Status = Status;
-        this.correctAnswer = correctAnswer;
         this.course = course;
+    }
+
+    public Question(int questionId, String questionContent, String questionTitle, String questionType, String questionImgOrVideo, String level, String Status, String explanation, Course course) {
+        this.questionId = questionId;
+        this.questionContent = questionContent;
+        this.questionTitle = questionTitle;
+        this.questionType = questionType;
+        this.questionImgOrVideo = questionImgOrVideo;
+        this.level = level;
+        this.Status = Status;
+        this.explanation = explanation;
+        this.course = course;
+    }
+    
+    
+
+    public String getExplanation() {
+        return explanation;
+    }
+
+    public void setExplanation(String explanation) {
+        this.explanation = explanation;
+    }
+    
+    
+
+    public String getQuestionTitle() {
+        return questionTitle;
+    }
+
+    public void setQuestionTitle(String questionTitle) {
+        this.questionTitle = questionTitle;
     }
 
     public int getQuestionId() {
@@ -84,14 +117,6 @@ public class Question {
         this.Status = Status;
     }
 
-    public String getCorrectAnswer() {
-        return correctAnswer;
-    }
-
-    public void setCorrectAnswer(String correctAnswer) {
-        this.correctAnswer = correctAnswer;
-    }
-
     public Course getCourse() {
         return course;
     }
@@ -99,16 +124,10 @@ public class Question {
     public void setCourse(Course course) {
         this.course = course;
     }
-    
-    
-    
-    
 
     @Override
     public String toString() {
-        return "Question{" + "questionId=" + questionId + ", questionContent=" + questionContent + ", questionType=" + questionType + ", questionImgOrVideo=" + questionImgOrVideo + ", level=" + level + ", Statusl=" + Status + ", correctAnswer=" + correctAnswer + ", course=" + course.getCourseName() + '}';
+        return "Question{" + "questionId=" + questionId + ", questionContent=" + questionContent + ", questionType=" + questionType + ", questionImgOrVideo=" + questionImgOrVideo + ", level=" + level + ", Statusl=" + Status + ", course=" + course.getCourseName() + '}';
     }
-    
-    
 
 }

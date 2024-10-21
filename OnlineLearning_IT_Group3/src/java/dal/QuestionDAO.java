@@ -13,38 +13,50 @@ import java.lang.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import model.Course;
+import java.sql.*;
 import model.Question;
 
 public class QuestionDAO extends DBContext {
 
-    public void importQuestion(Question question) {
+    public int importQuestion(Question question) {
         PreparedStatement st = null;
-
+        ResultSet rs = null;
+        int lastIndex = 0;
         try {
             String sql = "INSERT INTO [Question] ("
                     + "QuestionContent"
-                    + ",QuestionType"
-                    + ",QuestionImgOrVideo"
-                    + ",[Level]"
-                    + ",[Status]"
-                    + ",CorrectAnswer"
-                    + ",CourseID)\n"
-                    + "VALUES (?,?,?,?,?,?,?)";
-
-            st = connection.prepareStatement(sql);
-
+                    + ", QuestionType"
+                    + ", QuestionImgOrVideo"
+                    + ", [Level]"
+                    + ", [Status]"
+                    + ", QuestionTitle"
+                    + ", CourseID"
+                    + ", Explanation) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+            st = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             st.setString(1, question.getQuestionContent());
             st.setString(2, question.getQuestionType());
             st.setString(3, question.getQuestionImgOrVideo());
             st.setString(4, question.getLevel());
             st.setString(5, question.getStatus());
-            st.setString(6, question.getCorrectAnswer());
+            st.setString(6, question.getQuestionTitle());
             st.setInt(7, question.getCourse().getCourseID());
-            st.executeUpdate();
+            st.setString(8, question.getExplanation());
 
-        } catch (Exception e) {
+            // Execute the INSERT statement
+            int affectedRows = st.executeUpdate();
 
+            // Check if the insertion was successful and get the generated key
+            if (affectedRows > 0) {
+                rs = st.getGeneratedKeys();
+                if (rs.next()) {
+                    lastIndex = rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log the error
         }
+        return lastIndex;
     }
 
     public void updateStatusQuestion(int questionId, String status) {
@@ -65,7 +77,13 @@ public class QuestionDAO extends DBContext {
     public List<Question> getFilteredQuestions(String content, String course, String level, String status, int page, int numberQuestion) {
         List<Question> listQuestion = new ArrayList<>();
         PreparedStatement st = null;
-        String sql = "SELECT q.QuestionID, q.QuestionContent, q.QuestionType, q.QuestionImgOrVideo, q.Level, q.Status, q.CorrectAnswer, c.CourseName FROM Question q, Course c WHERE q.CourseID = c.CourseID";
+        String sql = "SELECT q.QuestionID"
+                + ", q.QuestionContent"
+                + ", q.QuestionType"
+                + ", q.QuestionImgOrVideo"
+                + ", q.Level"
+                + ", q.Status"
+                + ", c.CourseName FROM Question q, Course c WHERE q.CourseID = c.CourseID";
         //Tạo list lưu câu lệnh
         List<String> params = new ArrayList<>();
 
@@ -107,7 +125,6 @@ public class QuestionDAO extends DBContext {
                 qs.setQuestionImgOrVideo(rs.getString("QuestionImgOrVideo"));
                 qs.setLevel(rs.getString("Level"));
                 qs.setStatus(rs.getString("Status"));
-                qs.setCorrectAnswer(rs.getString("CorrectAnswer"));
                 Course cr = new Course();
                 cr.setCourseName(rs.getString("CourseName"));
                 qs.setCourse(cr);
@@ -145,22 +162,24 @@ public class QuestionDAO extends DBContext {
 
         QuestionDAO questionDAO = new QuestionDAO();
 
-        String content = "";
-        String course = "";
-        String level = "";
-        String status = "";
+        // Tạo một Course giả định để sử dụng
+        Course course = new Course();
+        course.setCourseID(1); // Đặt ID cho Course mà bạn muốn thêm câu hỏi
 
-        List<Question> questions = questionDAO.getFilteredQuestions(content, course, level, status, 2, 3);
+        // Tạo một Question mới
+        Question newQuestion = new Question();
+        newQuestion.setQuestionContent("What is the capital of Vietnam?");
+        newQuestion.setQuestionType("Multiple Choice");
+        newQuestion.setQuestionImgOrVideo(""); // Nếu không có ảnh/video thì để trống
+        newQuestion.setLevel("Easy");
+        newQuestion.setStatus("Visible");
+        newQuestion.setQuestionTitle("Capital Question");
+        newQuestion.setCourse(course);
+        newQuestion.setExplanation("Hanoi is the capital city of Vietnam.");
 
-        // Print out the questions
-        for (Question q : questions) {
-            System.out.println("Question ID: " + q.getQuestionId());
-            System.out.println("Content: " + q.getQuestionContent());
-            System.out.println("Course: " + q.getCourse().getCourseName());
-            System.out.println("Level: " + q.getLevel());
-            System.out.println("Status: " + q.getStatus());
-            System.out.println("--------------------------------------------------");
-        }
+        // Gọi phương thức importQuestion để thêm câu hỏi vào cơ sở dữ liệu
+        int lastIndex = questionDAO.importQuestion(newQuestion);
+        System.out.println("New question added with ID: " + lastIndex);
 
     }
 

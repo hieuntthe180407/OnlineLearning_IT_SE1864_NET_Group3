@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.AnswerDAO;
 import dal.CourseDAO;
 import dal.QuestionDAO;
 import java.io.IOException;
@@ -20,6 +21,7 @@ import jakarta.servlet.http.Part;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import model.Answer;
 
 import model.Course;
 import model.Question;
@@ -81,10 +83,10 @@ public class ImportServlet extends HttpServlet {
         String course = request.getParameter("course");
 
         Part filePart = request.getPart("fileInput"); // lấy file từ form
-        InputStream fileContent = filePart.getInputStream();
+        InputStream fileContent = filePart.getInputStream(); // Lấy InputStream từ đối tượng filePart
 
-        Workbook workbook = new XSSFWorkbook(fileContent);
-        Sheet sheet = workbook.getSheetAt(0);
+        Workbook workbook = new XSSFWorkbook(fileContent); // Tạo một đối tượng Workbook để đại diện cho tệp Excel.
+        Sheet sheet = workbook.getSheetAt(0); // Lấy bảng tính (sheet) đầu tiên từ workbook
 
         boolean hasErrors = false;
 
@@ -121,9 +123,9 @@ public class ImportServlet extends HttpServlet {
                 errorContent += "Missing question content. ";
 
             }
-            if (questionType == null || questionType.isEmpty()) {
-                error += "Missing question type. ";
-                errorType += "Missing question type. ";
+            if (questionType == null || questionType.isEmpty() || (!questionType.equals("Multiper Choice") && (!questionType.equals("Essay")))) {
+                error += "Question type must be Essay or Multiper Choice. ";
+                errorType += "Question type must be Essay or Multiper Choice. ";
 
             }
             if (level == null || (!level.equals("Easy") && !level.equals("Medium") && !level.equals("Hard"))) {
@@ -205,16 +207,31 @@ public class ImportServlet extends HttpServlet {
                 //Từ đây cho question vào database
                 Question importedQuestion = new Question();
                 importedQuestion.setQuestionContent(questionContent);
+                importedQuestion.setQuestionTitle(questionContent);
                 importedQuestion.setQuestionType(questionType);
                 importedQuestion.setQuestionImgOrVideo(questionPath);
                 importedQuestion.setLevel(level);
                 importedQuestion.setStatus("Visible");
-                importedQuestion.setCorrectAnswer(correctAnswer);
+                importedQuestion.setExplanation("Nothing");
+                
                 Course questionCourse = new Course();
                 questionCourse.setCourseID(courseID);
                 importedQuestion.setCourse(questionCourse);
+
+                // Lưu câu hỏi vào cơ sở dữ liệu
                 QuestionDAO questionDAO = new QuestionDAO();
-                questionDAO.importQuestion(importedQuestion);
+                int questionId = questionDAO.importQuestion(importedQuestion);
+                importedQuestion.setQuestionId(questionId);
+
+                // Tạo và thiết lập các thuộc tính cho câu trả lời
+                Answer answerQuestion = new Answer();
+                answerQuestion.setOptionContent(correctAnswer);
+                answerQuestion.setQuestion(importedQuestion);
+
+                // Lưu câu trả lời vào cơ sở dữ liệu
+                AnswerDAO answerDAO = new AnswerDAO();
+                answerDAO.importAnswer(answerQuestion, true);
+
                 int rowIndex = row.getRowNum();
                 int lastRowNum = sheet.getLastRowNum();
                 sheet.removeRow(row);
