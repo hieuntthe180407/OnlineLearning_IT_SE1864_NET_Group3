@@ -70,12 +70,25 @@ public class QuestionListServlet extends HttpServlet {
                 questionPerPage = 10;
             }
         }
-
+        int totalPages = qDao.getTotalPages(
+                request.getParameter("questionTitle"),
+                request.getParameter("questionCourse"),
+                request.getParameter("questionLevel"),
+                request.getParameter("questionStatus"),
+                questionPerPage
+        );
         // Lấy danh sách câu hỏi với các tham số đã xác định
-        List<Question> listQuestion = qDao.getFilteredQuestions(null, null, null, null, page, questionPerPage);
+        List<Question> listQuestion = qDao.getFilteredQuestions(
+                request.getParameter("questionTitle"),
+                request.getParameter("questionCourse"),
+                request.getParameter("questionLevel"),
+                request.getParameter("questionStatus"),
+                page,
+                questionPerPage
+        );
         request.setAttribute("listQuestion", listQuestion);
         request.setAttribute("page", page);
-        request.setAttribute("totalPages", qDao.getTotalPages(questionPerPage));
+        request.setAttribute("totalPages", totalPages);
         request.getRequestDispatcher("questionList.jsp").forward(request, response);
     }
 
@@ -94,7 +107,6 @@ public class QuestionListServlet extends HttpServlet {
         String questionCourse = request.getParameter("questionCourse");
         String questionLevel = request.getParameter("questionLevel");
         String questionStatus = request.getParameter("questionStatus");
-        
 
         // Kiểm tra tham số "page"
         String pageParam = request.getParameter("page");
@@ -121,8 +133,10 @@ public class QuestionListServlet extends HttpServlet {
         QuestionDAO qDao = new QuestionDAO();
         List<Question> listQuestion = qDao.getFilteredQuestions(questionTitle, questionCourse, questionLevel, questionStatus, page, questionPerPage);
 
+        int totalPages = qDao.getTotalPages(questionTitle, questionCourse, questionLevel, questionStatus, questionPerPage);
+
         request.setAttribute("page", page);
-        request.setAttribute("totalPages", qDao.getTotalPages(questionPerPage));
+        request.setAttribute("totalPages", totalPages);
         request.setAttribute("listQuestion", listQuestion);
         request.getRequestDispatcher("questionList.jsp").forward(request, response);
 

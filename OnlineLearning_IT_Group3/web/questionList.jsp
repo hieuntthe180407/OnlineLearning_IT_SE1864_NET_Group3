@@ -153,24 +153,20 @@
                 <!-- Filter Section -->
                 <div class="filter-section">
                     <!-- Tìm question qua Title  -->
-                    <input type="text" name="questionTitle" value="" id="search-content" placeholder="Search Title...">
-                    <!-- Tìm question qua course  -->
-                    <input type="text" name="questionCourse" value="" id="search-course" placeholder="Search by course...">
+                    <input type="text" name="questionTitle" value="${param.questionTitle}" id="search-content" placeholder="Search Title...">
+                    <input type="text" name="questionCourse" value="${param.questionCourse}" id="search-course" placeholder="Search by course...">
                     <select id="level" name="questionLevel">
                         <option value="">Level</option>
-                        <option value="easy">Easy</option>
-                        <option value="medium">Medium</option>
-                        <option value="hard">Hard</option>
+                        <option value="easy" ${param.questionLevel == 'easy' ? 'selected' : ''}>Easy</option>
+                        <option value="medium" ${param.questionLevel == 'medium' ? 'selected' : ''}>Medium</option>
+                        <option value="hard" ${param.questionLevel == 'hard' ? 'selected' : ''}>Hard</option>
                     </select>
                     <select id="status" name="questionStatus">
                         <option value="">Status</option>
-                        <option value="visible">Visible</option>
-                        <option value="hidden">Hidden</option>
+                        <option value="visible" ${param.questionStatus == 'visible' ? 'selected' : ''}>Visible</option>
+                        <option value="hidden" ${param.questionStatus == 'hidden' ? 'selected' : ''}>Hidden</option>
                     </select>
-                    <!-- Questions Per Page -->
-                    <div class="settings-section">
-                        <input type="text" name="questionPerPage" value="" id="search-course" placeholder="Number question per page">
-                    </div>
+                    <input type="text" name="questionPerPage" value="${param.questionPerPage}" id="search-course" placeholder="Number question per page">
                     <button type="submit">Add filter</button>
             </form>
 
@@ -248,22 +244,19 @@
 
 
         <!-- Pagination -->
-        <div class="pagination" id="pagination">
-            <!-- Ở page 1 không hiện Previous  -->
+        <div class="pagination">
             <c:if test="${page > 1}">
-                <a href="?page=${page - 1}&questionPerPage=${param.questionPerPage}">Previous</a>
+                <a href="?page=${page - 1}&questionTitle=${param.questionTitle}&questionCourse=${param.questionCourse}&questionLevel=${param.questionLevel}&questionStatus=${param.questionStatus}&questionPerPage=${param.questionPerPage}">Previous</a>
             </c:if>
-            <!-- Hiện tất cả các trang hiện có và add style active cho trang hiện tại  -->
             <c:forEach begin="1" end="${totalPages}" var="i">
-                <a href="?page=${i}&questionPerPage=${param.questionPerPage}" class="${i == page ? 'active' : ''}">${i}</a>
+                <a href="?page=${i}&questionTitle=${param.questionTitle}&questionCourse=${param.questionCourse}&questionLevel=${param.questionLevel}&questionStatus=${param.questionStatus}&questionPerPage=${param.questionPerPage}" class="${i == page ? 'active' : ''}">${i}</a>
             </c:forEach>
-            <!-- Ở page cuối không hiện Previous  -->
             <c:if test="${page < totalPages}">
-                <a href="?page=${page + 1}&questionPerPage=${param.questionPerPage}">Next</a>
+                <a href="?page=${page + 1}&questionTitle=${param.questionTitle}&questionCourse=${param.questionCourse}&questionLevel=${param.questionLevel}&questionStatus=${param.questionStatus}&questionPerPage=${param.questionPerPage}">Next</a>
             </c:if>
         </div>
-    </div>
 
-</body>
+
+    </body>
 
 </html>

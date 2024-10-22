@@ -137,25 +137,43 @@ public class QuestionDAO extends DBContext {
         return listQuestion;
     }
 
-    public int getTotalPages(int numPerPage) {
+    public int getTotalPages(String title, String course, String level, String status, int numberQuestion) {
         PreparedStatement st = null;
-        int totalquestion = 0;
-        String sql = "SELECT COUNT(*) AS total FROM Question";
-        int totalPage = 0;
+        String sql = "SELECT COUNT(*) FROM Question q, Course c WHERE q.CourseID = c.CourseID";
+        List<String> params = new ArrayList<>();
+
+        // Điều kiện lọc tương tự như trong getFilteredQuestions
+        if (title != null && !title.isEmpty()) {
+            sql += " AND q.QuestionTitle LIKE ?";
+            params.add("%" + title + "%");
+        }
+        if (course != null && !course.isEmpty()) {
+            sql += " AND c.CourseName LIKE ?";
+            params.add("%" + course + "%");
+        }
+        if (level != null && !level.isEmpty()) {
+            sql += " AND q.Level = ?";
+            params.add(level);
+        }
+        if (status != null && !status.isEmpty()) {
+            sql += " AND q.Status = ?";
+            params.add(status);
+        }
+
         try {
             st = connection.prepareStatement(sql);
+            for (int i = 0; i < params.size(); i++) {
+                st.setString(i + 1, params.get(i));
+            }
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                totalquestion = rs.getInt("total");
+                int totalQuestions = rs.getInt(1);
+                return (int) Math.ceil((double) totalQuestions / numberQuestion); // Tính tổng số trang
             }
-
-            // Tính số trang
-            totalPage = (int) Math.ceil((double) totalquestion / numPerPage); //Math.ceil để làm tròn lên
         } catch (Exception e) {
             System.out.println(e);
         }
-        return totalPage;
-
+        return 0; // Trả về 0 nếu có lỗi
     }
 
     public static void main(String[] args) {
