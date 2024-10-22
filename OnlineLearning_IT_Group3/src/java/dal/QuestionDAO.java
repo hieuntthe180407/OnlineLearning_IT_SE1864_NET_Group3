@@ -9,7 +9,7 @@ package dal;
  * @author ADMIN
  */
 import java.util.*;
-import java.lang.*;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import model.Course;
@@ -59,6 +59,7 @@ public class QuestionDAO extends DBContext {
         return lastIndex;
     }
 
+    //Chỉnh sửa trạng thái của question 
     public void updateStatusQuestion(int questionId, String status) {
         PreparedStatement st = null;
         String sql = "UPDATE Question SET Status = ? WHERE QuestionId = ?";
@@ -73,7 +74,8 @@ public class QuestionDAO extends DBContext {
 
         }
     }
-
+    
+//Duyệt câu hỏi theo filter
     public List<Question> getFilteredQuestions(String title, String course, String level, String status, int page, int numberQuestion) {
         List<Question> listQuestion = new ArrayList<>();
         PreparedStatement st = null;
@@ -136,7 +138,7 @@ public class QuestionDAO extends DBContext {
         }
         return listQuestion;
     }
-
+//Lấy tổng số trang ( có thể phụ thuộc vào filter)
     public int getTotalPages(String title, String course, String level, String status, int numberQuestion) {
         PreparedStatement st = null;
         String sql = "SELECT COUNT(*) FROM Question q, Course c WHERE q.CourseID = c.CourseID";

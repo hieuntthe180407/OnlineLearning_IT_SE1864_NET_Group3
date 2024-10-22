@@ -70,6 +70,7 @@ public class QuestionListServlet extends HttpServlet {
                 questionPerPage = 10;
             }
         }
+        //Lấy tổng số trang
         int totalPages = qDao.getTotalPages(
                 request.getParameter("questionTitle"),
                 request.getParameter("questionCourse"),
@@ -131,8 +132,9 @@ public class QuestionListServlet extends HttpServlet {
         }
 
         QuestionDAO qDao = new QuestionDAO();
+        //List question theo filter
         List<Question> listQuestion = qDao.getFilteredQuestions(questionTitle, questionCourse, questionLevel, questionStatus, page, questionPerPage);
-
+        //Lấy tổng số trang
         int totalPages = qDao.getTotalPages(questionTitle, questionCourse, questionLevel, questionStatus, questionPerPage);
 
         request.setAttribute("page", page);
