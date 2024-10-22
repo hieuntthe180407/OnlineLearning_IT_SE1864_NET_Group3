@@ -177,6 +177,41 @@ public class QuestionDAO extends DBContext {
         }
         return 0; // Trả về 0 nếu có lỗi
     }
+    
+    public Question getQuestionInfo(int questionId ){
+        Question  question = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        String sql = "SELECT  q.QuestionContent, q.QuestionTitle, q.QuestionType, "
+               + "q.QuestionImgOrVideo, q.Level, q.Status, q.Explanation, c.CourseName "
+               + "FROM Question q,Course c  "
+               + "WHERE q.QuestionID = ? AND c.CourseID = q.CourseID";
+        try {
+        st = connection.prepareStatement(sql);
+        st.setInt(1, questionId); // Set the question ID
+        rs = st.executeQuery();
+
+        if (rs.next()) {
+            question = new Question();
+            question.setQuestionId(questionId); // Set the question ID
+            question.setQuestionContent(rs.getString("QuestionContent"));
+            question.setQuestionTitle(rs.getString("QuestionTitle"));
+            question.setQuestionType(rs.getString("QuestionType"));
+            question.setQuestionImgOrVideo(rs.getString("QuestionImgOrVideo"));
+            question.setLevel(rs.getString("Level"));
+            question.setStatus(rs.getString("Status"));
+            question.setExplanation(rs.getString("Explanation"));
+
+            // Create and set Course object
+            Course course = new Course();
+            course.setCourseName(rs.getString("CourseName"));
+            question.setCourse(course);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+        return question;
+    }
 
     public static void main(String[] args) {
 

@@ -34,6 +34,9 @@ public class AnswerDAO extends DBContext {
         }
 
     }
+//    public Answer getAnswerInfo(int questionId){
+//        
+//    }
 
     public static void main(String[] args) {
 

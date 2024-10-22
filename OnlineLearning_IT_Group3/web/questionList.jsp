@@ -228,7 +228,11 @@
                                 <button type="submit" name="actionQuestion" value="show">Show</button>
                                 <button type="submit" name="actionQuestion" value="hide">Hide</button>
                             </form>
-                            <a href="QuestionDetail"><button>Edit</button></a> <!-- Question Detail chưa có -->
+                                <form action="QuestionDetailServlet" method="get">
+                                <input type="hidden" name="questionId" value="${q.questionId}">
+                                <a href=""><button>Edit</button></a>
+                            </form>
+
                         </td>
                     </c:if>
 

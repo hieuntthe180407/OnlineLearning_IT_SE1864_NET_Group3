@@ -133,7 +133,7 @@
 
     <body>
         <!-- Main form for question management -->
-        <form action="QuestionDetail" method="POST" enctype="multipart/form-data">
+        <form action="QuestionDetailServlet" method="POST" enctype="multipart/form-data">
             <h2>Question Detail</h2>
 
             <!-- Back button -->
