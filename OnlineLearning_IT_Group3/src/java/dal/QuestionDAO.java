@@ -74,11 +74,11 @@ public class QuestionDAO extends DBContext {
         }
     }
 
-    public List<Question> getFilteredQuestions(String content, String course, String level, String status, int page, int numberQuestion) {
+    public List<Question> getFilteredQuestions(String title, String course, String level, String status, int page, int numberQuestion) {
         List<Question> listQuestion = new ArrayList<>();
         PreparedStatement st = null;
         String sql = "SELECT q.QuestionID"
-                + ", q.QuestionContent"
+                + ", q.QuestionTitle"
                 + ", q.QuestionType"
                 + ", q.QuestionImgOrVideo"
                 + ", q.Level"
@@ -87,9 +87,9 @@ public class QuestionDAO extends DBContext {
         //Tạo list lưu câu lệnh
         List<String> params = new ArrayList<>();
 
-        if (content != null && !content.isEmpty()) {
-            sql += " AND q.QuestionContent LIKE ?";
-            params.add("%" + content + "%");
+        if (title != null && !title.isEmpty()) {
+            sql += " AND q.QuestionTitle LIKE ?";
+            params.add("%" + title + "%");
         }
         if (course != null && !course.isEmpty()) {
             sql += " AND c.CourseName LIKE ?";
@@ -120,7 +120,7 @@ public class QuestionDAO extends DBContext {
             while (rs.next()) {
                 Question qs = new Question();
                 qs.setQuestionId(rs.getInt("QuestionID"));
-                qs.setQuestionContent(rs.getString("QuestionContent"));
+                qs.setQuestionTitle(rs.getString("QuestionTitle"));
                 qs.setQuestionType(rs.getString("QuestionType"));
                 qs.setQuestionImgOrVideo(rs.getString("QuestionImgOrVideo"));
                 qs.setLevel(rs.getString("Level"));

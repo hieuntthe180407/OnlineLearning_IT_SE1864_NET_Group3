@@ -152,8 +152,8 @@
             <form action="QuestionListServlet" method="post">
                 <!-- Filter Section -->
                 <div class="filter-section">
-                    <!-- Tìm question qua content  -->
-                    <input type="text" name="questionContent" value="" id="search-content" placeholder="Search content...">
+                    <!-- Tìm question qua Title  -->
+                    <input type="text" name="questionTitle" value="" id="search-content" placeholder="Search Title...">
                     <!-- Tìm question qua course  -->
                     <input type="text" name="questionCourse" value="" id="search-course" placeholder="Search by course...">
                     <select id="level" name="questionLevel">
@@ -180,7 +180,7 @@
                 <div class="settings-section">
                     <label>Columns to display:</label>
                     <label><input type="checkbox" name="visibleCol" value="id" <c:if test="${visibleColumns.contains('id')}">checked</c:if>> ID</label>
-                    <label><input type="checkbox" name="visibleCol" value="content" <c:if test="${visibleColumns.contains('content')}">checked</c:if>> Content</label>
+                    <label><input type="checkbox" name="visibleCol" value="title" <c:if test="${visibleColumns.contains('title')}">checked</c:if>> Title</label>
                     <label><input type="checkbox" name="visibleCol" value="course" <c:if test="${visibleColumns.contains('course')}">checked</c:if>> Course</label>
                     <label><input type="checkbox" name="visibleCol" value="level" <c:if test="${visibleColumns.contains('level')}">checked</c:if>> Level</label>
                     <label><input type="checkbox" name="visibleCol" value="status" <c:if test="${visibleColumns.contains('status')}">checked</c:if>> Status</label>
@@ -197,7 +197,7 @@
             <table>
                 <tr>
                 <c:if test="${visibleColumns.contains('id')}"><th>ID</th></c:if>
-                <c:if test="${visibleColumns.contains('content')}"><th>Content</th></c:if>
+                <c:if test="${visibleColumns.contains('title')}"><th>Title</th></c:if>
                 <c:if test="${visibleColumns.contains('course')}"><th>Course</th></c:if>
                 <c:if test="${visibleColumns.contains('level')}"><th>Level</th></c:if>
                 <c:if test="${visibleColumns.contains('status')}"><th>Status</th></c:if>
@@ -206,8 +206,8 @@
             <c:forEach items="${listQuestion}" var="q">
                 <tr>
                     <c:if test="${visibleColumns.contains('id')}"> <td>${q.questionId}</td></c:if>
-                    <c:if test="${visibleColumns.contains('content')}">
-                        <td>${q.questionContent}
+                    <c:if test="${visibleColumns.contains('title')}">
+                        <td>${q.questionTitle}
                             <c:if test="${not empty q.questionImgOrVideo}">
                                 <c:choose>
                                     <c:when test="${fn:endsWith(q.questionImgOrVideo, '.mp4')}">

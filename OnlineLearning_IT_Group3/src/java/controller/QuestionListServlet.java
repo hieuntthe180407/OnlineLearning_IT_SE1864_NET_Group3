@@ -90,7 +90,7 @@ public class QuestionListServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String questionContent = request.getParameter("questionContent");
+        String questionTitle = request.getParameter("questionTitle");
         String questionCourse = request.getParameter("questionCourse");
         String questionLevel = request.getParameter("questionLevel");
         String questionStatus = request.getParameter("questionStatus");
@@ -119,7 +119,7 @@ public class QuestionListServlet extends HttpServlet {
         }
 
         QuestionDAO qDao = new QuestionDAO();
-        List<Question> listQuestion = qDao.getFilteredQuestions(questionContent, questionCourse, questionLevel, questionStatus, page, questionPerPage);
+        List<Question> listQuestion = qDao.getFilteredQuestions(questionTitle, questionCourse, questionLevel, questionStatus, page, questionPerPage);
 
         request.setAttribute("page", page);
         request.setAttribute("totalPages", qDao.getTotalPages(questionPerPage));
