@@ -34,9 +34,18 @@ public class AnswerDAO extends DBContext {
         }
 
     }
-//    public Answer getAnswerInfo(int questionId){
-//        
-//    }
+    public Answer getAnswerInfo(int questionId){
+        PreparedStatement st = null;
+        Answer a = new Answer();
+        try{
+            String sql= "Select a. from Answer a";
+            
+        }catch(Exception e){
+            
+        }
+        return a;
+        
+    }
 
     public static void main(String[] args) {
 
