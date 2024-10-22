@@ -172,13 +172,13 @@ public class LoginController extends HttpServlet {
                     puser.setMaxAge(0);
                 }
                 if (u.getRole().getRoleId() == 1) {
-                    
+                     session.setAttribute("user", u);
                     url += "/home.jsp";
                 } else if (u.getRole().getRoleId() == 2) {
-                    
+                     session.setAttribute("teacher", u);
                     url += "/home.jsp";
                 } else if (u.getRole().getRoleId() == 3) {
-                    
+                    session.setAttribute("admin", u);
                     url += "/Admin.jsp";
                 } else {
                     try {
