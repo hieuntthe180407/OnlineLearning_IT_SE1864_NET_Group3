@@ -52,23 +52,8 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Certificate]    Script Date: 9/14/2024 10:13:41 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[Certificate](
-	[CertificateID] [int] IDENTITY(1,1) NOT NULL,
-	[UserID] [int] NOT NULL,
-	[CourseID] [int] NOT NULL,
-	[Date] [date] NOT NULL,
-	[Status] [varchar](50) NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[CertificateID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+
+
 /****** Object:  Table [dbo].[Choices]    Script Date: 9/14/2024 10:13:41 PM ******/
 SET ANSI_NULLS ON
 GO
@@ -87,23 +72,7 @@ PRIMARY KEY CLUSTERED
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
-/****** Object:  Table [dbo].[CommentsBlog]    Script Date: 9/14/2024 10:13:41 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[CommentsBlog](
-	[CommentId] [int] IDENTITY(1,1) NOT NULL,
-	[BlogId] [int] NULL,
-	[UserId] [int] NULL,
-	[Comment] [text] NOT NULL,
-	[CreatedAt] [datetime] NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[CommentId] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-GO
+
 /****** Object:  Table [dbo].[Course]    Script Date: 9/14/2024 10:13:41 PM ******/
 SET ANSI_NULLS ON
 GO
@@ -190,7 +159,7 @@ CREATE TABLE [dbo].[Lessons](
 	[LessonID] [int] IDENTITY(1,1) NOT NULL,
 	[LessonNumber] [int] NULL,
 	[LessonName] [varchar](255) NOT NULL,
-	[MoocID] [int] NOT NULL,
+	[CourseID] [int] NOT NULL,
 	[LessonUrl] [varchar](255) NULL,
 	[Description] [text] NULL,
 PRIMARY KEY CLUSTERED 
@@ -199,41 +168,8 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Mooc]    Script Date: 9/14/2024 10:13:41 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[Mooc](
-	[MoocID] [int] IDENTITY(1,1) NOT NULL,
-	[MoocNumber] [int] NULL,
-	[MoocName] [varchar](255) NOT NULL,
-	[CourseID] [int] NOT NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[MoocID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[Notification]    Script Date: 9/14/2024 10:13:41 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[Notification](
-	[NotificationID] [int] IDENTITY(1,1) NOT NULL,
-	[FromUserID] [int] NOT NULL,
-	[Content] [text] NULL,
-	[Link] [varchar](255) NULL,
-	[Date] [datetime] NULL,
-	[IsRead] [bit] NULL,
-	[ToUserID] [int] NOT NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[NotificationID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-GO
+
+
 /****** Object:  Table [dbo].[Price]    Script Date: 9/14/2024 10:13:41 PM ******/
 SET ANSI_NULLS ON
 GO
@@ -251,25 +187,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Problem]    Script Date: 9/14/2024 10:13:41 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[Problem](
-	[ProblemID] [int] IDENTITY(1,1) NOT NULL,
-	[Problem] [text] NOT NULL,
-	[Progress] [int] NULL,
-	[UserID] [int] NOT NULL,
-	[LessonID] [int] NOT NULL,
-	[CourseID] [int] NOT NULL,
-	[NumberLearned] [int] NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[ProblemID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-GO
+
 /****** Object:  Table [dbo].[Purchase]    Script Date: 9/14/2024 10:13:41 PM ******/
 SET ANSI_NULLS ON
 GO
@@ -328,24 +246,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[ReviewReport]    Script Date: 9/14/2024 10:13:41 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[ReviewReport](
-	[ReviewReportID] [int] IDENTITY(1,1) NOT NULL,
-	[UserID] [int] NOT NULL,
-	[ReviewID] [int] NOT NULL,
-	[ProblemID] [int] NULL,
-	[Reason] [text] NULL,
-	[ReportDate] [datetime] NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[ReviewReportID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-GO
+
 /****** Object:  Table [dbo].[Role]    Script Date: 9/14/2024 10:13:41 PM ******/
 SET ANSI_NULLS ON
 GO
@@ -496,14 +397,10 @@ ALTER TABLE [dbo].[Course] ADD  DEFAULT ((0)) FOR [IsDiscontinued]
 GO
 ALTER TABLE [dbo].[Enroll] ADD  DEFAULT ((0)) FOR [Progress]
 GO
-ALTER TABLE [dbo].[Notification] ADD  DEFAULT ((0)) FOR [IsRead]
-GO
+
 ALTER TABLE [dbo].[Price] ADD  DEFAULT ((1)) FOR [IsActive]
 GO
-ALTER TABLE [dbo].[Problem] ADD  DEFAULT ((0)) FOR [Progress]
-GO
-ALTER TABLE [dbo].[Problem] ADD  DEFAULT ((0)) FOR [NumberLearned]
-GO
+
 ALTER TABLE [dbo].[Purchase] ADD  DEFAULT (getdate()) FOR [PurchaseDate]
 GO
 
@@ -519,22 +416,12 @@ GO
 ALTER TABLE [dbo].[Blogs]  WITH CHECK ADD FOREIGN KEY([UserId])
 REFERENCES [dbo].[User] ([UserID])
 GO
-ALTER TABLE [dbo].[Certificate]  WITH CHECK ADD FOREIGN KEY([CourseID])
-REFERENCES [dbo].[Course] ([CourseID])
-GO
-ALTER TABLE [dbo].[Certificate]  WITH CHECK ADD FOREIGN KEY([UserID])
-REFERENCES [dbo].[User] ([UserID])
-GO
+
 ALTER TABLE [dbo].[Choices]  WITH CHECK ADD FOREIGN KEY([ExamQuestionID])
 REFERENCES [dbo].[Exam_Question] ([ExamQuestionID])
 GO
 
-ALTER TABLE [dbo].[CommentsBlog]  WITH CHECK ADD FOREIGN KEY([BlogId])
-REFERENCES [dbo].[Blogs] ([BlogId])
-GO
-ALTER TABLE [dbo].[CommentsBlog]  WITH CHECK ADD FOREIGN KEY([UserId])
-REFERENCES [dbo].[User] ([UserID])
-GO
+
 ALTER TABLE [dbo].[Course]  WITH CHECK ADD FOREIGN KEY([CategoryID])
 REFERENCES [dbo].[Category] ([CategoryID])
 GO
@@ -554,31 +441,15 @@ GO
 ALTER TABLE [dbo].[ExamDetail]  WITH CHECK ADD FOREIGN KEY([UserID])
 REFERENCES [dbo].[User] ([UserID])
 GO
-ALTER TABLE [dbo].[Lessons]  WITH CHECK ADD FOREIGN KEY([MoocID])
-REFERENCES [dbo].[Mooc] ([MoocID])
-GO
-ALTER TABLE [dbo].[Mooc]  WITH CHECK ADD FOREIGN KEY([CourseID])
+ALTER TABLE [dbo].[Lessons]  WITH CHECK ADD FOREIGN KEY([CourseID])
 REFERENCES [dbo].[Course] ([CourseID])
 GO
-ALTER TABLE [dbo].[Notification]  WITH CHECK ADD FOREIGN KEY([FromUserID])
-REFERENCES [dbo].[User] ([UserID])
-GO
-ALTER TABLE [dbo].[Notification]  WITH CHECK ADD FOREIGN KEY([ToUserID])
-REFERENCES [dbo].[User] ([UserID])
-GO
+
 ALTER TABLE [dbo].[Price]  WITH CHECK ADD FOREIGN KEY([CourseID])
 REFERENCES [dbo].[Course] ([CourseID])
 ON DELETE CASCADE
 GO
-ALTER TABLE [dbo].[Problem]  WITH CHECK ADD FOREIGN KEY([CourseID])
-REFERENCES [dbo].[Course] ([CourseID])
-GO
-ALTER TABLE [dbo].[Problem]  WITH CHECK ADD FOREIGN KEY([LessonID])
-REFERENCES [dbo].[Lessons] ([LessonID])
-GO
-ALTER TABLE [dbo].[Problem]  WITH CHECK ADD FOREIGN KEY([UserID])
-REFERENCES [dbo].[User] ([UserID])
-GO
+
 ALTER TABLE [dbo].[Purchase]  WITH CHECK ADD FOREIGN KEY([PriceID])
 REFERENCES [dbo].[Price] ([PriceID])
 GO
@@ -596,15 +467,8 @@ GO
 ALTER TABLE [dbo].[Review]  WITH CHECK ADD FOREIGN KEY([UserID])
 REFERENCES [dbo].[User] ([UserID])
 GO
-ALTER TABLE [dbo].[ReviewReport]  WITH CHECK ADD FOREIGN KEY([ProblemID])
-REFERENCES [dbo].[Problem] ([ProblemID])
-GO
-ALTER TABLE [dbo].[ReviewReport]  WITH CHECK ADD FOREIGN KEY([ReviewID])
-REFERENCES [dbo].[Review] ([ReviewID])
-GO
-ALTER TABLE [dbo].[ReviewReport]  WITH CHECK ADD FOREIGN KEY([UserID])
-REFERENCES [dbo].[User] ([UserID])
-GO
+
+
 ALTER TABLE [dbo].[Teacher]  WITH CHECK ADD FOREIGN KEY([UserID])
 REFERENCES [dbo].[User] ([UserID])
 GO

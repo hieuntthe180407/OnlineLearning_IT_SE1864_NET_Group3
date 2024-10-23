@@ -68,7 +68,7 @@
 </div>
                     </div>
                     <div class="card-footer">
-                        <a href="userList.jsp" class="btn btn-primary w-100">View Users</a>
+                        <a href="userList" class="btn btn-primary w-100">View Users</a>
                     </div>
                 </div>
             </div>
