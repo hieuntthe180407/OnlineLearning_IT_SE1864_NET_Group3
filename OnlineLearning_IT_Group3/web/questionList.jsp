@@ -152,25 +152,21 @@
             <form action="QuestionListServlet" method="post">
                 <!-- Filter Section -->
                 <div class="filter-section">
-                    <!-- Tìm question qua content  -->
-                    <input type="text" name="questionContent" value="" id="search-content" placeholder="Search content...">
-                    <!-- Tìm question qua course  -->
-                    <input type="text" name="questionCourse" value="" id="search-course" placeholder="Search by course...">
+                    <!-- Tìm question qua Title  -->
+                    <input type="text" name="questionTitle" value="${param.questionTitle}" id="search-content" placeholder="Search Title...">
+                    <input type="text" name="questionCourse" value="${param.questionCourse}" id="search-course" placeholder="Search by course...">
                     <select id="level" name="questionLevel">
                         <option value="">Level</option>
-                        <option value="easy">Easy</option>
-                        <option value="medium">Medium</option>
-                        <option value="hard">Hard</option>
+                        <option value="easy" ${param.questionLevel == 'easy' ? 'selected' : ''}>Easy</option>
+                        <option value="medium" ${param.questionLevel == 'medium' ? 'selected' : ''}>Medium</option>
+                        <option value="hard" ${param.questionLevel == 'hard' ? 'selected' : ''}>Hard</option>
                     </select>
                     <select id="status" name="questionStatus">
                         <option value="">Status</option>
-                        <option value="visible">Visible</option>
-                        <option value="hidden">Hidden</option>
+                        <option value="visible" ${param.questionStatus == 'visible' ? 'selected' : ''}>Visible</option>
+                        <option value="hidden" ${param.questionStatus == 'hidden' ? 'selected' : ''}>Hidden</option>
                     </select>
-                    <!-- Questions Per Page -->
-                    <div class="settings-section">
-                        <input type="text" name="questionPerPage" value="" id="search-course" placeholder="Number question per page">
-                    </div>
+                    <input type="text" name="questionPerPage" value="${param.questionPerPage}" id="search-course" placeholder="Number question per page">
                     <button type="submit">Add filter</button>
             </form>
 
@@ -180,7 +176,7 @@
                 <div class="settings-section">
                     <label>Columns to display:</label>
                     <label><input type="checkbox" name="visibleCol" value="id" <c:if test="${visibleColumns.contains('id')}">checked</c:if>> ID</label>
-                    <label><input type="checkbox" name="visibleCol" value="content" <c:if test="${visibleColumns.contains('content')}">checked</c:if>> Content</label>
+                    <label><input type="checkbox" name="visibleCol" value="title" <c:if test="${visibleColumns.contains('title')}">checked</c:if>> Title</label>
                     <label><input type="checkbox" name="visibleCol" value="course" <c:if test="${visibleColumns.contains('course')}">checked</c:if>> Course</label>
                     <label><input type="checkbox" name="visibleCol" value="level" <c:if test="${visibleColumns.contains('level')}">checked</c:if>> Level</label>
                     <label><input type="checkbox" name="visibleCol" value="status" <c:if test="${visibleColumns.contains('status')}">checked</c:if>> Status</label>
@@ -197,7 +193,7 @@
             <table>
                 <tr>
                 <c:if test="${visibleColumns.contains('id')}"><th>ID</th></c:if>
-                <c:if test="${visibleColumns.contains('content')}"><th>Content</th></c:if>
+                <c:if test="${visibleColumns.contains('title')}"><th>Title</th></c:if>
                 <c:if test="${visibleColumns.contains('course')}"><th>Course</th></c:if>
                 <c:if test="${visibleColumns.contains('level')}"><th>Level</th></c:if>
                 <c:if test="${visibleColumns.contains('status')}"><th>Status</th></c:if>
@@ -206,8 +202,8 @@
             <c:forEach items="${listQuestion}" var="q">
                 <tr>
                     <c:if test="${visibleColumns.contains('id')}"> <td>${q.questionId}</td></c:if>
-                    <c:if test="${visibleColumns.contains('content')}">
-                        <td>${q.questionContent}
+                    <c:if test="${visibleColumns.contains('title')}">
+                        <td>${q.questionTitle}
                             <c:if test="${not empty q.questionImgOrVideo}">
                                 <c:choose>
                                     <c:when test="${fn:endsWith(q.questionImgOrVideo, '.mp4')}">
@@ -232,7 +228,11 @@
                                 <button type="submit" name="actionQuestion" value="show">Show</button>
                                 <button type="submit" name="actionQuestion" value="hide">Hide</button>
                             </form>
-                            <a href="QuestionDetail"><button>Edit</button></a> <!-- Question Detail chưa có -->
+                            <form action="QuestionDetailServlet">
+                                <input type="hidden" name="questionId" value="${q.questionId}">
+                                <button type="submit">Edit</button>
+                            </form>
+
                         </td>
                     </c:if>
 
@@ -248,22 +248,19 @@
 
 
         <!-- Pagination -->
-        <div class="pagination" id="pagination">
-            <!-- Ở page 1 không hiện Previous  -->
+        <div class="pagination">
             <c:if test="${page > 1}">
-                <a href="?page=${page - 1}&questionPerPage=${param.questionPerPage}">Previous</a>
+                <a href="?page=${page - 1}&questionTitle=${param.questionTitle}&questionCourse=${param.questionCourse}&questionLevel=${param.questionLevel}&questionStatus=${param.questionStatus}&questionPerPage=${param.questionPerPage}">Previous</a>
             </c:if>
-            <!-- Hiện tất cả các trang hiện có và add style active cho trang hiện tại  -->
             <c:forEach begin="1" end="${totalPages}" var="i">
-                <a href="?page=${i}&questionPerPage=${param.questionPerPage}" class="${i == page ? 'active' : ''}">${i}</a>
+                <a href="?page=${i}&questionTitle=${param.questionTitle}&questionCourse=${param.questionCourse}&questionLevel=${param.questionLevel}&questionStatus=${param.questionStatus}&questionPerPage=${param.questionPerPage}" class="${i == page ? 'active' : ''}">${i}</a>
             </c:forEach>
-            <!-- Ở page cuối không hiện Previous  -->
             <c:if test="${page < totalPages}">
-                <a href="?page=${page + 1}&questionPerPage=${param.questionPerPage}">Next</a>
+                <a href="?page=${page + 1}&questionTitle=${param.questionTitle}&questionCourse=${param.questionCourse}&questionLevel=${param.questionLevel}&questionStatus=${param.questionStatus}&questionPerPage=${param.questionPerPage}">Next</a>
             </c:if>
         </div>
-    </div>
 
-</body>
+
+    </body>
 
 </html>

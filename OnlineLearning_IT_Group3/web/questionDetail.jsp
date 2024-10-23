@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+    <%@ page contentType="text/html" pageEncoding="UTF-8"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    <%@page import="model.Question" %>
+
+
 
     <head>
         <meta charset="UTF-8">
@@ -132,90 +137,91 @@
     </head>
 
     <body>
-        <!-- Main form for question management -->
-        <form action="QuestionDetail" method="POST" enctype="multipart/form-data">
-            <h2>Question Detail</h2>
+    <c:set var="q" value="${requestScope.questionDetailInfo}"/>
+    <!-- Main form for question management -->
+    <form action="QuestionDetailServlet" method="POST" enctype="multipart/form-data">
+        <h2>${q.questionTitle}</h2>
 
-            <!-- Back button -->
-            <a href="QuestionListServlet">            
-                <button type="button" class="back-btn">Back</button>
-            </a>
-            <!-- Remove question -->
-            <div class="remove-question-container">
-                <button type="submit" class="remove-btn">Remove question</button>
-            </div>
+        <!-- Back button -->
+        <a href="QuestionListServlet">            
+            <button type="button" class="back-btn">Back</button>
+        </a>
+        <!-- Remove question -->
+        <div class="remove-question-container">
+            <button type="submit" class="remove-btn">Remove question</button>
+        </div>
 
-            <!-- Course Name Input -->
-            <label for="course">Course Name:</label>
-            <input type="text" id="course" name="course">
+        <!-- Course Name Input -->
+        <label for="course">Course Name:</label>
+        <input type="text" id="course" name="course" value="${q.course.getCourseName()}">
 
-            <!-- Question Type Input (disabled) -->
-            <label for="questionType">Question Type:</label>
-            <input type="text" id="questionType" name="questionType" value="Multiple Choice" disabled>
+        <!-- Question Type Input (disabled) -->
+        <label for="questionType">Question Type:</label>
+        <input type="text" id="questionType" name="questionType" value="${q.questionType}" disabled>
 
-            <!-- Status Selection -->
-            <label for="status">Status:</label>
-            <select id="status" name="status">
-                <option value="Visible">Visible</option>
-                <option value="Hidden">Hidden</option>
-            </select>
+        <!-- Status Selection -->
+        <label for="status">Status:</label>
+        <select id="status" name="status">
+            <option value="Visible" ${q.status == 'Visible' ? 'selected' : ''}>Visible</option>
+            <option value="Hidden" ${q.status == 'Hidden' ? 'selected' : ''}>Hidden</option>
+        </select>
 
-            <!-- Question Content Textarea -->
-            <label for="questionContent">Question Content:</label>
-            <textarea name="questionContent" id="questionContent" required></textarea>
+        <!-- Question Content Textarea -->
+        <label for="questionContent">Question Content:</label>
+        <textarea  name="questionContent" id="questionContent" required>${q.questionContent}</textarea>
 
-            <!-- Media Upload Input -->
-            <label for="media">Upload Media:</label>
-            <input type="file" id="media" name="media" accept="image/*,video/*,audio/*">
+        <!-- Media Upload Input -->
+        <label for="media">Upload Media:</label>
+        <input type="file" id="media" name="media" accept="image/*,video/*,audio/*">
 
-            <!-- Options Section -->
-            <label>Options:</label>
-            <div id="options">
-                <div class="answer-option">
-                    <input type="hidden" name="answerOptionId" value="0"> <!-- Use 0 for new options -->
-                    <input type="text" name="answerOption" placeholder="Answer Option">
-                    <div class="radio-container">
-                        <input type="radio" name="correctAnswer" checked>
-                        <label>Correct</label>
-                        <button type="submit" class="remove-btn" formaction="removeServlet" name="removeId"
-                                value="0">Remove</button>
-                    </div>
-                </div>
-                <div class="answer-option">
-                    <input type="hidden" name="answerOptionId" value="1"> <!-- Use 1 for new options -->
-                    <input type="text" name="answerOption" placeholder="Answer Option">
-                    <div class="radio-container">
-                        <input type="radio" name="correctAnswer">
-                        <label>Correct</label>
-                        <button type="submit" class="remove-btn" formaction="removeServlet" name="removeId"
-                                value="1">Remove</button>
-                    </div>
+        <!-- Options Section -->
+        <label>Options:</label>
+        <div id="options">
+            <div class="answer-option">
+                <input type="hidden" name="answerOptionId" value="0"> <!-- Use 0 for new options -->
+                <input type="text" name="answerOption" placeholder="Answer Option">
+                <div class="radio-container">
+                    <input type="radio" name="correctAnswer" checked>
+                    <label>Correct</label>
+                    <button type="submit" class="remove-btn" formaction="removeServlet" name="removeId"
+                            value="0">Remove</button>
                 </div>
             </div>
-            <button type="submit" class="add-btn" formaction="answerServlet">Add Option</button>
+            <div class="answer-option">
+                <input type="hidden" name="answerOptionId" value="1"> <!-- Use 1 for new options -->
+                <input type="text" name="answerOption" placeholder="Answer Option">
+                <div class="radio-container">
+                    <input type="radio" name="correctAnswer">
+                    <label>Correct</label>
+                    <button type="submit" class="remove-btn" formaction="removeServlet" name="removeId"
+                            value="1">Remove</button>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="add-btn" formaction="answerServlet">Add Option</button>
 
 
-            <!-- Explanation Textarea -->
-            <label for="explanation">Explanation:</label>
-            <textarea id="explanation" name="explanation" rows="4"></textarea>
+        <!-- Explanation Textarea -->
+        <label for="explanation">Explanation:</label>
+        <textarea id="explanation" name="explanation" rows="4"></textarea>
 
-            <!-- Save Question Button -->
-            <button type="submit" class="btn">Save Question</button>
-        </form>
+        <!-- Save Question Button -->
+        <button type="submit" class="btn">Save Question</button>
+    </form>
 
-        <script src="js/tinymce/js/tinymce/tinymce.min.js"></script>
-        <script>
-            tinymce.init({
-                selector: 'textarea#questionContent',
-                width: '100%',
-                height: 300,
-                plugins: ['advlist', 'autolink', 'link', 'image', 'lists', 'charmap', 'preview', 'anchor', 'pagebreak', 'searchreplace', 'wordcount', 'visualblocks', 'code', 'fullscreen', 'insertdatetime', 'media', 'table', 'emoticons', 'template', 'codesample'],
-                toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullscreen | forecolor backcolor emoticons',
-                menubar: 'favs file edit view insert format tools table',
-                content_style: 'body{font-family:Helvetica,Arial,sans-serif; font-size:16px}'
-            });
+    <script src="js/tinymce/js/tinymce/tinymce.min.js"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea#questionContent',
+            width: '100%',
+            height: 300,
+            plugins: ['advlist', 'autolink', 'link', 'image', 'lists', 'charmap', 'preview', 'anchor', 'pagebreak', 'searchreplace', 'wordcount', 'visualblocks', 'code', 'fullscreen', 'insertdatetime', 'media', 'table', 'emoticons', 'template', 'codesample'],
+            toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullscreen | forecolor backcolor emoticons',
+            menubar: 'favs file edit view insert format tools table',
+            content_style: 'body{font-family:Helvetica,Arial,sans-serif; font-size:16px}'
+        });
 
-        </script>
-    </body>
+    </script>
+</body>
 
 </html>

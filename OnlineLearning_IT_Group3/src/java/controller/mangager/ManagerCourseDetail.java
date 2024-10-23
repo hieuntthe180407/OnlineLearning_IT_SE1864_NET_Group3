@@ -67,7 +67,7 @@ public class ManagerCourseDetail extends HttpServlet {
         MoocDAO mDao = new MoocDAO();
         
         List<Mooc> listMooc = mDao.getAllMoocByCourseID(id);
-        
+        request.setAttribute("listMooc",listMooc );
         //course detail
         
         CourseDAO cDao = new CourseDAO();

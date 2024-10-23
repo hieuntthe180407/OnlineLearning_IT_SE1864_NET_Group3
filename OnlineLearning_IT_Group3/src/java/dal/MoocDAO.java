@@ -41,4 +41,11 @@ public class MoocDAO extends DBContext {
 
         return list;
     }
+      public static void main(String[] args) {
+        MoocDAO m  = new MoocDAO();
+        List<Mooc> mooc = m.getAllMoocByCourseID(3);
+          for (Mooc mooc1 : mooc) {
+              System.out.println(mooc1.getMoocName()+"\n");
+          }
+    }
 }

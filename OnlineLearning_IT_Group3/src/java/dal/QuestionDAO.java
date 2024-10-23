@@ -9,7 +9,7 @@ package dal;
  * @author ADMIN
  */
 import java.util.*;
-import java.lang.*;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import model.Course;
@@ -59,6 +59,7 @@ public class QuestionDAO extends DBContext {
         return lastIndex;
     }
 
+    //Chỉnh sửa trạng thái của question 
     public void updateStatusQuestion(int questionId, String status) {
         PreparedStatement st = null;
         String sql = "UPDATE Question SET Status = ? WHERE QuestionId = ?";
@@ -74,11 +75,12 @@ public class QuestionDAO extends DBContext {
         }
     }
 
-    public List<Question> getFilteredQuestions(String content, String course, String level, String status, int page, int numberQuestion) {
+//Duyệt câu hỏi theo filter
+    public List<Question> getFilteredQuestions(String title, String course, String level, String status, int page, int numberQuestion) {
         List<Question> listQuestion = new ArrayList<>();
         PreparedStatement st = null;
         String sql = "SELECT q.QuestionID"
-                + ", q.QuestionContent"
+                + ", q.QuestionTitle"
                 + ", q.QuestionType"
                 + ", q.QuestionImgOrVideo"
                 + ", q.Level"
@@ -87,9 +89,9 @@ public class QuestionDAO extends DBContext {
         //Tạo list lưu câu lệnh
         List<String> params = new ArrayList<>();
 
-        if (content != null && !content.isEmpty()) {
-            sql += " AND q.QuestionContent LIKE ?";
-            params.add("%" + content + "%");
+        if (title != null && !title.isEmpty()) {
+            sql += " AND q.QuestionTitle LIKE ?";
+            params.add("%" + title + "%");
         }
         if (course != null && !course.isEmpty()) {
             sql += " AND c.CourseName LIKE ?";
@@ -120,7 +122,7 @@ public class QuestionDAO extends DBContext {
             while (rs.next()) {
                 Question qs = new Question();
                 qs.setQuestionId(rs.getInt("QuestionID"));
-                qs.setQuestionContent(rs.getString("QuestionContent"));
+                qs.setQuestionTitle(rs.getString("QuestionTitle"));
                 qs.setQuestionType(rs.getString("QuestionType"));
                 qs.setQuestionImgOrVideo(rs.getString("QuestionImgOrVideo"));
                 qs.setLevel(rs.getString("Level"));
@@ -136,26 +138,79 @@ public class QuestionDAO extends DBContext {
         }
         return listQuestion;
     }
+//Lấy tổng số trang ( có thể phụ thuộc vào filter)
 
-    public int getTotalPages(int numPerPage) {
+    public int getTotalPages(String title, String course, String level, String status, int numberQuestion) {
         PreparedStatement st = null;
-        int totalquestion = 0;
-        String sql = "SELECT COUNT(*) AS total FROM Question";
-        int totalPage = 0;
+        String sql = "SELECT COUNT(*) FROM Question q, Course c WHERE q.CourseID = c.CourseID";
+        List<String> params = new ArrayList<>();
+
+        // Điều kiện lọc tương tự như trong getFilteredQuestions
+        if (title != null && !title.isEmpty()) {
+            sql += " AND q.QuestionTitle LIKE ?";
+            params.add("%" + title + "%");
+        }
+        if (course != null && !course.isEmpty()) {
+            sql += " AND c.CourseName LIKE ?";
+            params.add("%" + course + "%");
+        }
+        if (level != null && !level.isEmpty()) {
+            sql += " AND q.Level = ?";
+            params.add(level);
+        }
+        if (status != null && !status.isEmpty()) {
+            sql += " AND q.Status = ?";
+            params.add(status);
+        }
+
         try {
             st = connection.prepareStatement(sql);
+            for (int i = 0; i < params.size(); i++) {
+                st.setString(i + 1, params.get(i));
+            }
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                totalquestion = rs.getInt("total");
+                int totalQuestions = rs.getInt(1);
+                return (int) Math.ceil((double) totalQuestions / numberQuestion); // Tính tổng số trang
             }
-
-            // Tính số trang
-            totalPage = (int) Math.ceil((double) totalquestion / numPerPage); //Math.ceil để làm tròn lên
         } catch (Exception e) {
             System.out.println(e);
         }
-        return totalPage;
+        return 0; // Trả về 0 nếu có lỗi
+    }
 
+    public Question getQuestionInfo(int questionId) {
+        Question question = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        String sql = "SELECT  q.QuestionContent, q.QuestionTitle, q.QuestionType, "
+                + "q.QuestionImgOrVideo, q.Level, q.Status, q.Explanation, c.CourseName "
+                + "FROM Question q,Course c  "
+                + "WHERE q.QuestionID = ? AND c.CourseID = q.CourseID";
+        try {
+            st = connection.prepareStatement(sql);
+            st.setInt(1, questionId); // Set the question ID
+            rs = st.executeQuery();
+
+            if (rs.next()) {
+                question = new Question();
+                question.setQuestionContent(rs.getString("QuestionContent"));
+                question.setQuestionTitle(rs.getString("QuestionTitle"));
+                question.setQuestionType(rs.getString("QuestionType"));
+                question.setQuestionImgOrVideo(rs.getString("QuestionImgOrVideo"));
+                question.setLevel(rs.getString("Level"));
+                question.setStatus(rs.getString("Status"));
+                question.setExplanation(rs.getString("Explanation"));
+
+                // Create and set Course object
+                Course course = new Course();
+                course.setCourseName(rs.getString("CourseName"));
+                question.setCourse(course);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return question;
     }
 
     public static void main(String[] args) {
@@ -163,23 +218,22 @@ public class QuestionDAO extends DBContext {
         QuestionDAO questionDAO = new QuestionDAO();
 
         // Tạo một Course giả định để sử dụng
-        Course course = new Course();
-        course.setCourseID(1); // Đặt ID cho Course mà bạn muốn thêm câu hỏi
+        int testQuestionId = 3; // Thay đổi ID này cho câu hỏi bạn muốn kiểm tra
+        Question question = questionDAO.getQuestionInfo(testQuestionId);
 
-        // Tạo một Question mới
-        Question newQuestion = new Question();
-        newQuestion.setQuestionContent("What is the capital of Vietnam?");
-        newQuestion.setQuestionType("Multiple Choice");
-        newQuestion.setQuestionImgOrVideo(""); // Nếu không có ảnh/video thì để trống
-        newQuestion.setLevel("Easy");
-        newQuestion.setStatus("Visible");
-        newQuestion.setQuestionTitle("Capital Question");
-        newQuestion.setCourse(course);
-        newQuestion.setExplanation("Hanoi is the capital city of Vietnam.");
-
-        // Gọi phương thức importQuestion để thêm câu hỏi vào cơ sở dữ liệu
-        int lastIndex = questionDAO.importQuestion(newQuestion);
-        System.out.println("New question added with ID: " + lastIndex);
+        // In ra thông tin câu hỏi
+        if (question != null) {
+            System.out.println("Question ID: " + question.getQuestionId());
+            System.out.println("Question Title: " + question.getQuestionTitle());
+            System.out.println("Question Content: " + question.getQuestionContent());
+            System.out.println("Question Type: " + question.getQuestionType());
+            System.out.println("Level: " + question.getLevel());
+            System.out.println("Status: " + question.getStatus());
+            System.out.println("Explanation: " + question.getExplanation());
+            System.out.println("Course Name: " + question.getCourse().getCourseName());
+        } else {
+            System.out.println("No question found with ID: " + testQuestionId);
+        }
 
     }
 
