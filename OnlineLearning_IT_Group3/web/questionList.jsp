@@ -228,9 +228,9 @@
                                 <button type="submit" name="actionQuestion" value="show">Show</button>
                                 <button type="submit" name="actionQuestion" value="hide">Hide</button>
                             </form>
-                                <form action="QuestionDetailServlet" method="get">
+                            <form action="QuestionDetailServlet">
                                 <input type="hidden" name="questionId" value="${q.questionId}">
-                                <a href=""><button>Edit</button></a>
+                                <button type="submit">Edit</button>
                             </form>
 
                         </td>
