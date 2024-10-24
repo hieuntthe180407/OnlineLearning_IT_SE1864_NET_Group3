@@ -7,7 +7,7 @@ package controller;
 
 import dal.CourseDAO;
 import dal.LessonDAO;
-import dal.MoocDAO;
+
 import dal.ReviewDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,7 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import model.Course;
 import model.Lesson;
-import model.Mooc;
+
 import model.Review;
 
 /**
@@ -34,8 +34,7 @@ public class courseDetail extends HttpServlet {
     throws ServletException, IOException {
         try{
         int courseID = Integer.parseInt(request.getParameter("courseID"));
-          MoocDAO m = new MoocDAO();
-        List<Mooc> listm = m.getAllMoocByCourseID(courseID);
+         
       
        ReviewDAO rDAO = new ReviewDAO();
        List<Review> listr = rDAO.getReviewByCourseId(courseID);
@@ -43,7 +42,7 @@ public class courseDetail extends HttpServlet {
        
        
        request.setAttribute("listr", listr);
-        request.setAttribute("listm", listm);
+      
         
         
           LessonDAO l = new LessonDAO();

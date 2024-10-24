@@ -6,7 +6,7 @@
 package controller.mangager;
 
 import dal.CourseDAO;
-import dal.MoocDAO;
+
 import dal.ReviewDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import model.Course;
-import model.Mooc;
+
 import model.Review;
 
 /**
@@ -64,10 +64,7 @@ public class ManagerCourseDetail extends HttpServlet {
     throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         
-        MoocDAO mDao = new MoocDAO();
         
-        List<Mooc> listMooc = mDao.getAllMoocByCourseID(id);
-        request.setAttribute("listMooc",listMooc );
         //course detail
         
         CourseDAO cDao = new CourseDAO();
