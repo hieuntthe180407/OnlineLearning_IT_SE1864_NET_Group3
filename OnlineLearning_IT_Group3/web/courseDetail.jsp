@@ -48,6 +48,7 @@
         
         <%
             Course c = (Course)request.getAttribute("Course");
+            
         %>
         <div class="container-fluid bg-primary py-5 mb-5 page-header">
         <div class="container py-5">
@@ -108,38 +109,20 @@
                                 Syllabus
                             </h2>
               <% 
-                    List<Mooc> listm = (List<Mooc>) request.getAttribute("listm");
+                    
                     List<Lesson> listl = (List<Lesson>) request.getAttribute("listl");
                     List<Review> listr = (List<Review>) request.getAttribute("listr");
-                    if (listm == null || listm.size() == 0 || listl == null || listl.size() == 0 ) {
+                    if ( listl == null || listl.size() == 0 ) {
                         out.println("Empty list ");
                     } else {
-                        for (Mooc m : listm) {
+                       
                            
                 %>  
 
                             
-                            <div class="accordion accordion-flush" id="accordionFlushExample">
-                                
-                                
-                                
-                                <div class="accordion-item">
-                                  <h2 class="accordion-header">
-                                     
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                        <%= m.getMoocName()%>  <a href="lessonEdit.jsp?MoocID=<%= m.getMoocID()%>"><input type="button" value="Add"/></a>
-                                    
-                                    </button>
-                                        
-                                        
-                                  </h2>
-                                    
-                                    
-                                  <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="
-                                       
-                                    <div class="accordion-body"><ul>
+                            <ul>
                                           <% for(Lesson l : listl) {
-                                            if(l.getMoocID()== m.getMoocID()){
+                                            
                                         %>
                                         <li><i class="fa fa-video text-danger"></i>
                                             
@@ -157,7 +140,7 @@
                                                 <img src="img/lesson/image1.jpg"/>
                                         </li>
                                         
-                                        <%}}%>
+                                        <%}%>
                                         
                                     </ul>
                                    <% 
@@ -199,7 +182,7 @@
                                   
                                   </div>
                                 </div>
-                                    <%}}%>
+                                    <%}%>
                                </div>
 
 

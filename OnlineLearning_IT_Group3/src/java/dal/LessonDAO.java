@@ -23,7 +23,7 @@ public class LessonDAO extends DBContext {
             if (rs.next()){
                 Lesson u = new Lesson();
                 u.setLessonID(rs.getInt("LessonID"));
-                u.setMoocID(rs.getInt("MoocID"));
+                u.setCourseID(rs.getInt("CourseID"));
                 u.setLessonName(rs.getString("LessonName"));
                 u.setDescription(rs.getString("Description"));
                 u.setLessonNumber(rs.getInt("LessonNumber"));
@@ -42,7 +42,7 @@ public class LessonDAO extends DBContext {
         List<Lesson> list = new ArrayList<>();
 
         try {
-            String sql = "Select * from Mooc m,Lessons l,Course c WHERE m.CourseID=c.CourseID AND l.MoocID=m.MoocID AND c.CourseID=?";
+            String sql = "Select * from Lessons l,Course c WHERE  l.CourseID=c.CourseID AND c.CourseID=?";
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, CourseID);
             ResultSet rs = st.executeQuery();
@@ -51,7 +51,7 @@ public class LessonDAO extends DBContext {
               Lesson u = new Lesson();
                 u.setLessonID(rs.getInt("LessonID"));
                 u.setLessonName(rs.getString("LessonName"));
-                 u.setMoocID(rs.getInt("MoocID"));
+                 u.setCourseID(rs.getInt("CourseID"));
                 u.setDescription(rs.getString("Description"));
                 u.setLessonNumber(rs.getInt("LessonNumber"));
                 u.setLessonURL(rs.getString("LessonURL"));
@@ -86,14 +86,14 @@ public class LessonDAO extends DBContext {
             return false;
         }
     }
-      public boolean addLesson(String name,String url, int MoocID,String des, int num){
+      public boolean addLesson(String name,String url, int CourseID,String des, int num){
         try {
-            String sql = "Insert into Lessons(LessonName,LessonURL,MoocID,Description,LessonNumber) values(?,?,?,?,?)";
+            String sql = "Insert into Lessons(LessonName,LessonURL,CourseID,Description,LessonNumber) values(?,?,?,?,?)";
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, name);
             st.setString(2, url);
             
-               st.setInt(3,MoocID); 
+               st.setInt(3,CourseID); 
                st.setString(4, des);
                st.setInt(5,num); 
             st.executeUpdate();
@@ -109,7 +109,7 @@ public class LessonDAO extends DBContext {
         List<Lesson> list = new ArrayList<>();
 
         try {
-            String query = "Select * from Mooc m,Lessons l,Course c WHERE m.CourseID=c.CourseID AND l.MoocID=m.MoocID AND c.CourseID=?  ORDER BY LessonID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
+            String query = "Select * from Lessons l,Course c WHERE  l.CourseID=c.CourseID AND c.CourseID=?  ORDER BY LessonID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
 
             PreparedStatement st = connection.prepareStatement(query);
             st.setInt(1, courseID);
@@ -120,7 +120,7 @@ public class LessonDAO extends DBContext {
                   Lesson u = new Lesson();
                 u.setLessonID(rs.getInt("LessonID"));
                 u.setLessonName(rs.getString("LessonName"));
-                 u.setMoocID(rs.getInt("MoocID"));
+                 u.setCourseID(rs.getInt("CourseID"));
                 u.setDescription(rs.getString("Description"));
                 u.setLessonNumber(rs.getInt("LessonNumber"));
                 u.setLessonURL(rs.getString("LessonURL"));
@@ -141,7 +141,7 @@ public class LessonDAO extends DBContext {
        public int getTotalLessonCount(int courseID) {
         
        try {
-            String sql =  "SELECT COUNT(*) from Mooc m,Lessons l,Course c WHERE m.CourseID=c.CourseID AND l.MoocID=m.MoocID AND c.CourseID=?";
+            String sql =  "SELECT COUNT(*) from Lessons l,Course c WHERE  l.CourseID=c.CourseID AND c.CourseID=?";
 
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, courseID);

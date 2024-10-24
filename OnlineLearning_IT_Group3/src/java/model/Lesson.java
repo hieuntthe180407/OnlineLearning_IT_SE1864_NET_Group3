@@ -10,7 +10,7 @@ package model;
  */
 public class Lesson {
     private int LessonID;
-    private int MoocID;
+    private int CourseID;
     private int LessonNumber;
     private String LessonURL;
      private String LessonName;
@@ -20,15 +20,18 @@ public class Lesson {
     public Lesson() {
     }
 
-    public Lesson(int LessonID, int MoocID, int LessonNumber, String LessonURL, String LessonName, String Description,String Status) {
+    public Lesson(int LessonID, int CourseID, int LessonNumber, String LessonURL, String LessonName, String Description, String Status) {
         this.LessonID = LessonID;
-        this.MoocID = MoocID;
+        this.CourseID = CourseID;
         this.LessonNumber = LessonNumber;
         this.LessonURL = LessonURL;
         this.LessonName = LessonName;
         this.Description = Description;
-        this.Status= Status;
+        this.Status = Status;
     }
+
+    
+    
 
     public int getLessonNumber() {
         return LessonNumber;
@@ -48,13 +51,15 @@ public class Lesson {
         this.LessonID = LessonID;
     }
 
-    public int getMoocID() {
-        return MoocID;
+    public int getCourseID() {
+        return CourseID;
     }
 
-    public void setMoocID(int MoocID) {
-        this.MoocID = MoocID;
+    public void setCourseID(int CourseID) {
+        this.CourseID = CourseID;
     }
+
+    
 
     public String getLessonURL() {
         return LessonURL;
