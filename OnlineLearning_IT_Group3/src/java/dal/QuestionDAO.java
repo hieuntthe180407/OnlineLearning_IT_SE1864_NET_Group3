@@ -183,7 +183,7 @@ public class QuestionDAO extends DBContext {
         Question question = null;
         PreparedStatement st = null;
         ResultSet rs = null;
-        String sql = "SELECT  q.QuestionContent, q.QuestionTitle, q.QuestionType, "
+        String sql = "SELECT q.QuestionID,q.QuestionContent, q.QuestionTitle, q.QuestionType, "
                 + "q.QuestionImgOrVideo, q.Level, q.Status, q.Explanation, c.CourseName "
                 + "FROM Question q,Course c  "
                 + "WHERE q.QuestionID = ? AND c.CourseID = q.CourseID";
@@ -194,6 +194,7 @@ public class QuestionDAO extends DBContext {
 
             if (rs.next()) {
                 question = new Question();
+                question.setQuestionId(rs.getInt("QuestionID"));
                 question.setQuestionContent(rs.getString("QuestionContent"));
                 question.setQuestionTitle(rs.getString("QuestionTitle"));
                 question.setQuestionType(rs.getString("QuestionType"));

@@ -5,14 +5,19 @@
 package controller;
 
 import dal.AnswerDAO;
+import dal.CourseDAO;
 import dal.QuestionDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import model.Answer;
 import model.Question;
 
@@ -21,6 +26,7 @@ import model.Question;
  * @author ADMIN
  */
 @WebServlet(name = "QuestionDetailServlet", urlPatterns = {"/QuestionDetailServlet"})
+@MultipartConfig
 public class QuestionDetailServlet extends HttpServlet {
 
     /**
@@ -79,6 +85,52 @@ public class QuestionDetailServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String questionTitle = request.getParameter("questionTitle");
+
+        String questionCourse = request.getParameter("questionCourse");
+        CourseDAO cDAO = new CourseDAO();
+        if (!cDAO.checkCourseByName(questionCourse)) {
+            request.setAttribute("errorDetail", "Course is not exsits.");
+            request.getRequestDispatcher("questionDetail.jsp").forward(request, response);
+            return;
+        }
+        int courseID = cDAO.courseIdByCourseName(questionCourse);
+
+        String questionType = request.getParameter("questionType");
+
+        String status = request.getParameter("status");
+
+        String level = request.getParameter("level");
+
+        String questionContent = request.getParameter("questionContent");
+
+        String essayAnswer = request.getParameter("essayAnswer");
+
+        String explanation = request.getParameter("explanation");
+
+        String oldMedia = request.getParameter("oldMedia");
+        Part mediaPart = request.getPart("media");
+
+        String media = null;
+        if (mediaPart == null) {
+            media = oldMedia;
+        } else {
+            String realPath = request.getServletContext().getRealPath("/imgQuestion");
+
+            if (!Files.exists(Path.of(realPath))) {
+                Files.createDirectory(Path.of(realPath));
+            }
+
+            String fileName = Path.of(mediaPart.getSubmittedFileName()).getFileName().toString();
+            Path targetPath = Path.of(realPath, fileName); // kết hợp đường dẫn project với tên tệp
+
+            if (Files.exists(targetPath)) {
+                String newFileName = System.currentTimeMillis() + "_" + fileName; // Thêm timestamp
+                targetPath = Path.of(realPath, newFileName); // Cập nhật đường dẫn đích
+            }
+            mediaPart.write(targetPath.toString());
+            media = "imgQuestion/" + targetPath.getFileName().toString();
+        }
 
     }
 

@@ -63,7 +63,7 @@ public class changePassword extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("User");
+        User user = (User) session.getAttribute("acc");
         UserDAO u = new UserDAO();
         try {
             String oldPassWord = request.getParameter("oldPassword");

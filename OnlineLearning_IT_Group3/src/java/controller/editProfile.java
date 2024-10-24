@@ -108,8 +108,17 @@ public class editProfile extends HttpServlet {
                     Files.createDirectory(Path.of(realPath));
 
                 }
-                imagePart.write(realPath + "\\" + fileName);
-                avatar = realPath.substring(realPath.length() - 9, realPath.length()) + "/" + fileName;
+                Path targetPath = Path.of(realPath, fileName);
+                // Kiểm tra xem tệp đã tồn tại chưa
+                if (Files.exists(targetPath)) {
+                    // Nếu tệp đã tồn tại, tạo tên mới cho tệp
+                    String newFileName = System.currentTimeMillis() + "_" + fileName; // Thêm timestamp vào tên tệp
+                    targetPath = Path.of(realPath, newFileName); // Cập nhật đường dẫn đích
+                }
+
+                imagePart.write(targetPath.toString());
+
+                avatar = "imgavatar/" + targetPath.getFileName().toString();
 
             }
 

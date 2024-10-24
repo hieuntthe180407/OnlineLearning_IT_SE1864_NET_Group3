@@ -6,9 +6,6 @@
     <%@page import="model.Answer" %>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-
-
-
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -145,6 +142,11 @@
     </head>
 
     <body>
+        <%
+                
+        String error = (String) request.getAttribute("errorDetail");
+            
+        %>
         <c:set var="q" value="${requestScope.questionDetailInfo}"/>
         <c:set var="a" value="${requestScope.answerDetailInfo}"/>
 
@@ -163,6 +165,10 @@
             </div>
 
             <!-- Course Name Input -->
+            <label for="questionId">Question ID</label>
+            <input type="text" id="questionId" name="questionId" value="${q.questionId}" disabled>
+
+            <!-- Course Name Input -->
             <label for="course">Course Name:</label>
             <input type="text" id="course" name="questionCourse" value="${q.course.getCourseName()}" required>
 
@@ -175,6 +181,14 @@
             <select id="status" name="status">
                 <option value="Visible" ${q.status == 'Visible' ? 'selected' : ''}>Visible</option>
                 <option value="Hidden" ${q.status == 'Hidden' ? 'selected' : ''}>Hidden</option>
+            </select>
+
+            <!-- Level Selection -->
+            <label for="Level">Level:</label>
+            <select id="level" name="level">
+                <option value="Easy" ${q.level == 'Easy' ? 'selected' : ''}>Easy</option>
+                <option value="Medium" ${q.level == 'Medium' ? 'selected' : ''}>Medium</option>
+                <option value="Hard" ${q.level == 'Hard' ? 'selected' : ''}>Hard</option>
             </select>
 
             <!-- Question Content Textarea -->
@@ -219,7 +233,7 @@
                                 <button type="submit" class="remove-btn" formaction="removeServlet" name="removeId" value="0">Remove</button>
                             </div>
                         </div>
-                        <button type="submit" class="add-btn" formaction="answerServlet">Add Option</button>
+                        <button type="submit" class="add-btn" formaction="addAnswerServlet" >Add Option</button>
                     </c:otherwise>
                 </c:choose> 
             </div>
@@ -228,6 +242,9 @@
             <!-- Explanation Textarea -->
             <label for="explanation">Explanation:</label>
             <textarea id="explanation" name="explanation" rows="4">${q.explanation}</textarea>
+
+            <!-- Error message -->
+            <h3 style="color: red"> <%=(error != null) ? error : ""%> </h3>
 
             <!-- Save Question Button -->
             <button type="submit" class="btn">Save Question</button>
