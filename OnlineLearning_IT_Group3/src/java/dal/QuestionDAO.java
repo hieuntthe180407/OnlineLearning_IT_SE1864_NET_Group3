@@ -213,9 +213,17 @@ public class QuestionDAO extends DBContext {
         }
         return question;
     }
-    
-    
-    
+
+    public void removeQuestionByQuestionId(int questionId) {
+        PreparedStatement st = null;
+        try {
+            String sql = "DELETE FROM Question WHERE QuestionID = ?";
+            st = connection.prepareStatement(sql);
+            st.setInt(1, questionId);
+            st.executeUpdate();
+        } catch (SQLException e) {
+        }
+    }
 
     public static void main(String[] args) {
 

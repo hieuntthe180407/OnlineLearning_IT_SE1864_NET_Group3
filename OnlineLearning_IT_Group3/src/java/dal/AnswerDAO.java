@@ -58,6 +58,19 @@ public class AnswerDAO extends DBContext {
 
     }
 
+    public void removeAnswerByQuestionId(int questionId) {
+        PreparedStatement st = null;
+        try {
+            String sql = "DELETE FROM Answer WHERE QuestionID = ?";
+            st = connection.prepareStatement(sql);
+            st.setInt(1, questionId);
+            st.executeUpdate();
+
+        } catch (Exception e) {
+
+        }
+    }
+
     public static void main(String[] args) {
 
         Question question = new Question();

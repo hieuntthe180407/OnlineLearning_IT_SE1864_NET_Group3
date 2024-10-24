@@ -38,7 +38,7 @@ public class AddAnswerServlet extends HttpServlet {
             out.println("<title>Servlet AddAnswerServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AddAnswerServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet AddAnswerServlet at " + request.getParameter("questionId") + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }

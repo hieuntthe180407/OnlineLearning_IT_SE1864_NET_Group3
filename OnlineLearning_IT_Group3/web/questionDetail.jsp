@@ -160,13 +160,16 @@
                 <button type="button" class="back-btn">Back</button>
             </a>
             <!-- Remove question -->
+            <input type="hidden" name="questionId" value="${param.questionId != null ? param.questionId : q.questionId}">
+
             <div class="remove-question-container">
-                <button type="submit" class="remove-btn" formaction="deleteQuestionServlet">Remove question</button>
+                <button type="button" class="remove-btn">
+                    <a href="deleteQuestionServlet?questionId=${param.questionId != null ? param.questionId : q.questionId}" class="remove-btn">Remove question</a>
+                </button>
             </div>
 
             <!-- Course Name Input -->
             <label for="questionId">Question ID</label>
-            <input type="hidden" name="questionId" value="${param.questionId != null ? param.questionId : q.questionId}">
             <input type="text" id="questionId"  value="${param.questionId != null ? param.questionId : q.questionId}" disabled>
 
 
