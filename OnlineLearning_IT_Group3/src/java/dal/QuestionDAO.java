@@ -225,6 +225,37 @@ public class QuestionDAO extends DBContext {
         }
     }
 
+    public void updateQuestion(Question question) {
+        PreparedStatement st = null;
+        String sql = "UPDATE Question SET "
+                + "QuestionContent = ?, "
+                + "QuestionType = ?, "
+                + "QuestionImgOrVideo = ?, "
+                + "[Level] = ?, "
+                + "Status = ?, "
+                + "QuestionTitle = ?, "
+                + "Explanation = ?, "
+                + "CourseID = ? "
+                + "WHERE QuestionID = ?";
+        try {
+            st = connection.prepareStatement(sql);
+            st.setString(1, question.getQuestionContent());
+            st.setString(2, question.getQuestionType());
+            st.setString(3, question.getQuestionImgOrVideo());
+            st.setString(4, question.getLevel());
+            st.setString(5, question.getStatus());
+            st.setString(6, question.getQuestionTitle());
+            st.setString(7, question.getExplanation());
+            st.setInt(8, question.getCourse().getCourseID());
+            st.setInt(9, question.getQuestionId());
+
+            st.executeUpdate(); // Execute the update
+
+        } catch (Exception e) {
+        }
+
+    }
+
     public static void main(String[] args) {
 
         QuestionDAO questionDAO = new QuestionDAO();

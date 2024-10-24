@@ -97,7 +97,7 @@ public class editProfile extends HttpServlet {
             }
 
             //check is there are any new avatar
-            if (imagePart == null) {
+            if (imagePart == null || imagePart.getSize() == 0 ) {
                 avatar = oldAvatar;
             } else {
 

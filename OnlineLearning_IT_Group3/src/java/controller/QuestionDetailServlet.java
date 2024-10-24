@@ -19,6 +19,7 @@ import jakarta.servlet.http.Part;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import model.Answer;
+import model.Course;
 import model.Question;
 
 /**
@@ -85,7 +86,9 @@ public class QuestionDetailServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String questionId = request.getParameter("questionId");
+        String questionIdParam = request.getParameter("questionId");
+        int questionId = Integer.parseInt(questionIdParam);
+
         String questionTitle = request.getParameter("questionTitle");
 
         String questionCourse = request.getParameter("questionCourse");
@@ -95,7 +98,8 @@ public class QuestionDetailServlet extends HttpServlet {
             request.getRequestDispatcher("questionDetail.jsp").forward(request, response);
             return;
         }
-        int courseID = cDAO.courseIdByCourseName(questionCourse);
+        Course course = new Course();
+        course.setCourseID(cDAO.courseIdByCourseName(questionCourse));
 
         String questionType = request.getParameter("questionType");
 
@@ -113,7 +117,7 @@ public class QuestionDetailServlet extends HttpServlet {
         Part mediaPart = request.getPart("media");
 
         String media = null;
-        if (mediaPart == null) {
+        if (mediaPart == null || mediaPart.getSize() == 0) {
             media = oldMedia;
         } else {
             String realPath = request.getServletContext().getRealPath("/imgQuestion");
@@ -132,6 +136,19 @@ public class QuestionDetailServlet extends HttpServlet {
             mediaPart.write(targetPath.toString());
             media = "imgQuestion/" + targetPath.getFileName().toString();
         }
+        Question q = new Question();
+        q.setQuestionId(questionId);
+        q.setQuestionContent(questionContent);
+        q.setQuestionTitle(questionTitle);
+        q.setCourse(course);
+        q.setQuestionType(questionType);
+        q.setQuestionImgOrVideo(media);
+        q.setLevel(level);
+        q.setStatus(status);
+        q.setExplanation(explanation);
+        QuestionDAO qDao = new QuestionDAO();
+        qDao.updateQuestion(q);
+        response.sendRedirect("QuestionListServlet");
 
     }
 
