@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.AnswerDAO;
 import dal.QuestionDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Answer;
 import model.Question;
 
 /**
@@ -49,11 +51,18 @@ public class QuestionDetailServlet extends HttpServlet {
         String questionIdParam = request.getParameter("questionId");
         if (questionIdParam != null) {
             int questionId = Integer.parseInt(questionIdParam);
+
             QuestionDAO questionDAO = new QuestionDAO();
+            AnswerDAO answerDAO = new AnswerDAO();
+
+            Answer answer = new Answer();
             Question question = new Question();
-            question = questionDAO.getQuestionInfo(questionId);;
+
+            answer = answerDAO.getAnswerInfo(questionId);
+            question = questionDAO.getQuestionInfo(questionId);
 
             request.setAttribute("questionDetailInfo", question);
+            request.setAttribute("answerDetailInfo", answer);
             request.getRequestDispatcher("questionDetail.jsp").forward(request, response);
         }
 

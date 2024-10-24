@@ -3,6 +3,7 @@
     <%@ page contentType="text/html" pageEncoding="UTF-8"%>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
     <%@page import="model.Question" %>
+    <%@page import="model.Answer" %>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 
@@ -145,6 +146,8 @@
 
     <body>
         <c:set var="q" value="${requestScope.questionDetailInfo}"/>
+        <c:set var="a" value="${requestScope.answerDetailInfo}"/>
+
         <!-- Main form for question management -->
         <form action="QuestionDetailServlet" method="POST" enctype="multipart/form-data">
             <h2>Question Title</h2>
@@ -203,7 +206,7 @@
                     <c:when test="${q.questionType == 'Essay'}">
                         <!-- Render textarea for Essay type -->
                         <label for="essayAnswer">Correct Answer:</label>
-                        <textarea id="essayAnswer" name="essayAnswer" placeholder="Enter your essay answer here..." rows="5" style="width: 100%;" required></textarea>
+                        <textarea id="essayAnswer" name="essayAnswer" placeholder="Enter your essay answer here..." rows="5" style="width: 100%;" required>${a.optionContent}</textarea>
                     </c:when>
                     <c:otherwise>
                         <!-- Render options for other question types -->

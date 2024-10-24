@@ -11,6 +11,7 @@ package dal;
 import java.util.*;
 import java.lang.*;
 import java.sql.PreparedStatement;
+import java.sql.*;
 import model.Answer;
 import model.Question;
 
@@ -34,17 +35,27 @@ public class AnswerDAO extends DBContext {
         }
 
     }
-    public Answer getAnswerInfo(int questionId){
+
+    public Answer getAnswerInfo(int questionId) {
         PreparedStatement st = null;
+        ResultSet rs = null;
         Answer a = new Answer();
-        try{
-            String sql= "Select a. from Answer a";
-            
-        }catch(Exception e){
-            
+        try {
+            String sql = "Select a.OptionContent, a.IsCorrect "
+                    + "from Answer a "
+                    + "where a.QuestionID =?";
+            st = connection.prepareStatement(sql);
+            st.setInt(1, questionId);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                a.setOptionContent(rs.getString("OptionContent"));
+                a.setIsCorrect(rs.getBoolean("IsCorrect"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return a;
-        
+
     }
 
     public static void main(String[] args) {
