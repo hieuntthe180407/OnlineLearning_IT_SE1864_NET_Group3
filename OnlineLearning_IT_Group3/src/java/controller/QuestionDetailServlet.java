@@ -85,6 +85,7 @@ public class QuestionDetailServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String questionId = request.getParameter("questionId");
         String questionTitle = request.getParameter("questionTitle");
 
         String questionCourse = request.getParameter("questionCourse");

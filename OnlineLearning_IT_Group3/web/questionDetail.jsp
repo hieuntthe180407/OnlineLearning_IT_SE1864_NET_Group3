@@ -153,7 +153,7 @@
         <!-- Main form for question management -->
         <form action="QuestionDetailServlet" method="POST" enctype="multipart/form-data">
             <h2>Question Title</h2>
-            <h2><input type="text" name="questionTitle" value="${q.questionTitle}" required></h2>
+            <h2><input type="text" name="questionTitle" value="${param.questionTitle != null ? param.questionTitle : q.questionTitle}" required></h2>
 
             <!-- Back button -->
             <a href="QuestionListServlet">            
@@ -166,61 +166,64 @@
 
             <!-- Course Name Input -->
             <label for="questionId">Question ID</label>
-            <input type="text" id="questionId" name="questionId" value="${q.questionId}" disabled>
+            <input type="hidden" name="questionId" value="${param.questionId != null ? param.questionId : q.questionId}">
+            <input type="text" id="questionId"  value="${param.questionId != null ? param.questionId : q.questionId}" disabled>
+
 
             <!-- Course Name Input -->
             <label for="course">Course Name:</label>
-            <input type="text" id="course" name="questionCourse" value="${q.course.getCourseName()}" required>
+            <input type="text" id="course" name="questionCourse" value="${param.questionCourse != null ? param.questionCourse : q.course.getCourseName()}" required>
 
             <!-- Question Type Input (disabled) -->
             <label for="questionType">Question Type:</label>
-            <input type="text" id="questionType" name="questionType" value="${q.questionType}" disabled>
+            <input type="hidden" name="questionType" value="${param.questionType != null ? param.questionType : q.questionType}">
+            <input type="text" id="questionType" name="questionType" value="${param.questionType != null ? param.questionType : q.questionType}" disabled>
 
             <!-- Status Selection -->
             <label for="status">Status:</label>
             <select id="status" name="status">
-                <option value="Visible" ${q.status == 'Visible' ? 'selected' : ''}>Visible</option>
-                <option value="Hidden" ${q.status == 'Hidden' ? 'selected' : ''}>Hidden</option>
+                <option value="Visible" ${param.status != null && param.status == 'Visible' ? 'selected' : (q.status == 'Visible' ? 'selected' : '')}>Visible</option>
+                <option value="Hidden" ${param.status != null && param.status == 'Hidden' ? 'selected' : (q.status == 'Hidden' ? 'selected' : '')}>Hidden</option>
             </select>
 
             <!-- Level Selection -->
             <label for="Level">Level:</label>
             <select id="level" name="level">
-                <option value="Easy" ${q.level == 'Easy' ? 'selected' : ''}>Easy</option>
-                <option value="Medium" ${q.level == 'Medium' ? 'selected' : ''}>Medium</option>
-                <option value="Hard" ${q.level == 'Hard' ? 'selected' : ''}>Hard</option>
+                <option value="Easy" ${param.level != null && param.level == 'Easy' ? 'selected' : (q.level == 'Easy' ? 'selected' : '')}>Easy</option>
+                <option value="Medium" ${param.level != null && param.level == 'Medium' ? 'selected' : (q.level == 'Medium' ? 'selected' : '')}>Medium</option>
+                <option value="Hard" ${param.level != null && param.level == 'Hard' ? 'selected' : (q.level == 'Hard' ? 'selected' : '')}>Hard</option>
             </select>
 
             <!-- Question Content Textarea -->
             <label for="questionContent">Question Content:</label>
-            <textarea  name="questionContent" id="questionContent" required>${q.questionContent}</textarea>
+            <textarea name="questionContent" id="questionContent" required>${param.questionContent != null ? param.questionContent : q.questionContent}</textarea>
 
             <!-- Media Upload Input -->
             <label for="media">Upload Media:</label>
             <div class="mb-2">
-                <c:if test="${q.questionImgOrVideo != null}">
+                <c:if test="${q.questionImgOrVideo != null || param.oldMedia != null}">
                     <c:choose>
-                        <c:when test="${fn:endsWith(q.questionImgOrVideo, '.mp4')}">
-                            <video style="width: 400px;" controls src="${q.questionImgOrVideo}" type="video/mp4"></video>
+                        <c:when test="${fn:endsWith(param.oldMedia != null ? param.oldMedia : q.questionImgOrVideo, '.mp4')}">
+                            <video style="width: 400px;" controls src="${param.oldMedia != null ? param.oldMedia : q.questionImgOrVideo}" type="video/mp4"></video>
                             </c:when>
                             <c:otherwise>
-                            <img style="width: 400px;" src="${q.questionImgOrVideo}" alt="No image"/>
+                            <img style="width: 400px;" src="${param.oldMedia != null ? param.oldMedia : q.questionImgOrVideo}" alt="No image"/>
                         </c:otherwise>
                     </c:choose>                
                 </c:if>
             </div>
             <input type="file" id="media" name="media" accept=".png,.jpg,.mp4">
-            <input type="hidden" name="oldMedia" value="${q.questionImgOrVideo}">
+            <input type="hidden" name="oldMedia" value="${q.questionImgOrVideo != null ? q.questionImgOrVideo : param.oldMedia}">
 
 
             <!-- Options Section -->
             <label>Answer:</label>
             <div id="options">
                 <c:choose>
-                    <c:when test="${q.questionType == 'Essay'}">
+                    <c:when test="${q.questionType == 'Essay'|| param.questionType == 'Essay'}">
                         <!-- Render textarea for Essay type -->
                         <label for="essayAnswer">Correct Answer:</label>
-                        <textarea id="essayAnswer" name="essayAnswer" placeholder="Enter your essay answer here..." rows="5" style="width: 100%;" required>${a.optionContent}</textarea>
+                        <textarea id="essayAnswer" name="essayAnswer" placeholder="Enter your essay answer here..." rows="5" style="width: 100%;" required>${param.essayAnswer != null ? param.essayAnswer : a.optionContent}</textarea>
                     </c:when>
                     <c:otherwise>
                         <!-- Render options for other question types -->
@@ -241,7 +244,7 @@
 
             <!-- Explanation Textarea -->
             <label for="explanation">Explanation:</label>
-            <textarea id="explanation" name="explanation" rows="4">${q.explanation}</textarea>
+            <textarea id="explanation" name="explanation" rows="4">${param.explanation != null ? param.explanation : q.explanation}</textarea>
 
             <!-- Error message -->
             <h3 style="color: red"> <%=(error != null) ? error : ""%> </h3>
