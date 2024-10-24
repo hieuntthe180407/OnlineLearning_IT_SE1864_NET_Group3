@@ -161,7 +161,7 @@
             </a>
             <!-- Remove question -->
             <div class="remove-question-container">
-                <button type="submit" class="remove-btn">Remove question</button>
+                <button type="submit" class="remove-btn" formaction="deleteQuestion">Remove question</button>
             </div>
 
             <!-- Course Name Input -->
