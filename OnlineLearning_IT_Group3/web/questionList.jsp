@@ -207,10 +207,10 @@
                             <c:if test="${not empty q.questionImgOrVideo}">
                                 <c:choose>
                                     <c:when test="${fn:endsWith(q.questionImgOrVideo, '.mp4')}">
-                                        <video style="width: 80px;" controls src="${q.questionImgOrVideo}" type="video/mp4"></video>
+                                        <video style="width: 200px;" controls src="${q.questionImgOrVideo}" type="video/mp4"></video>
                                         </c:when>
                                         <c:otherwise>
-                                        <img style="width: 80px;" src="${q.questionImgOrVideo}" alt="No image"/>
+                                        <img style="width: 200px;" src="${q.questionImgOrVideo}" alt="No image"/>
                                     </c:otherwise>
                                 </c:choose>
                             </c:if>

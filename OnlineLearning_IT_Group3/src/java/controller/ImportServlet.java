@@ -203,6 +203,8 @@ public class ImportServlet extends HttpServlet {
                     //Ghi đường dẫn vào database
                     questionPath = "imgQuestion" + "/" + fileName;
 
+                }else{
+                    questionPath = "No media";
                 }
                 //Từ đây cho question vào database
                 Question importedQuestion = new Question();
