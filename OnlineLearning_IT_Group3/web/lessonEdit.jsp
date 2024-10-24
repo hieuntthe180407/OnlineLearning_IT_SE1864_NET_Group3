@@ -131,7 +131,7 @@
 		</div>
             <%} else{%>
             <%
-    int MoocID = Integer.parseInt(request.getParameter("MoocID"));
+    int CourseID = Integer.parseInt(request.getParameter("CourseID"));
    
 %>
   <div class="container-fluid bg-primary py-5 mb-5 page-header">
@@ -160,7 +160,7 @@
 											<h3>1. Basic info</h3>
 										</div>
 									</div>
-                                                                   <input type="hidden" name="MoocID" value="<%=MoocID%>">
+                                                                   <input type="hidden" name="CourseID" value="<%=CourseID%>">
 									<div class="form-group col-6">
 										<label class="col-form-label">Lesson Name</label>
 										<div>

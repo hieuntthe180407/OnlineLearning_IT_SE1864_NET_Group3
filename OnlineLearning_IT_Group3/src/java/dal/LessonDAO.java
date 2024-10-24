@@ -194,8 +194,12 @@ public class LessonDAO extends DBContext {
        
        public static void main(String[] args) {
         LessonDAO l = new LessonDAO();
-           System.out.println(l.getTotalLessonCount(3));
-        l.activeLessonStatus(2, "Active");
+           List<Lesson> list = l.getLessons(0, 3, 2);
+           for(Lesson d :list)
+           {
+               System.out.println(d);
+           }
+       
        
         }
     }
