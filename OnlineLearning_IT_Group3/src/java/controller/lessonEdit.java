@@ -67,9 +67,9 @@ public class lessonEdit extends HttpServlet {
              response.sendRedirect("courseList");    
         }
         else{
-            int moocID = Integer.parseInt(request.getParameter("MoocID"));
-            l.addLesson(name, url,moocID,des,num);
-           response.sendRedirect("courseList");    
+            int cID = Integer.parseInt(request.getParameter("CourseID"));
+            l.addLesson(name, url,cID,des,num);
+           response.sendRedirect("courseDetail?CourseID="+ cID);    
         }
          }
         catch (Exception e){
