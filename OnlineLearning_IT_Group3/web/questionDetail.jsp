@@ -226,6 +226,7 @@
                     <c:when test="${q.questionType == 'Essay'|| param.questionType == 'Essay'}">
                         <!-- Render textarea for Essay type -->
                         <label for="essayAnswer">Correct Answer:</label>
+                        <input type="hidden" name="answerId" value="${param.answerId != null ? param.answerId : a.answerId}">
                         <textarea id="essayAnswer" name="essayAnswer" placeholder="Enter your essay answer here..." rows="5" style="width: 100%;" required>${param.essayAnswer != null ? param.essayAnswer : a.optionContent}</textarea>
                     </c:when>
                     <c:otherwise>

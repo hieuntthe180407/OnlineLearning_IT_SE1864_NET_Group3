@@ -89,6 +89,9 @@ public class QuestionDetailServlet extends HttpServlet {
         String questionIdParam = request.getParameter("questionId");
         int questionId = Integer.parseInt(questionIdParam);
 
+        String answerIdParam = request.getParameter("answerId");
+        int answerId = Integer.parseInt(answerIdParam);
+
         String questionTitle = request.getParameter("questionTitle");
 
         String questionCourse = request.getParameter("questionCourse");
@@ -148,6 +151,16 @@ public class QuestionDetailServlet extends HttpServlet {
         q.setExplanation(explanation);
         QuestionDAO qDao = new QuestionDAO();
         qDao.updateQuestion(q);
+
+        if (questionType.equals("Essay")) {
+            Answer a = new Answer();
+            a.setAnswerId(answerId);
+            a.setQuestion(q);
+            a.setOptionContent(essayAnswer);
+            AnswerDAO aDao = new AnswerDAO();
+            aDao.updateEssayAnswer(a);
+        }
+
         response.sendRedirect("QuestionListServlet");
 
     }

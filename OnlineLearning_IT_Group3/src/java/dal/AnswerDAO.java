@@ -41,13 +41,14 @@ public class AnswerDAO extends DBContext {
         ResultSet rs = null;
         Answer a = new Answer();
         try {
-            String sql = "Select a.OptionContent, a.IsCorrect "
+            String sql = "Select a.AnswerID, a.OptionContent, a.IsCorrect "
                     + "from Answer a "
                     + "where a.QuestionID =?";
             st = connection.prepareStatement(sql);
             st.setInt(1, questionId);
             rs = st.executeQuery();
             while (rs.next()) {
+                a.setAnswerId(rs.getInt("AnswerID"));
                 a.setOptionContent(rs.getString("OptionContent"));
                 a.setIsCorrect(rs.getBoolean("IsCorrect"));
             }
@@ -68,6 +69,18 @@ public class AnswerDAO extends DBContext {
 
         } catch (Exception e) {
 
+        }
+    }
+
+    public void updateEssayAnswer(Answer a) {
+        PreparedStatement st = null;
+        try {
+            String sql = "UPDATE Answer SET OptionContent = ? WHERE AnswerID = ?";
+            st = connection.prepareStatement(sql);
+            st.setString(1, a.getOptionContent());
+            st.setInt(2, a.getAnswerId());
+            st.executeUpdate();
+        } catch (Exception e) {
         }
     }
 
