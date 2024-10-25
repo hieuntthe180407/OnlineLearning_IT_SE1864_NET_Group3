@@ -8,8 +8,7 @@ package model;
  *
  * @author ADMIN
  */
-import java.util.*;
-import java.lang.*;
+
 
 public class User {
 
