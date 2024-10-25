@@ -230,17 +230,23 @@
                         <textarea id="essayAnswer" name="essayAnswer" placeholder="Enter your essay answer here..." rows="5" style="width: 100%;" required>${param.essayAnswer != null ? param.essayAnswer : a.optionContent}</textarea>
                     </c:when>
                     <c:otherwise>
-                        <!-- Render options for other question types -->
-                        <div class="answer-option">
-                            <input type="hidden" name="answerOptionId" value="0"> <!-- Use 0 for new options -->
-                            <input type="text" name="answerOption" placeholder="Answer Option" required>
-                            <div class="radio-container">
-                                <input type="radio" name="correctAnswer" checked>
-                                <label>Correct</label>
-                                <button type="submit" class="remove-btn" formaction="removeServlet" name="removeId" value="0">Remove</button>
+                        <!-- Loop through each answer option in listOption -->
+                        <c:forEach var="a" items="${answerDetailInfo}">
+                            <div class="answer-option">
+                                <!-- Use param.answerId as fallback if a.answerId is null -->
+                                <input type="hidden" name="answerOptionId[]" value="${a.answerId != null ? a.answerId : param.answerId}">
+                                <input type="text" name="answerOption[]" placeholder="Answer Option" 
+                                       value="${a.optionContent != null ? a.optionContent : param.optionContent}" required>
+                                <div class="radio-container">
+                                    <input type="radio" name="correctAnswer" value="${a.answerId}" ${a.isCorrect ? 'checked' : ''}>
+                                    <label>Correct</label>
+                                    <button type="submit" class="remove-btn" formaction="removeServlet" name="removeId" value="${a.answerId}">Remove</button>
+                                </div>
                             </div>
-                        </div>
-                        <button type="submit" class="add-btn" formaction="addAnswerServlet" >Add Option</button>
+                        </c:forEach>
+                        <button type="submit" class="add-btn">
+                            <a href="addAnswerServlet?questionId=${param.questionId != null ? param.questionId : q.questionId}" class="add-btn">Add Option</a>
+                        </button>
                     </c:otherwise>
                 </c:choose> 
             </div>

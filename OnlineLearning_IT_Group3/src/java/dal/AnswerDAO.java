@@ -84,6 +84,58 @@ public class AnswerDAO extends DBContext {
         }
     }
 
+    public void addAnswerOption(int questionId, String optionContent, boolean isCorrect) {
+        PreparedStatement st = null;
+        try {
+            String sql = "INSERT INTO Answer (OptionContent, IsCorrect, QuestionID) VALUES (?, ?, ?)";
+            st = connection.prepareStatement(sql);
+            st.setString(1, optionContent);
+            st.setBoolean(2, isCorrect);
+            st.setInt(3, questionId);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Answer> listAnswerOption(int questionId) {
+        List<Answer> answers = new ArrayList<>();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            String sql = "SELECT AnswerID, OptionContent, IsCorrect FROM Answer WHERE QuestionID = ?";
+            st = connection.prepareStatement(sql);
+            st.setInt(1, questionId);
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                Answer answer = new Answer();
+                answer.setAnswerId(rs.getInt("AnswerID"));
+                answer.setOptionContent(rs.getString("OptionContent"));
+                answer.setIsCorrect(rs.getBoolean("IsCorrect"));
+                answers.add(answer);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return answers;
+    }
+
+    public void updateAnswerOptions(List<Answer> answers) {
+        for (Answer answer : answers) {
+            String sql = "UPDATE Answer SET OptionContent=?, IsCorrect=? WHERE AnswerID=?";
+            try (PreparedStatement st = connection.prepareStatement(sql)) {
+                st.setString(1, answer.getOptionContent());
+                st.setBoolean(2, answer.isIsCorrect());
+                st.setInt(3, answer.getAnswerId());
+                st.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static void main(String[] args) {
 
         Question question = new Question();
