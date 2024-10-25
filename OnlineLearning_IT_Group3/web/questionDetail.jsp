@@ -148,7 +148,7 @@
             
         %>
         <c:set var="q" value="${requestScope.questionDetailInfo}"/>
-        <c:set var="a" value="${requestScope.answerDetailInfo}"/>
+        <c:set var="answer" value="${requestScope.answerDetail}"/>
 
         <!-- Main form for question management -->
         <form action="QuestionDetailServlet" method="POST" enctype="multipart/form-data">
@@ -226,24 +226,25 @@
                     <c:when test="${q.questionType == 'Essay'|| param.questionType == 'Essay'}">
                         <!-- Render textarea for Essay type -->
                         <label for="essayAnswer">Correct Answer:</label>
-                        <input type="hidden" name="answerId" value="${param.answerId != null ? param.answerId : a.answerId}">
-                        <textarea id="essayAnswer" name="essayAnswer" placeholder="Enter your essay answer here..." rows="5" style="width: 100%;" required>${param.essayAnswer != null ? param.essayAnswer : a.optionContent}</textarea>
+                        <input type="hidden" name="answerId" value="${param.answerId != null ? param.answerId : answer.answerId}">
+                        <textarea id="essayAnswer" name="essayAnswer" placeholder="Enter your essay answer here..." rows="5" style="width: 100%;" required>${param.essayAnswer != null ? param.essayAnswer : answer.optionContent}</textarea>
                     </c:when>
                     <c:otherwise>
                         <!-- Loop through each answer option in listOption -->
-                        <c:forEach var="a" items="${answerDetailInfo}">
+                        <c:forEach var="option" items="${answerDetailInfo}">
                             <div class="answer-option">
-                                <!-- Use param.answerId as fallback if a.answerId is null -->
-                                <input type="hidden" name="answerOptionId[]" value="${a.answerId != null ? a.answerId : param.answerId}">
+                                <!-- Sử dụng param.answerId như là phương án dự phòng nếu option.answerId là null -->
+                                <input type="hidden" name="answerOptionId[]" value="${option.answerId != null ? option.answerId : param.answerId}">
                                 <input type="text" name="answerOption[]" placeholder="Answer Option" 
-                                       value="${a.optionContent != null ? a.optionContent : param.optionContent}" required>
+                                       value="${option.optionContent != null ? option.optionContent : param.optionContent}" required>
                                 <div class="radio-container">
-                                    <input type="radio" name="correctAnswer" value="${a.answerId}" ${a.isCorrect ? 'checked' : ''}>
+                                    <input type="radio" name="correctAnswer" value="${option.answerId}" ${option.isCorrect ? 'checked' : ''}>
                                     <label>Correct</label>
-                                    <button type="submit" class="remove-btn" formaction="removeServlet" name="removeId" value="${a.answerId}">Remove</button>
+                                    <button type="submit" class="remove-btn" formaction="removeServlet" name="removeId" value="${option.answerId}">Remove</button>
                                 </div>
                             </div>
                         </c:forEach>
+
                         <button type="submit" class="add-btn">
                             <a href="addAnswerServlet?questionId=${param.questionId != null ? param.questionId : q.questionId}" class="add-btn">Add Option</a>
                         </button>

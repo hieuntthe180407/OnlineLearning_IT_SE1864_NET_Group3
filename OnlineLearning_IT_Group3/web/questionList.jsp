@@ -155,6 +155,12 @@
                     <!-- Tìm question qua Title  -->
                     <input type="text" name="questionTitle" value="${param.questionTitle}" id="search-content" placeholder="Search Title...">
                     <input type="text" name="questionCourse" value="${param.questionCourse}" id="search-course" placeholder="Search by course...">
+                    <select id="questionType" name="questionType">
+                        <option value="">Question type</option>
+                        <option value="Multiple Choice" ${param.questionType == 'Multiple Choice' ? 'selected' : ''}>Multiple Choice</option>
+                        <option value="Essay" ${param.questionType == 'Essay' ? 'selected' : ''}>Essay</option>
+                    </select>
+
                     <select id="level" name="questionLevel">
                         <option value="">Level</option>
                         <option value="easy" ${param.questionLevel == 'easy' ? 'selected' : ''}>Easy</option>
@@ -178,6 +184,7 @@
                     <label><input type="checkbox" name="visibleCol" value="id" <c:if test="${visibleColumns.contains('id')}">checked</c:if>> ID</label>
                     <label><input type="checkbox" name="visibleCol" value="title" <c:if test="${visibleColumns.contains('title')}">checked</c:if>> Title</label>
                     <label><input type="checkbox" name="visibleCol" value="course" <c:if test="${visibleColumns.contains('course')}">checked</c:if>> Course</label>
+                    <label><input type="checkbox" name="visibleCol" value="type" <c:if test="${visibleColumns.contains('type')}">checked</c:if>> Type</label>
                     <label><input type="checkbox" name="visibleCol" value="level" <c:if test="${visibleColumns.contains('level')}">checked</c:if>> Level</label>
                     <label><input type="checkbox" name="visibleCol" value="status" <c:if test="${visibleColumns.contains('status')}">checked</c:if>> Status</label>
                     <label><input type="checkbox" name="visibleCol" value="actions" <c:if test="${visibleColumns.contains('actions')}">checked</c:if>> Actions</label>
@@ -195,6 +202,7 @@
                 <c:if test="${visibleColumns.contains('id')}"><th>ID</th></c:if>
                 <c:if test="${visibleColumns.contains('title')}"><th>Title</th></c:if>
                 <c:if test="${visibleColumns.contains('course')}"><th>Course</th></c:if>
+                <c:if test="${visibleColumns.contains('type')}"><th>Type</th></c:if>
                 <c:if test="${visibleColumns.contains('level')}"><th>Level</th></c:if>
                 <c:if test="${visibleColumns.contains('status')}"><th>Status</th></c:if>
                 <c:if test="${visibleColumns.contains('actions')}"><th>Actions</th></c:if>
@@ -218,6 +226,7 @@
                     </c:if>
 
                     <c:if test="${  visibleColumns.contains('course')}"><td>${q.course.courseName}</td></c:if>
+                    <c:if test="${  visibleColumns.contains('type')}"><td>${q.questionType}</td></c:if>
                     <c:if test="${  visibleColumns.contains('level')}"><td>${q.level}</td></c:if>
                     <c:if test="${  visibleColumns.contains('status')}"><td>${q.status}</td></c:if>
                     <c:if test="${  visibleColumns.contains('actions')}">
@@ -250,13 +259,13 @@
         <!-- Pagination -->
         <div class="pagination">
             <c:if test="${page > 1}">
-                <a href="?page=${page - 1}&questionTitle=${param.questionTitle}&questionCourse=${param.questionCourse}&questionLevel=${param.questionLevel}&questionStatus=${param.questionStatus}&questionPerPage=${param.questionPerPage}">Previous</a>
+                <a href="?page=${page - 1}&questionTitle=${param.questionTitle}&questionCourse=${param.questionCourse}&questionType=${param.questionType}&questionLevel=${param.questionLevel}&questionStatus=${param.questionStatus}&questionPerPage=${param.questionPerPage}">Previous</a>
             </c:if>
             <c:forEach begin="1" end="${totalPages}" var="i">
-                <a href="?page=${i}&questionTitle=${param.questionTitle}&questionCourse=${param.questionCourse}&questionLevel=${param.questionLevel}&questionStatus=${param.questionStatus}&questionPerPage=${param.questionPerPage}" class="${i == page ? 'active' : ''}">${i}</a>
+                <a href="?page=${i}&questionTitle=${param.questionTitle}&questionCourse=${param.questionCourse}&questionType=${param.questionType}&questionLevel=${param.questionLevel}&questionStatus=${param.questionStatus}&questionPerPage=${param.questionPerPage}" class="${i == page ? 'active' : ''}">${i}</a>
             </c:forEach>
             <c:if test="${page < totalPages}">
-                <a href="?page=${page + 1}&questionTitle=${param.questionTitle}&questionCourse=${param.questionCourse}&questionLevel=${param.questionLevel}&questionStatus=${param.questionStatus}&questionPerPage=${param.questionPerPage}">Next</a>
+                <a href="?page=${page + 1}&questionTitle=${param.questionTitle}&questionCourse=${param.questionCourse}&questionType=${param.questionType}&questionLevel=${param.questionLevel}&questionStatus=${param.questionStatus}&questionPerPage=${param.questionPerPage}">Next</a>
             </c:if>
         </div>
 

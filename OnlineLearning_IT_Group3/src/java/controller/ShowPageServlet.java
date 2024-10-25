@@ -78,7 +78,7 @@ public class ShowPageServlet extends HttpServlet {
         String[] visibleColumns = request.getParameterValues("visibleCol");
         // Nếu không có cột nào được chọn, thiết lập mặc định
         if (visibleColumns == null) {
-            visibleColumns = new String[]{"id", "title", "course", "level", "status", "actions"};
+            visibleColumns = new String[]{"id", "title", "course", "level", "status", "actions", "type"};
         }
         // Mảng thành List
         List<String> visibleColumnsList = new ArrayList<>();

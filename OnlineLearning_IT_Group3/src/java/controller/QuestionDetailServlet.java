@@ -63,23 +63,20 @@ public class QuestionDetailServlet extends HttpServlet {
 
             QuestionDAO questionDAO = new QuestionDAO();
 
-            Answer answer = new Answer();
             Question question = new Question();
             question = questionDAO.getQuestionInfo(questionId);
-            if (question.getQuestionTitle().equals("Essay")) {
+            if (question.getQuestionType().equals("Essay")) {
                 AnswerDAO answerDAO = new AnswerDAO();
-                answer = answerDAO.getAnswerInfo(questionId);
-                request.setAttribute("questionDetailInfo", question);
-                request.setAttribute("answerDetailInfo", answer);
-                request.getRequestDispatcher("questionDetail.jsp").forward(request, response);
+                Answer answer = answerDAO.getAnswerInfo(questionId);
+                request.setAttribute("answerDetail", answer);
             } else {
                 AnswerDAO aDao = new AnswerDAO();
                 List<Answer> listOption = aDao.listAnswerOption(questionId);
-                request.setAttribute("questionDetailInfo", question);
                 request.setAttribute("answerDetailInfo", listOption);
-                request.getRequestDispatcher("questionDetail.jsp").forward(request, response);
 
             }
+            request.setAttribute("questionDetailInfo", question);
+            request.getRequestDispatcher("questionDetail.jsp").forward(request, response);
 
         }
 

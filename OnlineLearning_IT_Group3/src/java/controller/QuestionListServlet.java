@@ -74,6 +74,7 @@ public class QuestionListServlet extends HttpServlet {
         int totalPages = qDao.getTotalPages(
                 request.getParameter("questionTitle"),
                 request.getParameter("questionCourse"),
+                request.getParameter("questionType"),
                 request.getParameter("questionLevel"),
                 request.getParameter("questionStatus"),
                 questionPerPage
@@ -82,6 +83,7 @@ public class QuestionListServlet extends HttpServlet {
         List<Question> listQuestion = qDao.getFilteredQuestions(
                 request.getParameter("questionTitle"),
                 request.getParameter("questionCourse"),
+                request.getParameter("questionType"),
                 request.getParameter("questionLevel"),
                 request.getParameter("questionStatus"),
                 page,
@@ -106,6 +108,7 @@ public class QuestionListServlet extends HttpServlet {
             throws ServletException, IOException {
         String questionTitle = request.getParameter("questionTitle");
         String questionCourse = request.getParameter("questionCourse");
+        String questionType = request.getParameter("questionType");
         String questionLevel = request.getParameter("questionLevel");
         String questionStatus = request.getParameter("questionStatus");
 
@@ -133,9 +136,9 @@ public class QuestionListServlet extends HttpServlet {
 
         QuestionDAO qDao = new QuestionDAO();
         //List question theo filter
-        List<Question> listQuestion = qDao.getFilteredQuestions(questionTitle, questionCourse, questionLevel, questionStatus, page, questionPerPage);
+        List<Question> listQuestion = qDao.getFilteredQuestions(questionTitle, questionCourse, questionType, questionLevel, questionStatus, page, questionPerPage);
         //Lấy tổng số trang
-        int totalPages = qDao.getTotalPages(questionTitle, questionCourse, questionLevel, questionStatus, questionPerPage);
+        int totalPages = qDao.getTotalPages(questionTitle, questionCourse, questionType, questionLevel, questionStatus, questionPerPage);
 
         request.setAttribute("page", page);
         request.setAttribute("totalPages", totalPages);
