@@ -48,18 +48,29 @@
 
         <%
             Course c = (Course)request.getAttribute("Course");
-            
-        %>
-        <div class="container-fluid bg-primary py-5 mb-5 page-header">
+            %>
+            <div class="container-fluid bg-primary py-5 mb-5 page-header">
             <div class="container py-5">
                 <div class="row justify-content-center">
                     <div class="col-lg-10 text-center">
-                        <h1 class="display-3 text-white animated slideInDown">Edit Course Detail</h1>
+                        <h1 class="display-3 text-white animated slideInDown"><%=c.getCourseName()%></h1>
 
                     </div>
                 </div>
             </div>
         </div>
+            
+           <% String err = request.getParameter("err");
+            if(err!=null)
+            {
+            %>
+             <h3 style="color: red; text-align: center; font-weight: bold;">
+            <%= err %>
+        </h3>
+            <%
+        }
+        %>
+        
         <!-- Course Detail started -->
         <div class="container-xxl py-2">
 
@@ -313,7 +324,7 @@
 
                 <div class="owl-carousel testimonial-carousel position-relative">
                     <%if (listr == null || listr.size() == 0 ) {
-                            out.println("----------------No REVIEW for this Course yet ");
+                            out.println("----------------No REVIEW for this Course yet------------- ");
                         } else {
                             for (Review r : listr) {%>
                     <div class="testimonial-item text-center">
@@ -328,21 +339,65 @@
                 </div>
 
                 <div class="col-lg-12 col-md-12 wow fadeInUp" data-wow-delay="0.5s">
-                    <form action="ReviewAdd" method="get">
-                        <div class="row g-3">
+    <form action="ReviewAdd" method="get">
+        <div class="row g-3">
+            <input type="hidden" name="CourseID" value="<%= c.getCourseID() %>">
 
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <textarea class="form-control" required placeholder="Leave a review here" id="message" style="height: 150px" name="ReviewContent"></textarea>
-                                    <label for="review">Your Review</label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <button class="btn btn-primary w-100 py-3" type="submit">Send Review</button>
-                            </div>
-                        </div>
-                    </form>
+            <!-- Star Rating Section -->
+            <div class="col-12">
+                <label for="rating">Your Rating</label>
+                <div id="rating" class="star-rating">
+                    <input type="radio" id="star5" name="rating" value="5" required />
+                    <label for="star5" title="5 stars">★</label>
+                    <input type="radio" id="star4" name="rating" value="4" />
+                    <label for="star4" title="4 stars">★</label>
+                    <input type="radio" id="star3" name="rating" value="3" />
+                    <label for="star3" title="3 stars">★</label>
+                    <input type="radio" id="star2" name="rating" value="2" />
+                    <label for="star2" title="2 stars">★</label>
+                    <input type="radio" id="star1" name="rating" value="1" />
+                    <label for="star1" title="1 star">★</label>
                 </div>
+            </div>
+
+            <!-- Review Content Section -->
+            <div class="col-12">
+                <div class="form-floating">
+                    <textarea class="form-control" required placeholder="Leave a review here" id="message" style="height: 150px" name="ReviewContent"></textarea>
+                    <label for="review">Your Review</label>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="col-12">
+                <button class="btn btn-primary w-100 py-3" type="submit">Send Review</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+    .star-rating {
+        direction: rtl;
+        font-size: 2rem;
+        unicode-bidi: bidi-override;
+    }
+    .star-rating input[type="radio"] {
+        display: none;
+    }
+    .star-rating label {
+        color: #ccc;
+        cursor: pointer;
+    }
+    .star-rating input[type="radio"]:checked ~ label {
+        color: #f90;
+    }
+    .star-rating label:hover,
+    .star-rating label:hover ~ label {
+        color: #fc0;
+    }
+</style>
+
 
 
 

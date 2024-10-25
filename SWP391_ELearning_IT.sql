@@ -408,6 +408,8 @@ ALTER TABLE [dbo].[User] ADD  DEFAULT (('Active')) FOR [Status]
 GO
 ALTER TABLE [dbo].[Review] ADD  DEFAULT ((0)) FOR [IsReport]
 GO
+ALTER TABLE [dbo].[Review] ADD  DEFAULT (getdate()) FOR [Time]
+GO
 
 
 ALTER TABLE [dbo].[Blogs]  WITH CHECK ADD FOREIGN KEY([CategoryId])

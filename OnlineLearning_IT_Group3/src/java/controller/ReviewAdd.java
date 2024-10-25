@@ -27,14 +27,29 @@ public class ReviewAdd extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         int cID = Integer.parseInt(request.getParameter("CourseID"));
+        String err="";
+        try{
+            
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
+        User user = (User) session.getAttribute("acc");
         
-        int uID = user.getUserID();
+       
+        
+             int uID = user.getUserID();
         String content = request.getParameter("ReviewContent");
-        
+        int rating = Integer.parseInt(request.getParameter("rating"));
         ReviewDAO rDAO = new ReviewDAO();
-        rDAO.addReview(cID, content, uID);
+        
+        rDAO.addReview(cID, content, uID,rating);
+        response.sendRedirect("courseDetail?courseID="+cID);
+        
+        
+        }
+        catch(Exception e)
+        {
+             err= "You have to login first to review a course";
+            response.sendRedirect("courseDetail?courseID="+cID+"&err="+err);
+        }
     } 
 
    
