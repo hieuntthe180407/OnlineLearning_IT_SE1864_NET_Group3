@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller;
+package controller.UserProfile;
 
 import dal.UserDAO;
 import java.io.IOException;
@@ -19,8 +19,8 @@ import model.User;
  *
  * @author ADMIN
  */
-@WebServlet(name = "changePassword", urlPatterns = {"/changePassword"})
-public class changePassword extends HttpServlet {
+@WebServlet(name = "userProfile", urlPatterns = {"/userProfile"})
+public class userProfile extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,6 +33,19 @@ public class changePassword extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet userProfile</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet userProfile at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -47,8 +60,16 @@ public class changePassword extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("changePassword.jsp").forward(request, response);
-
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("acc");
+        UserDAO u = new UserDAO();
+        try {
+            User profile = u.getUserProfilebyId(user.getUserID());
+            request.setAttribute("profile", profile);
+            request.getRequestDispatcher("userProfile.jsp").forward(request, response);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     /**
@@ -62,32 +83,7 @@ public class changePassword extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("acc");
-        UserDAO u = new UserDAO();
-        try {
-            String oldPassWord = request.getParameter("oldPassword");
-            String newPassWord = request.getParameter("newPassword");
-            String confirmPassword = request.getParameter("confirmPassword");
-
-            User profile = u.getUserProfilebyId(user.getUserID());
-
-            if (!newPassWord.equals(confirmPassword)) {
-                request.setAttribute("errorChangePassWord", "Confirm Password is not same!");
-                request.getRequestDispatcher("changePassword.jsp").forward(request, response);
-                return;
-            }
-            if (!profile.getPassword().equals(oldPassWord)) {
-                request.setAttribute("errorChangePassWord", "Old password is incorrect!");
-                request.getRequestDispatcher("changePassword.jsp").forward(request, response);
-                return;
-            }
-            
-            u.updatePasswordById(user.getUserID(), newPassWord);
-            response.sendRedirect("userProfile");
-
-        } catch (Exception e) {
-        }
+        processRequest(request, response);
     }
 
     /**
