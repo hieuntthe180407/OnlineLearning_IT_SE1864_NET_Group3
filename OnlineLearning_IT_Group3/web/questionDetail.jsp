@@ -234,18 +234,21 @@
                         <c:forEach var="option" items="${answerDetailInfo}">
                             <div class="answer-option">
                                 <!-- Sử dụng param.answerId như là phương án dự phòng nếu option.answerId là null -->
-                                <input type="hidden" name="answerOptionId[]" value="${option.answerId != null ? option.answerId : param.answerOptionId}">
-                                <input type="text" name="answerOption[]" placeholder="Answer Option" 
-                                       value="${option.optionContent != null ? option.optionContent : param.answerOption}" required>
+                                <input type="hidden" name="answerOptionId" value="${param.answerOptionId != null ? param.answerOptionId : option.answerId}">
+                                <input type="text" name="answerOption" placeholder="Answer Option" 
+                                       value="${param.answerOption != null ? param.answerOption : option.optionContent}" required>
                                 <div class="radio-container">
-                                    <input type="radio" name="correctAnswer" value="${option.isCorrect}" ${option.isCorrect ? 'checked' : ''}>
+                                    <input type="radio" name="correctAnswer" value="${option.answerId}" 
+                                           ${option.isCorrect ? 'checked' : ''}>                                    
                                     <label>Correct</label>
-                                    <button type="submit" class="remove-btn" formaction="removeServlet" name="removeId" value="${option.answerId}">Remove</button>
+                                    <button type="button" class="remove-btn" name="removeId">
+                                        <a href="addAnswerServlet?answerOptionId=${param.answerOptionId != null ? param.answerOptionId : option.answerId}" class="remove-btn">Remove</a>
+                                    </button>
                                 </div>
                             </div>
                         </c:forEach>
 
-                        <button type="submit" class="add-btn">
+                        <button type="button" class="add-btn">
                             <a href="addAnswerServlet?questionId=${param.questionId != null ? param.questionId : q.questionId}" class="add-btn">Add Option</a>
                         </button>
                     </c:otherwise>

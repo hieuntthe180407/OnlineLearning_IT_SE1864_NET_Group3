@@ -65,11 +65,13 @@ public class QuestionDetailServlet extends HttpServlet {
 
             Question question = new Question();
             question = questionDAO.getQuestionInfo(questionId);
+            // Nếu câu hỏi là dạng "Essay"
             if (question.getQuestionType().equals("Essay")) {
                 AnswerDAO answerDAO = new AnswerDAO();
                 Answer answer = answerDAO.getAnswerInfo(questionId);
                 request.setAttribute("answerDetail", answer);
             } else {
+                // Nếu câu hỏi là dạng "Multiple Choice"
                 AnswerDAO aDao = new AnswerDAO();
                 List<Answer> listOption = aDao.listAnswerOption(questionId);
                 request.setAttribute("answerDetailInfo", listOption);
@@ -93,11 +95,12 @@ public class QuestionDetailServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Lấy ID của câu hỏi
         String questionIdParam = request.getParameter("questionId");
         int questionId = Integer.parseInt(questionIdParam);
-
+        // Lấy tiêu đề câu hỏi
         String questionTitle = request.getParameter("questionTitle");
-
+        // Kiểm tra và lấy thông tin khóa học liên quan đến câu hỏi
         String questionCourse = request.getParameter("questionCourse");
         CourseDAO cDAO = new CourseDAO();
         if (!cDAO.checkCourseByName(questionCourse)) {
@@ -107,6 +110,7 @@ public class QuestionDetailServlet extends HttpServlet {
         }
         Course course = new Course();
         course.setCourseID(cDAO.courseIdByCourseName(questionCourse));
+        // Lấy các thông tin khác của câu hỏi
 
         String questionType = request.getParameter("questionType");
 
@@ -118,27 +122,35 @@ public class QuestionDetailServlet extends HttpServlet {
 
         String explanation = request.getParameter("explanation");
 
+        // Xử lý phần media (hình ảnh hoặc video) của câu hỏi
         String oldMedia = request.getParameter("oldMedia");
         Part mediaPart = request.getPart("media");
-
         String media = null;
         if (mediaPart == null || mediaPart.getSize() == 0) {
+
+            // Nếu không có tệp mới được upload, giữ lại media cũ.
             media = oldMedia;
         } else {
+
+            // Lấy đường dẫn thực trong hệ thống tệp để lưu hình ảnh/video của câu hỏi
             String realPath = request.getServletContext().getRealPath("/imgQuestion");
 
+            // Kiểm tra thư mục lưu trữ hình ảnh/video. Nếu chưa tồn tại, tạo thư mục mới.
             if (!Files.exists(Path.of(realPath))) {
                 Files.createDirectory(Path.of(realPath));
             }
-
+            // Lấy tên tệp từ tệp được upload, bỏ phần đường dẫn
             String fileName = Path.of(mediaPart.getSubmittedFileName()).getFileName().toString();
             Path targetPath = Path.of(realPath, fileName); // kết hợp đường dẫn project với tên tệp
 
+            // Kiểm tra nếu tệp đã tồn tại trong thư mục
             if (Files.exists(targetPath)) {
                 String newFileName = System.currentTimeMillis() + "_" + fileName; // Thêm timestamp
                 targetPath = Path.of(realPath, newFileName); // Cập nhật đường dẫn đích
             }
+            // Ghi tệp mới vào đường dẫn
             mediaPart.write(targetPath.toString());
+            // Cập nhật đường dẫn lưu trữ hình ảnh/video để lưu trong cơ sở dữ liệu
             media = "imgQuestion/" + targetPath.getFileName().toString();
         }
         Question q = new Question();
@@ -151,10 +163,13 @@ public class QuestionDetailServlet extends HttpServlet {
         q.setLevel(level);
         q.setStatus(status);
         q.setExplanation(explanation);
+
+        // Cập nhật câu hỏi trong cơ sở dữ liệu
         QuestionDAO qDao = new QuestionDAO();
         qDao.updateQuestion(q);
         AnswerDAO aDao = new AnswerDAO();
 
+        // Nếu câu hỏi là loại "Essay", xử lý cập nhật đáp án dạng văn bản
         if (questionType.equals("Essay")) {
             String answerIdParam = request.getParameter("answerId");
             int answerId = Integer.parseInt(answerIdParam);
@@ -164,25 +179,28 @@ public class QuestionDetailServlet extends HttpServlet {
             a.setQuestion(q);
             a.setOptionContent(essayAnswer);
             aDao.updateEssayAnswer(a);
-        } else {
-            // Get multiple options and correctness values
+        } else { // Nếu câu hỏi có nhiều lựa chọn
+            String[] optionId = request.getParameterValues("answerOptionId"); 
             String[] optionContents = request.getParameterValues("answerOption");
-            String correctAnswer = request.getParameter("correctAnswer");
-            boolean isCorrect;
-            if (correctAnswer.equals("true")) {
-                isCorrect = true;
-            } else {
-                isCorrect = false;
-            }
+            String correctAnswerId = request.getParameter("correctAnswer"); // Lấy ID của đáp án đúng
 
             List<Answer> answers = new ArrayList<>();
-            for (String optionContent : optionContents) {
+
+            for (int i = 0; i < optionContents.length; i++) {
                 Answer answerOption = new Answer();
+
+                if (optionId != null && optionId.length > i) {
+                    int answerId = Integer.parseInt(optionId[i]); // Chuyển đổi mỗi optionId thành int
+                    answerOption.setAnswerId(answerId);
+                }
+
                 answerOption.setQuestion(q);
-                answerOption.setOptionContent(optionContent);
-                answerOption.setIsCorrect(isCorrect);
+                answerOption.setOptionContent(optionContents[i]);
+                answerOption.setIsCorrect(String.valueOf(answerOption.getAnswerId()).equals(correctAnswerId));
+
                 answers.add(answerOption);
             }
+
             aDao.updateAnswerOptions(answers);
         }
 
