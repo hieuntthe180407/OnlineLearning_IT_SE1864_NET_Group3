@@ -234,11 +234,11 @@
                         <c:forEach var="option" items="${answerDetailInfo}">
                             <div class="answer-option">
                                 <!-- Sử dụng param.answerId như là phương án dự phòng nếu option.answerId là null -->
-                                <input type="hidden" name="answerOptionId[]" value="${option.answerId != null ? option.answerId : param.answerId}">
+                                <input type="hidden" name="answerOptionId[]" value="${option.answerId != null ? option.answerId : param.answerOptionId}">
                                 <input type="text" name="answerOption[]" placeholder="Answer Option" 
-                                       value="${option.optionContent != null ? option.optionContent : param.optionContent}" required>
+                                       value="${option.optionContent != null ? option.optionContent : param.answerOption}" required>
                                 <div class="radio-container">
-                                    <input type="radio" name="correctAnswer" value="${option.answerId}" ${option.isCorrect ? 'checked' : ''}>
+                                    <input type="radio" name="correctAnswer" value="${option.isCorrect}" ${option.isCorrect ? 'checked' : ''}>
                                     <label>Correct</label>
                                     <button type="submit" class="remove-btn" formaction="removeServlet" name="removeId" value="${option.answerId}">Remove</button>
                                 </div>

@@ -96,9 +96,6 @@ public class QuestionDetailServlet extends HttpServlet {
         String questionIdParam = request.getParameter("questionId");
         int questionId = Integer.parseInt(questionIdParam);
 
-        String answerIdParam = request.getParameter("answerId");
-        int answerId = Integer.parseInt(answerIdParam);
-
         String questionTitle = request.getParameter("questionTitle");
 
         String questionCourse = request.getParameter("questionCourse");
@@ -159,6 +156,8 @@ public class QuestionDetailServlet extends HttpServlet {
         AnswerDAO aDao = new AnswerDAO();
 
         if (questionType.equals("Essay")) {
+            String answerIdParam = request.getParameter("answerId");
+            int answerId = Integer.parseInt(answerIdParam);
             String essayAnswer = request.getParameter("essayAnswer");
             Answer a = new Answer();
             a.setAnswerId(answerId);
@@ -168,14 +167,20 @@ public class QuestionDetailServlet extends HttpServlet {
         } else {
             // Get multiple options and correctness values
             String[] optionContents = request.getParameterValues("answerOption");
-            String correctAnswerId = request.getParameter("correctAnswer");
+            String correctAnswer = request.getParameter("correctAnswer");
+            boolean isCorrect;
+            if (correctAnswer.equals("true")) {
+                isCorrect = true;
+            } else {
+                isCorrect = false;
+            }
 
             List<Answer> answers = new ArrayList<>();
             for (String optionContent : optionContents) {
                 Answer answerOption = new Answer();
                 answerOption.setQuestion(q);
                 answerOption.setOptionContent(optionContent);
-                answerOption.setIsCorrect(Integer.toString(answerOption.getAnswerId()).equals(correctAnswerId));
+                answerOption.setIsCorrect(isCorrect);
                 answers.add(answerOption);
             }
             aDao.updateAnswerOptions(answers);
