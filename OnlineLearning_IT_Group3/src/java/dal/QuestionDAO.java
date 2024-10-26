@@ -76,7 +76,7 @@ public class QuestionDAO extends DBContext {
     }
 
 //Duyệt câu hỏi theo filter
-    public List<Question> getFilteredQuestions(String title, String course, String level, String status, int page, int numberQuestion) {
+    public List<Question> getFilteredQuestions(String title, String course, String questionType, String level, String status, int page, int numberQuestion) {
         List<Question> listQuestion = new ArrayList<>();
         PreparedStatement st = null;
         String sql = "SELECT q.QuestionID"
@@ -96,6 +96,10 @@ public class QuestionDAO extends DBContext {
         if (course != null && !course.isEmpty()) {
             sql += " AND c.CourseName LIKE ?";
             params.add("%" + course + "%");
+        }
+        if (questionType != null && !questionType.isEmpty()) {
+            sql += " AND q.QuestionType = ?";
+            params.add(questionType);
         }
         if (level != null && !level.isEmpty()) {
             sql += " AND q.Level = ?";
@@ -140,7 +144,7 @@ public class QuestionDAO extends DBContext {
     }
 //Lấy tổng số trang ( có thể phụ thuộc vào filter)
 
-    public int getTotalPages(String title, String course, String level, String status, int numberQuestion) {
+    public int getTotalPages(String title, String course, String questionType, String level, String status, int numberQuestion) {
         PreparedStatement st = null;
         String sql = "SELECT COUNT(*) FROM Question q, Course c WHERE q.CourseID = c.CourseID";
         List<String> params = new ArrayList<>();
@@ -154,10 +158,15 @@ public class QuestionDAO extends DBContext {
             sql += " AND c.CourseName LIKE ?";
             params.add("%" + course + "%");
         }
+        if (questionType != null && !questionType.isEmpty()) {
+            sql += " AND q.QuestionType = ?";
+            params.add(questionType);
+        }
         if (level != null && !level.isEmpty()) {
             sql += " AND q.Level = ?";
             params.add(level);
         }
+
         if (status != null && !status.isEmpty()) {
             sql += " AND q.Status = ?";
             params.add(status);

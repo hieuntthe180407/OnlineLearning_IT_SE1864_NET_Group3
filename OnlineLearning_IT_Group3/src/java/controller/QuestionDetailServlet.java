@@ -18,6 +18,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import model.Answer;
 import model.Course;
 import model.Question;
@@ -60,17 +62,22 @@ public class QuestionDetailServlet extends HttpServlet {
             int questionId = Integer.parseInt(questionIdParam);
 
             QuestionDAO questionDAO = new QuestionDAO();
-            AnswerDAO answerDAO = new AnswerDAO();
 
-            Answer answer = new Answer();
             Question question = new Question();
-
-            answer = answerDAO.getAnswerInfo(questionId);
             question = questionDAO.getQuestionInfo(questionId);
+            if (question.getQuestionType().equals("Essay")) {
+                AnswerDAO answerDAO = new AnswerDAO();
+                Answer answer = answerDAO.getAnswerInfo(questionId);
+                request.setAttribute("answerDetail", answer);
+            } else {
+                AnswerDAO aDao = new AnswerDAO();
+                List<Answer> listOption = aDao.listAnswerOption(questionId);
+                request.setAttribute("answerDetailInfo", listOption);
 
+            }
             request.setAttribute("questionDetailInfo", question);
-            request.setAttribute("answerDetailInfo", answer);
             request.getRequestDispatcher("questionDetail.jsp").forward(request, response);
+
         }
 
     }
@@ -88,9 +95,6 @@ public class QuestionDetailServlet extends HttpServlet {
             throws ServletException, IOException {
         String questionIdParam = request.getParameter("questionId");
         int questionId = Integer.parseInt(questionIdParam);
-
-        String answerIdParam = request.getParameter("answerId");
-        int answerId = Integer.parseInt(answerIdParam);
 
         String questionTitle = request.getParameter("questionTitle");
 
@@ -111,8 +115,6 @@ public class QuestionDetailServlet extends HttpServlet {
         String level = request.getParameter("level");
 
         String questionContent = request.getParameter("questionContent");
-
-        String essayAnswer = request.getParameter("essayAnswer");
 
         String explanation = request.getParameter("explanation");
 
@@ -151,14 +153,37 @@ public class QuestionDetailServlet extends HttpServlet {
         q.setExplanation(explanation);
         QuestionDAO qDao = new QuestionDAO();
         qDao.updateQuestion(q);
+        AnswerDAO aDao = new AnswerDAO();
 
         if (questionType.equals("Essay")) {
+            String answerIdParam = request.getParameter("answerId");
+            int answerId = Integer.parseInt(answerIdParam);
+            String essayAnswer = request.getParameter("essayAnswer");
             Answer a = new Answer();
             a.setAnswerId(answerId);
             a.setQuestion(q);
             a.setOptionContent(essayAnswer);
-            AnswerDAO aDao = new AnswerDAO();
             aDao.updateEssayAnswer(a);
+        } else {
+            // Get multiple options and correctness values
+            String[] optionContents = request.getParameterValues("answerOption");
+            String correctAnswer = request.getParameter("correctAnswer");
+            boolean isCorrect;
+            if (correctAnswer.equals("true")) {
+                isCorrect = true;
+            } else {
+                isCorrect = false;
+            }
+
+            List<Answer> answers = new ArrayList<>();
+            for (String optionContent : optionContents) {
+                Answer answerOption = new Answer();
+                answerOption.setQuestion(q);
+                answerOption.setOptionContent(optionContent);
+                answerOption.setIsCorrect(isCorrect);
+                answers.add(answerOption);
+            }
+            aDao.updateAnswerOptions(answers);
         }
 
         response.sendRedirect("QuestionListServlet");

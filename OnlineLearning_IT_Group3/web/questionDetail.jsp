@@ -148,7 +148,7 @@
             
         %>
         <c:set var="q" value="${requestScope.questionDetailInfo}"/>
-        <c:set var="a" value="${requestScope.answerDetailInfo}"/>
+        <c:set var="answer" value="${requestScope.answerDetail}"/>
 
         <!-- Main form for question management -->
         <form action="QuestionDetailServlet" method="POST" enctype="multipart/form-data">
@@ -226,21 +226,28 @@
                     <c:when test="${q.questionType == 'Essay'|| param.questionType == 'Essay'}">
                         <!-- Render textarea for Essay type -->
                         <label for="essayAnswer">Correct Answer:</label>
-                        <input type="hidden" name="answerId" value="${param.answerId != null ? param.answerId : a.answerId}">
-                        <textarea id="essayAnswer" name="essayAnswer" placeholder="Enter your essay answer here..." rows="5" style="width: 100%;" required>${param.essayAnswer != null ? param.essayAnswer : a.optionContent}</textarea>
+                        <input type="hidden" name="answerId" value="${param.answerId != null ? param.answerId : answer.answerId}">
+                        <textarea id="essayAnswer" name="essayAnswer" placeholder="Enter your essay answer here..." rows="5" style="width: 100%;" required>${param.essayAnswer != null ? param.essayAnswer : answer.optionContent}</textarea>
                     </c:when>
                     <c:otherwise>
-                        <!-- Render options for other question types -->
-                        <div class="answer-option">
-                            <input type="hidden" name="answerOptionId" value="0"> <!-- Use 0 for new options -->
-                            <input type="text" name="answerOption" placeholder="Answer Option" required>
-                            <div class="radio-container">
-                                <input type="radio" name="correctAnswer" checked>
-                                <label>Correct</label>
-                                <button type="submit" class="remove-btn" formaction="removeServlet" name="removeId" value="0">Remove</button>
+                        <!-- Loop through each answer option in listOption -->
+                        <c:forEach var="option" items="${answerDetailInfo}">
+                            <div class="answer-option">
+                                <!-- Sử dụng param.answerId như là phương án dự phòng nếu option.answerId là null -->
+                                <input type="hidden" name="answerOptionId[]" value="${option.answerId != null ? option.answerId : param.answerOptionId}">
+                                <input type="text" name="answerOption[]" placeholder="Answer Option" 
+                                       value="${option.optionContent != null ? option.optionContent : param.answerOption}" required>
+                                <div class="radio-container">
+                                    <input type="radio" name="correctAnswer" value="${option.isCorrect}" ${option.isCorrect ? 'checked' : ''}>
+                                    <label>Correct</label>
+                                    <button type="submit" class="remove-btn" formaction="removeServlet" name="removeId" value="${option.answerId}">Remove</button>
+                                </div>
                             </div>
-                        </div>
-                        <button type="submit" class="add-btn" formaction="addAnswerServlet" >Add Option</button>
+                        </c:forEach>
+
+                        <button type="submit" class="add-btn">
+                            <a href="addAnswerServlet?questionId=${param.questionId != null ? param.questionId : q.questionId}" class="add-btn">Add Option</a>
+                        </button>
                     </c:otherwise>
                 </c:choose> 
             </div>
