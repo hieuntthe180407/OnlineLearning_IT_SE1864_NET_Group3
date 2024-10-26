@@ -66,7 +66,7 @@ public class ExportServlet extends HttpServlet {
         // Header
         Row headerRow = sheet.createRow(0);
         headerRow.createCell(0).setCellValue("Quetion content/Question Title");
-        headerRow.createCell(1).setCellValue("Question Type( Essay or Multipe Choice )");
+        headerRow.createCell(1).setCellValue("Question Type( Essay or Multiple Choice )");
         headerRow.createCell(2).setCellValue("Question imagine or video path:");
         headerRow.createCell(3).setCellValue("Level");
         headerRow.createCell(4).setCellValue("Correct Answer");
