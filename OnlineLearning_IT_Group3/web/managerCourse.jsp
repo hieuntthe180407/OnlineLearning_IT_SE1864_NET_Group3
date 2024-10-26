@@ -115,7 +115,7 @@
                                 </c:choose>
                             </td>
                             <td>
-                                <a href="managerCourseDetail?id=${course.courseID}">
+                                <a href="courseDetail?courseID=${course.courseID}">
                                     <button class="btn btn-primary">Detail</button>
                                 </a>
                             </td>

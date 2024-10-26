@@ -17,7 +17,7 @@ import java.util.Date;
 public class Token {
     private static final String SECRET_KEY = "vinh"; // Thay thế bằng secret key của bạn
     private static final long TOKEN_VALIDITY_DURATION_MS = 1 * 60 * 1000; // 30 phút
-
+    // Dùng để tạo một token mới
     public static String generateToken() {
         long timestamp = new Date().getTime();
         long expirationTime = timestamp + TOKEN_VALIDITY_DURATION_MS; // Thời gian hết hạn
@@ -32,7 +32,9 @@ public class Token {
             return null;
         }
     }
-
+    /* Dùng để kiểm tra tính hợp lệ của 1 token 
+      - Trả về true nếu token hợp lệ và về false nếu không hợp lệ
+    */
     public static boolean isTokenValid(String token) {
         try {
             String[] parts = token.split("\\.");

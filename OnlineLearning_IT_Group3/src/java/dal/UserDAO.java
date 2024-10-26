@@ -47,7 +47,7 @@ public class UserDAO extends DBContext {
 //        }
 //        return list;
 //    }
-
+// List all tất cả người dùng
     public List<User> getAllUser() {
 
         List<User> list = new ArrayList<>();
@@ -202,7 +202,7 @@ public class UserDAO extends DBContext {
         return u;
 
     }
-
+//Lấy thông tin của người dùng thông qua email
     public User getUserByEmail(String email) {
         User u = null;
 
@@ -302,7 +302,7 @@ public class UserDAO extends DBContext {
         }
         return check;
     }
-
+//Dùng để thay đổi paswrod của người dùng
     public int updatePasswordByEmail(String email, String password) {
         int check = 0;
 
@@ -437,7 +437,7 @@ public class UserDAO extends DBContext {
             System.out.println(e);
         }
     }
-
+//Check xem email có tồn tại hay chưa
     public boolean checkEmailDAO(String email) {
         boolean exists = false;
         PreparedStatement st = null;
@@ -459,7 +459,7 @@ public class UserDAO extends DBContext {
         }
         return  exists;
 }
-    
+    //lấy thông tin người dùng qua id
     public User getUserById(int userId) {
         User user = null;
         String sql = "SELECT u.[UserID], u.[FullName], u.[DateOfBirth], u.[Email], u.[Password], u.[Phone], u.[Address], u.[Gender], r.[RoleName], u.[Avatar] "
