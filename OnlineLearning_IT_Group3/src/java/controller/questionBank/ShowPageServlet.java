@@ -2,9 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller;
+package controller.questionBank;
 
-import dal.QuestionDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,13 +11,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author ADMIN
  */
-@WebServlet(name = "QuestionListShowHide", urlPatterns = {"/questionListShowHide"})
-public class QuestionListShowHide extends HttpServlet {
+@WebServlet(name = "ShowPageServlet", urlPatterns = {"/ShowPageServlet"})
+public class ShowPageServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,6 +33,19 @@ public class QuestionListShowHide extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet ShowPageServlet</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet ShowPageServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -45,6 +60,7 @@ public class QuestionListShowHide extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        processRequest(request, response);
     }
 
     /**
@@ -58,20 +74,24 @@ public class QuestionListShowHide extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String actionQuestion = request.getParameter("actionQuestion");
-        String questionIdParam = request.getParameter("questionId");
-
-        int questionId = Integer.parseInt(questionIdParam);
-        QuestionDAO qDAO = new QuestionDAO();
-
-        if ("show".equals(actionQuestion)) {
-            qDAO.updateStatusQuestion(questionId, "Visible");
-        } else if ("hide".equals(actionQuestion)) {
-            qDAO.updateStatusQuestion(questionId, "Hidden");
+        // Lấy các cột được chọn từ checkbox
+        String[] visibleColumns = request.getParameterValues("visibleCol");
+        // Nếu không có cột nào được chọn, thiết lập mặc định
+        if (visibleColumns == null) {
+            visibleColumns = new String[]{"id", "title", "course", "level", "status", "actions", "type"};
+        }
+        // Mảng thành List
+        List<String> visibleColumnsList = new ArrayList<>();
+        for (String column : visibleColumns) {
+            visibleColumnsList.add(column);
         }
 
-        response.sendRedirect("QuestionListServlet");
+        // Lưu danh sách cột hiển thị vào session
+        HttpSession session = request.getSession();
+        session.setAttribute("visibleColumns", visibleColumnsList);
 
+        // Chuyển hướng về trang danh sách câu hỏi
+        response.sendRedirect("QuestionListServlet");
     }
 
     /**

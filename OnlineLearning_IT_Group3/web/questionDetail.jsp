@@ -242,7 +242,7 @@
                                            ${option.isCorrect ? 'checked' : ''}>                                    
                                     <label>Correct</label>
                                     <button type="button" class="remove-btn" name="removeId">
-                                        <a href="addAnswerServlet?answerOptionId=${param.answerOptionId != null ? param.answerOptionId : option.answerId}" class="remove-btn">Remove</a>
+                                        <a href="addAnswerServlet?answerOptionId=${param.answerOptionId != null ? param.answerOptionId : option.answerId}&" class="remove-btn">Remove</a>
                                     </button>
                                 </div>
                             </div>
