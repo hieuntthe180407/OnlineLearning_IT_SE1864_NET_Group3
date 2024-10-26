@@ -104,7 +104,7 @@ public class QuestionDetailServlet extends HttpServlet {
         String questionCourse = request.getParameter("questionCourse");
         CourseDAO cDAO = new CourseDAO();
         if (!cDAO.checkCourseByName(questionCourse)) {
-            request.setAttribute("errorDetail", "Course is not exsits.");
+            request.setAttribute("errorDetail", "Course is not exists.");
             request.getRequestDispatcher("questionDetail.jsp").forward(request, response);
             return;
         }
@@ -119,6 +119,11 @@ public class QuestionDetailServlet extends HttpServlet {
         String level = request.getParameter("level");
 
         String questionContent = request.getParameter("questionContent");
+        if (questionContent == null || questionContent.isEmpty()) {
+            request.setAttribute("errorDetail", "Question content can not blank.");
+            request.getRequestDispatcher("questionDetail.jsp").forward(request, response);
+            return;
+        }
 
         String explanation = request.getParameter("explanation");
 
@@ -180,7 +185,7 @@ public class QuestionDetailServlet extends HttpServlet {
             a.setOptionContent(essayAnswer);
             aDao.updateEssayAnswer(a);
         } else { // Nếu câu hỏi có nhiều lựa chọn
-            String[] optionId = request.getParameterValues("answerOptionId"); 
+            String[] optionId = request.getParameterValues("answerOptionId");
             String[] optionContents = request.getParameterValues("answerOption");
             String correctAnswerId = request.getParameter("correctAnswer"); // Lấy ID của đáp án đúng
 
