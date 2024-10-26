@@ -241,16 +241,12 @@
                                     <input type="radio" name="correctAnswer" value="${option.answerId}" 
                                            ${option.isCorrect ? 'checked' : ''}>                                    
                                     <label>Correct</label>
-                                    <button type="button" class="remove-btn" name="removeId">
-                                        <a href="addAnswerServlet?answerOptionId=${param.answerOptionId != null ? param.answerOptionId : option.answerId}&" class="remove-btn">Remove</a>
-                                    </button>
+                                    <a href="removeOptionServlet?answerOptionId=${param.answerOptionId != null ? param.answerOptionId : option.answerId}&questionId=${param.questionId != null ? param.questionId : q.questionId}&correctAnswer=${option.isCorrect}" class="remove-btn">Remove</a>
                                 </div>
                             </div>
                         </c:forEach>
 
-                        <button type="button" class="add-btn">
-                            <a href="addAnswerServlet?questionId=${param.questionId != null ? param.questionId : q.questionId}" class="add-btn">Add Option</a>
-                        </button>
+                        <a href="addAnswerServlet?questionId=${param.questionId != null ? param.questionId : q.questionId}" class="add-btn">Add Option</a>
                     </c:otherwise>
                 </c:choose> 
             </div>
