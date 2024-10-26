@@ -4,8 +4,6 @@
  */
 package util;
 
-
-
 import jakarta.mail.Authenticator;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
@@ -24,9 +22,11 @@ import java.util.logging.Logger;
  * @author DTC
  */
 public class SendMail {
-     static final String from = "vinhdubai10@gmail.com";
+
+    static final String from = "vinhdubai10@gmail.com";
     static final String password = "obpd tqix maif sevz";
 
+    //Phương thức sendMail: Gửi email chứa mã token đến email của người nhận.
     public static boolean sendMail(String to, String token) {
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com"); //smtp host
@@ -40,14 +40,13 @@ public class SendMail {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(from, password);
             }
-            
+
         };
 
         //session new
-       Session session = Session.getInstance(props, auth);
+        Session session = Session.getInstance(props, auth);
 
         //send mail
-       
         //tao tin nhan moi
         MimeMessage message = new MimeMessage(session);
 
@@ -60,7 +59,7 @@ public class SendMail {
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to, false));
             //tieu de
             message.setSubject("Password Reset");
-            
+
             String htmlContent = "<!doctype html>\n"
                     + "<html lang=\"en-US\">\n"
                     + "\n"
@@ -111,7 +110,7 @@ public class SendMail {
                     + "                                            password has been generated for you. To reset your password, click the\n"
                     + "                                            following link and follow the instructions.\n"
                     + "                                        </p>\n"
-                    + "                                        <a href=\"http://localhost:9999/OnlineLearning_IT_Group3/resetPassword.jsp?email=" + to +"&token="+ token +"\"\n"
+                    + "                                        <a href=\"http://localhost:9999/OnlineLearning_IT_Group3/resetPassword.jsp?email=" + to + "&token=" + token + "\"\n"
                     + "                                            style=\"background:#138496;text-decoration:none !important;    cursor: pointer; font-weight:600; margin-top:65px; color:#fff;text-transform:uppercase; font-size:14px;padding:20px 70px;display:inline-block;\">Reset \n"
                     + "                                            Password</a>\n"
                     + "                                      <p style=\"color:#da2222; font-size:15px;line-height:24px; margin-top:20px;\">\n"

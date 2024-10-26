@@ -13,6 +13,8 @@ import javax.xml.bind.DatatypeConverter;
  * @author DTC
  */
 public class PasswordEncryption {
+    
+    //Dùng để mã hóa mật khẩu bằng thuật toán MD5.
      public static String password_encryption(String password) {
         MessageDigest md = null;
         try {
@@ -25,7 +27,7 @@ public class PasswordEncryption {
                 .printHexBinary(digest).toUpperCase();
         return myHash;
     }
-
+     //Dùng để So sánh mật khẩu người dùng nhập vào và mật khẩu đã mã hóa.
     public static boolean verify(String inputPassword, String hashPassword) {
 //        try {
 //            MessageDigest md = MessageDigest.getInstance("MD5");

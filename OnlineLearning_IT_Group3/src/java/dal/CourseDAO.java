@@ -21,7 +21,7 @@ import model.User;
 public class CourseDAO extends DBContext {
 
 
-
+//lấy tất cả danh sách các course
        public List<Course> getAllCourse() {
 
 
@@ -85,7 +85,7 @@ public class CourseDAO extends DBContext {
 
         return list;
     }
-
+//Lấy thông tin course qua Id
     public Course getCourseByID(int id) {
         try {
             String sql = "  SELECT \n"
@@ -157,7 +157,7 @@ public class CourseDAO extends DBContext {
 //        }
 //        return categories;
 //    }
-
+// lấy top 8 category
     public List<Category> getTop8Category() {
         List<Category> categories = new ArrayList<>();
         String sql = "SELECT TOP 8 * FROM Category";
@@ -176,7 +176,7 @@ public class CourseDAO extends DBContext {
         }
         return categories;
     }
-
+//lấy tất quả các course thông qua việc tìm kiếm
     public List<Course> getAllCourseBySearch(String text) {
         List<Course> list = new ArrayList<>();
         // SQL query with a LIKE clause for partial matching
@@ -241,7 +241,7 @@ public class CourseDAO extends DBContext {
 
         return list;
     }
-
+//lấy id của category
     public int getCategoryIdByName(String name) {
         int categoryId = -1;
         String sql = "SELECT CategoryID FROM Category WHERE CategoryName = ?";
@@ -260,7 +260,7 @@ public class CourseDAO extends DBContext {
 
         return categoryId;
     }
-
+//lấy tất cả các course qua categoryId
     public List<Course> getAllCoursesByCategory(String name) {
         List<Course> courses = new ArrayList<>();
         int categoryId = getCategoryIdByName(name);
@@ -326,7 +326,7 @@ public class CourseDAO extends DBContext {
 
         return courses; // Return the list of courses
     }
-
+//lấy giá trị lớn nhất của course
     public double getMaxPrice() {
         double maxPrice = 0;
         String sql = "SELECT MAX(ListPrice) AS MaxPrice FROM [SWP391_FALL2024].[dbo].[Price]";
@@ -344,7 +344,7 @@ public class CourseDAO extends DBContext {
 
         return maxPrice;
     }
-
+//lấy giá trị nhỏ nhất của course
     public double getMinPrice() {
         double minPrice = 0;
         String sql = "SELECT MIN(ListPrice) AS MinPrice FROM [SWP391_FALL2024].[dbo].[Price]";
@@ -362,7 +362,7 @@ public class CourseDAO extends DBContext {
 
         return minPrice;
     }
-
+//lấy danh sách course qua việc search về giá
     public List<Course> getCourseByMinMaxPrice(double minPrice, double maxPrice) {
         List<Course> courses = new ArrayList<>();
 
@@ -461,7 +461,7 @@ public class CourseDAO extends DBContext {
             return false;
         }
     }
-
+//lấy danh sách course của teacher qua teacher id
     public List<Course> getCoursesByTeacher(int teacherId) {
         List<Course> courses = new ArrayList<>();
         String sql = "SELECT c.[CourseID], c.[UserID], c.[CategoryID], c.[CourseImg], c.[CourseName], "
