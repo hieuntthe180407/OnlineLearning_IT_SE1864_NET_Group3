@@ -322,21 +322,35 @@
 
 
 
-                <div class="owl-carousel testimonial-carousel position-relative">
-                    <%if (listr == null || listr.size() == 0 ) {
-                            out.println("----------------No REVIEW for this Course yet------------- ");
-                        } else {
-                            for (Review r : listr) {%>
-                    <div class="testimonial-item text-center">
-                        <img class="border rounded-circle p-2 mx-auto mb-3" src="img/testimonial-1.jpg"
-                             style="width: 80px; height: 80px;">
-                        <h5 class="mb-0">Sarah K.</h5>
-                        <div class="testimonial-text bg-light text-center p-4">
-                            <p class="mb-0"><%=r.getReviewContent()%></p>
-                        </div>
-                    </div>
-                    <%}}%>
+               <div class="owl-carousel testimonial-carousel position-relative">
+    <% if (listr == null || listr.size() == 0) {
+        out.println("----------------No REVIEW for this Course yet------------- ");
+    } else {
+        for (Review r : listr) { %>
+            <div class="testimonial-item text-center">
+                <img class="border rounded-circle p-2 mx-auto mb-3" src="<%=r.getUserID().getAvatar()%>" style="width: 80px; height: 80px;">
+                <h5 class="mb-0"><%=r.getUserID().getFullName()%></h5>
+                
+                <!-- Star Rating Display -->
+                <div class="star-rating mb-3">
+                    <% int rating = r.getRating(); 
+                    for (int i = 5; i >= 1; i--) {
+                        if (i <= rating) { %>
+                        <span class="filled-star" style="color: #FFD700;">★</span> <!-- Filled star -->
+                        <% } else { %>
+                            <span class="empty-star">☆</span> <!-- Unfilled star -->
+                        <% }
+                    } %>
                 </div>
+
+                <div class="testimonial-text bg-light text-center p-4">
+                    <p class="mb-0"><%= r.getReviewContent() %></p>
+                </div>
+            </div>
+        <% } 
+    } %>
+</div>
+
 
                 <div class="col-lg-12 col-md-12 wow fadeInUp" data-wow-delay="0.5s">
     <form action="ReviewAdd" method="get">
