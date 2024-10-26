@@ -98,11 +98,12 @@
     </head>
     <body>
         <%@include file="header.jsp" %>
-
+        <!-- Lay thong tin user da dc chon -->
         <%User u = (User)request.getAttribute("user");
             String noti = (String)request.getAttribute("noti");
             if(noti != null){
         %>
+        <!-- thong bao hien thi khi nguoi dung nhap thanh cong -->
         <h3 style="color: red; text-align: center; font-weight: bold;">
             <%= noti %>
         </h3>
@@ -142,8 +143,9 @@
                                 <input type="text" id="gender" disabled style="width: 100%;"value="<%=u.getGender()%>">
                             </div>
                         </div>
-
+                            
                         <div style="display: flex; gap: 10px;">
+                            <!-- drop down list de nhap Role moi -->
                             <div style="flex: 1; display: flex; align-items: center; gap: 10px;">
                                 <label for="role">Role:</label>
                                 <input type="text" id="role" disabled style="width: 100%; flex: 1;" value="<%=u.getRole().getRoleName()%>">
@@ -154,6 +156,7 @@
                                     <option value="3">User</option>
                                 </select>
                             </div>
+                                    <!-- drop down list de nhap status cua User moi -->
                             <div style="flex: 1; display: flex; align-items: center; gap: 10px;">
                                 <label for="status">Status:</label>
                                 <input type="text" id="status" disabled style="width: 100%; flex: 1;" value="<%=u.getStatus()%>">

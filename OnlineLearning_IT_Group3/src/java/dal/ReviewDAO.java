@@ -23,8 +23,8 @@ public class ReviewDAO extends DBContext {
         List<Review> reviews = new ArrayList<>();
 
         String sql = "SELECT * "
-                + "FROM [dbo].[Review]"
-                + "WHERE [CourseID] = ?";
+                + "FROM [dbo].[Review] r, [dbo].[User] u "
+                + "WHERE r.UserID= u.UserID AND [CourseID] = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, courseId);
@@ -39,6 +39,8 @@ public class ReviewDAO extends DBContext {
                 // You'll need to implement a method to retrieve a User by ID
                 User user = new User();
                 user.setUserID(rs.getInt("UserID")); // Assuming User has a setUserID method
+                user.setFullName(rs.getString("FullName"));
+                user.setAvatar(rs.getString("Avatar"));
                 review.setUserID(user); // Set the user object
 
                 Course course = new Course();

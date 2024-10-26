@@ -182,7 +182,7 @@
         }
     }
 </style>
-
+<!-- Lay list User tu db -->
 <%
     List<User> list = (List<User>) request.getAttribute("users");
     if (list == null || list.size() == 0) {
