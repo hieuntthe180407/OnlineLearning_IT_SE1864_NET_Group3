@@ -83,28 +83,28 @@ public class RegisterServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         UserDAO userDAO = new UserDAO();
-
+        //check xem email đã tồn tại từ trước hay chưa
         if (userDAO.checkEmailDAO(email)) {
             request.setAttribute("errorMessageSignUp", "This email is already registered.");
             request.getRequestDispatcher("register.jsp").forward(request, response);
             return;
         }
 
-        // Check if phone number is exactly 10 digits
+        // Check số điện thoại xem có phải 10 chữa số ko
         if (phone.length() != 10) {
             request.setAttribute("errorMessageSignUp", "Phone number must be exactly 10 digits.");
             request.getRequestDispatcher("register.jsp").forward(request, response);
             return;
         }
 
-        // Create a User object
+        // Tạo mẫu người dùng tạm thời
         User tempUser = new User(email, fullName, address, phone, gender, dateOfBirth, password, "imgavatar/default-avatar.jpg");
 
-        // Save User object in the session to persist across requests
+        // Lưu người dùng tạm thời vào sesion
         HttpSession session = request.getSession();
         session.setAttribute("tempInfoUser", tempUser);
 
-        // Redirect to verifyServlet to handle email verification
+        // Đưa về verifyServlet để xác minh email
         response.sendRedirect("verifyServlet");
 
     }

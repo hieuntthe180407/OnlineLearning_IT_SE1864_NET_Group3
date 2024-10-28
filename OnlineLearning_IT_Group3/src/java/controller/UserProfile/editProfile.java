@@ -57,6 +57,7 @@ public class editProfile extends HttpServlet {
         User user = (User) session.getAttribute("acc");
         UserDAO u = new UserDAO();
         try {
+            //Lấy thông tin người dùng
             User profile = u.getUserProfilebyId(user.getUserID());
             request.setAttribute("profile", profile);
             request.getRequestDispatcher("editProfile.jsp").forward(request, response);

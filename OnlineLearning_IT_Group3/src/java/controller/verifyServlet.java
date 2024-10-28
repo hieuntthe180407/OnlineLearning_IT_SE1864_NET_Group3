@@ -63,9 +63,13 @@ public class verifyServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
+        //Lấy session của tempUser
         User user = (User) session.getAttribute("tempInfoUser");
+        //Tạo xác thực ngẫu nhiên
         String code = getRandomNumberString();
+        //Cho mã xác thực vào session
         session.setAttribute("verificationCode", code);
+        //Gửi email cho user
         SendMailRegister.sendMailRegister(user.getEmail(), code);
         request.getRequestDispatcher("verifyEmail.jsp").forward(request, response);
     }
@@ -85,20 +89,20 @@ public class verifyServlet extends HttpServlet {
         String enteredCode = request.getParameter("verificationCode");
         String generatedCode = (String) session.getAttribute("verificationCode");
 
-        // Check if the entered code matches the generated code
+        // Kiểm tra mã xác thực
         if (enteredCode.equals(generatedCode)) {
             User user = (User) session.getAttribute("tempInfoUser");
             UserDAO userDao = new UserDAO();
             userDao.insertNewUserStudent(user);
 
-            // Clear session data
+            // Xóa dữ liệu tạm thời trong session
             session.removeAttribute("tempInfoUser");
             session.removeAttribute("verificationCode");
 
-            // Redirect to success or login page
+            // Chuyển hướng đến trang đăng nhập
             request.getRequestDispatcher("login.jsp").forward(request, response);
         } else {
-            // If the code doesn't match, display an error
+            // Nếu mã không đúng, thông báo lỗi và yêu cầu nhập lại
             request.setAttribute("errorCode", "Invalid verification code. Please try again.");
             request.getRequestDispatcher("verifyEmail.jsp").forward(request, response);
         }
@@ -106,12 +110,11 @@ public class verifyServlet extends HttpServlet {
     }
 
     public static String getRandomNumberString() {
-        // It will generate 6 digit random Number.
-        // from 0 to 999999
+        // Tạo mã số có 6 chữ số.
+        // từ 0 tới 999999
         Random rnd = new Random();
         int number = rnd.nextInt(999999);
-
-        // this will convert any number sequence into 6 character.
+         // Chuyển đổi mã thành chuỗi có 6 chữ số
         return String.format("%06d", number);
     }
 
