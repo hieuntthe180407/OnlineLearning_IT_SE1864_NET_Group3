@@ -184,6 +184,19 @@
 </style>
 <!-- Lay list User tu db -->
 <%
+    int itemsPerPage = (request.getAttribute("itemsPerPage") != null) 
+                       ? (Integer) request.getAttribute("itemsPerPage") 
+                       : 10;  // Default to 10 items per page
+%>
+
+<!-- Form for Items Per Page Selection -->
+<form action="userList" method="GET">
+    <label for="itemsPerPage">Users per page:</label>
+    <input type="number" name="itemsPerPage" id="itemsPerPage" value="<%= itemsPerPage %>" min="1" onchange="this.form.submit()" />
+</form>
+
+
+<%
     List<User> list = (List<User>) request.getAttribute("users");
     if (list == null || list.size() == 0) {
         out.println("<div class='empty-list'>Empty list of Users</div>");
@@ -259,14 +272,12 @@
     int currentPage = (Integer) request.getAttribute("currentPage");
     int totalPages = (Integer) request.getAttribute("totalPages");
 %>
-
-<!-- Pagination Controls -->
 <div class="pagination">
     <ul>
         <%
             if (currentPage > 1) {
         %>
-        <li><a href="userList?page=<%= currentPage - 1 %>">&laquo; Previous</a></li>
+        <li><a href="userList?page=<%= currentPage - 1 %>&itemsPerPage=<%= itemsPerPage %>">&laquo; Previous</a></li>
         <%
             }
 
@@ -277,47 +288,19 @@
         <%
                 } else {
         %>
-        <li><a href="userList?page=<%= i %>"><%= i %></a></li>
+        <li><a href="userList?page=<%= i %>&itemsPerPage=<%= itemsPerPage %>"><%= i %></a></li>
         <%
                 }
             }
 
             if (currentPage < totalPages) {
         %>
-        <li><a href="userList?page=<%= currentPage + 1 %>">Next &raquo;</a></li>
+        <li><a href="userList?page=<%= currentPage + 1 %>&itemsPerPage=<%= itemsPerPage %>">Next &raquo;</a></li>
         <%
             }
         %>
     </ul>
 </div>
-
-<!-- Pagination Styles -->
-<style>
-.pagination ul {
-    list-style-type: none;
-    padding: 0;
-}
-.pagination ul li {
-    display: inline;
-    margin: 0 5px;
-}
-.pagination ul li a {
-    text-decoration: none;
-    padding: 8px 16px;
-    background-color: #4CAF50;
-    color: white;
-    border-radius: 5px;
-}
-.pagination ul li span {
-    padding: 8px 16px;
-    background-color: #ddd;
-    color: black;
-    border-radius: 5px;
-}
-.pagination ul li a:hover {
-    background-color: #45a049;
-}
-</style>
 
 
 

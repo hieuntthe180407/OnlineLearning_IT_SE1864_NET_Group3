@@ -321,7 +321,7 @@
                 </div>
 
 
-
+                <!-- Hien thi cac reivew cua user -->
                <div class="owl-carousel testimonial-carousel position-relative">
     <% if (listr == null || listr.size() == 0) {
         out.println("----------------No REVIEW for this Course yet------------- ");
@@ -351,7 +351,7 @@
     } %>
 </div>
 
-
+<!-- form nhap review -->
                 <div class="col-lg-12 col-md-12 wow fadeInUp" data-wow-delay="0.5s">
     <form action="ReviewAdd" method="get">
         <div class="row g-3">
