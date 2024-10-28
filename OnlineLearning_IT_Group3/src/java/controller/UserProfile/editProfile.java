@@ -90,24 +90,30 @@ public class editProfile extends HttpServlet {
             String avatar;
             String oldAvatar = request.getParameter("oldAvatar");
             Part imagePart = request.getPart("avatar");
+            
+            //check điều kiện sô điện thoại
             if (phone.length() != 10) {
                 request.setAttribute("errorEditProfile", "Phone number must be exactly 10 digits.");
                 request.getRequestDispatcher("editProfile.jsp").forward(request, response);
                 return;
             }
 
-            //check is there are any new avatar
+            //check xem có avatar mới không
             if (imagePart == null || imagePart.getSize() == 0 ) {
+                // Giữ lại avatar cũ
                 avatar = oldAvatar;
             } else {
-
+                //lấy đường dẫn trong project
                 String realPath = request.getServletContext().getRealPath("/imgavatar");
+                //lấy tên file
                 String fileName = Path.of(imagePart.getSubmittedFileName()).getFileName().toString();
+                //nếu folder chưa được tạo thì tạo
                 if (!Files.exists(Path.of(realPath))) {
 
                     Files.createDirectory(Path.of(realPath));
 
                 }
+                //xác định vị trí chính xác tệp trong hệ thống
                 Path targetPath = Path.of(realPath, fileName);
                 // Kiểm tra xem tệp đã tồn tại chưa
                 if (Files.exists(targetPath)) {
@@ -115,9 +121,9 @@ public class editProfile extends HttpServlet {
                     String newFileName = System.currentTimeMillis() + "_" + fileName; // Thêm timestamp vào tên tệp
                     targetPath = Path.of(realPath, newFileName); // Cập nhật đường dẫn đích
                 }
-
+                //Tệp hình ảnh imagePart sẽ được lưu vào vị trí targetPath
                 imagePart.write(targetPath.toString());
-
+                // Lưu vào database
                 avatar = "imgavatar/" + targetPath.getFileName().toString();
 
             }
@@ -129,6 +135,7 @@ public class editProfile extends HttpServlet {
             pf.setPhone(phone);
             pf.setAddress(address);
             pf.setAvatar(avatar);
+            // Lưu thay đổi vào database
             u.updateUserProfile(pf);
             response.sendRedirect("userProfile");
         } catch (Exception e) {
