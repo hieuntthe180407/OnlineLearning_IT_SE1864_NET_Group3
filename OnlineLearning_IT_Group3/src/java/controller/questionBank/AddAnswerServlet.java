@@ -52,6 +52,7 @@ public class AddAnswerServlet extends HttpServlet {
         String questionIdParam = request.getParameter("questionId");
         int questionId = Integer.parseInt(questionIdParam);
         AnswerDAO adao = new AnswerDAO();
+        //Add option default sai tên New option
         adao.addAnswerOption(questionId, "New option", false);
         response.sendRedirect("QuestionDetailServlet?questionId=" + questionId);
     }

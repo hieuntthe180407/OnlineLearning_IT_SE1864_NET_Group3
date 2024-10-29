@@ -61,13 +61,16 @@ public class RemoveOptionServlet extends HttpServlet {
         String questionIdParam = request.getParameter("questionId");
         int questionId = Integer.parseInt(questionIdParam);
         String isCorrect = request.getParameter("correctAnswer");
+        //Check xem có xóa đáp án đúng không
         if (isCorrect.equals("true")) {
+           //Nếu đáp án đúng thì ghi lỗi
             request.setAttribute("errorDetail", "Can not delete correct answer.");
             request.getRequestDispatcher("QuestionDetailServlet?questionId=" + questionId).forward(request, response);
         } else {
             String optionIdParam = request.getParameter("answerOptionId");
             int optionId = Integer.parseInt(optionIdParam);
             AnswerDAO aDAO = new AnswerDAO();
+            //Xóa option
             aDAO.deleteOption(optionId);
             response.sendRedirect("QuestionDetailServlet?questionId=" + questionId);
 
