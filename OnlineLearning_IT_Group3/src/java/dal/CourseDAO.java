@@ -424,7 +424,7 @@ public class CourseDAO extends DBContext {
 
         return courses;
     }
-    
+    //thay đổi thông tin của course
     public boolean updateCourse(int id,int Category, String name,String des){
          String sql = "update Course set CategoryID=? , courseName = ?, Description=?  where CourseID = ?";
          try{
@@ -442,6 +442,7 @@ public class CourseDAO extends DBContext {
             return false;
         }
     }
+    //Thêm mới course
      public boolean addCourse(String name, int CategoryID,String des, String img){
         try {
             String sql = "Insert into Course(CourseName,CategoryID,Description,CourseImg) values(?,?,?,?)";
@@ -516,7 +517,7 @@ public class CourseDAO extends DBContext {
         
         dao.addCourse("bruh", 1, "npthing", "course1.jpg");
     }
-
+// check course xem có tồn tại hay không
     public boolean checkCourseByName(String courseName) {
         boolean exists = false;
         PreparedStatement st = null;
@@ -535,7 +536,7 @@ public class CourseDAO extends DBContext {
         }
         return exists;
     }
-
+// lấy courseId thông qua courseName
     public int courseIdByCourseName(String courseName) {
         PreparedStatement st = null;
         ResultSet rs = null;
