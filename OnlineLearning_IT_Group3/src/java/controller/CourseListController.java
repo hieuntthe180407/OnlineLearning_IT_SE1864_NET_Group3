@@ -81,9 +81,11 @@ public class CourseListController extends HttpServlet {
             String name = request.getParameter("name");
             listAllCourse = cDao.getAllCoursesByCategory(name);
         } else if (action.equalsIgnoreCase("filterPrice")) {
+            //Kiểm tra nếu action là "filterPrice", tức là người dùng muốn lọc khóa học theo khoảng giá.
            double minPrice = Double.parseDouble(request.getParameter("minPrice"));
            double maxPrice = Double.parseDouble(request.getParameter("maxPrice"));
-           listAllCourse = cDao.getCourseByMinMaxPrice(minPrice,maxPrice);
+           //Gọi phương thức getCourseByMinMaxPrice(minPrice, maxPrice) để lấy các khóa học có giá nằm trong khoảng minPrice và maxPrice.
+           listAllCourse = cDao.getCourseByMinMaxPrice(minPrice,maxPrice);//
 
         }
 
