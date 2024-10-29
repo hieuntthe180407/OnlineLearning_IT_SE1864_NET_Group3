@@ -208,7 +208,7 @@
                                                     </c:if>
                                         </div>
                                         <div class="p-2 pb-0">
-                                            <h5 class="mb-1"><a href="single.html" class="text-dark">${listCourse.courseName}</a></h5>
+                                            <h5 class="mb-1"><a href="courseDetail?courseID=${listCourse.courseID}" class="text-dark">${listCourse.courseName}</a></h5>
                                         </div>
                                         <div class="d-flex">
                                             <small class="flex-fill text-center py-1 px-2"><i class="fa fa-star text-warning me-2"></i>4.55</small>

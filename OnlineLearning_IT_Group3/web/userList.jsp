@@ -45,7 +45,12 @@
     </head>
     <body>
         <%@include file="header.jsp" %>
-        
+        <%
+    Integer itemsPerPage = (Integer) request.getAttribute("itemsPerPage");  
+    if (itemsPerPage == null) {
+        itemsPerPage = 10;  // Default to 10 items per page
+    }
+%>
         <!-- Header Start -->
     <div class="container-fluid bg-primary py-5 mb-5 page-header">
         <div class="container py-5">
@@ -65,15 +70,15 @@
     <!-- Header End -->
         
         <!-- search xog se ve servlet searchUser r quay lai trang nay -->
-        <form action="searchUser" method="GET">
-    <input type="text" name="query" placeholder="Search">
-    <button type="submit">Search</button>
-</form>
-
+        
+        
 <form id="userFilterForm" action="filterUser" method="GET">
+    <label for="itemsPerPage">Users per page:</label>
+    <input type="number" name="itemsPerPage" id="itemsPerPage" />
+    <input type="text" name="query" placeholder="Search">
     <!-- Gender Dropdown -->
     <label for="gender">Gender:</label>
-    <select name="gender" id="gender" onchange="document.getElementById('userFilterForm').submit()">
+    <select name="gender" id="gender" >
         <option value="">All Genders</option>
         <option value="male" ${param.gender == 'male' ? 'selected' : ''}>Male</option>
         <option value="female" ${param.gender == 'female' ? 'selected' : ''}>Female</option>
@@ -82,7 +87,7 @@
 
     <!-- Role Dropdown -->
     <label for="role">Role:</label>
-    <select name="role" id="role" onchange="document.getElementById('userFilterForm').submit()">
+    <select name="role" id="role" >
         <option value="">All Roles</option>
         <option value="admin" ${param.role == 'admin' ? 'selected' : ''}>Admin</option>
         <option value="user" ${param.role == 'user' ? 'selected' : ''}>User</option>
@@ -91,13 +96,17 @@
 
     <!-- Status Dropdown -->
     <label for="status">Status:</label>
-    <select name="status" id="status" onchange="document.getElementById('userFilterForm').submit()">
+    <select name="status" id="status" >
         <option value="">All Statuses</option>
         <option value="active" ${param.status == 'active' ? 'selected' : ''}>Active</option>
         <option value="banned" ${param.status == 'banned' ? 'selected' : ''}>Banned</option>
         <option value="pending" ${param.status == 'pending' ? 'selected' : ''}>Pending</option>
     </select>
+
+    <!-- Submit Button -->
+    <button type="submit">Filter Users</button>
 </form>
+
     <style>
     /* General Form Styles */
     form {
@@ -183,17 +192,10 @@
     }
 </style>
 <!-- Lay list User tu db -->
-<%
-    int itemsPerPage = (request.getAttribute("itemsPerPage") != null) 
-                       ? (Integer) request.getAttribute("itemsPerPage") 
-                       : 10;  // Default to 10 items per page
-%>
+
 
 <!-- Form for Items Per Page Selection -->
-<form action="userList" method="GET">
-    <label for="itemsPerPage">Users per page:</label>
-    <input type="number" name="itemsPerPage" id="itemsPerPage" value="<%= itemsPerPage %>" min="1" onchange="this.form.submit()" />
-</form>
+
 
 
 <%

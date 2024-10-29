@@ -31,25 +31,29 @@ public class filterUser extends HttpServlet {
         String gender = request.getParameter("gender");
         String role = request.getParameter("role");
         String status = request.getParameter("status");
+        String search = request.getParameter("query");
        UserDAO uDao = new UserDAO();
          int page = 1;
-        int recordsPerPage = 10;
+       int itemsPerPage = request.getParameter("itemsPerPage")!= null 
+                   ? Integer.parseInt(request.getParameter("itemsPerPage")) 
+                   : 10;
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
         }
 
 // Get total number of users
-        int totalRecords = uDao.getTotalUserFilterCount(gender,role,status);
+        int totalRecords = uDao.getTotalUserSearchFilterCount(gender, role, status, search);
         
         
-        List<User> users = uDao.filterUser(gender,role,status,(page - 1) * recordsPerPage, recordsPerPage);
+        List<User> users = uDao.getUserSearchFilter(gender,role,status,(page - 1) * itemsPerPage, itemsPerPage,search);
         
-         int totalPages = (int) Math.ceil(totalRecords * 1.0 / recordsPerPage);
+         int totalPages = (int) Math.ceil(totalRecords * 1.0 / itemsPerPage);
 
 // Set attributes for pagination
         request.setAttribute("users", users);
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
+        request.setAttribute("itemsPerPage", itemsPerPage);
         request.getRequestDispatcher("userList.jsp").forward(request, response);
     } 
 
