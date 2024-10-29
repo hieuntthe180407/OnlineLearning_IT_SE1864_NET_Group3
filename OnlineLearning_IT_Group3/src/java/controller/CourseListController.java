@@ -64,6 +64,7 @@ public class CourseListController extends HttpServlet {
         request.setAttribute("listTop8Category", listTop8Category);
 
         List<Course> listAllCourse = null;
+        //Lấy tham số action từ yêu cầu của người dùng (URL hoặc form) để xác định hành động mà người dùng muốn thực hiện.
         String action = request.getParameter("action");
 
         // Check if action is null or empty
@@ -72,9 +73,11 @@ public class CourseListController extends HttpServlet {
             listAllCourse = cDao.getAllCourse();
 
         } else if (action.equalsIgnoreCase("search")) {
+            // nếu hành động là search thì sẽ lấy ra text của nó và search course đó theo text đó
             String text = request.getParameter("text");
             listAllCourse = cDao.getAllCourseBySearch(text);
         } else if (action.equalsIgnoreCase("category")) {
+              // nếu hành động là tìm kiếm theo category thì sẽ lấy ra giá trị của nó và tìm kiếm course đó theo text đó
             String name = request.getParameter("name");
             listAllCourse = cDao.getAllCoursesByCategory(name);
         } else if (action.equalsIgnoreCase("filterPrice")) {

@@ -63,13 +63,13 @@ public class LoginController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         
-        Cookie [] cookies = request.getCookies();
-        
+        Cookie [] cookies = request.getCookies();// lấy tất cả cookie từ yêu cầu.
+        //Khởi tạo các biến email, pass, và check để lưu giá trị cookie.
         String email ="";
         String pass="";
         String check=null;
         
-        
+        //Vòng lặp kiểm tra từng cookie để lấy giá trị email, pass, và checked.
         if(cookies != null){
             for (Cookie cookie : cookies) {
                 if ("email".equals(cookie.getName()))
@@ -89,12 +89,12 @@ public class LoginController extends HttpServlet {
                  
             }
         }
-        
+        //Gán giá trị cho các thuộc tính 
         request.setAttribute("email", email);
         request.setAttribute("pass", pass);
         request.setAttribute("checked", check);
         
-        
+        //Lấy thông báo từ session và gán cho msg1, sau đó xóa msg1 khỏi session.
         HttpSession session = request.getSession();
         
         String msg1 = (String) session.getAttribute("msg1");
@@ -116,20 +116,24 @@ public class LoginController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         
-        
+        //Thiết lập URL cơ bản và phiên session với thời gian hết hạn.
         String url = request.getScheme() +"://" +request.getServerName() + ":" +request.getServerPort() + request.getContextPath();
         HttpSession session = request.getSession();
         session.setMaxInactiveInterval(600);
         
+        //Lấy thông tin username, password, và trạng thái check từ yêu cầu POST.
         String email = request.getParameter("username");
         String password = request.getParameter("password");
         String checked[] = request.getParameterValues("check");
         
+        
+        //Kiểm tra nếu checked null, đặt c là "notchecked".
         String c = "checked";
         if(checked == null){
          c = "notchecked";
         }
         
+        //Tạo đối tượng UserDAO và lấy thông tin người dùng từ email.
         UserDAO ud = new UserDAO();
         User u = ud.getUserByEmail(email);
         
@@ -138,6 +142,8 @@ public class LoginController extends HttpServlet {
         Cookie ruser = new Cookie("checked", c);
         ruser.setMaxAge(60 * 60 * 24 * 7);//
         response.addCookie(ruser);
+        
+        //Kiểm tra nếu người dùng không tồn tại (u == null), hiển thị lỗi và chuyển tiếp đến login.jsp.
         if (u == null) {
             url += "/login";
             String failed = "Account is not registered!!! ";
@@ -148,6 +154,7 @@ public class LoginController extends HttpServlet {
          
             request.getRequestDispatcher("login.jsp").forward(request, response);
         } else {
+            //Nếu mật khẩu không khớp, đặt thông báo lỗi và chuyển tiếp đến login.jsp.
             if (!PasswordEncryption.verify(password, u.getPassword())) {
                 url += "/login";
                 String failed = "Password incorrect!";
@@ -161,6 +168,8 @@ public class LoginController extends HttpServlet {
                 
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             } else {
+                /*Đặt phiên acc với người dùng u.
+                    Nếu checked, lưu cookie cho cuser và puser; nếu không, xóa cookie.*/
                 session.setAttribute("acc", u);
                 if (!c.equals("notchecked")) {
                     cuser.setMaxAge(60 * 60 * 24 * 7);
@@ -171,6 +180,8 @@ public class LoginController extends HttpServlet {
                     cuser.setMaxAge(0);
                     puser.setMaxAge(0);
                 }
+                
+                //Kiểm tra quyền người dùng (RoleId) và thiết lập phiên cũng như điều hướng đến trang phù hợp (home.jsp hoặc Admin.jsp).
                 if (u.getRole().getRoleId() == 1) {
                      session.setAttribute("user", u);
                     url += "/home.jsp";

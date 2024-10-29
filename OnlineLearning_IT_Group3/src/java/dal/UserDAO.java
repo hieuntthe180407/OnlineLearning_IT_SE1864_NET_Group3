@@ -51,7 +51,8 @@ public class UserDAO extends DBContext {
     public List<User> getAllUser() {
 
         List<User> list = new ArrayList<>();
-
+        //Câu truy vấn trên sẽ lấy toàn bộ thông tin người dùng cùng với tên vai trò của họ từ bảng `
+        
         String sql = "Select u.[UserID], u.[FullName], u.[DateOfBirth], u.[Email], u.[Password], u.[Phone], u.[Address],u.[Gender], r.[RoleName]\n"
                 + "from [dbo].[User] u, [dbo].[Role] r\n"
                 + "where r.RoleID = u.RoleID ;";
