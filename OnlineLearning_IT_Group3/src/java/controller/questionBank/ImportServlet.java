@@ -100,11 +100,12 @@ public class ImportServlet extends HttpServlet {
         int courseID = courseDAO.courseIdByCourseName(course);
 
         for (int i = 1; i <= sheet.getLastRowNum(); i++) { // Bắt đầu từ hàng 1, bỏ qua tiêu đề
+            //Lấy giá trị của từng dòng
             Row row = sheet.getRow(i);
             if (row == null) {
                 continue;
             }
-
+            //Lấy giá trị của từng cell trên dòng
             String questionContent = getCellValue(row, 0);
             String questionType = getCellValue(row, 1);
             String questionPath = getCellValue(row, 2);
@@ -179,8 +180,9 @@ public class ImportServlet extends HttpServlet {
 
             } else {
                 if (questionPath != null && (questionPath.endsWith(".jpg") || questionPath.endsWith(".png") || questionPath.endsWith(".mp4"))) {
+                    //Đường dẫn folder /imgQuestion trong project
                     String realPath = request.getServletContext().getRealPath("/imgQuestion");
-
+                    //Nếu folder chưa tạo, tạo folder
                     if (!Files.exists(Path.of(realPath))) {
 
                         Files.createDirectory(Path.of(realPath));
@@ -195,7 +197,7 @@ public class ImportServlet extends HttpServlet {
                     // Kiểm tra xem tệp đã tồn tại chưa
                     if (Files.exists(targetPath)) {
                         // Nếu tệp đã tồn tại, tạo tên mới cho tệp
-                        String newFileName = System.currentTimeMillis() + "_" + fileName; // Thêm timestamp
+                        String newFileName = System.currentTimeMillis() + "_" + fileName; // Thêm timestamp tính bằng(Milli giây)
                         targetPath = Path.of(realPath, newFileName); // Cập nhật đường dẫn đích
                     }
                     //Copy đường dẫn gốc sang nơi muốn lưu tệp
@@ -233,14 +235,15 @@ public class ImportServlet extends HttpServlet {
                 // Lưu câu trả lời vào cơ sở dữ liệu
                 AnswerDAO answerDAO = new AnswerDAO();
                 answerDAO.importAnswer(answerQuestion, true);
-
+                // Xóa dòng câu hỏi đã đủ điều kiện
                 int rowIndex = row.getRowNum();
                 int lastRowNum = sheet.getLastRowNum();
                 sheet.removeRow(row);
-
+                //Chuyển dòng sau lên dòng đã xóa
                 if (rowIndex >= 0 && rowIndex < lastRowNum) {
                     sheet.shiftRows(rowIndex + 1, lastRowNum, -1);
                 }
+                //Sau khi xóa thì sửa lại vòng lặp for
                 i--;
             }
         }
