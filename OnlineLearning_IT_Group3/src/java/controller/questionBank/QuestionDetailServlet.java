@@ -201,6 +201,7 @@ public class QuestionDetailServlet extends HttpServlet {
 
                 answerOption.setQuestion(q);
                 answerOption.setOptionContent(optionContents[i]);
+                //Chuyển đổi AnswerId thành mảng so sánh xem AnswerId có bằng correctAnswerId không nếu có trả ra true và ngược lại
                 answerOption.setIsCorrect(String.valueOf(answerOption.getAnswerId()).equals(correctAnswerId));
 
                 answers.add(answerOption);
