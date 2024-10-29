@@ -77,7 +77,7 @@ public class ManagerCourse extends HttpServlet {
             CourseDAO cDao = new CourseDAO();
             
             int teacherId = 1;
-            List<Course> listAllCourse = cDao.getCoursesByTeacher(teacherId);
+            List<Course> listAllCourse = cDao.getCoursesByTeacher(teacherId);//lấy các khóa học của teacher qua id 
             
             request.setAttribute("listCourse", listAllCourse);
         
