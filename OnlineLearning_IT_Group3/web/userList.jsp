@@ -104,7 +104,7 @@
     </select>
 
     <!-- Submit Button -->
-    <button type="submit">Filter Users</button>
+    <button type="submit">Search</button>
 </form>
 
     <style>
@@ -192,11 +192,6 @@
     }
 </style>
 <!-- Lay list User tu db -->
-
-
-<!-- Form for Items Per Page Selection -->
-
-
 
 <%
     List<User> list = (List<User>) request.getAttribute("users");

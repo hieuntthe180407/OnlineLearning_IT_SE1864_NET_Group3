@@ -34,12 +34,12 @@ public class ReviewAdd extends HttpServlet {
         User user = (User) session.getAttribute("acc");
         
        
-        
+        //lay id tu session
              int uID = user.getUserID();
         String content = request.getParameter("ReviewContent");
         int rating = Integer.parseInt(request.getParameter("rating"));
         ReviewDAO rDAO = new ReviewDAO();
-        
+        //add review moi duoc tao vao db
         rDAO.addReview(cID, content, uID,rating);
         response.sendRedirect("courseDetail?courseID="+cID);
         
@@ -47,6 +47,7 @@ public class ReviewAdd extends HttpServlet {
         }
         catch(Exception e)
         {
+            // neu guest submit review thi hien thong bao yeu cau dang nhap
              err= "You have to login first to review a course";
             response.sendRedirect("courseDetail?courseID="+cID+"&err="+err);
         }

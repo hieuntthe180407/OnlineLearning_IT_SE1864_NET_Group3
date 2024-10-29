@@ -59,7 +59,7 @@
                 </div>
             </div>
         </div>
-            
+                        <!-- hien thi thong bao loi(neu co) -->
            <% String err = request.getParameter("err");
             if(err!=null)
             {
@@ -121,6 +121,7 @@
                                         Syllabus
                                         <a type="button" href="lessonEdit.jsp?CourseID=<%= c.getCourseID() %>"> Add</a>
                                     </h2>
+                                   <!-- lay list tu db  -->
                                     <% 
                     
                                           List<Lesson> listl = (List<Lesson>) request.getAttribute("listl");
@@ -142,7 +143,7 @@
                                             <%= l.getLessonName() %>
                                             <a href="lessonEdit?LessonID=<%= l.getLessonID() %>">
                                                 <button type="button">Update</button></a>
-
+                                               <!-- Neu lesson status la active se hien thi Deactive va nguoc lai -->
                                             <%if(l.getStatus().equals("Active")){   %>
                                             <a type="button" href="editStatusLesson?LessonID=<%= l.getLessonID() %>&status=Deactive&courseID=<%=c.getCourseID()%>" > Deactive</a>
                                             <%} else if(l.getStatus().equals("Deactive")) {%>
@@ -201,7 +202,7 @@
 
 
 
-
+                        <!-- Thong tin giang vien -->
                     <div class="container" id="Instructor">
                         <h2 class="mt-4">About the Instructor</h2>
                         <div class="image-div text-left mt-4">
@@ -389,7 +390,7 @@
         </div>
     </form>
 </div>
-
+            <!-- Style rating star  -->
 <style>
     .star-rating {
         direction: rtl;

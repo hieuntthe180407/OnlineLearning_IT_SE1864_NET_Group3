@@ -44,17 +44,13 @@ throws ServletException, IOException {
     PurchaseDAO pDAO = new PurchaseDAO();
     int priceID = pDAO.getPriceIDbyCourseID(cID);
     
-    out.println("Course ID: " + cID); // Debug output
-    out.println("Price ID: " + priceID); // Debug output
+    
 
     if (user == null) {
+        //neu la guest ch het phone numbers vao 1 list
         List<String> phoneNumbers = new ArrayList<>(Arrays.asList(request.getParameterValues("Phone")));
         
-        // Print the list of phone numbers for debugging
-        out.println("Phone Numbers: ");
-        for (String phoneNumber : phoneNumbers) {
-            out.println(phoneNumber); // Print each phone number
-        }
+        
         
         Integer phone1 = null;
         Integer phone2 = null;
@@ -87,6 +83,7 @@ throws ServletException, IOException {
 
         pDAO.addPurchaseGuest(priceID, preferPhone, email, name, address, phoneNumbers);
     } else {
+        //neu la user da dang nhap
         pDAO.addPurchaseUser(user.getUserID(), priceID);
     }
 }
