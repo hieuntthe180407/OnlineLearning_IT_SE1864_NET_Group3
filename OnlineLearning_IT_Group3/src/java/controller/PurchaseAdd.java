@@ -77,14 +77,11 @@ throws ServletException, IOException {
             }
         }
         
-        // Log retrieved phone numbers for debugging
-        out.println("Phone 1: " + phone1);
-        out.println("Phone 2: " + phone2);
-        out.println("Phone 3: " + phone3);
+       
 
         String name = request.getParameter("FullName");
         String preferPhone = request.getParameter("PreferredPhone");
-        out.println(preferPhone);
+        
         String address = request.getParameter("Address");
         String email = request.getParameter("Email");
 

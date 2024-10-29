@@ -45,7 +45,12 @@
     </head>
     <body>
         <%@include file="header.jsp" %>
-        
+        <%
+    Integer itemsPerPage = (Integer) request.getAttribute("itemsPerPage");  
+    if (itemsPerPage == null) {
+        itemsPerPage = 10;  // Default to 10 items per page
+    }
+%>
         <!-- Header Start -->
     <div class="container-fluid bg-primary py-5 mb-5 page-header">
         <div class="container py-5">
@@ -65,15 +70,15 @@
     <!-- Header End -->
         
         <!-- search xog se ve servlet searchUser r quay lai trang nay -->
-        <form action="searchUser" method="GET">
-    <input type="text" name="query" placeholder="Search">
-    <button type="submit">Search</button>
-</form>
-
+        
+        
 <form id="userFilterForm" action="filterUser" method="GET">
+    <label for="itemsPerPage">Users per page:</label>
+    <input type="number" name="itemsPerPage" id="itemsPerPage" />
+    <input type="text" name="query" placeholder="Search">
     <!-- Gender Dropdown -->
     <label for="gender">Gender:</label>
-    <select name="gender" id="gender" onchange="document.getElementById('userFilterForm').submit()">
+    <select name="gender" id="gender" >
         <option value="">All Genders</option>
         <option value="male" ${param.gender == 'male' ? 'selected' : ''}>Male</option>
         <option value="female" ${param.gender == 'female' ? 'selected' : ''}>Female</option>
@@ -82,7 +87,7 @@
 
     <!-- Role Dropdown -->
     <label for="role">Role:</label>
-    <select name="role" id="role" onchange="document.getElementById('userFilterForm').submit()">
+    <select name="role" id="role" >
         <option value="">All Roles</option>
         <option value="admin" ${param.role == 'admin' ? 'selected' : ''}>Admin</option>
         <option value="user" ${param.role == 'user' ? 'selected' : ''}>User</option>
@@ -91,13 +96,17 @@
 
     <!-- Status Dropdown -->
     <label for="status">Status:</label>
-    <select name="status" id="status" onchange="document.getElementById('userFilterForm').submit()">
+    <select name="status" id="status" >
         <option value="">All Statuses</option>
         <option value="active" ${param.status == 'active' ? 'selected' : ''}>Active</option>
         <option value="banned" ${param.status == 'banned' ? 'selected' : ''}>Banned</option>
         <option value="pending" ${param.status == 'pending' ? 'selected' : ''}>Pending</option>
     </select>
+
+    <!-- Submit Button -->
+    <button type="submit">Filter Users</button>
 </form>
+
     <style>
     /* General Form Styles */
     form {
@@ -183,6 +192,12 @@
     }
 </style>
 <!-- Lay list User tu db -->
+
+
+<!-- Form for Items Per Page Selection -->
+
+
+
 <%
     List<User> list = (List<User>) request.getAttribute("users");
     if (list == null || list.size() == 0) {
@@ -259,14 +274,12 @@
     int currentPage = (Integer) request.getAttribute("currentPage");
     int totalPages = (Integer) request.getAttribute("totalPages");
 %>
-
-<!-- Pagination Controls -->
 <div class="pagination">
     <ul>
         <%
             if (currentPage > 1) {
         %>
-        <li><a href="userList?page=<%= currentPage - 1 %>">&laquo; Previous</a></li>
+        <li><a href="userList?page=<%= currentPage - 1 %>&itemsPerPage=<%= itemsPerPage %>">&laquo; Previous</a></li>
         <%
             }
 
@@ -277,47 +290,19 @@
         <%
                 } else {
         %>
-        <li><a href="userList?page=<%= i %>"><%= i %></a></li>
+        <li><a href="userList?page=<%= i %>&itemsPerPage=<%= itemsPerPage %>"><%= i %></a></li>
         <%
                 }
             }
 
             if (currentPage < totalPages) {
         %>
-        <li><a href="userList?page=<%= currentPage + 1 %>">Next &raquo;</a></li>
+        <li><a href="userList?page=<%= currentPage + 1 %>&itemsPerPage=<%= itemsPerPage %>">Next &raquo;</a></li>
         <%
             }
         %>
     </ul>
 </div>
-
-<!-- Pagination Styles -->
-<style>
-.pagination ul {
-    list-style-type: none;
-    padding: 0;
-}
-.pagination ul li {
-    display: inline;
-    margin: 0 5px;
-}
-.pagination ul li a {
-    text-decoration: none;
-    padding: 8px 16px;
-    background-color: #4CAF50;
-    color: white;
-    border-radius: 5px;
-}
-.pagination ul li span {
-    padding: 8px 16px;
-    background-color: #ddd;
-    color: black;
-    border-radius: 5px;
-}
-.pagination ul li a:hover {
-    background-color: #45a049;
-}
-</style>
 
 
 

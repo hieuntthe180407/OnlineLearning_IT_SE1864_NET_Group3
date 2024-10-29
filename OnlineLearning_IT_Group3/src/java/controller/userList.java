@@ -30,7 +30,9 @@ public class userList extends HttpServlet {
 
         // Assuming UserDAO provides the list of users
         int page = 1;
-        int recordsPerPage = 10;
+        int itemsPerPage = request.getParameter("itemsPerPage")!= null 
+                   ? Integer.parseInt(request.getParameter("itemsPerPage")) 
+                   : 10;
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
         }
@@ -39,16 +41,16 @@ public class userList extends HttpServlet {
         int totalRecords = uDao.getTotalUserCount();
 
 // Fetch users for the current page
-        List<User> users = uDao.getUsers((page - 1) * recordsPerPage, recordsPerPage);
+        List<User> users = uDao.getUsers((page - 1) * itemsPerPage, itemsPerPage);
 
 // Calculate the number of total pages
-        int totalPages = (int) Math.ceil(totalRecords * 1.0 / recordsPerPage);
+        int totalPages = (int) Math.ceil(totalRecords * 1.0 / itemsPerPage);
 
 // Set attributes for pagination
         request.setAttribute("users", users);
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
-
+        request.setAttribute("itemsPerPage", itemsPerPage);
         request.getRequestDispatcher("userList.jsp").forward(request, response);
     }
 

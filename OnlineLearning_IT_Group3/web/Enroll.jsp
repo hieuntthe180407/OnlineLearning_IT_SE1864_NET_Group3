@@ -112,23 +112,24 @@
 
                                 <!-- Multiple phone number inputs -->
                                 <div class="col-12">
-                                    <div class="form-floating">
-                                        <input type="number" class="form-control" id="phone1" name="Phone" required placeholder="Phone number 1" oninput="updatePreferredPhone()">
-                                        <label for="phone1">Phone number 1</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-floating">
-                                        <input type="number" class="form-control" id="phone2" name="Phone" placeholder="Phone number 2" oninput="updatePreferredPhone()">
-                                        <label for="phone2">Phone number 2</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-floating">
-                                        <input type="number" class="form-control" id="phone3" name="Phone" placeholder="Phone number 3" oninput="updatePreferredPhone()">
-                                        <label for="phone3">Phone number 3</label>
-                                    </div>
-                                </div>
+    <div class="form-floating">
+        <input type="tel" class="form-control" id="phone1" name="Phone" required placeholder="Phone number 1" oninput="updatePreferredPhone()" minlength="10" maxlength="12" pattern="\d{10,12}">
+        <label for="phone1">Phone number 1(10-12 digits)</label>
+    </div>
+</div>
+<div class="col-12">
+    <div class="form-floating">
+        <input type="tel" class="form-control" id="phone2" name="Phone" placeholder="Phone number 2" oninput="updatePreferredPhone()" minlength="10" maxlength="12" pattern="\d{10,12}">
+        <label for="phone2">Phone number 2(10-12 digits)</label>
+    </div>
+</div>
+<div class="col-12">
+    <div class="form-floating">
+        <input type="tel" class="form-control" id="phone3" name="Phone" placeholder="Phone number 3" oninput="updatePreferredPhone()" minlength="10" maxlength="12" pattern="\d{10,12}">
+        <label for="phone3">Phone number 3(10-12 digits)</label>
+    </div>
+</div>
+
 
                                 <!-- Dropdown to select preferred phone number -->
                                 <div class="col-12">

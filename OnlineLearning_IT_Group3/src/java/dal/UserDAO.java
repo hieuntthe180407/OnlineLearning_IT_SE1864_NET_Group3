@@ -1,4 +1,4 @@
-    /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -48,6 +48,7 @@ public class UserDAO extends DBContext {
 //        return list;
 //    }
 // List all tất cả người dùng
+
     public List<User> getAllUser() {
 
         List<User> list = new ArrayList<>();
@@ -88,54 +89,14 @@ public class UserDAO extends DBContext {
 
     public static void main(String[] args) {
         UserDAO cDAO = new UserDAO();
-        List<User> list = cDAO.getAllUser();
         
-        for (User u : list) {
-            System.out.println(u);
-        }
-        
-        cDAO.updateUserRoleStatus(2, 2, "Inactive");
+        System.out.println(cDAO.getTotalUserSearchFilterCount("", "", "", "jo"));
+
     }
 
-    public List<User> searchUser(String str,int offset, int limit) {
-        List<User> list = new ArrayList<>();
-        try {
+  
 
-            String sql = "SELECT u.*, r.roleName FROM [dbo].[User] AS u LEFT JOIN Role AS r ON u.roleID = r.roleID WHERE FullName LIKE ? OR Phone LIKE ? OR Email LIKE ? ORDER BY UserID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
-            PreparedStatement st = connection.prepareStatement(sql);
-
-            String searchTerm = "%" + str + "%";
-
-            st.setString(1, searchTerm);
-            st.setString(2, searchTerm);
-            st.setString(3, searchTerm);
-            st.setInt(4, offset);
-            st.setInt(5, limit);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                User u = new User();
-                u.setUserID(rs.getInt("userID"));
-                u.setFullName(rs.getString("fullName"));
-                u.setEmail(rs.getString("Email"));
-                u.setGender(rs.getString("Gender"));
-                u.setPassword(rs.getString("Password"));
-                u.setAddress(rs.getString("Address"));
-                u.setPhone(rs.getString("Phone"));
-                Role role = new Role();
-                role.setRoleId(rs.getInt("RoleID"));
-                 role.setRoleName(rs.getString("RoleName"));
-                u.setRole(role);
-                list.add(u);
-            }
-            rs.close();
-            st.close();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return list;
-    }
-
-    public List<User> filterUser(String gender, String role, String status, int offset, int limit ) {
+    public List<User> filterUser(String gender, String role, String status, int offset, int limit) {
         List<User> list = new ArrayList<>();
         try {
             String sql = "SELECT u.*, r.roleName FROM [dbo].[User] AS u LEFT JOIN Role AS r ON u.roleID = r.roleID WHERE Gender LIKE ? AND roleName LIKE ? AND Status LIKE ? ORDER BY UserID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
@@ -147,6 +108,52 @@ public class UserDAO extends DBContext {
             st.setString(3, "%" + status + "%");
             st.setInt(4, offset);
             st.setInt(5, limit);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                User u = new User();
+                u.setUserID(rs.getInt("userID"));
+                u.setFullName(rs.getString("fullName"));
+                u.setEmail(rs.getString("Email"));
+                u.setPassword(rs.getString("Password"));
+                u.setAddress(rs.getString("Address"));
+                u.setGender(rs.getString("Gender"));
+                u.setPhone(rs.getString("Phone"));
+                Role r = new Role();
+                r.setRoleId(rs.getInt("RoleId"));
+                r.setRoleName(rs.getString("RoleName"));
+                u.setRole(r);
+                list.add(u);
+            }
+            rs.close();
+            st.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return list;
+    }
+
+    public List<User> getUserSearchFilter(String gender, String role, String status, int offset, int limit, String str) {
+        List<User> list = new ArrayList<>();
+        try {
+            String sql = "SELECT u.*, r.roleName \n"
+                    + "FROM [dbo].[User] AS u \n"
+                    + "LEFT JOIN Role AS r ON u.roleID = r.roleID \n"
+                    + "WHERE \n"
+                    + "    (Gender LIKE ? AND roleName LIKE ? AND Status LIKE ?) \n"
+                    + "    AND (FullName LIKE ? OR Phone LIKE ? OR Email LIKE ?)\n"
+                    + "\n"
+                    + "	ORDER BY UserID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
+
+            PreparedStatement st = connection.prepareStatement(sql);
+            String searchTerm = "%" + str + "%";
+            st.setString(1, "%" + gender + "%");
+            st.setString(2, "%" + role + "%");
+            st.setString(3, "%" + status + "%");
+            st.setString(4, searchTerm);
+            st.setString(5, searchTerm);
+            st.setString(6, searchTerm);
+            st.setInt(7, offset);
+            st.setInt(8, limit);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 User u = new User();
@@ -204,6 +211,7 @@ public class UserDAO extends DBContext {
 
     }
 //Lấy thông tin của người dùng thông qua email
+
     public User getUserByEmail(String email) {
         User u = null;
 
@@ -228,7 +236,7 @@ public class UserDAO extends DBContext {
                 String address = rs.getString("Address");
                 String gender = rs.getString("Gender");
                 String reason = rs.getString("Reason");
-                
+
                 String avatar = rs.getString("Avatar");
                 int roleId = rs.getInt("RoleID");
 
@@ -239,9 +247,9 @@ public class UserDAO extends DBContext {
 
         } catch (Exception e) {
             System.out.println(e);
-            
-        } 
-        
+
+        }
+
         return u;
     }
 
@@ -304,6 +312,7 @@ public class UserDAO extends DBContext {
         return check;
     }
 //Dùng để thay đổi paswrod của người dùng
+
     public int updatePasswordByEmail(String email, String password) {
         int check = 0;
 
@@ -339,17 +348,18 @@ public class UserDAO extends DBContext {
         }
         return 0; // Return 0 in case of any error
     }
-    public int getTotalUserSearchCount(String str) {
-        String sql = "SELECT COUNT(*) FROM [dbo].[User] WHERE FullName LIKE ? OR Phone LIKE ? OR Email LIKE ? ";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql); 
-             String searchTerm = "%" + str + "%";
 
-            st.setString(1, searchTerm);
-            st.setString(2, searchTerm);
-            st.setString(3, searchTerm);
-            ResultSet rs = st.executeQuery() ;
-           
+    
+
+    public int getTotalUserFilterCount(String gender, String role, String status) {
+        String sql = "SELECT COUNT(*)  FROM [dbo].[User] AS u LEFT JOIN Role AS r ON u.roleID = r.roleID WHERE Gender LIKE ? AND roleName LIKE ? AND Status LIKE ? ";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, "%" + gender + "%");
+            st.setString(2, "%" + role + "%");
+            st.setString(3, "%" + status + "%");
+            ResultSet rs = st.executeQuery();
+
             if (rs.next()) {
                 return rs.getInt(1);
             }
@@ -358,15 +368,25 @@ public class UserDAO extends DBContext {
         }
         return 0; // Return 0 in case of any error
     }
-    public int getTotalUserFilterCount(String gender, String role, String status) {
-        String sql = "SELECT COUNT(*)  FROM [dbo].[User] AS u LEFT JOIN Role AS r ON u.roleID = r.roleID WHERE Gender LIKE ? AND roleName LIKE ? AND Status LIKE ? ";
+
+    public int getTotalUserSearchFilterCount(String gender, String role, String status, String str) {
+        String sql = "SELECT COUNT(*)  \n"
+                + "FROM [dbo].[User] AS u \n"
+                + "LEFT JOIN Role AS r ON u.roleID = r.roleID \n"
+                + "WHERE \n"
+                + "    (Gender LIKE ? AND roleName LIKE ? AND Status LIKE ?) \n"
+                + "    AND (FullName LIKE ? OR Phone LIKE ? OR Email LIKE ?)";
         try {
-            PreparedStatement st = connection.prepareStatement(sql); 
-              st.setString(1, "%" + gender + "%");
+            PreparedStatement st = connection.prepareStatement(sql);
+            String searchTerm = "%" + str + "%";
+            st.setString(1, "%" + gender + "%");
             st.setString(2, "%" + role + "%");
             st.setString(3, "%" + status + "%");
-            ResultSet rs = st.executeQuery() ;
-           
+            st.setString(4, searchTerm);
+            st.setString(5, searchTerm);
+            st.setString(6, searchTerm);
+            ResultSet rs = st.executeQuery();
+            
             if (rs.next()) {
                 return rs.getInt(1);
             }
@@ -439,6 +459,7 @@ public class UserDAO extends DBContext {
         }
     }
 //Check xem email có tồn tại hay chưa
+
     public boolean checkEmailDAO(String email) {
         boolean exists = false;
         PreparedStatement st = null;
@@ -458,8 +479,9 @@ public class UserDAO extends DBContext {
         } catch (SQLException e) {
             System.out.println(e);
         }
-        return  exists;
-}
+        return exists;
+    }
+
     //lấy thông tin người dùng qua id
     public User getUserById(int userId) {
         User user = null;
@@ -495,8 +517,8 @@ public class UserDAO extends DBContext {
 
         return user;
     }
-    
-     public void updateUserRoleStatus(int id, int role, String Status) {
+
+    public void updateUserRoleStatus(int id, int role, String Status) {
         String sql = "UPDATE [dbo].[User] set roleID=?, Status=? WHERE userID=? ";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -509,5 +531,5 @@ public class UserDAO extends DBContext {
             System.out.println(e);
         }
     }
-    
+
 }
