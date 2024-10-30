@@ -16,11 +16,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Course;
 import model.Lesson;
 
 import model.Review;
+import model.User;
 
 /**
  *
@@ -43,8 +45,6 @@ public class courseDetail extends HttpServlet {
        
        request.setAttribute("listr", listr);
       
-        
-        
           LessonDAO l = new LessonDAO();
        
         
@@ -78,8 +78,14 @@ public class courseDetail extends HttpServlet {
             System.out.println(e.getMessage());
             response.sendRedirect("courseDetail");        
         }
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("acc");
+        if(user== null)
         
         request.getRequestDispatcher("courseDetail.jsp").forward(request, response);
+        
+        else
+            request.getRequestDispatcher("courseEnrolled.jsp").forward(request, response);
     } 
 
 }
