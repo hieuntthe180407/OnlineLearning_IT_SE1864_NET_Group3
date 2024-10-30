@@ -86,6 +86,8 @@ throws ServletException, IOException {
         //neu la user da dang nhap
         pDAO.addPurchaseUser(user.getUserID(), priceID);
     }
+    
+    response.sendRedirect("CourseDetail?courseID="+ cID +"&enrolled=1");
 }
 
 

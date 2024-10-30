@@ -36,7 +36,7 @@ public class courseDetail extends HttpServlet {
     throws ServletException, IOException {
         try{
         int courseID = Integer.parseInt(request.getParameter("courseID"));
-         
+        
       
        ReviewDAO rDAO = new ReviewDAO();
        List<Review> listr = rDAO.getReviewByCourseId(courseID);
@@ -80,7 +80,8 @@ public class courseDetail extends HttpServlet {
         }
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("acc");
-        if(user== null)
+         String enrolled =request.getParameter("enrolled");
+        if(user== null && enrolled ==null)
         
         request.getRequestDispatcher("courseDetail.jsp").forward(request, response);
         
