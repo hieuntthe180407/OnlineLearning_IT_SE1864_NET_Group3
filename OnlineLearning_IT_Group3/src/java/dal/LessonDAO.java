@@ -191,7 +191,54 @@ public class LessonDAO extends DBContext {
             return false;
         }
     }
-       
+        public List<Lesson> getLessonsByCourseId(int courseId) {
+        List<Lesson> lessons = new ArrayList<>();
+        String query = "SELECT * FROM Lessons WHERE CourseID = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, courseId);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Lesson lesson = new Lesson();
+                lesson.setLessonID(rs.getInt("LessonID"));
+                lesson.setCourseID(rs.getInt("CourseID"));
+                lesson.setLessonNumber(rs.getInt("LessonNumber"));
+                lesson.setLessonURL(rs.getString("LessonURL"));
+                lesson.setLessonName(rs.getString("LessonName"));
+                lesson.setDescription(rs.getString("Description"));
+                lessons.add(lesson);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return lessons;
+    }
+
+    public Lesson getLessonById(int lessonId) {
+        Lesson lesson = null;
+        String query = "SELECT * FROM Lessons WHERE LessonID = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, lessonId);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                lesson = new Lesson();
+                lesson.setLessonID(rs.getInt("LessonID"));
+                lesson.setCourseID(rs.getInt("CourseID"));
+                lesson.setLessonNumber(rs.getInt("LessonNumber"));
+                lesson.setLessonURL(rs.getString("LessonURL"));
+                lesson.setLessonName(rs.getString("LessonName"));
+                lesson.setDescription(rs.getString("Description"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return lesson;
+    }
        public static void main(String[] args) {
         LessonDAO l = new LessonDAO();
            List<Lesson> list = l.getLessons(0, 3, 2);
