@@ -79,7 +79,7 @@
                 <label><input type="radio" name="status" value="active">Active</label>
                 <label><input type="radio" name="status" value="inactive">UnActive</label>
             </div>
-            <a href="#" class="btn btn-success">Add New Course</a>
+            <a href="addCourse.jsp" class="btn btn-success">Add New Course</a>
         </div>
             <table id="courseTable" class="table table-bordered table-striped">
                 <thead>
