@@ -38,7 +38,7 @@
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
                 padding: 20px;
                 width: 100%;
-                max-width: 600px;
+                max-width: 1000px;
                 max-height: 95vh;
                 overflow-y: auto;
             }

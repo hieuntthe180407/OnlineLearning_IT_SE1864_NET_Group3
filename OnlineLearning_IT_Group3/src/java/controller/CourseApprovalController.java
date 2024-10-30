@@ -3,11 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller.mangager;
+package controller;
 
 import dal.CourseDAO;
-
-import dal.ReviewDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,17 +13,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import model.Course;
-
-import model.Review;
 
 /**
  *
  * @author DTC
  */
-@WebServlet(name="ManagerCourseDetail", urlPatterns={"/managerCourseDetail"})
-public class ManagerCourseDetail extends HttpServlet {
+@WebServlet(name="CourseApprovalController", urlPatterns={"/courseApprovalController"})
+public class CourseApprovalController extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -42,10 +36,10 @@ public class ManagerCourseDetail extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ManagerCourseDetail</title>");  
+            out.println("<title>Servlet CourseApprovalController</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ManagerCourseDetail at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet CourseApprovalController at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,26 +56,7 @@ public class ManagerCourseDetail extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        
-        
-        //course detail
-        
-        CourseDAO cDao = new CourseDAO();
-        
-        Course course = cDao.getCourseByID(id);
-        
-        request.setAttribute("course",course);
-        
-        
-        //review
-        
-        ReviewDAO rDao = new ReviewDAO();
-        List<Review> review = rDao.getReviewByCourseId(id);
-        request.setAttribute("listReviews", review);
-        
-        request.getRequestDispatcher("managerCourseDetail.jsp").forward(request, response);
-        
+        processRequest(request, response);
     } 
 
     /** 
@@ -94,7 +69,21 @@ public class ManagerCourseDetail extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+       String courseID = request.getParameter("courseID");
+        String action = request.getParameter("action");
+
+        if (courseID != null && action != null) {
+            // Assuming you have a CourseDAO for handling DB operations
+            CourseDAO courseDAO = new CourseDAO();
+            
+            if ("approve".equals(action)) {
+                courseDAO.updateCourseStatus(courseID, true); // Approve course
+            } else if ("reject".equals(action)) {
+                courseDAO.updateCourseStatus(courseID, false); // Reject course
+            }
+        }
+
+        response.sendRedirect("adminPendingCourses.jsp"); // Redirect back to the pending courses page
     }
 
     /** 

@@ -81,14 +81,16 @@ public class ForgotPassword extends HttpServlet {
          String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
         url += "/forgotPassword.jsp";
         String email = request.getParameter("email");
+        
+        //Kiểm tra nếu email không null (tức là người dùng đã nhập email).
         if (email != null) {
             UserDAO userDao = new UserDAO();
             boolean checkMail = userDao.checkMailRegister(email);
             if (checkMail) {
                 response.getWriter().write(String.valueOf(true));
-                String token = Token.generateToken();
-                SendMail.sendMail(email, token);
-                request.getSession().setAttribute("mess", "Please check your email and change password");
+                String token = Token.generateToken();//Tạo một mã thông báo (token) bảo mật dùng để xác minh người dùng khi họ đặt lại mật khẩu.
+                SendMail.sendMail(email, token);//Gửi email đến địa chỉ email của người dùng, kèm theo mã token để đặt lại mật khẩu.
+                request.getSession().setAttribute("mess", "Please check your email and change password");//Đặt một thông báo vào phiên làm việc (session) với nội dung yêu cầu người dùng kiểm tra email để thay đổi mật khẩu.
                 response.sendRedirect(url);
             } else {
                 response.getWriter().write(String.valueOf(false));

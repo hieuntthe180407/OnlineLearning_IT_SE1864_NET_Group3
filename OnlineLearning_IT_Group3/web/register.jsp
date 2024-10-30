@@ -80,7 +80,7 @@ String error = (String) request.getAttribute("errorMessageSignUp");
                 </div>
 
                 <div class="col-12 text-center">
-                    <p>Have an account? <a class="text-decoration-none" href="login.html">Login</a></p>
+                    <p>Have an account? <a class="text-decoration-none" href="login.jsp">Login</a></p>
                 </div>
             </div>
         </form>

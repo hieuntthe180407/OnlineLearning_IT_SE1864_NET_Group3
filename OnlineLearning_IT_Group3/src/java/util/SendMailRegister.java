@@ -1,4 +1,3 @@
-
 package util;
 
 import java.util.Properties;
@@ -16,21 +15,24 @@ import java.util.logging.Level;
 
 import java.util.logging.Logger;
 
-
 public class SendMailRegister {
 
+    // Địa chỉ email người gửi
     static final String from = "keeplearnedunow@gmail.com";
-    static final String password = "lkhi egjt gwxo pqta"; // Use app password if 2FA is enabled
+    // Mật khẩu ứng dụng của email người gửi (sử dụng mật khẩu ứng dụng khi bật 2FA)
+    static final String password = "lkhi egjt gwxo pqta";
 
+    // Phương thức gửi email xác thực
     public static boolean sendMailRegister(String to, String verificationCode) {
+        // Cấu hình các thuộc tính SMTP
         Properties props = new Properties();
-        props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
-        props.put("mail.smtp.host", "smtp.gmail.com"); // SMTP host
-        props.put("mail.smtp.port", "587"); // TLS port
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true"); // Enable STARTTLS
+        props.put("mail.smtp.ssl.trust", "smtp.gmail.com");// Tin cậy máy chủ Gmail
+        props.put("mail.smtp.host", "smtp.gmail.com"); // Máy chủ SMTP của Gmail
+        props.put("mail.smtp.port", "587"); // Cổng TLS
+        props.put("mail.smtp.auth", "true");// Kích hoạt xác thực
+        props.put("mail.smtp.starttls.enable", "true");  // Kích hoạt STARTTLS
 
-        // Authenticator for password authentication
+        // Tạo Authenticator cho xác thực mật khẩu
         Authenticator auth = new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -38,17 +40,17 @@ public class SendMailRegister {
             }
         };
 
-        // Create session with authenticator
+        // Tạo một phiên làm việc với thông tin xác thực
         Session session = Session.getInstance(props, auth);
 
         try {
-            // Create a new email message
+            // Tạo một email mới
             MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(from)); // Correct format for sender
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to, false));
-            message.setSubject("Email Verification");
+            message.setFrom(new InternetAddress(from)); // Đặt địa chỉ email người gửi
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to, false)); // Đặt người nhận
+            message.setSubject("Email Verification");// Tiêu đề email
 
-            // Create HTML content for the email
+            // Nội dung HTML của email
             String htmlContent = "<!doctype html>\n"
                     + "<html lang=\"en-US\">\n"
                     + "<head>\n"
@@ -65,13 +67,13 @@ public class SendMailRegister {
                     + "</body>\n"
                     + "</html>";
 
-            message.setContent(htmlContent, "text/HTML; charset=UTF-8");
-            message.setSentDate(new Date());
-            message.setReplyTo(InternetAddress.parse(from, false)); // Set reply-to address
+            message.setContent(htmlContent, "text/HTML; charset=UTF-8"); // Đặt nội dung email dưới dạng HTML
+            message.setSentDate(new Date());  // Đặt thời gian gửi
+            message.setReplyTo(InternetAddress.parse(from, false)); // Đặt địa chỉ trả lời
 
-            // Send the message
+            // Gửi email
             Transport.send(message);
-            System.out.println("Email sent successfully!");
+            System.out.println("Email sent successfully!"); 
             return true;
         } catch (MessagingException ex) {
             Logger.getLogger(SendMailRegister.class.getName()).log(Level.SEVERE, "Email sending failed", ex);

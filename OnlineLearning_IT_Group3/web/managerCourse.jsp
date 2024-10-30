@@ -72,12 +72,15 @@
         <div class="container">
             
 
-            <div class="mb-3">
+             <!-- Nút Add New Course -->
+        <div class="d-flex justify-content-between mb-3">
+            <div>
                 <label><input type="radio" name="status" value="" checked>All</label>
                 <label><input type="radio" name="status" value="active">Active</label>
                 <label><input type="radio" name="status" value="inactive">UnActive</label>
             </div>
-
+            <a href="addCourse.jsp" class="btn btn-success">Add New Course</a>
+        </div>
             <table id="courseTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
