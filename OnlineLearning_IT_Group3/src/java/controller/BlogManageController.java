@@ -30,7 +30,7 @@ import util.Upload;
         maxRequestSize = 1024 * 1024 * 50)
 public class BlogManageController extends HttpServlet {
 
-    private BlogDAO blogDAO = new BlogDAO(); 
+    private BlogDAO blogDAO = new BlogDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -49,7 +49,10 @@ public class BlogManageController extends HttpServlet {
             Blog blog = blogDAO.viewBlogDetail(blogId);
             req.setAttribute("blog", blog);
             req.getRequestDispatcher("/blogForm.jsp").forward(req, resp);
-        } else {
+        } else  {
+            List<Blog> blogs = blogDAO.getAllPost();
+            req.setAttribute("blogs", blogs);
+            req.getRequestDispatcher("/blogManageList.jsp").forward(req, resp);
         }
     }
 
@@ -68,7 +71,7 @@ public class BlogManageController extends HttpServlet {
             Upload upload = new Upload();
             String uploadPath = getServletContext().getRealPath(pathBlog);
             String nameImgBanner = upload.uploadImg(imageUrl, uploadPath);
-            if(nameImgBanner ==  null) {
+            if (nameImgBanner == null) {
                 nameImgBanner = oldImage;
             } else {
                 nameImgBanner = pathBlog + nameImgBanner;
@@ -90,7 +93,7 @@ public class BlogManageController extends HttpServlet {
 
             Blog updatedBlog = blogDAO.viewBlogDetail(blogId);
             req.setAttribute("blog", updatedBlog);
-            resp.sendRedirect("/BlogManageController");
+            resp.sendRedirect("BlogManageController");
         }
     }
 }

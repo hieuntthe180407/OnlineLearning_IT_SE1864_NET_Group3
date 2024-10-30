@@ -211,4 +211,30 @@ public class BlogDAO extends DBContext{
         return blog;
     }
     
+    public List<Blog> getAllPost() {
+        List<Blog> blogs = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM Blogs order by BlogId desc";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Blog blog = new Blog(
+                    rs.getInt("BlogId"),
+                    rs.getInt("UserId"),
+                    rs.getInt("CategoryId"),
+                    rs.getString("Title"),
+                    rs.getString("Content"),
+                    rs.getString("Status"),
+                    rs.getString("FeaturedImage"),
+                    rs.getTimestamp("CreatedAt"),
+                    rs.getTimestamp("UpdatedAt")
+                );
+                blogs.add(blog);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: "  + e);
+        }
+        return blogs;
+    }
+    
 }

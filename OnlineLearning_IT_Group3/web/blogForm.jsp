@@ -14,9 +14,7 @@
             display: none;
         }
     </style>
-
-    <!-- CKEditor CDN with updated version -->
-    <script src="https://cdn.ckeditor.com/4.19.1/standard-all/ckeditor.js"></script>
+       <script src="https://cdn.tiny.cloud/1/qnmf6c0u3j7wk6wsljsqwke06htozhifzb9v9fs3pw2ed7vx/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 <body>
     <div class="container mt-5">
@@ -43,7 +41,7 @@
 
             <div class="form-group">
                 <label for="content">Content</label>
-                <textarea class="form-control" id="content" name="content" rows="10" required>${blog.content}</textarea>
+                <textarea class="form-control tinymce" id="content" name="content" rows="10" required>${blog.content}</textarea>
             </div>
 
             <div class="form-group">
@@ -86,12 +84,10 @@
             }
         }
 
-        CKEDITOR.replace('content', {
-            filebrowserUploadUrl: 'UploadFileController', // Update this to your file upload URL
-            filebrowserUploadMethod: 'form',
-            extraPlugins: 'uploadimage,uploadfile',
-            filebrowserVideoUploadUrl: 'UploadVideoController', // Update this to your video upload URL
-            filebrowserVideoUploadMethod: 'form'
+        tinymce.init({
+            selector: '.tinymce',
+            plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak media',
+            toolbar_mode: 'floating'
         });
     </script>
 
