@@ -436,7 +436,7 @@ public class UserDAO extends DBContext {
         try {
             // SQL query for inserting a new user
             String sql = "INSERT INTO [User] (FullName, Email, Password, Phone, Address, Gender, DateOfBirth, Avatar, RoleID, Status) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 2, 'Active')";
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, 'Active')";
 
             // Preparing the statement
             st = connection.prepareStatement(sql);
