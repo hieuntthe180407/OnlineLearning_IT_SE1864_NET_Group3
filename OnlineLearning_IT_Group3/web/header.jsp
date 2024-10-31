@@ -58,7 +58,7 @@
                     <a href="#" class="nav-item nav-link active">Home</a>
                     <a href="#" class="nav-item nav-link">About</a>
                     <a href="/OnlineLearning_IT_Group3/courseList" class="nav-item nav-link">Courses</a>
-                    <a href="#" class="nav-item nav-link">Blog</a>
+                    <a href="blogs" class="nav-item nav-link">Blog</a>
                     <a href="Admin.jsp" class="nav-item nav-link">Admin</a>
                 </div>
             </div>
