@@ -5,6 +5,7 @@
 
 package controller;
 
+import dal.EnrollDAO;
 import dal.PurchaseDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -85,6 +86,8 @@ throws ServletException, IOException {
     } else {
         //neu la user da dang nhap
         pDAO.addPurchaseUser(user.getUserID(), priceID);
+        EnrollDAO e = new EnrollDAO();
+        e.addEnrollUser(user.getUserID(), cID);
     }
     
     response.sendRedirect("lessonList?courseID="+ cID);
