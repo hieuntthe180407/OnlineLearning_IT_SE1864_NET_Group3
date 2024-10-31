@@ -41,7 +41,7 @@
 
             <div class="form-group">
                 <label for="content">Content</label>
-                <textarea class="form-control tinymce" id="content" name="content" rows="10" required>${blog.content}</textarea>
+                <textarea class="form-control tinymce" id="content" name="content" rows="10"></textarea>
             </div>
 
             <div class="form-group">

@@ -166,7 +166,25 @@ public class BlogDAO extends DBContext{
         }
         return 0;
     }
-     
+     public boolean addBlog(Blog blog) {
+        String query = "INSERT INTO Blogs (Title, Content, Status, FeaturedImage, CreatedAt, UpdatedAt) VALUES (?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setString(1, blog.getTitle());
+            pstmt.setString(2, blog.getContent());
+            pstmt.setString(3, blog.getStatus());
+            pstmt.setString(4, blog.getFeaturedImage());
+            Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+            pstmt.setTimestamp(5, currentTimestamp);
+            pstmt.setTimestamp(6, currentTimestamp);
+
+            int rowsInserted = pstmt.executeUpdate();
+            return rowsInserted > 0;
+        } catch (Exception e) {
+            System.out.println("Error adding blog: " + e);
+            return false;
+        }
+    }
       public boolean updateBlog(Blog blog) {
         String query = "UPDATE Blogs SET Title = ?, Content = ?, Status = ?, FeaturedImage = ?, UpdatedAt = ? WHERE BlogId = ?";
         try {

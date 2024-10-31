@@ -49,7 +49,13 @@ public class BlogManageController extends HttpServlet {
             Blog blog = blogDAO.viewBlogDetail(blogId);
             req.setAttribute("blog", blog);
             req.getRequestDispatcher("/blogForm.jsp").forward(req, resp);
-        } else  {
+        }
+        if ("add".equals(action)) {
+            CategoryBlogDAO categoryDao = new CategoryBlogDAO();
+            List<CategoryBlog> categoryBlog = categoryDao.getAllCategories();
+            req.setAttribute("categoryBlogs", categoryBlog);
+            req.getRequestDispatcher("/blogAddForm.jsp").forward(req, resp);
+        } else {
             List<Blog> blogs = blogDAO.getAllPost();
             req.setAttribute("blogs", blogs);
             req.getRequestDispatcher("/blogManageList.jsp").forward(req, resp);
@@ -59,8 +65,36 @@ public class BlogManageController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
+        if ("add".equals(action)) {
+            String title = req.getParameter("title");
+            String content = req.getParameter("content");
+            String status = req.getParameter("status");
+            Part imageUrl = req.getPart("featuredImage");
+            String pathBlog = "./uploads/blog/";
+            Upload upload = new Upload();
+            String uploadPath = getServletContext().getRealPath(pathBlog);
+            String nameImgBanner = upload.uploadImg(imageUrl, uploadPath);
 
-        if ("update".equals(action)) {
+            if (nameImgBanner != null) {
+                nameImgBanner = pathBlog + nameImgBanner;
+            }
+
+            Blog blog = new Blog();
+            blog.setTitle(title);
+            blog.setContent(content);
+            blog.setStatus(status);
+            blog.setFeaturedImage(nameImgBanner);
+
+            boolean isAdded = blogDAO.addBlog(blog);
+
+            if (isAdded) {
+                req.setAttribute("message", "Blog added successfully!");
+            } else {
+                req.setAttribute("message", "Failed to add blog.");
+            }
+
+            resp.sendRedirect("BlogManageController");
+        } else if ("update".equals(action)) {
             int blogId = Integer.parseInt(req.getParameter("id"));
             String title = req.getParameter("title");
             String content = req.getParameter("content");

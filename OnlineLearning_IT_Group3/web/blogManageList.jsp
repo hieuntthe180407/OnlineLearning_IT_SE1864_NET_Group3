@@ -18,6 +18,7 @@
 <body>
     <div class="container mt-5">
         <h1 class="mb-4">Blog List</h1>
+        <a href="BlogManageController?action=add" class="btn btn-info btn-sm">Add</a>
         <table id="blogTable" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr>
