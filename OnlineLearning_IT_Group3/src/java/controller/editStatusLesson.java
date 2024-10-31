@@ -35,7 +35,7 @@ public class editStatusLesson extends HttpServlet {
         {
             lDAO.activeLessonStatus(id, status);
         }
-        else if(status.equals("Deactive"))
+        else if(status.equals("Disabled"))
         {
              lDAO.deactiveLessonStatus(id, status);
         }

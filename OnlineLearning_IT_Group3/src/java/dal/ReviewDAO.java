@@ -50,7 +50,7 @@ public class ReviewDAO extends DBContext {
                 review.setRating(rs.getInt("Rating"));
                 review.setTime(rs.getTimestamp("Time").toLocalDateTime()); // Convert to LocalDateTime
                 review.setReviewContent(rs.getString("ReviewContent"));
-                review.setIsReport(rs.getInt("IsReport"));
+               
 
                 reviews.add(review);
             }

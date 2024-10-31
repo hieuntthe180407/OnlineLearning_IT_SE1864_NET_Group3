@@ -87,7 +87,7 @@ throws ServletException, IOException {
         pDAO.addPurchaseUser(user.getUserID(), priceID);
     }
     
-    response.sendRedirect("courseDetail?courseID="+ cID +"&enrolled=1");
+    response.sendRedirect("lessonList?courseID="+ cID);
 }
 
 

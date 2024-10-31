@@ -38,7 +38,7 @@ public class courseDetail extends HttpServlet {
          int courseID = Integer.parseInt(request.getParameter("courseID"));
         try{
         
-        
+     
       
        ReviewDAO rDAO = new ReviewDAO();
        List<Review> listr = rDAO.getReviewByCourseId(courseID);
@@ -51,7 +51,9 @@ public class courseDetail extends HttpServlet {
        
         
          int page = 1;
-        int recordsPerPage =3;
+        int itemsPerPage = request.getParameter("itemsPerPage")!= null 
+                   ? Integer.parseInt(request.getParameter("itemsPerPage")) 
+                   : 10;
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
         }
@@ -60,16 +62,16 @@ public class courseDetail extends HttpServlet {
         int totalRecords = l.getTotalLessonCount(courseID);
 
 // Fetch users for the current page
-        List<Lesson> users = l.getLessons((page - 1) * recordsPerPage, recordsPerPage,courseID);
+        List<Lesson> users = l.getLessons((page - 1) * itemsPerPage, itemsPerPage,courseID);
 
 // Calculate the number of total pages
-        int totalPages = (int) Math.ceil(totalRecords * 1.0 / recordsPerPage);
+        int totalPages = (int) Math.ceil(totalRecords * 1.0 / itemsPerPage);
 
 // Set attributes for pagination
         request.setAttribute("listl", users);
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
-        
+        request.setAttribute("itemsPerPage", itemsPerPage);
         
         
         CourseDAO cDAO = new CourseDAO();
@@ -80,28 +82,8 @@ public class courseDetail extends HttpServlet {
             
             response.sendRedirect("courseDetail");        
         }
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("acc");
-         String enrolled =request.getParameter("enrolled");
-         EnrollDAO e = new EnrollDAO();
-        if(user== null){
-            if(enrolled==null)
-        {
         request.getRequestDispatcher("courseDetail.jsp").forward(request, response);
-        }
-            else
-            {
-                 request.getRequestDispatcher("courseEnrolled.jsp").forward(request, response);
-            }
-        }
-        else {
-            if(e.Enrolled(user.getUserID(), courseID)){
-            request.getRequestDispatcher("courseEnrolled.jsp").forward(request, response);
-            }
-            else
-            {
-                 request.getRequestDispatcher("courseDetail.jsp").forward(request, response);
-            }
-    } 
+        
+       
     }
 }
