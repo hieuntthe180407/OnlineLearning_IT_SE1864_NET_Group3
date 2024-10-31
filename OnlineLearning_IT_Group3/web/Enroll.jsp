@@ -63,6 +63,7 @@
                 </div>
             </div>
         </div>
+       <!-- Ten course, anh thumbnail va price cho course -->
         <div class="container-xxl py-5">
             <div class="container">
                 <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
@@ -146,6 +147,7 @@
                             </div>
                         </form>
                              <%}else{%>
+                             <!-- Neu da dang nhap thi truc tiep thanh toan khong can information form -->
                              <form action="PurchaseAdd" method="get">
                                  <input type="hidden" name="CourseID" value="<%= cID %>">
                                  <div class="col-12">
@@ -157,7 +159,7 @@
                 </div>
             </div>       
 
-
+                    <!-- Script chon sdt yeu thich -->
             <script>
 function updatePreferredPhone() {
     const phoneNumbers = [

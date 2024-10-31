@@ -6,6 +6,7 @@
 package controller;
 
 import dal.CourseDAO;
+import dal.EnrollDAO;
 import dal.LessonDAO;
 
 import dal.ReviewDAO;
@@ -16,11 +17,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Course;
 import model.Lesson;
 
 import model.Review;
+import model.User;
 
 /**
  *
@@ -32,9 +35,10 @@ public class courseDetail extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+         int courseID = Integer.parseInt(request.getParameter("courseID"));
         try{
-        int courseID = Integer.parseInt(request.getParameter("courseID"));
-         
+        
+     
       
        ReviewDAO rDAO = new ReviewDAO();
        List<Review> listr = rDAO.getReviewByCourseId(courseID);
@@ -43,13 +47,13 @@ public class courseDetail extends HttpServlet {
        
        request.setAttribute("listr", listr);
       
-        
-        
           LessonDAO l = new LessonDAO();
        
         
          int page = 1;
-        int recordsPerPage =3;
+        int itemsPerPage = request.getParameter("itemsPerPage")!= null 
+                   ? Integer.parseInt(request.getParameter("itemsPerPage")) 
+                   : 10;
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
         }
@@ -58,28 +62,28 @@ public class courseDetail extends HttpServlet {
         int totalRecords = l.getTotalLessonCount(courseID);
 
 // Fetch users for the current page
-        List<Lesson> users = l.getLessons((page - 1) * recordsPerPage, recordsPerPage,courseID);
+        List<Lesson> users = l.getLessons((page - 1) * itemsPerPage, itemsPerPage,courseID);
 
 // Calculate the number of total pages
-        int totalPages = (int) Math.ceil(totalRecords * 1.0 / recordsPerPage);
+        int totalPages = (int) Math.ceil(totalRecords * 1.0 / itemsPerPage);
 
 // Set attributes for pagination
         request.setAttribute("listl", users);
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
-        
+        request.setAttribute("itemsPerPage", itemsPerPage);
         
         
         CourseDAO cDAO = new CourseDAO();
-        Course c = cDAO.getCourseByID(courseID);
+        Course c = cDAO.getCourseTeacherByID(courseID);
         request.setAttribute("Course", c);
         }
         catch (Exception e){
-            System.out.println(e.getMessage());
+            
             response.sendRedirect("courseDetail");        
         }
-        
         request.getRequestDispatcher("courseDetail.jsp").forward(request, response);
-    } 
-
+        
+       
+    }
 }

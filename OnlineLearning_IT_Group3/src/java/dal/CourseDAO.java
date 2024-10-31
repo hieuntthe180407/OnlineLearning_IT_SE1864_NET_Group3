@@ -135,6 +135,36 @@ public class CourseDAO extends DBContext {
         }
         return null;
     }
+    public Course getCourseTeacherByID(int id) {
+        try {
+            String sql = "SELECT * FROM Price p, Course c, [dbo].[User] u where p.CourseID =c.CourseID and c.UserID=u.UserID AND c.CourseID=" +id;
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            if (rs.next()) {
+                Course c = new Course();
+                c.setCourseID(rs.getInt("CourseID"));
+                c.setDuration(rs.getInt("Duration"));
+                c.setReport(rs.getInt("Report"));
+                c.setCourseName(rs.getString("CourseName"));
+                c.setCourseImg(rs.getString("courseIMG"));
+                c.setPrice(rs.getDouble("ListPrice"));
+                c.setSalePrice(rs.getDouble("SalePrice"));
+                c.setIsActive(rs.getBoolean("IsActive"));
+                c.setDescription(rs.getString("Description"));
+                
+                User u = new User();
+                u.setAbout(rs.getString("About"));
+                u.setAvatar(rs.getString("Avatar"));
+                u.setFullName(rs.getString("FullName"));
+                u.setEmail(rs.getString("Email"));
+                c.setUserId(u);
+                return c;
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
 
 //    public List<Category> getTop10Category() {
 //        List<Category> categories = new ArrayList<>();
@@ -509,15 +539,16 @@ public class CourseDAO extends DBContext {
 
     public static void main(String[] args) {
         CourseDAO dao = new CourseDAO();
-        List<Course> courses = dao.getCoursesByTeacher(1);
-
-        for (Course c : courses) {
-            System.out.println(c.getUserId().getFullName());
-
-            System.out.println("------------------");
-        }
-
-        dao.addCourse("bruh", 1, "npthing", "course1.jpg");
+//        List<Course> courses = dao.getCoursesByTeacher(1);
+//
+//        for (Course c : courses) {
+//            System.out.println(c.getUserId().getFullName());
+//
+//            System.out.println("------------------");
+//        }
+//
+//        dao.addCourse("bruh", 1, "npthing", "course1.jpg");
+            System.out.println(dao.getCourseTeacherByID(2));
     }
 // check course xem có tồn tại hay không
 

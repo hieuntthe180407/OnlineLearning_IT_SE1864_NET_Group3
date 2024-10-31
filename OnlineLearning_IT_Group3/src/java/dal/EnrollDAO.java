@@ -54,10 +54,6 @@ public class EnrollDAO extends DBContext {
 }
     public static void main(String[] args) {
         EnrollDAO e = new EnrollDAO();
-        if(e.Enrolled(1, 3))
-        {
-            System.out.println("ok");
-        }
-        else System.out.println("not ok");
+        System.out.println("");
     }
 }

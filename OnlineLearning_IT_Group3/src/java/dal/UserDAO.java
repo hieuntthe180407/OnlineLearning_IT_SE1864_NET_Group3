@@ -90,7 +90,7 @@ public class UserDAO extends DBContext {
     public static void main(String[] args) {
         UserDAO cDAO = new UserDAO();
         
-        System.out.println(cDAO.getTotalUserSearchFilterCount("", "", "", "jo"));
+        System.out.println(cDAO.getUserByEmail("bob.smith@example.com"));
 
     }
 
@@ -235,8 +235,8 @@ public class UserDAO extends DBContext {
                 String phone = rs.getString("Phone");
                 String address = rs.getString("Address");
                 String gender = rs.getString("Gender");
-                String reason = rs.getString("Reason");
-
+                
+                
                 String avatar = rs.getString("Avatar");
                 int roleId = rs.getInt("RoleID");
 
