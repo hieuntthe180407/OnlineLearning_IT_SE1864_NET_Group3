@@ -6,6 +6,7 @@
 package controller;
 
 import dal.CourseDAO;
+import dal.EnrollDAO;
 import dal.LessonDAO;
 
 import dal.ReviewDAO;
@@ -34,8 +35,9 @@ public class courseDetail extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+         int courseID = Integer.parseInt(request.getParameter("courseID"));
         try{
-        int courseID = Integer.parseInt(request.getParameter("courseID"));
+        
         
       
        ReviewDAO rDAO = new ReviewDAO();
@@ -71,22 +73,35 @@ public class courseDetail extends HttpServlet {
         
         
         CourseDAO cDAO = new CourseDAO();
-        Course c = cDAO.getCourseByID(courseID);
+        Course c = cDAO.getCourseTeacherByID(courseID);
         request.setAttribute("Course", c);
         }
         catch (Exception e){
-            System.out.println(e.getMessage());
+            
             response.sendRedirect("courseDetail");        
         }
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("acc");
          String enrolled =request.getParameter("enrolled");
-        if(user== null && enrolled ==null)
-        
+         EnrollDAO e = new EnrollDAO();
+        if(user== null){
+            if(enrolled==null)
+        {
         request.getRequestDispatcher("courseDetail.jsp").forward(request, response);
-        
-        else
+        }
+            else
+            {
+                 request.getRequestDispatcher("courseEnrolled.jsp").forward(request, response);
+            }
+        }
+        else {
+            if(e.Enrolled(user.getUserID(), courseID)){
             request.getRequestDispatcher("courseEnrolled.jsp").forward(request, response);
+            }
+            else
+            {
+                 request.getRequestDispatcher("courseDetail.jsp").forward(request, response);
+            }
     } 
-
+    }
 }

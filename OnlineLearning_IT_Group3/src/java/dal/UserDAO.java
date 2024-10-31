@@ -236,7 +236,7 @@ public class UserDAO extends DBContext {
                 String address = rs.getString("Address");
                 String gender = rs.getString("Gender");
                 String reason = rs.getString("Reason");
-
+                
                 String avatar = rs.getString("Avatar");
                 int roleId = rs.getInt("RoleID");
 

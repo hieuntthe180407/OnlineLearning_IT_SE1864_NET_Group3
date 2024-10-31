@@ -23,11 +23,11 @@ public class User {
     private Role role;
     private String avatar;
     private String status;
-
+private String about;
     public User() {
     }
 
-    public User(int userID, String fullName, String dateOfBirth, String email, String password, String phone, String address, String gender, Role role, String avatar) {
+    public User(int userID, String fullName, String dateOfBirth, String email, String password, String phone, String address, String gender, Role role, String avatar,String about) {
         this.userID = userID;
         this.fullName = fullName;
         this.dateOfBirth = dateOfBirth;
@@ -38,6 +38,20 @@ public class User {
         this.gender = gender;
         this.role = role;
         this.avatar = avatar;
+        this.about = about;
+    }
+     public User(int userID, String fullName, String dateOfBirth, String email, String password, String phone, String address, String gender, Role role, String avatar) {
+        this.userID = userID;
+        this.fullName = fullName;
+        this.dateOfBirth = dateOfBirth;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+        this.address = address;
+        this.gender = gender;
+        this.role = role;
+        this.avatar = avatar;
+    
     }
 
     public String getStatus() {
@@ -128,10 +142,20 @@ public class User {
         this.gender = gender;
     }
 
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
+    }
+
     @Override
     public String toString() {
-        return "User{" + "userID=" + userID + ", fullName=" + fullName + ", dateOfBirth=" + dateOfBirth + ", email=" + email + ", password=" + password + ", phone=" + phone + ", address=" + address + ", gender=" + gender + ", role=" + role + ", avatar=" + avatar + '}';
+        return "User{" + "userID=" + userID + ", fullName=" + fullName + ", dateOfBirth=" + dateOfBirth + ", email=" + email + ", password=" + password + ", phone=" + phone + ", address=" + address + ", gender=" + gender + ", role=" + role + ", avatar=" + avatar + ", status=" + status + ", about=" + about + '}';
     }
+
+    
 
     public User(String email, String fullName, String address, String phone, String gender, String dateOfBirth, String password, String avatar) {
         this.email = email;

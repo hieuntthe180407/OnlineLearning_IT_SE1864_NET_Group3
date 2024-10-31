@@ -86,20 +86,11 @@
                                     <p>
                                         <%=c.getDescription()%>
                                     </p>
-                                    <div class="d-flex">
-                                        <small><i class="fa fa-star text-warning"></i>
-                                            4.6</small>
-                                        <small style="margin-left: 15px;"><i class="fa fa-user-graduate"></i> 5.8L+
-                                            Learners
-                                        </small>
-                                        <small style="margin-left: 15px;"><i class="fa fa-user"></i>Beginner</small>
-                                        <small style="margin-left: 15px;"><i class="fa fa-clock me-2"></i> 2.0 Hrs</small>
-
-                                    </div>
+                               
                                     <div class="image-div text-left mt-3">
                                         <img src="img/testimonial-2.jpg" alt=""
                                              style="height: 40px; width: 40px; border-radius: 50%;">
-                                        <span style="margin-left: 10px;"><b>Instructor Name</b> - Zoe Bachman</span>
+                                        <span style="margin-left: 10px;"><b>Instructor Name</b> <%=c.getUserId().getFullName()%></span>
                                     </div>
                                 </div>
                             </div>
@@ -208,40 +199,19 @@
                         <div class="image-div text-left mt-4">
                             <div class="row">
                                 <div class="col-lg-3 col-md-6">
-                                    <img src="img/testimonial-2.jpg" alt=""
+                                    <img src="<%=c.getUserId().getAvatar()%>" alt=""
                                          style="height: 150px; width: 150px; border-radius: 50%;">
                                 </div>
                                 <div class="col-lg-9 col-md-6 mt-2">
-                                    <h5>Zoe Bachman</h5>
-                                    <p>Developer</p>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <p><i class="fa fa-star"></i>
-                                                4.87 Instructor rating</p>
-                                        </div>
-                                        <div class="col-6">
-                                            <p> <i class="fa fa-check
-
-
-                                                   "></i>
-                                                1,533 reviews</p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <p><i class="fa fa-user"></i>
-                                                20 Students</p>
-                                        </div>
-                                        <div class="col-6">
-                                            <p><i class="fa fa-video"></i>
-                                                29 courses</p>
-                                        </div>
-                                    </div>
+                                    <h5><%=c.getUserId().getFullName()%></h5>
+                                    
+                                  
+                                    
                                 </div>
                             </div>
 
                             <div class="des mt-4 mb-5">
-                                Curriculum Director at Codecademy and creative technologist. She has designed a range of Codecademy courses, including Learn HTML, Learn C#, Learn Alexa, and the beginner-friendly Learn How to Code.
+                               <%=c.getUserId().getAbout()%>
                             </div>
                         </div>
                     </div>
