@@ -17,6 +17,12 @@ import java.sql.Statement;
  * @author HP
  */
 public class CategoryBlogDAO extends DBContext{
+    
+     /**
+     * Lấy tất cả các danh mục blog từ cơ sở dữ liệu.
+     * 
+     * @return Danh sách các đối tượng CategoryBlog.
+     */
      public List<CategoryBlog> getAllCategories() {
         List<CategoryBlog> categories = new ArrayList<>();
         String query = "SELECT CategoryId, CategoryName, Description, CreatedAt FROM CategoriesBlog";
@@ -24,6 +30,7 @@ public class CategoryBlogDAO extends DBContext{
              PreparedStatement pstmt = connection.prepareStatement(query); 
              ResultSet rs = pstmt.executeQuery()) {
             
+            // Duyệt qua kết quả truy vấn và thêm các danh mục vào danh sách
             while (rs.next()) {
                 CategoryBlog category = new CategoryBlog();
                 category.setCategoryId(rs.getInt("CategoryId"));
@@ -35,6 +42,6 @@ public class CategoryBlogDAO extends DBContext{
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return categories;
+        return categories; // Trả về danh sách các danh mục
     }
 }

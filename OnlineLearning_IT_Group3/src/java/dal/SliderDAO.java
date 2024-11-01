@@ -17,9 +17,15 @@ public class SliderDAO extends DBContext{
     private Connection conn;
 
     public SliderDAO() {
-        this.conn = connection;
+        this.conn = connection; // Kết nối đến cơ sở dữ liệu
     }
 
+    /**
+     * Lấy tất cả slider đã xuất bản.
+     * 
+     * @return Danh sách các slider.
+     * @throws SQLException Nếu có lỗi xảy ra trong quá trình truy vấn.
+     */
     public List<Slider> getAllSliders() throws SQLException {
         List<Slider> sliders = new ArrayList<>();
         String query = "SELECT * FROM Slider where Publish = 1";
@@ -35,9 +41,16 @@ public class SliderDAO extends DBContext{
             slider.setPublish(rs.getBoolean("Publish"));
             sliders.add(slider);
         }
-        return sliders;
+        return sliders; // Trả về danh sách slider
     }
     
+        /**
+     * Lấy tất cả slider cho quản trị viên.
+     * 
+     * @return Danh sách các slider.
+     * @throws SQLException Nếu có lỗi xảy ra trong quá trình truy vấn.
+     */
+
     public List<Slider> getAllSlidersAdmin() throws SQLException {
         List<Slider> sliders = new ArrayList<>();
         String query = "SELECT * FROM Slider";
@@ -53,9 +66,16 @@ public class SliderDAO extends DBContext{
             slider.setPublish(rs.getBoolean("Publish"));
             sliders.add(slider);
         }
-        return sliders;
+        return sliders; // Trả về danh sách slider
     }
 
+    /**
+     * Lấy slider theo ID.
+     * 
+     * @param id ID của slider cần lấy.
+     * @return Đối tượng Slider nếu tìm thấy, ngược lại là null.
+     * @throws SQLException Nếu có lỗi xảy ra trong quá trình truy vấn.
+     */
     public Slider getSliderById(int id) throws SQLException {
         String query = "SELECT * FROM Slider WHERE SliderID = ?";
         PreparedStatement ps = conn.prepareStatement(query);
@@ -69,11 +89,18 @@ public class SliderDAO extends DBContext{
             slider.setBackLink(rs.getString("BackLink"));
             slider.setDescription(rs.getString("Description"));
             slider.setPublish(rs.getBoolean("Publish"));
-            return slider;
+            return slider; // Trả về slider tìm thấy
         }
-        return null;
+        return null; // Không tìm thấy slider
     }
 
+    
+    /**
+     * Thêm một slider mới.
+     * 
+     * @param slider Đối tượng slider cần thêm.
+     * @throws SQLException Nếu có lỗi xảy ra trong quá trình truy vấn.
+     */
     public void addSlider(Slider slider) throws SQLException {
         String query = "INSERT INTO Slider (ImageUrl, Title, BackLink, Description, Publish) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement ps = conn.prepareStatement(query);
@@ -82,9 +109,15 @@ public class SliderDAO extends DBContext{
         ps.setString(3, slider.getBackLink());
         ps.setString(4, slider.getDescription());
         ps.setBoolean(5, slider.isPublish());
-        ps.executeUpdate();
+        ps.executeUpdate(); // Thực hiện thêm slider
     }
 
+    /**
+     * Cập nhật thông tin slider.
+     * 
+     * @param slider Đối tượng slider cần cập nhật.
+     * @throws SQLException Nếu có lỗi xảy ra trong quá trình truy vấn.
+     */
     public void updateSlider(Slider slider) throws SQLException {
         String query = "UPDATE Slider SET ImageUrl = ?, Title = ?, BackLink = ?, Description = ?, Publish = ? WHERE SliderID = ?";
         PreparedStatement ps = conn.prepareStatement(query);
@@ -94,13 +127,19 @@ public class SliderDAO extends DBContext{
         ps.setString(4, slider.getDescription());
         ps.setBoolean(5, slider.isPublish());
         ps.setInt(6, slider.getSliderID());
-        ps.executeUpdate();
+        ps.executeUpdate(); // Thực hiện cập nhật slider
     }
 
+    /**
+     * Xóa một slider theo ID.
+     * 
+     * @param sliderID ID của slider cần xóa.
+     * @throws SQLException Nếu có lỗi xảy ra trong quá trình truy vấn.
+     */
     public void deleteSlider(int sliderID) throws SQLException {
         String query = "DELETE FROM Slider WHERE SliderID = ?";
         PreparedStatement ps = conn.prepareStatement(query);
         ps.setInt(1, sliderID);
-        ps.executeUpdate();
+        ps.executeUpdate(); // Thực hiện xóa slider
     }
 }
