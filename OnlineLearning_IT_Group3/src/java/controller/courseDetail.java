@@ -62,7 +62,7 @@ public class courseDetail extends HttpServlet {
         int totalRecords = l.getTotalLessonCount(courseID);
 
 // Fetch users for the current page
-        List<Lesson> users = l.getLessons((page - 1) * itemsPerPage, itemsPerPage,courseID);
+        List<Lesson> users = l.getLessons((page - 1) * itemsPerPage, itemsPerPage+1,courseID);
 
 // Calculate the number of total pages
         int totalPages = (int) Math.ceil(totalRecords * 1.0 / itemsPerPage);
