@@ -22,10 +22,7 @@ import model.Blog;
 import model.Course;
 import model.Slider;
 
-/**
- *
- * @author HP
- */
+
 @WebServlet(name = "HomeController", urlPatterns = {"/home"})
 public class HomeController extends HttpServlet {
 
@@ -70,18 +67,24 @@ public class HomeController extends HttpServlet {
         SliderDAO sliderDAO = new SliderDAO();
         List<Slider> sliders;
         try {
+            // Lấy tất cả các slider và đặt chúng làm thuộc tính request
             sliders = sliderDAO.getAllSliders();
             request.setAttribute("sliders", sliders);
 
+            // Lấy các khóa học nổi bật và đặt chúng làm thuộc tính request
         CourseDAO courseDAO = new CourseDAO();
         List<Course> featuredCourses = courseDAO.getFeaturedCourses();
         request.setAttribute("featuredCourses", featuredCourses);
 
+        // Lấy các bài đăng nổi bật và đặt chúng làm thuộc tính request
         BlogDAO blogDAO = new BlogDAO();
         List<Blog> hotPosts = blogDAO.getHostPost();
         request.setAttribute("hotPosts", hotPosts);
+        
+        // Chuyển tiếp tới trang `home.jsp` với các thuộc tính đã đặt
         request.getRequestDispatcher("home.jsp").forward(request, response);;
         } catch (SQLException ex) {
+            // Ghi lại lỗi SQL nếu có và báo cáo lỗi
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
         }
         

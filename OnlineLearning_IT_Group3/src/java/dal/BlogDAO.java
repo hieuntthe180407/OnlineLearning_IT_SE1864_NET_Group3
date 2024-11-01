@@ -19,6 +19,11 @@ import model.CategoryBlog;
  * @author ADMIN
  */
 public class BlogDAO extends DBContext{
+    /**
+     * Lấy danh sách hot post (top 6 bài viết có trạng thái "Published").
+     *
+     * @return danh sách các hot post
+     */
     public List<Blog> getHostPost() {
         List<Blog> blogs = new ArrayList<>();
         try {
@@ -44,6 +49,13 @@ public class BlogDAO extends DBContext{
         }
         return blogs;
     }
+    /**
+     * Lấy danh sách bài viết phân trang.
+     *
+     * @param page số trang hiện tại
+     * @param pageSize số lượng bài viết mỗi trang
+     * @return danh sách các bài viết
+     */
     public List<Blog> getBlogs(int page, int pageSize) {
         List<Blog> blogs = new ArrayList<>();
         String query = "SELECT * FROM Blogs ORDER BY UpdatedAt DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
@@ -69,6 +81,12 @@ public class BlogDAO extends DBContext{
         }
         return blogs;
     }
+    
+    /**
+     * Lấy tổng số lượng bài viết.
+     *
+     * @return số lượng bài viết
+     */
     public int getTotalBlogCount() {
         String query = "SELECT COUNT(*) FROM Blogs";
         try (
@@ -83,6 +101,12 @@ public class BlogDAO extends DBContext{
         }
         return 0;
     }
+    
+    /**
+     * Lấy danh sách các danh mục của blog.
+     *
+     * @return danh sách danh mục blog
+     */
     public List<CategoryBlog> getCategories() {
         List<CategoryBlog> categories = new ArrayList<>();
         String query = "SELECT * FROM CategoriesBlog";
@@ -101,6 +125,12 @@ public class BlogDAO extends DBContext{
         }
         return categories;
     }
+    /**
+     * Lấy danh sách các bài viết mới nhất.
+     *
+     * @param count số lượng bài viết muốn lấy
+     * @return danh sách các bài viết mới nhất
+     */
     public List<Blog> getLatestBlogs(int count) {
         List<Blog> blogs = new ArrayList<>();
         String query = "SELECT TOP (?) * FROM Blogs ORDER BY UpdatedAt DESC";
@@ -122,6 +152,14 @@ public class BlogDAO extends DBContext{
         }
         return blogs;
     }
+    /**
+     * Tìm kiếm các bài viết theo từ khóa.
+     *
+     * @param keyword từ khóa tìm kiếm
+     * @param page số trang hiện tại
+     * @param pageSize số lượng bài viết mỗi trang
+     * @return danh sách các bài viết khớp với từ khóa
+     */
      public List<Blog> searchBlogs(String keyword, int page, int pageSize){
         List<Blog> blogs = new ArrayList<>();
         String query = "SELECT * FROM Blogs WHERE Title LIKE ? OR Content LIKE ? ORDER BY UpdatedAt DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
@@ -150,6 +188,14 @@ public class BlogDAO extends DBContext{
         }
         return blogs;
     }
+     
+     /**
+     * Lấy số lượng bài viết phù hợp với từ khóa tìm kiếm.
+     *
+     * @param keyword từ khóa tìm kiếm
+     * @return số lượng bài viết khớp
+     */
+
      public int getSearchBlogCount(String keyword) {
         String query = "SELECT COUNT(*) FROM Blogs WHERE Title LIKE ? OR Content LIKE ?";
         try {
@@ -166,6 +212,13 @@ public class BlogDAO extends DBContext{
         }
         return 0;
     }
+     
+     /**
+     * Thêm một bài viết mới vào cơ sở dữ liệu.
+     *
+     * @param blog đối tượng Blog cần thêm
+     * @return true nếu thêm thành công, ngược lại là false
+     */
      public boolean addBlog(Blog blog) {
         String query = "INSERT INTO Blogs (Title, Content, Status, FeaturedImage, CreatedAt, UpdatedAt) VALUES (?, ?, ?, ?, ?, ?)";
         try {
@@ -185,6 +238,13 @@ public class BlogDAO extends DBContext{
             return false;
         }
     }
+     
+     /**
+     * Cập nhật thông tin một bài viết trong cơ sở dữ liệu.
+     *
+     * @param blog đối tượng Blog cần cập nhật
+     * @return true nếu cập nhật thành công, ngược lại là false
+     */
       public boolean updateBlog(Blog blog) {
         String query = "UPDATE Blogs SET Title = ?, Content = ?, Status = ?, FeaturedImage = ?, UpdatedAt = ? WHERE BlogId = ?";
         try {
@@ -204,6 +264,13 @@ public class BlogDAO extends DBContext{
         }
     }
 
+      
+      /**
+     * Lấy chi tiết của một blog cụ thể theo ID.
+     * 
+     * @param blogId ID của blog cần lấy.
+     * @return Đối tượng Blog nếu tìm thấy, ngược lại là null.
+     */
     public Blog viewBlogDetail(int blogId) {
         Blog blog = null;
         String query = "SELECT * FROM Blogs WHERE BlogId = ?";
@@ -229,6 +296,11 @@ public class BlogDAO extends DBContext{
         return blog;
     }
     
+    /**
+     * Lấy tất cả các bài viết blog được sắp xếp theo BlogId giảm dần.
+     * 
+     * @return Danh sách tất cả các đối tượng Blog.
+     */
     public List<Blog> getAllPost() {
         List<Blog> blogs = new ArrayList<>();
         try {
