@@ -47,11 +47,13 @@ public class BlogListController extends HttpServlet {
             out.println("</html>");
         }
     } 
+    // Định nghĩa kích thước trang cho phân trang
     private static final int PAGE_SIZE=5;
     private BlogDAO blogDAO;
     
     @Override
     public void init() throws ServletException {
+        // Khởi tạo BlogDAO để truy xuất dữ liệu
         blogDAO = new BlogDAO();
     }
 
@@ -66,15 +68,19 @@ public class BlogListController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
     throws ServletException, IOException {
+        // Lấy từ khóa tìm kiếm nếu có từ yêu cầu
         String searchKeyword = req.getParameter("search");
         int page = 1;
+        // Chuyển đổi số trang từ yêu cầu, mặc định là 1 nếu có lỗi
         try {
             page = Integer.parseInt(req.getParameter("page"));
         } catch (NumberFormatException e) {
         }
+          // Danh sách blog và tổng số lượng blog
         List<Blog> blogs;
         int totalBlogs;
         
+        // Nếu có từ khóa tìm kiếm, thực hiện tìm kiếm, ngược lại lấy danh sách blog mặc định
         if (searchKeyword != null && !searchKeyword.trim().isEmpty()) {
             blogs = blogDAO.searchBlogs(searchKeyword, page, PAGE_SIZE);
             totalBlogs = blogDAO.getSearchBlogCount(searchKeyword);
@@ -82,11 +88,14 @@ public class BlogListController extends HttpServlet {
             blogs = blogDAO.getBlogs(page, PAGE_SIZE);
             totalBlogs = blogDAO.getTotalBlogCount();
         }
-
+// Tính toán tổng số trang
         int totalPages = (int) Math.ceil((double) totalBlogs / PAGE_SIZE);
+        
+        // Lấy danh sách các danh mục và blog mới nhất
         List<CategoryBlog> categories = blogDAO.getCategories();
         List<Blog> latestBlogs = blogDAO.getLatestBlogs(5);
 
+        // Đặt các thuộc tính vào yêu cầu để hiển thị trên trang JSP
         req.setAttribute("blogs", blogs);
         req.setAttribute("totalPages", totalPages);
         req.setAttribute("currentPage", page);
@@ -94,6 +103,7 @@ public class BlogListController extends HttpServlet {
         req.setAttribute("latestBlogs", latestBlogs);
         req.setAttribute("searchKeyword", searchKeyword); 
 
+        // Chuyển hướng tới trang JSP để hiển thị dữ liệu blog
         req.getRequestDispatcher("blogList.jsp").forward(req, resp);
     } 
 
