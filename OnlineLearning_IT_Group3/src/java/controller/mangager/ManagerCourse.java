@@ -61,28 +61,28 @@ public class ManagerCourse extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
             //lấy session và kiểm tra người dùng chặn trang
-//        HttpSession session = request.getSession();
-//        
-//        if(session.getAttribute("teacher") != null){
-//            User u = (User)session.getAttribute("teacher");
-//            int teacherId = u.getUserID();
-//            
-//            
-//            request.getRequestDispatcher("managerCourse.jsp").forward(request, response);
-//            
-//        }else{
-//            response.sendRedirect("login");
-//        }
-
+        HttpSession session = request.getSession();
+        
+        if(session.getAttribute("teacher") != null){
+            User u = (User)session.getAttribute("teacher");
+            int teacherId = u.getUserID();
             CourseDAO cDao = new CourseDAO();
-            
-            int teacherId = 1;
-            List<Course> listAllCourse = cDao.getCoursesByTeacher(teacherId);//lấy các khóa học của teacher qua id 
+             List<Course> listAllCourse = cDao.getCoursesByTeacher(teacherId);//lấy các khóa học của teacher qua id 
             
             request.setAttribute("listCourse", listAllCourse);
         
-       
             request.getRequestDispatcher("managerCourse.jsp").forward(request, response);
+            
+        }else{
+            response.sendRedirect("login");
+        }
+
+            
+            
+//            int teacherId = 1;
+           
+       
+//            request.getRequestDispatcher("managerCourse.jsp").forward(request, response);
 
     } 
 

@@ -187,7 +187,7 @@ public class LoginController extends HttpServlet {
                     url += "/home.jsp";
                 } else if (u.getRole().getRoleId() == 2) {
                      session.setAttribute("teacher", u);
-                    url += "/home.jsp";
+                    url += "/managerCourse";
                 } else if (u.getRole().getRoleId() == 3) {
                     session.setAttribute("admin", u);
                     url += "/Admin.jsp";
