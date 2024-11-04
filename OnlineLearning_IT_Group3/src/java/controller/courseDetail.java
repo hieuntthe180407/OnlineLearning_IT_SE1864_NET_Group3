@@ -39,7 +39,7 @@ public class courseDetail extends HttpServlet {
         try{
         
      
-      
+      // get all reivews
        ReviewDAO rDAO = new ReviewDAO();
        List<Review> listr = rDAO.getReviewByCourseId(courseID);
        
@@ -51,6 +51,7 @@ public class courseDetail extends HttpServlet {
        
         
          int page = 1;
+         // lay so luong item trong 1 trang tu trang jsp, mac dinh se duoc set la 10 items
         int itemsPerPage = request.getParameter("itemsPerPage")!= null 
                    ? Integer.parseInt(request.getParameter("itemsPerPage")) 
                    : 10;
@@ -73,7 +74,7 @@ public class courseDetail extends HttpServlet {
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("itemsPerPage", itemsPerPage);
         
-        
+        // Get all the Course info includes (about teacher, price, description)
         CourseDAO cDAO = new CourseDAO();
         Course c = cDAO.getCourseTeacherByID(courseID);
         request.setAttribute("Course", c);

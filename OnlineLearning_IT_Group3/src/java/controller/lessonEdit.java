@@ -54,27 +54,54 @@ public class lessonEdit extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        String err="";
+        
+        int cID = Integer.parseInt(request.getParameter("CourseID"));
         try{
-        String idParam = request.getParameter("LessonID");
-        String name = request.getParameter("lessonName");
+    String idParam = request.getParameter("LessonID");
+       
+      
+        LessonDAO l = new LessonDAO();
+        // neu co lessonID thi se nhay vao update page
+        if(idParam !=null){
+            try{
+                 String name = request.getParameter("lessonName");
         String url = request.getParameter("lessonUrl");
         String des = request.getParameter("description");
         int num = Integer.parseInt(request.getParameter("LessonNumber"));
-        LessonDAO l = new LessonDAO();
-        if(idParam !=null){
             int id = Integer.parseInt(idParam);
             l.updateLesson(id, name, url,des,num);
-             response.sendRedirect("courseList");    
+            err="Lesson updated successfully";
+             response.sendRedirect("courseDetail?courseID="+cID+ "&err="+err); 
+            }
+            catch(Exception e)
+                    {
+                        err="You must fill all the blank!";
+                        response.sendRedirect("lessonEdit?LessonID="+idParam +"&CourseID="+cID+"&err="+err);
+                    }
         }
         else{
-            int cID = Integer.parseInt(request.getParameter("CourseID"));
+            try{
+                String name = request.getParameter("lessonName");
+        String url = request.getParameter("lessonUrl");
+        String des = request.getParameter("description");
+        int num = Integer.parseInt(request.getParameter("LessonNumber"));
+            
             l.addLesson(name, url,cID,des,num);
-           response.sendRedirect("courseDetail?CourseID="+ cID);    
+            err="Lesson added successfully";
+           response.sendRedirect("courseDetail?courseID="+ cID+ "&err="+err);    
+            }
+            catch(Exception e)
+                    {
+                        err="You must fill all the blank!";
+                        response.sendRedirect("lessonEdit.jsp?CourseID="+cID+"&err="+err);
+                    }
         }
          }
         catch (Exception e){
             System.out.println(e.getMessage());
-            response.sendRedirect("lessonEdit");        
+            err="There are some errors";
+            response.sendRedirect("CourseDetail?CourseID="+ cID +"&err="+err );        
         }
     }
     

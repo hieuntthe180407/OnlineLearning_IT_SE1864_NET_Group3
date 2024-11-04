@@ -176,7 +176,7 @@
                                         <li><i class="fa fa-video text-danger"></i>
 
                                             <%= l.getLessonName() %>
-                                            <a href="lessonEdit?LessonID=<%= l.getLessonID() %>">
+                                            <a href="lessonEdit?LessonID=<%= l.getLessonID() %>&CourseID=<%= c.getCourseID() %>">
                                                 <button type="button">Update</button></a>
                                             <!-- Neu lesson status la active se hien thi Disabled va nguoc lai -->
                                             <%if(l.getStatus().equals("Active")){   %>

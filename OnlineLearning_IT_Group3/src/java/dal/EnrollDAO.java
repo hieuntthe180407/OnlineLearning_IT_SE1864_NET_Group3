@@ -11,6 +11,7 @@ import java.sql.*;
  * @author trong
  */
 public class EnrollDAO extends DBContext {
+    // insert UserID va CourseID vao bang Enroll de luu course ma student da enroll
     public void addEnrollUser(int uID, int cID) {
         try {
             String sql = "Insert into Enroll(UserID,CourseID) values(?,?)";

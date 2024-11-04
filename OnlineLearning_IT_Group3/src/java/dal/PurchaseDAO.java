@@ -14,7 +14,7 @@ import java.util.List;
  * @author trong
  */
 public class PurchaseDAO extends DBContext {
-
+// insert vao bang Purchase theo GuestId
     public void addPurchaseGuest(int PriceID, String prePhone, String email, String name, String address, List<String> phones) {
     String insertGuestSql = "INSERT INTO Guest (PreferredPhone, Email, FullName, Address) VALUES (?, ?, ?, ?)";
     String insertPurchaseSql = "INSERT INTO Purchase (GuestId, PriceID) VALUES (?, ?)";
@@ -75,7 +75,7 @@ public class PurchaseDAO extends DBContext {
     }
 }
 
-
+// insert vao bang purchase theo UserID
     public void addPurchaseUser(int uID, int PriceID) {
         try {
             String sql = "Insert into Purchase(UserID,PriceID) values(?,?)";
