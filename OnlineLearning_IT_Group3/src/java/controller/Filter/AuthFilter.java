@@ -70,11 +70,11 @@ public class AuthFilter implements Filter {
 
         // Danh sách các URL chỉ teacher có thể truy cập
         String[] teacherPages = {"/blogs", "/ReviewAdd", "/UploadFileController", "/UploadImageController",
-            "/courseEdit", "/courseEditSubmit", "/editStatusLesson", "/lessonEdit", "/OnlineLearning_IT_Group3/managerCourse","/logout"};
+            "/courseEdit", "/courseEditSubmit", "/editStatusLesson", "/lessonEdit", "/managerCourse","/logout","/courseDetail","/courseList"};
 
         // Danh sách các URL chỉ student có thể truy cập
         String[] studentPages = {"/courseList", "/courseDetail", "/userProfile", "/changePassword", 
-            "/verifyServlet", "/ReviewAdd", "/OnlineLearning_IT_Group3/courseList", "/OnlineLearning_IT_Group3/courseDetail","/logout"};
+            "/verifyServlet", "/ReviewAdd", "/courseList", "/courseDetail","/logout"};
 
         String requestURI = httpRequest.getRequestURI();
 
