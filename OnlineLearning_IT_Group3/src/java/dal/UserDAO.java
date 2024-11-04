@@ -212,7 +212,7 @@ public class UserDAO extends DBContext {
     }
 //Lấy thông tin của người dùng thông qua email
 
-    public User getUserByEmail(String email) {
+   public User getUserByEmail(String email) {
         User u = null;
 
         PreparedStatement st = null;
@@ -220,7 +220,7 @@ public class UserDAO extends DBContext {
 
         try {
 
-            String sql = "SELECT * FROM [User] WHERE Email= ? AND Status = 'Active'";
+            String sql = "  SELECT * FROM [User] WHERE Email=? AND  [Status] ='Active'";
 
             st = connection.prepareStatement(sql);
             st.setString(1, email);
@@ -235,14 +235,14 @@ public class UserDAO extends DBContext {
                 String phone = rs.getString("Phone");
                 String address = rs.getString("Address");
                 String gender = rs.getString("Gender");
-                
-                
-                String avatar = rs.getString("Avatar");
-                int roleId = rs.getInt("RoleID");
+                String about = rs.getString("About");
 
+                String avatar = rs.getString("Avatar");
+                String status = rs.getString("Status");
+                int roleId = rs.getInt("RoleID");
                 Role role = new RoleDAO().selecById(roleId);
 
-                u = new User(userId, fullName, dateOfBirth, email, password, phone, address, avatar, role, avatar);
+                u = new User(userId, fullName, dateOfBirth, email, password, phone, address, gender, role, avatar, status, about);
             }
 
         } catch (Exception e) {
@@ -252,6 +252,7 @@ public class UserDAO extends DBContext {
 
         return u;
     }
+    
 
     public void updateUserProfile(User user) {
         String sql = "UPDATE [dbo].[User] "

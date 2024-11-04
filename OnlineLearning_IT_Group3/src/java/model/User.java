@@ -12,7 +12,7 @@ package model;
 
 public class User {
 
-    private int userID;
+  private int userID;
     private String fullName;
     private String dateOfBirth;
     private String email;
@@ -23,11 +23,18 @@ public class User {
     private Role role;
     private String avatar;
     private String status;
-private String about;
+ private String about;
     public User() {
     }
 
     public User(int userID, String fullName, String dateOfBirth, String email, String password, String phone, String address, String gender, Role role, String avatar,String about) {
+
+
+    public User() {
+    }
+
+    public User(int userID, String fullName, String dateOfBirth, String email, String password, String phone, String address, String gender, Role role, String avatar, String status, String about) {
+
         this.userID = userID;
         this.fullName = fullName;
         this.dateOfBirth = dateOfBirth;
@@ -51,8 +58,20 @@ private String about;
         this.gender = gender;
         this.role = role;
         this.avatar = avatar;
-    
+        this.status = status;
+        this.about = about;
+
     }
+
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
+    }
+
+  
 
     public String getStatus() {
         return status;
