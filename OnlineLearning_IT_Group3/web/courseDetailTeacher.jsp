@@ -132,37 +132,59 @@
                                     <form action="courseDetail" method="GET">
                                         <input type="hidden" name="courseID" value="<%= c.getCourseID() %>">
                                         <label for="itemsPerPage">Lessons per page:</label>
-                                        <input type="number" name="itemsPerPage" id="itemsPerPage" value="<%= itemsPerPage %>" min="1" onchange="this.form.submit()" />
+                                        <input type="number" name="itemsPerPage" id="itemsPerPage" value="<%= itemsPerPage %>" min="1"  />
+                                        <label for="displayOption">Choose display mode:</label>
+                                        <select name="displayOption" id="displayOption" >
+                                            <option value="both" <%= "both".equals(request.getParameter("displayOption")) ? "selected" : "" %>>Image and Name</option>
+                                            <option value="nameOnly" <%= "nameOnly".equals(request.getParameter("displayOption")) ? "selected" : "" %>>Name Only</option>
+                                        </select>
+                                        <input type="submit" value="submit"/>
                                     </form>
 
 
 
 
 
-                                    <ul>
-                                        <% for(Lesson l : listl) {
-                                            
-                                        %>
-                                        <li><i class="fa fa-video text-danger"></i>
+                                    <% String displayOption = request.getParameter("displayOption");
+   if (displayOption == null) {
+       displayOption = "both"; // Default to showing both if not set
+   }
+                                    %>
 
+                                    <ul>
+                                        <% for (Lesson l : listl) { %>
+                                        <li>
+                                            <i class="fa fa-video text-danger"></i>
+
+                                            <% if ("both".equals(displayOption)) { %>
                                             <%= l.getLessonName() %>
                                             <a href="lessonEdit?LessonID=<%= l.getLessonID() %>&CourseID=<%= c.getCourseID() %>">
-                                                <button type="button">Update</button></a>
-                                            <!-- Neu lesson status la active se hien thi Disabled va nguoc lai -->
-                                            <%if(l.getStatus().equals("Active")){   %>
-                                            <a type="button" href="editStatusLesson?LessonID=<%= l.getLessonID() %>&status=Disabled&courseID=<%=c.getCourseID()%>" > Disabled</a>
-                                            <%} else if(l.getStatus().equals("Disabled")) {%>
-                                            <a type="button" href="editStatusLesson?LessonID=<%= l.getLessonID() %>&status=Active&courseID=<%=c.getCourseID()%>" > Active</a>
-                                            <%}%>
+                                                <button type="button">Update</button>
+                                            </a>
+                                            <% if (l.getStatus().equals("Active")) { %>
+                                            <a type="button" href="editStatusLesson?LessonID=<%= l.getLessonID() %>&status=Disabled&courseID=<%= c.getCourseID() %>">Disabled</a>
+                                            <% } else if (l.getStatus().equals("Disabled")) { %>
+                                            <a type="button" href="editStatusLesson?LessonID=<%= l.getLessonID() %>&status=Active&courseID=<%= c.getCourseID() %>">Active</a>
+                                            <% } %>
+                                            <br>
+                                            <img src="img/lesson/image1.jpg" alt="<%= l.getLessonName() %>" />
+                                            <% } else if ("nameOnly".equals(displayOption)) { %>
+                                            <%= l.getLessonName() %>
+                                            <a href="lessonEdit?LessonID=<%= l.getLessonID() %>&CourseID=<%= c.getCourseID() %>">
+                                                <button type="button">Update</button>
+                                            </a>
+                                            <% if (l.getStatus().equals("Active")) { %>
+                                            <a type="button" href="editStatusLesson?LessonID=<%= l.getLessonID() %>&status=Disabled&courseID=<%= c.getCourseID() %>">Disabled</a>
+                                            <% } else if (l.getStatus().equals("Disabled")) { %>
+                                            <a type="button" href="editStatusLesson?LessonID=<%= l.getLessonID() %>&status=Active&courseID=<%= c.getCourseID() %>">Active</a>
+                                            <% } %>
+                                            <% } %>
 
-                                            <br> 
-                                            <img src="img/lesson/image1.jpg"/>
                                         </li>
-
-                                        <%}%>
-
+                                        <% } %>
                                     </ul>
-                                    
+
+
 
                                     <% 
      int currentPage = (Integer) request.getAttribute("currentPage");
@@ -175,7 +197,7 @@
                                             <%
                                                 if (currentPage > 1) {
                                             %>
-                                            <li><a href="courseDetail?page=<%= currentPage - 1 %>&courseID=<%= c.getCourseID()%>">&laquo; Previous</a></li>
+                                            <li><a href="courseDetail?page=<%= currentPage - 1 %>&courseID=<%= c.getCourseID()%>&itemsPerPage=<%=itemsPerPage%>&displayOption=<%=displayOption%>">&laquo; Previous</a></li>
                                                 <%
                                                     }
 
@@ -186,14 +208,14 @@
                                                     <%
                                                             } else {
                                                     %>
-                                            <li><a href="courseDetail?page=<%= i %>&courseID=<%= c.getCourseID()%>"><%= i %></a></li>
+                                            <li><a href="courseDetail?page=<%= i %>&courseID=<%= c.getCourseID()%>&itemsPerPage=<%=itemsPerPage%>&displayOption=<%=displayOption%>"><%= i %></a></li>
                                                 <%
                                                         }
                                                     }
 
                                                     if (currentPage < totalPages) {
                                                 %>
-                                            <li><a href="courseDetail?page=<%= currentPage + 1 %>&courseID=<%= c.getCourseID()%>">Next &raquo;</a></li>
+                                            <li><a href="courseDetail?page=<%= currentPage + 1 %>&courseID=<%= c.getCourseID()%>&itemsPerPage=<%=itemsPerPage%>&displayOption=<%=displayOption%>">Next &raquo;</a></li>
                                                 <%
                                                     }
                                                 %>
@@ -237,29 +259,29 @@
 
 
                     </div>
-                    
+
                 </div>
             </div>
         </div>
         <!-- Enroll tag end -->
 
         <!-- Course Detail end -->
-                                 
-                             
-    
 
 
 
 
-    <%@include file="footer.jsp" %>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/wow/wow.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
 
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
-</body>
+
+
+        <%@include file="footer.jsp" %>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="lib/wow/wow.min.js"></script>
+        <script src="lib/easing/easing.min.js"></script>
+        <script src="lib/waypoints/waypoints.min.js"></script>
+        <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
+        <!-- Template Javascript -->
+        <script src="js/main.js"></script>
+    </body>
 </html>

@@ -122,7 +122,7 @@
                                           } else {
                                     
                                     
-                                  %>
+                                    %>
                                     <h2 class="mt-4">
                                         Syllabus
 
@@ -130,30 +130,44 @@
                                     <form action="courseDetail" method="GET">
                                         <input type="hidden" name="courseID" value="<%= c.getCourseID() %>">
                                         <label for="itemsPerPage">Lessons per page:</label>
-                                        <input type="number" name="itemsPerPage" id="itemsPerPage" value="<%= itemsPerPage %>" min="1" onchange="this.form.submit()" />
+                                        <input type="number" name="itemsPerPage" id="itemsPerPage" value="<%= itemsPerPage %>" min="1"  />
+                                        <label for="displayOption">Choose display mode:</label>
+                                        <select name="displayOption" id="displayOption" >
+                                            <option value="both" <%= "both".equals(request.getParameter("displayOption")) ? "selected" : "" %>>Image and Name</option>
+                                            <option value="nameOnly" <%= "nameOnly".equals(request.getParameter("displayOption")) ? "selected" : "" %>>Name Only</option>
+                                        </select>
+                                        <input type="submit" value="submit"/>
                                     </form>
 
 
-
-
+                                    <% String displayOption = request.getParameter("displayOption");
+                                       if (displayOption == null) {
+                                           displayOption = "both"; // Default to showing both if not set
+                                       }
+                                    %>
 
                                     <ul>
-                                        <% for(Lesson l : listl) {
-                                            if(l.getStatus().equals("Active")){
+                                        <% for (Lesson l : listl) {
+                                            if (l.getStatus().equals("Active")) {
                                         %>
-                                        <li><i class="fa fa-video text-danger"></i>
+                                        <li>
+                                            <i class="fa fa-video text-danger"></i>
 
+                                            <% if ("both".equals(displayOption)) { %>
                                             <%= l.getLessonName() %>
+                                            <br>
+                                            <img src="img/lesson/image1.jpg" alt="<%= l.getLessonName() %>" />
+                                            <% } else if ("nameOnly".equals(displayOption)) { %>
+                                            <%= l.getLessonName() %>
+                                            <% } %>
 
-                                            <br> 
-                                            <img src="img/lesson/image1.jpg"/>
                                         </li>
-
-                                        <%}}%>
-
+                                        <% }} %>
                                     </ul>
-                                    
-                                    
+
+
+
+
 
                                     <% 
      int currentPage = (Integer) request.getAttribute("currentPage");
@@ -166,7 +180,7 @@
                                             <%
                                                 if (currentPage > 1) {
                                             %>
-                                            <li><a href="courseDetail?page=<%= currentPage - 1 %>&courseID=<%= c.getCourseID()%>">&laquo; Previous</a></li>
+                                            <li><a href="courseDetail?page=<%= currentPage - 1 %>&courseID=<%= c.getCourseID()%>&itemsPerPage=<%=itemsPerPage%>&displayOption=<%=displayOption%>">&laquo; Previous</a></li>
                                                 <%
                                                     }
 
@@ -177,19 +191,19 @@
                                                     <%
                                                             } else {
                                                     %>
-                                            <li><a href="courseDetail?page=<%= i %>&courseID=<%= c.getCourseID()%>"><%= i %></a></li>
+                                            <li><a href="courseDetail?page=<%= i %>&courseID=<%= c.getCourseID()%>&itemsPerPage=<%=itemsPerPage%>&displayOption=<%=displayOption%>"><%= i %></a></li>
                                                 <%
                                                         }
                                                     }
 
                                                     if (currentPage < totalPages) {
                                                 %>
-                                            <li><a href="courseDetail?page=<%= currentPage + 1 %>&courseID=<%= c.getCourseID()%>">Next &raquo;</a></li>
+                                            <li><a href="courseDetail?page=<%= currentPage + 1 %>&courseID=<%= c.getCourseID()%>&itemsPerPage=<%=itemsPerPage%>&displayOption=<%=displayOption%>">Next &raquo;</a></li>
                                                 <%
                                                     }
                                                 %>
                                         </ul>
-                                    </div>     
+                                    </div>    
                                 </div>
 
                             </div>
@@ -243,15 +257,15 @@
 
 
                         <div class="buttons">
-<% EnrollDAO e = new EnrollDAO();
+                            <% EnrollDAO e = new EnrollDAO();
 
-if(user !=null && e.Enrolled(user.getUserID(),c.getCourseID())){
-%>
-<a href="lessonList?courseID=<%=c.getCourseID()%>" class="text-decoration-none text-white btn p-3 w-100 mb-2">ENROLL NOW </a> 
-    <%}else{%>   
+                            if(user !=null && e.Enrolled(user.getUserID(),c.getCourseID())){
+                            %>
+                            <a href="lessonList?courseID=<%=c.getCourseID()%>" class="text-decoration-none text-white btn p-3 w-100 mb-2">ENROLL NOW </a> 
+                            <%}else{%>   
                             <a href="Enroll.jsp?CourseID=<%=c.getCourseID()%>&Price=<%=c.getSalePrice()%>&CourseName=<%=c.getCourseName()%>"
                                class="text-decoration-none text-white btn p-3 w-100 mb-2">ENROLL NOW</a>
-<%}%>
+                            <%}%>
 
 
                         </div>

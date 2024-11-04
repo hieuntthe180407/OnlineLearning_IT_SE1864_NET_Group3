@@ -40,8 +40,10 @@ public class courseDetail extends HttpServlet {
          User u = (User)session.getAttribute("acc");
          
         try{
-        
-     
+        String display = request.getParameter("displayOption")!= null 
+                   ? request.getParameter("displayOption") 
+                   : "both";
+            
       // get all reivews
        ReviewDAO rDAO = new ReviewDAO();
        List<Review> listr = rDAO.getReviewByCourseId(courseID);
@@ -66,7 +68,7 @@ public class courseDetail extends HttpServlet {
         int totalRecords = l.getTotalLessonCount(courseID);
 
 // Fetch users for the current page
-        List<Lesson> users = l.getLessons((page - 1) * itemsPerPage, itemsPerPage+1,courseID);
+        List<Lesson> users = l.getLessons((page - 1) * itemsPerPage, itemsPerPage,courseID);
 
 // Calculate the number of total pages
         int totalPages = (int) Math.ceil(totalRecords * 1.0 / itemsPerPage);
@@ -76,7 +78,7 @@ public class courseDetail extends HttpServlet {
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("itemsPerPage", itemsPerPage);
-        
+        request.setAttribute("displayOption", display);
         // Get all the Course info includes (about teacher, price, description)
         CourseDAO cDAO = new CourseDAO();
         Course c = cDAO.getCourseTeacherByID(courseID);
