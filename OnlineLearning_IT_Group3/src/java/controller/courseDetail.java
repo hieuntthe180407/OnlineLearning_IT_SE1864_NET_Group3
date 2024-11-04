@@ -36,6 +36,9 @@ public class courseDetail extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
          int courseID = Integer.parseInt(request.getParameter("courseID"));
+         HttpSession session = request.getSession();
+         User u = (User)session.getAttribute("acc");
+         
         try{
         
      
@@ -83,7 +86,18 @@ public class courseDetail extends HttpServlet {
             
             response.sendRedirect("courseDetail");        
         }
+        if(u==null)
         request.getRequestDispatcher("courseDetail.jsp").forward(request, response);
+        else{
+            if(u.getRole().getRoleId()==2)
+            {
+                request.getRequestDispatcher("courseDetailTeacher.jsp").forward(request, response);
+            }
+            else
+            {
+                request.getRequestDispatcher("courseDetail.jsp").forward(request, response);
+            }
+        }
         
        
     }

@@ -1,6 +1,6 @@
 <%-- 
-    Document   : lesson
-    Created on : Sep 17, 2024, 5:15:51 PM
+    Document   : courseDetailTeacher
+    Created on : Nov 4, 2024, 8:58:51 PM
     Author     : trong
 --%>
 
@@ -116,16 +116,18 @@
 
                                     <%    List<Lesson> listl = (List<Lesson>) request.getAttribute("listl");
                                           List<Review> listr = (List<Review>) request.getAttribute("listr");
-                                          User user = (User) session.getAttribute("acc");
+                                          
                                           if ( listl == null || listl.size() == 0 ) {
                                               out.println("Empty list ");
                                           } else {
                                     
                                     
-                                  %>
+                                  
+                                   
+                                    %>
                                     <h2 class="mt-4">
                                         Syllabus
-
+                                        <a type="button" href="lessonEdit.jsp?CourseID=<%= c.getCourseID() %>"> Add</a>
                                     </h2>
                                     <form action="courseDetail" method="GET">
                                         <input type="hidden" name="courseID" value="<%= c.getCourseID() %>">
@@ -139,20 +141,27 @@
 
                                     <ul>
                                         <% for(Lesson l : listl) {
-                                            if(l.getStatus().equals("Active")){
+                                            
                                         %>
                                         <li><i class="fa fa-video text-danger"></i>
 
                                             <%= l.getLessonName() %>
+                                            <a href="lessonEdit?LessonID=<%= l.getLessonID() %>&CourseID=<%= c.getCourseID() %>">
+                                                <button type="button">Update</button></a>
+                                            <!-- Neu lesson status la active se hien thi Disabled va nguoc lai -->
+                                            <%if(l.getStatus().equals("Active")){   %>
+                                            <a type="button" href="editStatusLesson?LessonID=<%= l.getLessonID() %>&status=Disabled&courseID=<%=c.getCourseID()%>" > Disabled</a>
+                                            <%} else if(l.getStatus().equals("Disabled")) {%>
+                                            <a type="button" href="editStatusLesson?LessonID=<%= l.getLessonID() %>&status=Active&courseID=<%=c.getCourseID()%>" > Active</a>
+                                            <%}%>
 
                                             <br> 
                                             <img src="img/lesson/image1.jpg"/>
                                         </li>
 
-                                        <%}}%>
+                                        <%}%>
 
                                     </ul>
-                                    
                                     
 
                                     <% 
@@ -228,182 +237,16 @@
 
 
                     </div>
-                    <!-- Enroll tag start -->
-                    <div class="col-lg-3 col-md-6 shadow wow fadeInUp" data-wow-delay="0.3s">
-
-                        <div class="image text-center">
-                            <img class="img-fluid mt-2" src="img/course-1.jpg" alt="" height="200px" width="500px">
-                        </div>
-
-                        <h4 class="mt-2 p-2"><%=c.getSalePrice()%> <small></small></h4>
-
-                        <h4 class="mt-2 p-2">$
-                            <small><del></del></small>
-                        </h4>
-
-
-                        <div class="buttons">
-<% EnrollDAO e = new EnrollDAO();
-
-if(user !=null && e.Enrolled(user.getUserID(),c.getCourseID())){
-%>
-<a href="lessonList?courseID=<%=c.getCourseID()%>" class="text-decoration-none text-white btn p-3 w-100 mb-2">ENROLL NOW </a> 
-    <%}else{%>   
-                            <a href="Enroll.jsp?CourseID=<%=c.getCourseID()%>&Price=<%=c.getSalePrice()%>&CourseName=<%=c.getCourseName()%>"
-                               class="text-decoration-none text-white btn p-3 w-100 mb-2">ENROLL NOW</a>
-<%}%>
-
-
-                        </div>
-                        <div class="list mt-2">
-                            <div class="list1 d-flex justify-content-between pt-2 border-bottom">
-                                <p><i class="fa fa-clock"></i> Duration</p>
-                                <p>2.0 Hrs</p>
-                            </div>
-                            <div class="list2 d-flex justify-content-between pt-2 border-bottom">
-                                <p><i class="fa fa-book"></i> Lectures</p>
-                                <p>4</p>
-                            </div>
-                            <div class="list3 d-flex justify-content-between pt-2 border-bottom">
-                                <p><i class="fa fa-bolt"></i> Enrolled</p>
-                                <p>240 students</p>
-                            </div>
-                            <div class="list4 d-flex justify-content-between pt-2 border-bottom">
-                                <p><i class="fa fa-google-translate"></i> Language</p>
-                                <p>English</p>
-                            </div>
-                            <div class="list5 d-flex justify-content-between pt-2 border-bottom">
-                                <p><i class="fa fa-list"></i> Skill Level</p>
-                                <p>Beginner</p>
-                            </div>
-                            <div class="list6 d-flex justify-content-between pt-2 border-bottom">
-                                <p><i class="fa fa-list"></i> Deadline</p>
-                                <p>Life Time</p>
-                            </div>
-                            <div class="list7 d-flex justify-content-between pt-2 border-bottom">
-                                <p><i class="fa fa-certificate"></i> Certificate</p>
-                                <p>Yes</p>
-                            </div>
-
-                        </div>
-
-
-                    </div>
+                    
                 </div>
             </div>
         </div>
         <!-- Enroll tag end -->
 
         <!-- Course Detail end -->
-        <!-- Reviews  -->
-        <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
-            <div class="container">
-                <div class="text-center">
-                    <h1 class=" bg-white text-center px-3" style="color: #fb873f;">Reviews</h1>
-                    <p class="mb-5">Can Secret Coder courses help your career? Our learners tell us how.</p>
-                </div>
-
-
-                <!-- Hien thi cac reivew cua user -->
-                <div class="owl-carousel testimonial-carousel position-relative">
-                    <% if (listr == null || listr.size() == 0) {
-                        out.println("----------------No REVIEW for this Course yet------------- ");
-                    } else {
-                        for (Review r : listr) { %>
-                    <div class="testimonial-item text-center">
-                        <img class="border rounded-circle p-2 mx-auto mb-3" src="<%=r.getUserID().getAvatar()%>" style="width: 80px; height: 80px;">
-                        <h5 class="mb-0"><%=r.getUserID().getFullName()%></h5>
-
-                        <!-- Star Rating Display -->
-                        <div class="star-rating mb-3">
-                            <% int rating = r.getRating(); 
-                            for (int i = 5; i >= 1; i--) {
-                                if (i <= rating) { %>
-                            <span class="filled-star" style="color: #FFD700;">★</span> <!-- Filled star -->
-                            <% } else { %>
-                            <span class="empty-star">☆</span> <!-- Unfilled star -->
-                            <% }
-                    } %>
-                        </div>
-
-                        <div class="testimonial-text bg-light text-center p-4">
-                            <p class="mb-0"><%= r.getReviewContent() %></p>
-                        </div>
-                    </div>
-                    <% } 
-    } %>
-                </div>
-
-                <!-- form nhap review -->
-                <div class="col-lg-12 col-md-12 wow fadeInUp" data-wow-delay="0.5s">
-                    <form action="ReviewAdd" method="get">
-                        <div class="row g-3">
-                            <input type="hidden" name="CourseID" value="<%= c.getCourseID() %>">
-
-                            <!-- Star Rating Section -->
-                            <div class="col-12">
-                                <label for="rating">Your Rating</label>
-                                <div id="rating" class="star-rating">
-                                    <input type="radio" id="star5" name="rating" value="5" required />
-                                    <label for="star5" title="5 stars">★</label>
-                                    <input type="radio" id="star4" name="rating" value="4" />
-                                    <label for="star4" title="4 stars">★</label>
-                                    <input type="radio" id="star3" name="rating" value="3" />
-                                    <label for="star3" title="3 stars">★</label>
-                                    <input type="radio" id="star2" name="rating" value="2" />
-                                    <label for="star2" title="2 stars">★</label>
-                                    <input type="radio" id="star1" name="rating" value="1" />
-                                    <label for="star1" title="1 star">★</label>
-                                </div>
-                            </div>
-
-                            <!-- Review Content Section -->
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <textarea class="form-control" required placeholder="Leave a review here" id="message" style="height: 150px" name="ReviewContent"></textarea>
-                                    <label for="review">Your Review</label>
-                                </div>
-                            </div>
-
-                            <!-- Submit Button -->
-                            <div class="col-12">
-                                <button class="btn btn-primary w-100 py-3" type="submit">Send Review</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <!-- Style rating star  -->
-                <style>
-                    .star-rating {
-                        direction: rtl;
-                        font-size: 2rem;
-                        unicode-bidi: bidi-override;
-                    }
-                    .star-rating input[type="radio"] {
-                        display: none;
-                    }
-                    .star-rating label {
-                        color: #ccc;
-                        cursor: pointer;
-                    }
-                    .star-rating input[type="radio"]:checked ~ label {
-                        color: #f90;
-                    }
-                    .star-rating label:hover,
-                    .star-rating label:hover ~ label {
-                        color: #fc0;
-                    }
-                </style>
-
-
-
-
-
-
-            </div>
-        </div>                              
-        <!-- Reviews end -->                      
-    </div>
+                                 
+                             
+    
 
 
 

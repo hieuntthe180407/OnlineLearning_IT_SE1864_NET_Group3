@@ -27,11 +27,7 @@ public class User {
     public User() {
     }
 
-    public User(int userID, String fullName, String dateOfBirth, String email, String password, String phone, String address, String gender, Role role, String avatar,String about) {
-
-
-    public User() {
-    }
+    
 
     public User(int userID, String fullName, String dateOfBirth, String email, String password, String phone, String address, String gender, Role role, String avatar, String status, String about) {
 
@@ -161,14 +157,7 @@ public class User {
         this.gender = gender;
     }
 
-    public String getAbout() {
-        return about;
-    }
-
-    public void setAbout(String about) {
-        this.about = about;
-    }
-
+    
     @Override
     public String toString() {
         return "User{" + "userID=" + userID + ", fullName=" + fullName + ", dateOfBirth=" + dateOfBirth + ", email=" + email + ", password=" + password + ", phone=" + phone + ", address=" + address + ", gender=" + gender + ", role=" + role + ", avatar=" + avatar + ", status=" + status + ", about=" + about + '}';
