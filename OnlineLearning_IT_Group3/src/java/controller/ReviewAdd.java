@@ -29,12 +29,12 @@ public class ReviewAdd extends HttpServlet {
         int cID = Integer.parseInt(request.getParameter("CourseID"));
         String err="";
         try{
-            
+            //lay id tu session
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("acc");
         
        
-        //lay id tu session
+        
              int uID = user.getUserID();
         String content = request.getParameter("ReviewContent");
         int rating = Integer.parseInt(request.getParameter("rating"));

@@ -35,7 +35,7 @@ public class courseEdit extends HttpServlet {
         CourseDAO cDAO = new CourseDAO();
         if(idParam !=null){
             int id = Integer.parseInt(idParam);
-        
+        // lay course theo courseID
         Course c = cDAO.getCourseByID(id);
        
         request.setAttribute("listCa", listCa);

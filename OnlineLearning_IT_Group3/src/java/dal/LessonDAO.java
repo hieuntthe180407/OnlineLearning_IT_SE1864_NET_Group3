@@ -22,6 +22,7 @@ public class LessonDAO extends DBContext {
      * @param id ID của bài học cần lấy.
      * @return Đối tượng Lesson nếu tìm thấy, ngược lại là null.
      */
+  
     public Lesson getLessonByID(int id){
         try {
             String sql = "Select * from Lessons where LessonID = " + id;
@@ -82,7 +83,7 @@ public class LessonDAO extends DBContext {
         return list;
     }
     
-    
+    // update LessonName,LessonURL, DEscription, LessonNumber vao bang lesson
      public boolean updateLesson(int id, String name,String url,String des,int num){
         try {
             String sql = "update Lessons set LessonName = ?, LessonURL = ?,Description=?, LessonNumber=? where LessonID = ?";
@@ -102,7 +103,7 @@ public class LessonDAO extends DBContext {
         }
     }
      
-     
+     // insert name,LessonUrl,courseID,description, lesson number vao bang Lesson
       public boolean addLesson(String name,String url, int CourseID,String des, int num){
         try {
             String sql = "Insert into Lessons(LessonName,LessonURL,CourseID,Description,LessonNumber) values(?,?,?,?,?)";
@@ -186,7 +187,7 @@ public class LessonDAO extends DBContext {
         }
         return 0; // Return 0 in case of any error
     }
-      
+      // sua status thanh active trong lesson
         public boolean activeLessonStatus(int id,String active){
         try {
             String sql = "update Lessons set Status=? where LessonID = ?";
@@ -202,6 +203,7 @@ public class LessonDAO extends DBContext {
             return false;
         }
     }
+        //sua status thanh disabled trong lesson
          public boolean deactiveLessonStatus(int id,String deactive){
         try {
             String sql = "update Lessons set Status=? where LessonID = ?";

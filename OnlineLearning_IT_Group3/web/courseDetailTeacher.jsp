@@ -102,7 +102,7 @@
                         </div>
 
 
-
+                                    <!-- The about -->
                         <div class="container-fluid wow fadeInUp mt-5 tabs">
                             <div class="tab-content mt-4">
 
@@ -113,10 +113,10 @@
                                 </div>
 
                                 <div class="container" id="Curriculum">
-
+                                    <!-- Lay list review la list lesson  -->
                                     <%    List<Lesson> listl = (List<Lesson>) request.getAttribute("listl");
                                           List<Review> listr = (List<Review>) request.getAttribute("listr");
-                                          
+                                          //neu list lesson ma null thi in ra empty list
                                           if ( listl == null || listl.size() == 0 ) {
                                               out.println("Empty list ");
                                           } else {
@@ -129,6 +129,8 @@
                                         Syllabus
                                         <a type="button" href="lessonEdit.jsp?CourseID=<%= c.getCourseID() %>"> Add</a>
                                     </h2>
+                                    <!--Form de nhap so luong lesson moi trang va che do hien thi
+                                    chi hien thi ten hoac ca ten va anh theo kem-->
                                     <form action="courseDetail" method="GET">
                                         <input type="hidden" name="courseID" value="<%= c.getCourseID() %>">
                                         <label for="itemsPerPage">Lessons per page:</label>
@@ -147,7 +149,7 @@
 
                                     <% String displayOption = request.getParameter("displayOption");
    if (displayOption == null) {
-       displayOption = "both"; // Default to showing both if not set
+       displayOption = "both"; // mac dinh hien thi ra tat ca
    }
                                     %>
 
@@ -155,12 +157,13 @@
                                         <% for (Lesson l : listl) { %>
                                         <li>
                                             <i class="fa fa-video text-danger"></i>
-
+                                            <!-- neu user chon chi hien thi ca ten va anh -->
                                             <% if ("both".equals(displayOption)) { %>
                                             <%= l.getLessonName() %>
                                             <a href="lessonEdit?LessonID=<%= l.getLessonID() %>&CourseID=<%= c.getCourseID() %>">
                                                 <button type="button">Update</button>
                                             </a>
+                                                <!-- Disabled va Active button -->
                                             <% if (l.getStatus().equals("Active")) { %>
                                             <a type="button" href="editStatusLesson?LessonID=<%= l.getLessonID() %>&status=Disabled&courseID=<%= c.getCourseID() %>">Disabled</a>
                                             <% } else if (l.getStatus().equals("Disabled")) { %>
@@ -168,11 +171,13 @@
                                             <% } %>
                                             <br>
                                             <img src="img/lesson/image1.jpg" alt="<%= l.getLessonName() %>" />
+                                            <!-- neu user chon chi hien thi ten -->
                                             <% } else if ("nameOnly".equals(displayOption)) { %>
                                             <%= l.getLessonName() %>
                                             <a href="lessonEdit?LessonID=<%= l.getLessonID() %>&CourseID=<%= c.getCourseID() %>">
                                                 <button type="button">Update</button>
                                             </a>
+                                                <!-- Disabled va Active button -->
                                             <% if (l.getStatus().equals("Active")) { %>
                                             <a type="button" href="editStatusLesson?LessonID=<%= l.getLessonID() %>&status=Disabled&courseID=<%= c.getCourseID() %>">Disabled</a>
                                             <% } else if (l.getStatus().equals("Disabled")) { %>
@@ -185,7 +190,7 @@
                                     </ul>
 
 
-
+                                    <!-- lay thong tin page hien tai -->
                                     <% 
      int currentPage = (Integer) request.getAttribute("currentPage");
      int totalPages = (Integer) request.getAttribute("totalPages");

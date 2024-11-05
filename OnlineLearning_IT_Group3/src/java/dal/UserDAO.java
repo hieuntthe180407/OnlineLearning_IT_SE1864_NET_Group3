@@ -177,7 +177,7 @@ public class UserDAO extends DBContext {
         }
         return list;
     }
-
+// Lay toan bo thong tin user theo userID
     public User getUserProfilebyId(int id) {
         String sql = "Select u.[UserID],u.[Status], u.[FullName], u.[DateOfBirth], u.[Email], u.[Password], u.[Phone], u.[Address],u.[Gender], r.[RoleName], r.[RoleID], u.[Avatar]\n"
                 + "from [dbo].[User] u, [dbo].[Role] r\n"
@@ -518,7 +518,7 @@ public class UserDAO extends DBContext {
 
         return user;
     }
-
+// update Role vs Status cua User
     public void updateUserRoleStatus(int id, int role, String Status) {
         String sql = "UPDATE [dbo].[User] set roleID=?, Status=? WHERE userID=? ";
         try {

@@ -30,9 +30,10 @@ public class lessonEdit extends HttpServlet {
         try{
         String idParam = request.getParameter("LessonID");
         LessonDAO lDAO = new LessonDAO();
+        //lessonID khac null
         if(idParam !=null){
             int id = Integer.parseInt(idParam);
-        
+        // lay toan bo thong tin lesson theo lessonID
         Lesson l = lDAO.getLessonByID(id);
         
          request.setAttribute("lesson", l);
@@ -74,12 +75,14 @@ public class lessonEdit extends HttpServlet {
             err="Lesson updated successfully";
              response.sendRedirect("courseDetail?courseID="+cID+ "&err="+err); 
             }
+            // neu name,url,description,number null thi se catch
             catch(Exception e)
                     {
                         err="You must fill all the blank!";
                         response.sendRedirect("lessonEdit?LessonID="+idParam +"&CourseID="+cID+"&err="+err);
                     }
         }
+        //lessonID = null thi nhay vao trang add
         else{
             try{
                 String name = request.getParameter("lessonName");
@@ -91,6 +94,7 @@ public class lessonEdit extends HttpServlet {
             err="Lesson added successfully";
            response.sendRedirect("courseDetail?courseID="+ cID+ "&err="+err);    
             }
+            // neu name,url,description,number null thi se catch
             catch(Exception e)
                     {
                         err="You must fill all the blank!";

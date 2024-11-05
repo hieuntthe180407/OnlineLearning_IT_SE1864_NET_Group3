@@ -38,8 +38,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
 throws ServletException, IOException {
     HttpSession session = request.getSession();
     User user = (User) session.getAttribute("acc");
-    
-    PrintWriter out = response.getWriter(); // Create PrintWriter for output
+ 
     int cID = Integer.parseInt(request.getParameter("CourseID"));
     
     PurchaseDAO pDAO = new PurchaseDAO();
@@ -57,7 +56,7 @@ throws ServletException, IOException {
         Integer phone2 = null;
         Integer phone3 = null;
 
-        // Check if the list is not null and has values
+        // Check neu phone list khong null va co gia tri
         if (phoneNumbers != null && !phoneNumbers.isEmpty()) {
             try {
                 if (!phoneNumbers.get(0).isEmpty()) {
@@ -70,7 +69,7 @@ throws ServletException, IOException {
                     phone3 = Integer.parseInt(phoneNumbers.get(2));
                 }
             } catch (NumberFormatException e) {
-                out.println("Error parsing phone numbers: " + e.getMessage());
+                
             }
         }
         

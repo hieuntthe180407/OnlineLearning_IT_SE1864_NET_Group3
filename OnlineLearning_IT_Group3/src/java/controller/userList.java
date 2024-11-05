@@ -27,9 +27,8 @@ public class userList extends HttpServlet {
             throws ServletException, IOException {
         UserDAO uDao = new UserDAO();
         
-
-        // Assuming UserDAO provides the list of users
         int page = 1;
+        // lay so luong user moi page
         int itemsPerPage = request.getParameter("itemsPerPage")!= null 
                    ? Integer.parseInt(request.getParameter("itemsPerPage")) 
                    : 10;
@@ -46,7 +45,7 @@ public class userList extends HttpServlet {
 // Calculate the number of total pages
         int totalPages = (int) Math.ceil(totalRecords * 1.0 / itemsPerPage);
 
-// Set attributes for pagination
+// Set attributes 
         request.setAttribute("users", users);
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);

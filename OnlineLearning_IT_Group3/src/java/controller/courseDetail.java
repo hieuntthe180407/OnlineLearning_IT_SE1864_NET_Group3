@@ -40,6 +40,7 @@ public class courseDetail extends HttpServlet {
          User u = (User)session.getAttribute("acc");
          
         try{
+            //lay phuong thuc hien thi ten va anh, neu null thi mac dinh la hien thi ca 2
         String display = request.getParameter("displayOption")!= null 
                    ? request.getParameter("displayOption") 
                    : "both";
@@ -64,22 +65,22 @@ public class courseDetail extends HttpServlet {
             page = Integer.parseInt(request.getParameter("page"));
         }
 
-// Get total number of users
+// lay so luong lesson trong course
         int totalRecords = l.getTotalLessonCount(courseID);
 
-// Fetch users for the current page
-        List<Lesson> users = l.getLessons((page - 1) * itemsPerPage, itemsPerPage,courseID);
+// cai dat so luong lesson moi page
+        List<Lesson> lessons = l.getLessons((page - 1) * itemsPerPage, itemsPerPage,courseID);
 
-// Calculate the number of total pages
+// Tinh so luong tong page se co
         int totalPages = (int) Math.ceil(totalRecords * 1.0 / itemsPerPage);
 
-// Set attributes for pagination
-        request.setAttribute("listl", users);
+// Set attributes 
+        request.setAttribute("listl", lessons);
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("itemsPerPage", itemsPerPage);
         request.setAttribute("displayOption", display);
-        // Get all the Course info includes (about teacher, price, description)
+        // Lay toan bo thong tin cua course theo courseID (about teacher, price, description)
         CourseDAO cDAO = new CourseDAO();
         Course c = cDAO.getCourseTeacherByID(courseID);
         request.setAttribute("Course", c);
@@ -89,14 +90,18 @@ public class courseDetail extends HttpServlet {
             response.sendRedirect("courseDetail");        
         }
         if(u==null)
+            //Guest truy cap se vao trang courseDetail
         request.getRequestDispatcher("courseDetail.jsp").forward(request, response);
         else{
+            // nguoi dung da dang nhap 
             if(u.getRole().getRoleId()==2)
             {
+                // neu la teacher thi se vao trang them, sua
                 request.getRequestDispatcher("courseDetailTeacher.jsp").forward(request, response);
             }
             else
             {
+                // neu la student thi se vao trang courseDetail nhu guest
                 request.getRequestDispatcher("courseDetail.jsp").forward(request, response);
             }
         }

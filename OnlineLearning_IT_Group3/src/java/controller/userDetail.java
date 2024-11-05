@@ -32,6 +32,7 @@ public class userDetail extends HttpServlet {
         
         UserDAO uDAO = new UserDAO();
         User u =uDAO.getUserProfilebyId(userId);
+        // lay thong tin cua user theo userID
         request.setAttribute("user", u);
         request.getRequestDispatcher("userDetailEdit.jsp").forward(request, response);
         
