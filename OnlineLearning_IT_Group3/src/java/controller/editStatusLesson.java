@@ -31,16 +31,11 @@ public class editStatusLesson extends HttpServlet {
         int cid =Integer.parseInt(request.getParameter("courseID"));
         LessonDAO lDAO = new LessonDAO();
        
-        if(status.equals("Active"))
-        {
-            //neu status nhan dc tu jsp la active
-            lDAO.activeLessonStatus(id, status);
-        }
-        else if(status.equals("Disabled"))
-        {
+        
+       
             //neu status nhan dc tu jsp la disabled
-             lDAO.deactiveLessonStatus(id, status);
-        }
+             lDAO.activeLessonStatus(id, status);
+        
         
        response.sendRedirect("courseDetail?courseID=" + cid);
         

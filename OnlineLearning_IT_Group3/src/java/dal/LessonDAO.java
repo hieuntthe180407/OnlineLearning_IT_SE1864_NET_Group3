@@ -124,7 +124,7 @@ public class LessonDAO extends DBContext {
         }
     }
       
-      
+      // lay gioi han lesson trong bang lesson 
        public List<Lesson> getLessons(int offset, int limit,int courseID) {
         List<Lesson> list = new ArrayList<>();
 
@@ -203,22 +203,7 @@ public class LessonDAO extends DBContext {
             return false;
         }
     }
-        //sua status thanh disabled trong lesson
-         public boolean deactiveLessonStatus(int id,String deactive){
-        try {
-            String sql = "update Lessons set Status=? where LessonID = ?";
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, deactive);
-            st.setInt(2, id);  
-            st.executeUpdate();
-            st.close();
-            return true;
-        }
-        catch (Exception e){
-            System.out.println(e.getMessage());
-            return false;
-        }
-    }
+        
          
      /**
      * Lấy danh sách bài học theo CourseID.

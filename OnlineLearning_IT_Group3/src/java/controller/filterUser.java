@@ -34,6 +34,7 @@ public class filterUser extends HttpServlet {
         String search = request.getParameter("query");
        UserDAO uDao = new UserDAO();
          int page = 1;
+         //so luong users xuat hien trong 1 page, mac dinh la 10 
        int itemsPerPage = request.getParameter("itemsPerPage")!= null 
                    ? Integer.parseInt(request.getParameter("itemsPerPage")) 
                    : 10;
@@ -49,7 +50,7 @@ public class filterUser extends HttpServlet {
         
          int totalPages = (int) Math.ceil(totalRecords * 1.0 / itemsPerPage);
 
-// Set attributes for pagination
+// Set attributes 
         request.setAttribute("users", users);
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
