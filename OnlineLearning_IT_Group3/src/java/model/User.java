@@ -27,12 +27,6 @@ public class User {
     public User() {
     }
 
-    public User(int userID, String fullName, String dateOfBirth, String email, String password, String phone, String address, String gender, Role role, String avatar,String about) {
-
-
-    public User() {
-    }
-
     public User(int userID, String fullName, String dateOfBirth, String email, String password, String phone, String address, String gender, Role role, String avatar, String status, String about) {
 
         this.userID = userID;
@@ -47,21 +41,7 @@ public class User {
         this.avatar = avatar;
         this.about = about;
     }
-     public User(int userID, String fullName, String dateOfBirth, String email, String password, String phone, String address, String gender, Role role, String avatar) {
-        this.userID = userID;
-        this.fullName = fullName;
-        this.dateOfBirth = dateOfBirth;
-        this.email = email;
-        this.password = password;
-        this.phone = phone;
-        this.address = address;
-        this.gender = gender;
-        this.role = role;
-        this.avatar = avatar;
-        this.status = status;
-        this.about = about;
 
-    }
 
     public String getAbout() {
         return about;
@@ -161,13 +141,7 @@ public class User {
         this.gender = gender;
     }
 
-    public String getAbout() {
-        return about;
-    }
 
-    public void setAbout(String about) {
-        this.about = about;
-    }
 
     @Override
     public String toString() {
