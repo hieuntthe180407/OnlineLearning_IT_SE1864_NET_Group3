@@ -58,7 +58,7 @@ public class lessonEdit extends HttpServlet {
         String err="";
         
         int cID = Integer.parseInt(request.getParameter("CourseID"));
-        try{
+        
     String idParam = request.getParameter("LessonID");
        
       
@@ -66,10 +66,18 @@ public class lessonEdit extends HttpServlet {
         // neu co lessonID thi se nhay vao update page
         if(idParam !=null){
             try{
-                 String name = request.getParameter("lessonName");
+        String name = request.getParameter("lessonName");
         String url = request.getParameter("lessonUrl");
         String des = request.getParameter("description");
         int num = Integer.parseInt(request.getParameter("LessonNumber"));
+        if (name == null || name.trim().isEmpty() ||
+        url == null || url.trim().isEmpty() ||
+        des == null || des.trim().isEmpty())
+                 {
+
+        throw new IllegalArgumentException();
+    }
+        
             int id = Integer.parseInt(idParam);
             l.updateLesson(id, name, url,des,num);
             err="Lesson updated successfully";
@@ -89,6 +97,13 @@ public class lessonEdit extends HttpServlet {
         String url = request.getParameter("lessonUrl");
         String des = request.getParameter("description");
         int num = Integer.parseInt(request.getParameter("LessonNumber"));
+        if (name == null || name.trim().isEmpty() ||
+        url == null || url.trim().isEmpty() ||
+        des == null || des.trim().isEmpty())
+                 {
+
+        throw new IllegalArgumentException();
+    }
             
             l.addLesson(name, url,cID,des,num);
             err="Lesson added successfully";
@@ -101,12 +116,7 @@ public class lessonEdit extends HttpServlet {
                         response.sendRedirect("lessonEdit.jsp?CourseID="+cID+"&err="+err);
                     }
         }
-         }
-        catch (Exception e){
-            System.out.println(e.getMessage());
-            err="There are some errors";
-            response.sendRedirect("CourseDetail?CourseID="+ cID +"&err="+err );        
-        }
+        
     }
     
 

@@ -8,6 +8,7 @@ import java.sql.*;
 import java.util.*;
 import model.Category;
 import model.Course;
+import model.Enroll;
 import model.Price;
 
 import model.User;
@@ -539,16 +540,16 @@ public class CourseDAO extends DBContext {
 
     public static void main(String[] args) {
         CourseDAO dao = new CourseDAO();
-//        List<Course> courses = dao.getCoursesByTeacher(1);
-//
-//        for (Course c : courses) {
-//            System.out.println(c.getUserId().getFullName());
-//
-//            System.out.println("------------------");
-//        }
+        List<Course> courses = dao.getEnrollCourse(21);
+
+        for (Course c : courses) {
+            System.out.println(c);
+
+            System.out.println("------------------");
+        }
 //
 //        dao.addCourse("bruh", 1, "npthing", "course1.jpg");
-            System.out.println(dao.getCourseTeacherByID(2));
+//            System.out.println(dao.getCourseTeacherByID(2));
     }
 // check course xem có tồn tại hay không
 
@@ -695,5 +696,39 @@ public class CourseDAO extends DBContext {
             }
         }
     }
+    
+    public List<Course> getEnrollCourse(int uId)
+   {
+       List<Course> list = new ArrayList<>();
+       String sql = "Select * FROM Enroll e, Course c, [dbo].[User] u WHERE u.UserID= e.UserID AND c.CourseID=e.CourseID AND u.UserID= "+uId;
+
+        try {
+
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                
+                Course c = new Course();
+                c.setCourseID(rs.getInt("courseID"));
+                c.setDuration(rs.getInt("Duration"));
+                c.setReport(rs.getInt("Report"));
+                c.setCourseImg(rs.getString("courseIMG"));
+                c.setCourseName(rs.getString("courseName"));
+                c.setDescription(rs.getString("Description"));
+                
+               
+                list.add(c);
+                
+
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return list;
+   }
+    
+    
 
 }

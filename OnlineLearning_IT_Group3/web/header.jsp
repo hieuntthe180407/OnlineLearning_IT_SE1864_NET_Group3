@@ -73,6 +73,9 @@
                     <c:choose>
                         <c:when test="${not empty sessionScope.acc}">
                             <li>
+                                <a class="dropdown-item" href="MyCourse">My Course</a>
+                            </li>
+                            <li>
                                 <a class="dropdown-item" href="userProfile">Welcome, ${sessionScope.acc.fullName}</a>
                             </li>
                             <li>

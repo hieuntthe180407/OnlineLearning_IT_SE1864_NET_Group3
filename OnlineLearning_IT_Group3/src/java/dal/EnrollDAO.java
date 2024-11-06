@@ -5,6 +5,10 @@
 package dal;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import model.Course;
+import model.Enroll;
 
 /**
  *
@@ -53,6 +57,39 @@ public class EnrollDAO extends DBContext {
         return false;
     }
 }
+   public List<Enroll> getEnroll(int uId)
+   {
+       List<Enroll> list = new ArrayList<>();
+       String sql = "Select * FROM Enroll e, Course c, User u WHERE u.UserID= e.UserID, c.CourseID=e.CourseID AND u.UserID= "+uId;
+
+        try {
+
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                Enroll e = new Enroll();
+                Course c = new Course();
+                c.setCourseID(rs.getInt("courseID"));
+                c.setDuration(rs.getInt("Duration"));
+                c.setReport(rs.getInt("Report"));
+                c.setCourseImg(rs.getString("courseIMG"));
+                c.setCourseName(rs.getString("courseName"));
+                c.setDescription(rs.getString("Description"));
+                c.setPrice(rs.getDouble("ListPrice"));
+                c.setSalePrice(rs.getDouble("SalePrice"));
+                c.setIsActive(rs.getBoolean("IsActive"));
+                e.setCourse(c);
+                list.add(e);
+                
+
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return list;
+   }
     public static void main(String[] args) {
         EnrollDAO e = new EnrollDAO();
         System.out.println("");
