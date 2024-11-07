@@ -165,6 +165,7 @@ CREATE TABLE [dbo].[Lessons](
 	[LessonUrl] [varchar](255) NULL,
 	[Description] [text] NULL,
 	[Status] [varchar](255) NOT NULL,
+	[LessonImg] [varchar](255) NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[LessonID] ASC
