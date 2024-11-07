@@ -61,7 +61,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title">${course.courseName}</h5>
                                     <p class="card-text">${course.description}</p>
-                                    <a href="courseDetails.jsp?id=${course.courseID}" class="btn btn-primary">View Course</a>
+                                    <a href="courseDetailUserView?courseId=${course.courseID}" class="btn btn-primary">View Course</a>
                                 </div>
                             </div>
                         </div>
@@ -82,7 +82,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title">${post.title}</h5>
                                     <p class="card-text">Published on: ${post.createdAt}</p>
-                                    <a href="postDetails.jsp?id=${post.blogId}" class="btn btn-primary">Read More</a>
+                                    <a href="BlogUserViewDetailController?blogIdd=${post.blogId}" class="btn btn-primary">Read More</a>
                                 </div>
                             </div>
                         </div>
