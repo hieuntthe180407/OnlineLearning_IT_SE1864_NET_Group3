@@ -731,4 +731,18 @@ public class CourseDAO extends DBContext {
     
     
 
+ public int getNumberMax(String courseid) {
+        try {
+            String sql = "  select top(1) [MoocNumber] from [Mooc] where [CourseID] = " + courseid + " order by [MoocNumber] desc";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return 0;
+    }
+
+
 }

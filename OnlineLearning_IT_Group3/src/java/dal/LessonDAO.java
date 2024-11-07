@@ -15,14 +15,6 @@ import model.Lesson;
  * @author trong
  */
 public class LessonDAO extends DBContext {
-    
-    /**
-     * Lấy bài học theo ID.
-     * 
-     * @param id ID của bài học cần lấy.
-     * @return Đối tượng Lesson nếu tìm thấy, ngược lại là null.
-     */
-  
     public Lesson getLessonByID(int id){
         try {
             String sql = "Select * from Lessons where LessonID = " + id;
@@ -45,12 +37,6 @@ public class LessonDAO extends DBContext {
         return null;
     }
     
-    /**
-     * Lấy tất cả bài học theo CourseID.
-     * 
-     * @param CourseID ID của khóa học.
-     * @return Danh sách các bài học.
-     */
     public List<Lesson> getAlllessonBycourseID(int CourseID) {
 
         List<Lesson> list = new ArrayList<>();
@@ -82,8 +68,6 @@ public class LessonDAO extends DBContext {
 
         return list;
     }
-    
-    // update LessonName,LessonURL, DEscription, LessonNumber vao bang lesson
      public boolean updateLesson(int id, String name,String url,String des,int num){
         try {
             String sql = "update Lessons set LessonName = ?, LessonURL = ?,Description=?, LessonNumber=? where LessonID = ?";
@@ -102,8 +86,6 @@ public class LessonDAO extends DBContext {
             return false;
         }
     }
-     
-     // insert name,LessonUrl,courseID,description, lesson number vao bang Lesson
       public boolean addLesson(String name,String url, int CourseID,String des, int num){
         try {
             String sql = "Insert into Lessons(LessonName,LessonURL,CourseID,Description,LessonNumber) values(?,?,?,?,?)";
@@ -123,8 +105,6 @@ public class LessonDAO extends DBContext {
             return false;
         }
     }
-      
-      // lay gioi han lesson trong bang lesson 
        public List<Lesson> getLessons(int offset, int limit,int courseID) {
         List<Lesson> list = new ArrayList<>();
 
@@ -158,13 +138,6 @@ public class LessonDAO extends DBContext {
         }
         return list;
     }
-       
-       /**
-     * Lấy tổng số bài học theo CourseID.
-     * 
-     * @param courseID ID khóa học.
-     * @return Tổng số bài học.
-     */
        public int getTotalLessonCount(int courseID) {
         
        try {
@@ -176,9 +149,6 @@ public class LessonDAO extends DBContext {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 return rs.getInt(1);
-
-              
-               
             }
             rs.close();
             st.close();
@@ -187,7 +157,7 @@ public class LessonDAO extends DBContext {
         }
         return 0; // Return 0 in case of any error
     }
-      // sua status thanh active trong lesson
+       
         public boolean activeLessonStatus(int id,String active){
         try {
             String sql = "update Lessons set Status=? where LessonID = ?";
@@ -203,68 +173,22 @@ public class LessonDAO extends DBContext {
             return false;
         }
     }
-        
-         
-     /**
-     * Lấy danh sách bài học theo CourseID.
-     * 
-     * @param courseId ID khóa học.
-     * @return Danh sách bài học.
-     */
-        public List<Lesson> getLessonsByCourseId(int courseId) {
-        List<Lesson> lessons = new ArrayList<>();
-        String query = "SELECT * FROM Lessons WHERE CourseID = ?";
-
-        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setInt(1, courseId);
-            ResultSet rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                Lesson lesson = new Lesson();
-                lesson.setLessonID(rs.getInt("LessonID"));
-                lesson.setCourseID(rs.getInt("CourseID"));
-                lesson.setLessonNumber(rs.getInt("LessonNumber"));
-                lesson.setLessonURL(rs.getString("LessonURL"));
-                lesson.setLessonName(rs.getString("LessonName"));
-                lesson.setDescription(rs.getString("Description"));
-                lessons.add(lesson);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+         public boolean deactiveLessonStatus(int id,String deactive){
+        try {
+            String sql = "update Lessons set Status=? where LessonID = ?";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, deactive);
+            st.setInt(2, id);  
+            st.executeUpdate();
+            st.close();
+            return true;
         }
-
-        return lessons;
-    }
-
-        /**
-     * Lấy bài học theo ID.
-     * 
-     * @param lessonId ID bài học.
-     * @return Đối tượng Lesson nếu tìm thấy, ngược lại là null.
-     */
-    public Lesson getLessonById(int lessonId) {
-        Lesson lesson = null;
-        String query = "SELECT * FROM Lessons WHERE LessonID = ?";
-
-        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setInt(1, lessonId);
-            ResultSet rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                lesson = new Lesson();
-                lesson.setLessonID(rs.getInt("LessonID"));
-                lesson.setCourseID(rs.getInt("CourseID"));
-                lesson.setLessonNumber(rs.getInt("LessonNumber"));
-                lesson.setLessonURL(rs.getString("LessonURL"));
-                lesson.setLessonName(rs.getString("LessonName"));
-                lesson.setDescription(rs.getString("Description"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
         }
-
-        return lesson;
     }
+       
        public static void main(String[] args) {
         LessonDAO l = new LessonDAO();
            List<Lesson> list = l.getLessons(0, 3, 2);
