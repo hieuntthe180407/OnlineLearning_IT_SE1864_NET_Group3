@@ -53,7 +53,7 @@ public class UserDAO extends DBContext {
 
         List<User> list = new ArrayList<>();
         //Câu truy vấn trên sẽ lấy toàn bộ thông tin người dùng cùng với tên vai trò của họ từ bảng `
-        
+
         String sql = "Select u.[UserID], u.[FullName], u.[DateOfBirth], u.[Email], u.[Password], u.[Phone], u.[Address],u.[Gender], r.[RoleName]\n"
                 + "from [dbo].[User] u, [dbo].[Role] r\n"
                 + "where r.RoleID = u.RoleID ;";
@@ -87,17 +87,42 @@ public class UserDAO extends DBContext {
         return list;
     }
 
-    public static void main(String[] args) {
-        UserDAO cDAO = new UserDAO();
-        
-        System.out.println(cDAO.getUserByEmail("bob.smith@example.com"));
+    public List<User> filterUser(String gender, String role, String status, int offset, int limit) {
+        List<User> list = new ArrayList<>();
+        try {
+            String sql = "SELECT u.*, r.roleName FROM [dbo].[User] AS u LEFT JOIN Role AS r ON u.roleID = r.roleID WHERE Gender LIKE ? AND roleName LIKE ? AND Status LIKE ? ORDER BY UserID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
 
+            PreparedStatement st = connection.prepareStatement(sql);
+
+            st.setString(1, "%" + gender + "%");
+            st.setString(2, "%" + role + "%");
+            st.setString(3, "%" + status + "%");
+            st.setInt(4, offset);
+            st.setInt(5, limit);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                User u = new User();
+                u.setUserID(rs.getInt("userID"));
+                u.setFullName(rs.getString("fullName"));
+                u.setEmail(rs.getString("Email"));
+                u.setPassword(rs.getString("Password"));
+                u.setAddress(rs.getString("Address"));
+                u.setGender(rs.getString("Gender"));
+                u.setPhone(rs.getString("Phone"));
+                Role r = new Role();
+                r.setRoleId(rs.getInt("RoleId"));
+                r.setRoleName(rs.getString("RoleName"));
+                u.setRole(r);
+                list.add(u);
+            }
+            rs.close();
+            st.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return list;
     }
 
-  
-
-   
-// lay list users sau khi su dung filter (search,filter)
     public List<User> getUserSearchFilter(String gender, String role, String status, int offset, int limit, String str) {
         List<User> list = new ArrayList<>();
         try {
@@ -143,7 +168,7 @@ public class UserDAO extends DBContext {
         }
         return list;
     }
-// Lay toan bo thong tin user theo userID
+
     public User getUserProfilebyId(int id) {
         String sql = "Select u.[UserID],u.[Status], u.[FullName], u.[DateOfBirth], u.[Email], u.[Password], u.[Phone], u.[Address],u.[Gender], r.[RoleName], r.[RoleID], u.[Avatar]\n"
                 + "from [dbo].[User] u, [dbo].[Role] r\n"
@@ -178,7 +203,7 @@ public class UserDAO extends DBContext {
     }
 //Lấy thông tin của người dùng thông qua email
 
-   public User getUserByEmail(String email) {
+    public User getUserByEmail(String email) {
         User u = null;
 
         PreparedStatement st = null;
@@ -202,7 +227,6 @@ public class UserDAO extends DBContext {
                 String address = rs.getString("Address");
                 String gender = rs.getString("Gender");
                 String about = rs.getString("About");
-
                 String avatar = rs.getString("Avatar");
                 String status = rs.getString("Status");
                 int roleId = rs.getInt("RoleID");
@@ -218,7 +242,6 @@ public class UserDAO extends DBContext {
 
         return u;
     }
-    
 
     public void updateUserProfile(User user) {
         String sql = "UPDATE [dbo].[User] "
@@ -303,7 +326,7 @@ public class UserDAO extends DBContext {
         }
         return check;
     }
-// lay tong so luong users trong bang user
+
     public int getTotalUserCount() {
         String sql = "SELECT COUNT(*) FROM [dbo].[User]";
         try (PreparedStatement st = connection.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
@@ -316,10 +339,24 @@ public class UserDAO extends DBContext {
         return 0; // Return 0 in case of any error
     }
 
-    
+    public int getTotalUserFilterCount(String gender, String role, String status) {
+        String sql = "SELECT COUNT(*)  FROM [dbo].[User] AS u LEFT JOIN Role AS r ON u.roleID = r.roleID WHERE Gender LIKE ? AND roleName LIKE ? AND Status LIKE ? ";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, "%" + gender + "%");
+            st.setString(2, "%" + role + "%");
+            st.setString(3, "%" + status + "%");
+            ResultSet rs = st.executeQuery();
 
-   
-// tong so luong user con lai sau khi su dung filter
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0; // Return 0 in case of any error
+    }
+
     public int getTotalUserSearchFilterCount(String gender, String role, String status, String str) {
         String sql = "SELECT COUNT(*)  \n"
                 + "FROM [dbo].[User] AS u \n"
@@ -337,7 +374,7 @@ public class UserDAO extends DBContext {
             st.setString(5, searchTerm);
             st.setString(6, searchTerm);
             ResultSet rs = st.executeQuery();
-            
+
             if (rs.next()) {
                 return rs.getInt(1);
             }
@@ -346,7 +383,7 @@ public class UserDAO extends DBContext {
         }
         return 0; // Return 0 in case of any error
     }
-// lay list user gioi han de phan trang
+
     public List<User> getUsers(int offset, int limit) {
         List<User> list = new ArrayList<>();
 
@@ -387,7 +424,7 @@ public class UserDAO extends DBContext {
         try {
             // SQL query for inserting a new user
             String sql = "INSERT INTO [User] (FullName, Email, Password, Phone, Address, Gender, DateOfBirth, Avatar, RoleID, Status) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, 'Active')";
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 2, 'Active')";
 
             // Preparing the statement
             st = connection.prepareStatement(sql);
@@ -468,7 +505,7 @@ public class UserDAO extends DBContext {
 
         return user;
     }
-// update Role vs Status cua User
+
     public void updateUserRoleStatus(int id, int role, String Status) {
         String sql = "UPDATE [dbo].[User] set roleID=?, Status=? WHERE userID=? ";
         try {
@@ -483,4 +520,9 @@ public class UserDAO extends DBContext {
         }
     }
 
+    public static void main(String[] args) {
+        UserDAO udao = new UserDAO();
+        User user = udao.getUserByEmail("teacher@gmail.com");
+        System.out.println(user.getRole().getRoleId());
+    }
 }
