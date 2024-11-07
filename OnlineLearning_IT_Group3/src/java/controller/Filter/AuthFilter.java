@@ -43,7 +43,8 @@ import model.User;
     "/addAnswerServlet",
     "/ExportServlet",
     "/QuestionListServlet",
-    "/removeOptionServlet"
+    "/removeOptionServlet",
+        "/courseDetailTeacher.jsp"
 })
 public class AuthFilter implements Filter {
 
@@ -82,7 +83,7 @@ public class AuthFilter implements Filter {
 
         // Danh sách các URL chỉ teacher có thể truy cập
         String[] teacherPages = {"/blogs", "/ReviewAdd", "/UploadFileController", "/UploadImageController",
-            "/courseEdit", "/courseEditSubmit", "/editStatusLesson", "/lessonEdit", "/managerCourse", "/logout", "/courseDetail", "/courseList"};
+            "/courseEdit", "/courseEditSubmit", "/editStatusLesson", "/lessonEdit", "/managerCourse", "/logout", "/courseDetail", "/courseList","/courseDetailTeacher.jsp"};
 
         // Danh sách các URL chỉ student có thể truy cập
         String[] studentPages = {"/courseList", "/courseDetail", "/userProfile", "/changePassword", 

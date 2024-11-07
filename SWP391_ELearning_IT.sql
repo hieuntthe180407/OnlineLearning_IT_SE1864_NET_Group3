@@ -161,14 +161,31 @@ CREATE TABLE [dbo].[Lessons](
 	[LessonID] [int] IDENTITY(1,1) NOT NULL,
 	[LessonNumber] [int] NULL,
 	[LessonName] [varchar](255) NOT NULL,
-	[CourseID] [int] NOT NULL,
+	[MoocID] [int] NOT NULL,
 	[LessonUrl] [varchar](255) NULL,
 	[Description] [text] NULL,
+	[Status] [varchar](255) NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[LessonID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Mooc]    Script Date: 9/14/2024 10:13:41 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Mooc](
+	[MoocID] [int] IDENTITY(1,1) NOT NULL,
+	[MoocNumber] [int] NULL,
+	[MoocName] [varchar](255) NOT NULL,
+	[CourseID] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[MoocID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
 GO
 
 
@@ -388,6 +405,8 @@ GO
 
 ALTER TABLE [dbo].[Review] ADD  DEFAULT (getdate()) FOR [Time]
 GO
+ALTER TABLE [dbo].[Lessons] ADD  DEFAULT (('Active')) FOR [Status]
+GO
 
 
 ALTER TABLE [dbo].[Blogs]  WITH CHECK ADD FOREIGN KEY([CategoryId])
@@ -421,10 +440,12 @@ GO
 ALTER TABLE [dbo].[ExamDetail]  WITH CHECK ADD FOREIGN KEY([UserID])
 REFERENCES [dbo].[User] ([UserID])
 GO
-ALTER TABLE [dbo].[Lessons]  WITH CHECK ADD FOREIGN KEY([CourseID])
+ALTER TABLE [dbo].[Lessons]  WITH CHECK ADD FOREIGN KEY([MoocID])
+REFERENCES [dbo].[Mooc] ([MoocID])
+GO
+ALTER TABLE [dbo].[Mooc]  WITH CHECK ADD FOREIGN KEY([CourseID])
 REFERENCES [dbo].[Course] ([CourseID])
 GO
-
 ALTER TABLE [dbo].[Price]  WITH CHECK ADD FOREIGN KEY([CourseID])
 REFERENCES [dbo].[Course] ([CourseID])
 ON DELETE CASCADE

@@ -8,6 +8,7 @@ package controller;
 import dal.CourseDAO;
 import dal.EnrollDAO;
 import dal.LessonDAO;
+import dal.MoocDAO;
 
 import dal.ReviewDAO;
 import java.io.IOException;
@@ -21,6 +22,7 @@ import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Course;
 import model.Lesson;
+import model.Mooc;
 
 import model.Review;
 import model.User;
@@ -48,11 +50,12 @@ public class courseDetail extends HttpServlet {
       // get all reivews
        ReviewDAO rDAO = new ReviewDAO();
        List<Review> listr = rDAO.getReviewByCourseId(courseID);
-       
+        MoocDAO m = new MoocDAO();
+        List<Mooc> listm = m.getAllMoocByCourseID(courseID);
        
        
        request.setAttribute("listr", listr);
-      
+      request.setAttribute("listm", listm);
           LessonDAO l = new LessonDAO();
        
         
