@@ -48,20 +48,33 @@
     
     <body>
         <script>
-function previewImage(event) {
-    const imageInput = event.target;
-    const imagePreview = document.getElementById('imagePreview');
-    
-    if (imageInput.files && imageInput.files[0]) {
-        const file = imageInput.files[0];
-        const imageURL = URL.createObjectURL(file); // Create a URL for the file
-        
-        imagePreview.src = imageURL; // Use the URL as the source for the image preview
-        imagePreview.style.display = 'block'; // Show the image preview
-    } else {
-        imagePreview.style.display = 'none'; // Hide image preview if no file selected
+    // Function to preview image from file upload
+    function previewImage(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById('imagePreview');
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
     }
-}
+
+    // Function to preview image from URL input
+    function previewImageFromURL(event) {
+        const url = event.target.value;
+        const preview = document.getElementById('imagePreview');
+
+        if (url) {
+            preview.src = url;
+            preview.style.display = 'block';
+        } else {
+            preview.style.display = 'none';
+        }
+    }
 </script>
 
         <%@include file= "header.jsp" %>
@@ -84,7 +97,7 @@ function previewImage(event) {
             </div>
         </div>
     </div>
-            <% String noti = (String) request.getParameter("noti");
+            <%  String noti = (String)request.getAttribute("noti");
                 if (noti != null){ %>
              <h3 style="color: red; text-align: center; font-weight: bold;">
         <%= noti %>
@@ -184,11 +197,10 @@ function previewImage(event) {
             </div>
         </div>
     </div>
-           <% String noti = (String) request.getParameter("noti");
+           <%  String noti = (String)request.getAttribute("noti");
                 if (noti != null){ %>
              <h3 style="color: red; text-align: center; font-weight: bold;">
         <%= noti %>
-        
     </h3>
             <%}%>
                     <div class="container-fluid">
@@ -241,8 +253,10 @@ function previewImage(event) {
 									</div>
 									<div class="col-12">
     <label for="imageUpload">Upload Image:</label>
-    <input type="file" id="imageUpload" name="image" accept="image/*" class="form-control" onchange="previewImage(event)">
-</div>
+<input type="file" id="imageUpload" name="image" accept="image/*" class="form-control" onchange="previewImage(event)">
+
+<label for="imageURL" class="mt-3">Or Enter Image URL:</label>
+<input type="text" id="imageURL" name="image" class="form-control" placeholder="Paste image URL here" oninput="previewImageFromURL(event)">
 
 <div class="col-12 mt-3">
     <img id="imagePreview" src="#" alt="Image Preview" style="max-width: 100px; display: none;">

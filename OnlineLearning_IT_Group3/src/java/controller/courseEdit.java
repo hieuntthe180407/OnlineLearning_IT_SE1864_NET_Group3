@@ -14,9 +14,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Category;
 import model.Course;
+import model.User;
 
 /**
  *
@@ -29,6 +31,7 @@ public class courseEdit extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         try{
+            
         String idParam = request.getParameter("courseID");
         CategoryDAO caDAO= new CategoryDAO();
         List<Category> listCa = caDAO.getAllCategory();
