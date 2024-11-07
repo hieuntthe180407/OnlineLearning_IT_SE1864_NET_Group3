@@ -69,15 +69,17 @@ public class LessonDAO extends DBContext {
 
         return list;
     }
-     public boolean updateLesson(int id, String name,String url,String des,int num){
+    //update lesson
+     public boolean updateLesson(int id, String name,String url,String des,int num, String img){
         try {
-            String sql = "update Lessons set LessonName = ?, LessonURL = ?,Description=?, LessonNumber=? where LessonID = ?";
+            String sql = "update Lessons set LessonName = ?, LessonURL = ?,Description=?, LessonNumber=?, LessonImg=? where LessonID = ?";
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, name);
             st.setString(2, url);
              st.setString(3, des);
             st.setInt(4, num); 
-            st.setInt(5, id);  
+            st.setString(5, img);
+            st.setInt(6, id);  
             st.executeUpdate();
             st.close();
             return true;
@@ -87,9 +89,9 @@ public class LessonDAO extends DBContext {
             return false;
         }
     }
-      public boolean addLesson(String name,String url, int MoocID,String des, int num){
+      public boolean addLesson(String name,String url, int MoocID,String des, int num,String img){
         try {
-            String sql = "Insert into Lessons(LessonName,LessonURL,MoocID,Description,LessonNumber) values(?,?,?,?,?)";
+            String sql = "Insert into Lessons(LessonName,LessonURL,MoocID,Description,LessonNumber,LessonImg) values(?,?,?,?,?,?)";
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, name);
             st.setString(2, url);
@@ -97,6 +99,7 @@ public class LessonDAO extends DBContext {
                st.setInt(3,MoocID); 
                st.setString(4, des);
                st.setInt(5,num); 
+               st.setString(6, img);
             st.executeUpdate();
             st.close();
             return true;

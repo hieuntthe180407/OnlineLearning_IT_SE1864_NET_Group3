@@ -102,7 +102,7 @@
                         </div>
 
 
-                                    <!-- The about -->
+                        <!-- The about -->
                         <div class="container-fluid wow fadeInUp mt-5 tabs">
                             <div class="tab-content mt-4">
 
@@ -113,21 +113,20 @@
                                 </div>
 
                                 <div class="container" id="Curriculum">
-                                    <!-- Lay list review la list lesson  -->
+                                    <!-- Lay list review la list lesson, mooc  -->
                                     <%    List<Lesson> listl = (List<Lesson>) request.getAttribute("listl");
                                           List<Review> listr = (List<Review>) request.getAttribute("listr");
-                                          //neu list lesson ma null thi in ra empty list
+                                           List<Mooc> listm = (List<Mooc>) request.getAttribute("listm");
+                                          User user = (User) session.getAttribute("acc");
                                           if ( listl == null || listl.size() == 0 ) {
                                               out.println("Empty list ");
                                           } else {
                                     
                                     
-                                  
-                                   
                                     %>
                                     <h2 class="mt-4">
                                         Syllabus
-                                        <a type="button" href="lessonEdit.jsp?CourseID=<%= c.getCourseID() %>"> Add</a>
+
                                     </h2>
                                     <!--Form de nhap so luong lesson moi trang va che do hien thi
                                     chi hien thi ten hoac ca ten va anh theo kem-->
@@ -144,93 +143,131 @@
                                     </form>
 
 
-
-
-
                                     <% String displayOption = request.getParameter("displayOption");
-   if (displayOption == null) {
-       displayOption = "both"; // mac dinh hien thi ra tat ca
-   }
+                                       if (displayOption == null) {
+                                           displayOption = "both"; // mac dinh hien thi ra tat ca
+                                       }
                                     %>
-
-                                    <ul>
-                                        <% for (Lesson l : listl) { %>
-                                        <li>
-                                            <i class="fa fa-video text-danger"></i>
-                                            <!-- neu user chon chi hien thi ca ten va anh -->
-                                            <% if ("both".equals(displayOption)) { %>
-                                            <%= l.getLessonName() %>
-                                            <a href="lessonEdit?LessonID=<%= l.getLessonID() %>&CourseID=<%= c.getCourseID() %>">
-                                                <button type="button">Update</button>
-                                            </a>
-                                                <!-- Disabled va Active button -->
-                                            <% if (l.getStatus().equals("Active")) { %>
-                                            <a type="button" href="editStatusLesson?LessonID=<%= l.getLessonID() %>&status=Disabled&courseID=<%= c.getCourseID() %>">Disabled</a>
-                                            <% } else if (l.getStatus().equals("Disabled")) { %>
-                                            <a type="button" href="editStatusLesson?LessonID=<%= l.getLessonID() %>&status=Active&courseID=<%= c.getCourseID() %>">Active</a>
-                                            <% } %>
-                                            <br>
-                                            <img src="img/lesson/image1.jpg" alt="<%= l.getLessonName() %>" />
-                                            <!-- neu user chon chi hien thi ten -->
-                                            <% } else if ("nameOnly".equals(displayOption)) { %>
-                                            <%= l.getLessonName() %>
-                                            <a href="lessonEdit?LessonID=<%= l.getLessonID() %>&CourseID=<%= c.getCourseID() %>">
-                                                <button type="button">Update</button>
-                                            </a>
-                                                <!-- Disabled va Active button -->
-                                            <% if (l.getStatus().equals("Active")) { %>
-                                            <a type="button" href="editStatusLesson?LessonID=<%= l.getLessonID() %>&status=Disabled&courseID=<%= c.getCourseID() %>">Disabled</a>
-                                            <% } else if (l.getStatus().equals("Disabled")) { %>
-                                            <a type="button" href="editStatusLesson?LessonID=<%= l.getLessonID() %>&status=Active&courseID=<%= c.getCourseID() %>">Active</a>
-                                            <% } %>
-                                            <% } %>
-
-                                        </li>
-                                        <% } %>
-                                    </ul>
+                                    <div class="accordion accordion-flush" id="accordionFlushExample">
+                                        <div class="accordion-item">
+                                            <%                                  
+                                                                                 for (Mooc m : listm) {
+                       
+                           
+                                            %>  
 
 
-                                    <!-- lay thong tin page hien tai -->
-                                    <% 
-     int currentPage = (Integer) request.getAttribute("currentPage");
-     int totalPages = (Integer) request.getAttribute("totalPages");
-                                    %>
+                                            <h2 class="accordion-header">
 
-                                    <!-- Pagination Controls -->
-                                    <div class="pagination">
-                                        <ul>
-                                            <%
-                                                if (currentPage > 1) {
-                                            %>
-                                            <li><a href="courseDetail?page=<%= currentPage - 1 %>&courseID=<%= c.getCourseID()%>&itemsPerPage=<%=itemsPerPage%>&displayOption=<%=displayOption%>">&laquo; Previous</a></li>
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                                    <%= m.getMoocName()%>  <a href="lessonEdit.jsp?MoocID=<%= m.getMoocId()%>&CourseID=<%= c.getCourseID()%>"><input type="button" value="Add"/></a>
+
+                                                </button>
+
+
+                                            </h2>
+
+
+                                            <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+
+                                                <div class="accordion-body">
+                                                    <ul>
+                                                        <% for(Lesson l : listl) {
+                                                          if(l.getMoocID()== m.getMoocId()){
+                                            
+                                                        %>
+
+                                                        <li>
+                                                            <i class="fa fa-video text-danger"></i>
+                                                            <!-- neu user chon chi hien thi ca ten va anh -->
+                                                            <% if ("both".equals(displayOption)) { %>
+                                                            <%= l.getLessonName() %>
+                                                            <a href="lessonEdit?LessonID=<%= l.getLessonID() %>&CourseID=<%= c.getCourseID() %>">
+                                                                <button type="button">Update</button>
+                                                            </a>
+                                                            <!-- Disabled va Active button -->
+                                                            <% if (l.getStatus().equals("Active")) { %>
+                                                            <a type="button" href="editStatusLesson?LessonID=<%= l.getLessonID() %>&status=Disabled&courseID=<%= c.getCourseID() %>">Disabled</a>
+                                                            <% } else if (l.getStatus().equals("Disabled")) { %>
+                                                            <a type="button" href="editStatusLesson?LessonID=<%= l.getLessonID() %>&status=Active&courseID=<%= c.getCourseID() %>">Active</a>
+                                                            <% } %>
+                                                            <br>
+                                                            <img src="<%=l.getLessonImg()%>" style="width:200px; height:150px;" />
+                                                            <!-- neu user chon chi hien thi ten -->
+                                                            <% } else if ("nameOnly".equals(displayOption)) { %>
+                                                            <%= l.getLessonName() %>
+                                                            <a href="lessonEdit?LessonID=<%= l.getLessonID() %>&CourseID=<%= c.getCourseID() %>">
+                                                                <button type="button">Update</button>
+                                                            </a>
+                                                            <!-- Disabled va Active button -->
+                                                            <% if (l.getStatus().equals("Active")) { %>
+                                                            <a type="button" href="editStatusLesson?LessonID=<%= l.getLessonID() %>&status=Disabled&courseID=<%= c.getCourseID() %>">Disabled</a>
+                                                            <% } else if (l.getStatus().equals("Disabled")) { %>
+                                                            <a type="button" href="editStatusLesson?LessonID=<%= l.getLessonID() %>&status=Active&courseID=<%= c.getCourseID() %>">Active</a>
+                                                            <% } %>
+                                                            <% } %>
+                                                        </li>
+
+                                                        <%}}%>
+
+
+                                                    </ul>
+
+
+
+                                                </div>
+                                            </div>
+                                            <%}%>
+
+                                        </div>
+
+
+
+                                        <!-- Lay thong tin cua page hien tai va tong so trang -->
+                                        <% 
+         int currentPage = (Integer) request.getAttribute("currentPage");
+         int totalPages = (Integer) request.getAttribute("totalPages");
+                                        %>
+
+                                        <!-- Pagination Controls -->
+                                        <div class="pagination">
+                                            <ul>
                                                 <%
-                                                    }
-
-                                                    for (int i = 1; i <= totalPages; i++) {
-                                                        if (i == currentPage) {
+                                                    if (currentPage > 1) {
                                                 %>
-                                            <li><span><%= i %></span></li>
+                                                <li><a href="courseDetail?page=<%= currentPage - 1 %>&courseID=<%= c.getCourseID()%>&itemsPerPage=<%=itemsPerPage%>&displayOption=<%=displayOption%>">&laquo; Previous</a></li>
                                                     <%
-                                                            } else {
-                                                    %>
-                                            <li><a href="courseDetail?page=<%= i %>&courseID=<%= c.getCourseID()%>&itemsPerPage=<%=itemsPerPage%>&displayOption=<%=displayOption%>"><%= i %></a></li>
-                                                <%
                                                         }
-                                                    }
 
-                                                    if (currentPage < totalPages) {
-                                                %>
-                                            <li><a href="courseDetail?page=<%= currentPage + 1 %>&courseID=<%= c.getCourseID()%>&itemsPerPage=<%=itemsPerPage%>&displayOption=<%=displayOption%>">Next &raquo;</a></li>
-                                                <%
-                                                    }
-                                                %>
-                                        </ul>
-                                    </div>     
+                                                        for (int i = 1; i <= totalPages; i++) {
+                                                            if (i == currentPage) {
+                                                    %>
+                                                <li><span><%= i %></span></li>
+                                                        <%
+                                                                } else {
+                                                        %>
+                                                <li><a href="courseDetail?page=<%= i %>&courseID=<%= c.getCourseID()%>&itemsPerPage=<%=itemsPerPage%>&displayOption=<%=displayOption%>"><%= i %></a></li>
+                                                    <%
+                                                            }
+                                                        }
+
+                                                        if (currentPage < totalPages) {
+                                                    %>
+                                                <li><a href="courseDetail?page=<%= currentPage + 1 %>&courseID=<%= c.getCourseID()%>&itemsPerPage=<%=itemsPerPage%>&displayOption=<%=displayOption%>">Next &raquo;</a></li>
+                                                    <%
+                                                        }
+                                                    %>
+                                            </ul>
+                                        </div>    
+                                    </div>
+
                                 </div>
+
+                                <%}%>
 
                             </div>
                         </div>
-                        <%}%>
+
 
 
 

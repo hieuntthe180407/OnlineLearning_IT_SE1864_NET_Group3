@@ -113,7 +113,7 @@
                                 </div>
 
                                 <div class="container" id="Curriculum">
-                                    <!-- Lay list review la list lesson  -->
+                                    <!-- Lay list review la list lesson, mooc  -->
                                     <%    List<Lesson> listl = (List<Lesson>) request.getAttribute("listl");
                                           List<Review> listr = (List<Review>) request.getAttribute("listr");
                                            List<Mooc> listm = (List<Mooc>) request.getAttribute("listm");
@@ -160,7 +160,7 @@
                                             <h2 class="accordion-header">
 
                                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                                    <%= m.getMoocName()%>  <a href="lessonEdit.jsp?MoocID=<%= m.getMoocId()%>"><input type="button" value="Add"/></a>
+                                                    <%= m.getMoocName()%>  
 
                                                 </button>
 
@@ -183,7 +183,7 @@
                                                             <% if ("both".equals(displayOption)) { %>
                                                             <%= l.getLessonName() %>
                                                             <br>
-                                                            <img src="<%=l.getLessonImg()%>"  />
+                                                            <img src="<%=l.getLessonImg()%>" style="width:200px; height:150px;" />
                                                             <% } else if ("nameOnly".equals(displayOption)) { %>
                                                             <!-- neu user chon chi hien thi ten -->
                                                             <%= l.getLessonName() %>

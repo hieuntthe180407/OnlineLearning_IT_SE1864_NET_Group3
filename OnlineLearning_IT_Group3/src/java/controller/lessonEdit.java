@@ -47,7 +47,7 @@ public class lessonEdit extends HttpServlet {
         catch (Exception e){
             System.out.println(e.getMessage());
             
-            response.sendRedirect("courseDetail");
+            
         }
         
     } 
@@ -69,17 +69,18 @@ public class lessonEdit extends HttpServlet {
         String name = request.getParameter("lessonName");
         String url = request.getParameter("lessonUrl");
         String des = request.getParameter("description");
+        String img = request.getParameter("lessonImg");
         int num = Integer.parseInt(request.getParameter("LessonNumber"));
         if (name == null || name.trim().isEmpty() ||
         url == null || url.trim().isEmpty() ||
-        des == null || des.trim().isEmpty())
+        des == null || des.trim().isEmpty() || img.trim().isEmpty()|| img.trim()==null)
                  {
 
         throw new IllegalArgumentException();
     }
         
             int id = Integer.parseInt(idParam);
-            l.updateLesson(id, name, url,des,num);
+            l.updateLesson(id, name, url,des,num,img);
             err="Lesson updated successfully";
              response.sendRedirect("courseDetail?courseID="+cID+ "&err="+err); 
             }
@@ -96,16 +97,18 @@ public class lessonEdit extends HttpServlet {
                 String name = request.getParameter("lessonName");
         String url = request.getParameter("lessonUrl");
         String des = request.getParameter("description");
+        String img = request.getParameter("lessonImg");
+        int moocID = Integer.parseInt(request.getParameter("MoocID"));
         int num = Integer.parseInt(request.getParameter("LessonNumber"));
         if (name == null || name.trim().isEmpty() ||
         url == null || url.trim().isEmpty() ||
-        des == null || des.trim().isEmpty())
+        des == null || des.trim().isEmpty()|| img.trim().isEmpty()|| img.trim()==null)
                  {
 
         throw new IllegalArgumentException();
     }
             
-            l.addLesson(name, url,cID,des,num);
+            l.addLesson(name, url,moocID,des,num,img);
             err="Lesson added successfully";
            response.sendRedirect("courseDetail?courseID="+ cID+ "&err="+err);    
             }

@@ -51,6 +51,7 @@
         
       <%
                  int CourseID = Integer.parseInt(request.getParameter("CourseID"));
+                 
                 Lesson l = (Lesson)request.getAttribute("lesson");
                 
                 if (l!=null){
@@ -97,6 +98,7 @@
                                     </div>
                                     <input type="hidden" name="LessonID" value="<%= LessonID %>">
                                     <input type="hidden" name="CourseID" value="<%=CourseID%>">
+                                    
                                     <div class="form-group col-6">
                                         <label class="col-form-label">Lesson Name</label>
                                         <div>
@@ -113,6 +115,12 @@
                                         <label class="col-form-label">Lesson Number</label>
                                         <div>
                                             <input class="form-control" type="number" name="LessonNumber" value="<%=l.getLessonNumber()%>">
+                                        </div>
+                                    </div>
+                                        <div class="form-group col-6">
+                                        <label class="col-form-label">Lesson Image</label>
+                                        <div>
+                                            <input class="form-control" type="text" name="lessonImg" value="<%=l.getLessonURL() %>">
                                         </div>
                                     </div>
 
@@ -144,7 +152,9 @@
             </div>
 
         </div>
-        <%} else{%>
+        <%} else{
+int MoocID = Integer.parseInt(request.getParameter("MoocID"));
+        %>
         <!-- Neu trang khong nhan duoc lessonID thi no se tro thanh trang add lesson theo CourseID -->
 
         <div class="container-fluid bg-primary py-5 mb-5 page-header">
@@ -184,6 +194,7 @@
                                         </div>
                                     </div>
                                     <input type="hidden" name="CourseID" value="<%=CourseID%>">
+                                    <input type="hidden" name="MoocID" value="<%=MoocID%>">
                                     <div class="form-group col-6">
                                         <label class="col-form-label">Lesson Name</label>
                                         <div>
@@ -200,6 +211,12 @@
                                         <label class="col-form-label">Lesson Number</label>
                                         <div>
                                             <input class="form-control" type="number" name="LessonNumber">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label class="col-form-label">Lesson Image URL</label>
+                                        <div>
+                                            <input class="form-control" type="text" name="lessonImg" >
                                         </div>
                                     </div>
 
