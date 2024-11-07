@@ -87,42 +87,8 @@ public class UserDAO extends DBContext {
         return list;
     }
 
-    public List<User> filterUser(String gender, String role, String status, int offset, int limit) {
-        List<User> list = new ArrayList<>();
-        try {
-            String sql = "SELECT u.*, r.roleName FROM [dbo].[User] AS u LEFT JOIN Role AS r ON u.roleID = r.roleID WHERE Gender LIKE ? AND roleName LIKE ? AND Status LIKE ? ORDER BY UserID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
-
-            PreparedStatement st = connection.prepareStatement(sql);
-
-            st.setString(1, "%" + gender + "%");
-            st.setString(2, "%" + role + "%");
-            st.setString(3, "%" + status + "%");
-            st.setInt(4, offset);
-            st.setInt(5, limit);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                User u = new User();
-                u.setUserID(rs.getInt("userID"));
-                u.setFullName(rs.getString("fullName"));
-                u.setEmail(rs.getString("Email"));
-                u.setPassword(rs.getString("Password"));
-                u.setAddress(rs.getString("Address"));
-                u.setGender(rs.getString("Gender"));
-                u.setPhone(rs.getString("Phone"));
-                Role r = new Role();
-                r.setRoleId(rs.getInt("RoleId"));
-                r.setRoleName(rs.getString("RoleName"));
-                u.setRole(r);
-                list.add(u);
-            }
-            rs.close();
-            st.close();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return list;
-    }
-
+    
+// lay list user sau khi duoc filter
     public List<User> getUserSearchFilter(String gender, String role, String status, int offset, int limit, String str) {
         List<User> list = new ArrayList<>();
         try {
@@ -137,7 +103,7 @@ public class UserDAO extends DBContext {
 
             PreparedStatement st = connection.prepareStatement(sql);
             String searchTerm = "%" + str + "%";
-            st.setString(1, "%" + gender + "%");
+            st.setString(1,  gender + "%");
             st.setString(2, "%" + role + "%");
             st.setString(3, "%" + status + "%");
             st.setString(4, searchTerm);
@@ -339,24 +305,8 @@ public class UserDAO extends DBContext {
         return 0; // Return 0 in case of any error
     }
 
-    public int getTotalUserFilterCount(String gender, String role, String status) {
-        String sql = "SELECT COUNT(*)  FROM [dbo].[User] AS u LEFT JOIN Role AS r ON u.roleID = r.roleID WHERE Gender LIKE ? AND roleName LIKE ? AND Status LIKE ? ";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, "%" + gender + "%");
-            st.setString(2, "%" + role + "%");
-            st.setString(3, "%" + status + "%");
-            ResultSet rs = st.executeQuery();
-
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0; // Return 0 in case of any error
-    }
-
+    
+// lay so luong uesr sau khi filter
     public int getTotalUserSearchFilterCount(String gender, String role, String status, String str) {
         String sql = "SELECT COUNT(*)  \n"
                 + "FROM [dbo].[User] AS u \n"
@@ -367,7 +317,7 @@ public class UserDAO extends DBContext {
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             String searchTerm = "%" + str + "%";
-            st.setString(1, "%" + gender + "%");
+            st.setString(1, gender + "%");
             st.setString(2, "%" + role + "%");
             st.setString(3, "%" + status + "%");
             st.setString(4, searchTerm);
@@ -522,7 +472,12 @@ public class UserDAO extends DBContext {
 
     public static void main(String[] args) {
         UserDAO udao = new UserDAO();
-        User user = udao.getUserByEmail("teacher@gmail.com");
-        System.out.println(user.getRole().getRoleId());
+        List<User> l = udao.getUserSearchFilter("male", "", "", 0, 20, "");
+        for(User u : l)
+        {
+            System.out.println(u);
+        }
+//        User user = udao.getUserByEmail("teacher@gmail.com");
+//        System.out.println(user.getRole().getRoleId());
     }
 }

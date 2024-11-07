@@ -459,14 +459,15 @@ public class CourseDAO extends DBContext {
     }
 
     //thay đổi thông tin của course
-    public boolean updateCourse(int id, int Category, String name, String des) {
-        String sql = "update Course set CategoryID=? , courseName = ?, Description=?  where CourseID = ?";
+    public boolean updateCourse(int id, int Category, String name, String des, int uid) {
+        String sql = "update Course set CategoryID=? , courseName = ?, Description=?, UserID=?  where CourseID = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, Category);
             st.setString(2, name);
             st.setString(3, des);
-            st.setInt(4, id);
+            st.setInt(4, uid);
+            st.setInt(5, id);
             st.executeUpdate();
             st.close();
             return true;
@@ -477,14 +478,14 @@ public class CourseDAO extends DBContext {
     }
 
     //Thêm mới course
-    public boolean addCourse(String name, int CategoryID, String des, String img) {
+    public boolean addCourse(String name, int CategoryID, String des, String img, int uid) {
         try {
-            String sql = "Insert into Course(CourseName,CategoryID,Description,CourseImg) values(?,?,?,?)";
+            String sql = "Insert into Course(CourseName,CategoryID,Description,CourseImg,UserID) values(?,?,?,?,?)";
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, name);
             st.setInt(2, CategoryID);
             st.setString(4, "img/Course/" + img);
-
+            st.setInt(5, uid);
             st.setString(3, des);
 
             st.executeUpdate();
@@ -540,13 +541,14 @@ public class CourseDAO extends DBContext {
 
     public static void main(String[] args) {
         CourseDAO dao = new CourseDAO();
-        List<Course> courses = dao.getEnrollCourse(21);
-
-        for (Course c : courses) {
-            System.out.println(c);
-
-            System.out.println("------------------");
-        }
+        
+//        List<Course> courses = dao.getEnrollCourse(21);
+//
+//        for (Course c : courses) {
+//            System.out.println(c);
+//
+//            System.out.println("------------------");
+//        }
 //
 //        dao.addCourse("bruh", 1, "npthing", "course1.jpg");
 //            System.out.println(dao.getCourseTeacherByID(2));
