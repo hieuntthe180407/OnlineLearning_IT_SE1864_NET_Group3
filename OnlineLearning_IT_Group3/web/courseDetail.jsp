@@ -149,13 +149,14 @@
                                        }
                                     %>
                                     <div class="accordion accordion-flush" id="accordionFlushExample">
+                                        <div class="accordion-item">
                                         <%                                  
                                                                              for (Mooc m : listm) {
                        
                            
                                         %>  
 
-                                        <div class="accordion-item">
+                                        
                                             <h2 class="accordion-header">
 
                                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
@@ -182,7 +183,7 @@
                                                             <% if ("both".equals(displayOption)) { %>
                                                             <%= l.getLessonName() %>
                                                             <br>
-                                                            <img src="img/lesson/image1.jpg" alt="<%= l.getLessonName() %>" />
+                                                            <img src="<%=l.getLessonImg()%>"  />
                                                             <% } else if ("nameOnly".equals(displayOption)) { %>
                                                             <!-- neu user chon chi hien thi ten -->
                                                             <%= l.getLessonName() %>
@@ -243,7 +244,7 @@
                                     </div>
 
                                 </div>
-                            </div>
+                            
                             <%}%>
 
 
@@ -271,13 +272,16 @@
                                         <%=c.getUserId().getAbout()%>
                                     </div>
                                 </div>
-                            </div>
+                            
 
 
 
 
 
                         </div>
+                        </div>            
+                    </div>
+                    </div>
                         <!-- Enroll tag start -->
                         <div class="col-lg-3 col-md-6 shadow wow fadeInUp" data-wow-delay="0.3s">
 
@@ -339,9 +343,10 @@
 
 
                         </div>
-                    </div>
+                 
                 </div>
             </div>
+        
             <!-- Enroll tag end -->
 
             <!-- Course Detail end -->

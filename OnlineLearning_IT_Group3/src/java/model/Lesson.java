@@ -12,6 +12,15 @@ public class Lesson {
     private int LessonID;
     private int MoocID;
     private int LessonNumber;
+    private String LessonImg;
+
+    public String getLessonImg() {
+        return LessonImg;
+    }
+
+    public void setLessonImg(String LessonImg) {
+        this.LessonImg = LessonImg;
+    }
     private String LessonURL;
      private String LessonName;
       private String Description;

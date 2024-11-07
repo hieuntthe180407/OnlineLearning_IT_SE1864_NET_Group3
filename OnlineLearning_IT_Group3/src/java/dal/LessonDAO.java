@@ -28,6 +28,7 @@ public class LessonDAO extends DBContext {
                 u.setDescription(rs.getString("Description"));
                 u.setLessonNumber(rs.getInt("LessonNumber"));
                 u.setLessonURL(rs.getString("LessonURL"));
+                u.setLessonImg(rs.getString("LessonImg"));
                 return u;
             }
         }
@@ -56,7 +57,7 @@ public class LessonDAO extends DBContext {
                 u.setLessonNumber(rs.getInt("LessonNumber"));
                 u.setLessonURL(rs.getString("LessonURL"));
                 u.setStatus(rs.getString("Status"));
-               
+               u.setLessonImg(rs.getString("LessonImg"));
                 
                 list.add(u);
                 
@@ -126,7 +127,7 @@ public class LessonDAO extends DBContext {
                 u.setLessonNumber(rs.getInt("LessonNumber"));
                 u.setLessonURL(rs.getString("LessonURL"));
                u.setStatus(rs.getString("Status"));
-                
+                u.setLessonImg(rs.getString("LessonImg"));
                 list.add(u);
 
               
