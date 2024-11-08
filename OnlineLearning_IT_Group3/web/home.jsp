@@ -82,7 +82,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title">${post.title}</h5>
                                     <p class="card-text">Published on: ${post.createdAt}</p>
-                                    <a href="BlogUserViewDetailController?blogIdd=${post.blogId}" class="btn btn-primary">Read More</a>
+                                    <a href="BlogUserViewDetailController?blogId=${post.blogId}" class="btn btn-primary">Read More</a>
                                 </div>
                             </div>
                         </div>

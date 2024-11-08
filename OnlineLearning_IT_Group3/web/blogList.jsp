@@ -37,7 +37,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">${blog.title}</h5>
                                 <p class="card-text">${fn:substring(blog.content, 0, 100)}...</p>
-                                <a href="blogDetails.jsp?id=${blog.blogId}" class="btn btn-primary">Read More</a>
+                                  <a href="BlogUserViewDetailController?blogId=${blog.blogId}" class="btn btn-primary">Read More</a>
                             </div>
                         </div>
                     </c:forEach>

@@ -11,6 +11,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import model.Blog;
 import model.CategoryBlog;
 
@@ -323,6 +324,74 @@ public class BlogDAO extends DBContext{
             }
         } catch (SQLException e) {
             System.out.println("Error: "  + e);
+        }
+        return blogs;
+    }
+    public int getFilteredBlogCount(String searchQuery) {
+        int count = 0;
+        String sql = "SELECT COUNT(*) FROM Blogs WHERE Title LIKE ? OR Content LIKE ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, "%" + searchQuery + "%");
+            ps.setString(2, "%" + searchQuery + "%");
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: " + e);
+        }
+        return count;
+    }
+
+    public List<Blog> getPagedFilteredAndSortedBlogs(String searchQuery, List<String> sortColumns, int page, int pageSize) {
+        List<Blog> blogs = new ArrayList<>();
+
+        if (sortColumns == null || sortColumns.isEmpty()) {
+            sortColumns = new ArrayList<>();
+            sortColumns.add("BlogId");
+        } else {
+            sortColumns = sortColumns.stream()
+                    .filter(column -> !column.equalsIgnoreCase("Title") && !column.equalsIgnoreCase("Content"))
+                    .collect(Collectors.toList());
+
+            if (sortColumns.isEmpty()) {
+                sortColumns.add("BlogId");
+            }
+        }
+
+        String orderByClause = sortColumns.stream()
+                .map(column -> (column.equalsIgnoreCase("Title") || column.equalsIgnoreCase("Content"))
+                ? "CAST(" + column + " AS NVARCHAR(MAX))"
+                : column)
+                .collect(Collectors.joining(", "));
+
+        String sql = "SELECT * FROM Blogs WHERE Title LIKE ? OR Content LIKE ?";
+        sql += " ORDER BY " + orderByClause;
+        sql += " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        System.out.println(sql);
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, "%" + searchQuery + "%");
+            ps.setString(2, "%" + searchQuery + "%");
+            ps.setInt(3, (page - 1) * pageSize);
+            ps.setInt(4, pageSize);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Blog blog = new Blog(
+                        rs.getInt("BlogId"),
+                        rs.getInt("UserId"),
+                        rs.getInt("CategoryId"),
+                        rs.getString("Title"),
+                        rs.getString("Content"),
+                        rs.getString("Status"),
+                        rs.getString("FeaturedImage"),
+                        rs.getTimestamp("CreatedAt"),
+                        rs.getTimestamp("UpdatedAt")
+                );
+                blogs.add(blog);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: " + e);
         }
         return blogs;
     }

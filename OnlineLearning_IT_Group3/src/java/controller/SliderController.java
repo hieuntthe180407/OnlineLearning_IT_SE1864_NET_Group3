@@ -15,22 +15,19 @@ import jakarta.servlet.http.Part;
 import model.Slider;
 import util.Upload;
 
-// Cấu hình kích thước file tải lên
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2 MB
         maxFileSize = 1024 * 1024 * 10, // 10 MB
         maxRequestSize = 1024 * 1024 * 50)
 @WebServlet(name = "SliderController", urlPatterns = {"/SliderController"})
 public class SliderController extends HttpServlet {
 
-    // Khởi tạo DAO để truy xuất dữ liệu Slider từ cơ sở dữ liệu
     private SliderDAO sliderDAO;
+    private static final int PAGE_SIZE = 10; 
 
-    // Phương thức khởi tạo, được gọi khi servlet được khởi chạy
     public void init() {
         sliderDAO = new SliderDAO();
     }
 
-    // Xử lý các yêu cầu GET
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         if (action == null) {
@@ -44,19 +41,36 @@ public class SliderController extends HttpServlet {
         }
     }
 
-    // Liệt kê các Slider và chuyển tiếp tới trang danh sách
     private void listSliders(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            List<Slider> sliders = sliderDAO.getAllSlidersAdmin();
-            request.setAttribute("sliders", sliders);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("slider-list.jsp");
-            dispatcher.forward(request, response);
-        } catch (Exception e) {
-            throw new ServletException(e);
-        }
-    }
+    try {
+        String search = request.getParameter("search") != null ? request.getParameter("search") : "";
+        String desc = request.getParameter("desc") != null ? request.getParameter("desc") : "";
+        int page = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
+        String[] selectedColumns = request.getParameterValues("columns");
+        List<String> columns = selectedColumns != null ? List.of(selectedColumns) : new ArrayList<>();
 
-    // Hiển thị form chỉnh sửa Slider
+        String sortCriteria = String.join(", ", columns);
+
+        List<Slider> sliders = sliderDAO.getFilteredSliders(search, sortCriteria, page, PAGE_SIZE, columns, desc);
+        int totalSliders = sliderDAO.getSliderCount(search);
+        int totalPages = (int) Math.ceil((double) totalSliders / PAGE_SIZE);
+
+        request.setAttribute("sliders", sliders);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("search", search);
+        request.setAttribute("columns", columns);
+        request.setAttribute("desc", desc);
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("slider-list.jsp");
+        dispatcher.forward(request, response);
+    } catch (Exception e) {
+        throw new ServletException(e);
+    }
+}
+
+
+
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         try {
@@ -69,7 +83,6 @@ public class SliderController extends HttpServlet {
         }
     }
 
-    // Xóa Slider dựa trên ID và chuyển hướng đến trang danh sách Slider
     private void deleteSlider(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         int id = Integer.parseInt(request.getParameter("id"));
         try {
@@ -80,13 +93,9 @@ public class SliderController extends HttpServlet {
         }
     }
 
-    // Xử lý các yêu cầu POST
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        
-         // Kiểm tra lỗi dữ liệu từ form
         List<String> errors = validateSlider(request);
 
-        // Nếu có lỗi, quay lại trang form với thông báo lỗi
         if (!errors.isEmpty()) {
             request.setAttribute("errors", errors);
             RequestDispatcher dispatcher = request.getRequestDispatcher("slider-form.jsp");
@@ -94,7 +103,6 @@ public class SliderController extends HttpServlet {
             return;  
         }
 
-        // Lấy dữ liệu từ yêu cầu (request) để tạo hoặc cập nhật Slider
         String id = request.getParameter("sliderID");
         Part imageUrl = request.getPart("imageUrl");
         String title = request.getParameter("title");
@@ -102,12 +110,10 @@ public class SliderController extends HttpServlet {
         String description = request.getParameter("description");
         boolean publish = Boolean.parseBoolean(request.getParameter("publish"));
 
-        // Đường dẫn thư mục lưu ảnh
         String pathBanner = "./uploads/banner/";
         Upload upload = new Upload();
         String uploadPath = getServletContext().getRealPath(pathBanner);
 
-        // Tải ảnh lên và lấy tên file ảnh sau khi tải
         String nameImgBanner = upload.uploadImg(imageUrl, uploadPath);
         if((id == null || id.isEmpty()) && nameImgBanner == null) {
             request.setAttribute("errors", "Please choose image");
@@ -115,19 +121,15 @@ public class SliderController extends HttpServlet {
             dispatcher.forward(request, response);
             return;
         }
-        
-        // Kiểm tra và sử dụng ảnh cũ nếu ảnh mới không được tải lên
-        String fileNameSaveDb = request.getParameter("old-media");
+        String fileNameSaveDb = request.getParameter("old-image");
         if (nameImgBanner != null && !nameImgBanner.isEmpty()) {
             fileNameSaveDb = pathBanner + nameImgBanner;
         }
 
-        // Tạo đối tượng Slider từ request
         Slider slider = createSliderFromRequest(request);
         slider.setImageUrl(fileNameSaveDb); 
 
         try {
-            // Nếu ID trống, tạo mới Slider; ngược lại cập nhật Slider hiện tại
             if (id == null || id.isEmpty()) {
                 sliderDAO.addSlider(slider);
             } else {
@@ -140,8 +142,6 @@ public class SliderController extends HttpServlet {
         }
     }
 
-    
-    // Kiểm tra dữ liệu đầu vào từ form Slider
     private List<String> validateSlider(HttpServletRequest request) {
         List<String> errors = new ArrayList<>();
 
@@ -159,7 +159,6 @@ public class SliderController extends HttpServlet {
         return errors;
     }
 
-    // Tạo đối tượng Slider từ request
     private Slider createSliderFromRequest(HttpServletRequest request) {
         Slider slider = new Slider();
         slider.setTitle(request.getParameter("title"));

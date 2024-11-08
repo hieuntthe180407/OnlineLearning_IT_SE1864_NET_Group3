@@ -142,4 +142,59 @@ public class SliderDAO extends DBContext{
         ps.setInt(1, sliderID);
         ps.executeUpdate(); // Thực hiện xóa slider
     }
+    public List<Slider> getFilteredSliders(String search, String sortCriteria, int page, int pageSize, List<String> columns, String desc) throws SQLException {
+        List<Slider> sliders = new ArrayList<>();
+        if(sortCriteria.equals("")) {
+            sortCriteria = "SliderID";
+        } 
+        if(!desc.contains("desc")) {
+           desc  =  "asc";
+        }
+        String sql = "SELECT * FROM slider WHERE title LIKE ? ORDER BY " + sortCriteria + " "+ desc + " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, "%" + search + "%");
+            statement.setInt(2, (page - 1) * pageSize);
+            statement.setInt(3, pageSize);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    Slider slider = new Slider();
+                    slider.setSliderID(rs.getInt("SliderID"));
+                    slider.setImageUrl(rs.getString("ImageUrl"));
+                    slider.setTitle(rs.getString("Title"));
+                    slider.setBackLink(rs.getString("BackLink"));
+                    slider.setDescription(rs.getString("Description"));
+                    slider.setPublish(rs.getBoolean("Publish"));
+
+                    sliders.add(slider);
+                }
+            }
+        }
+        return sliders;
+    }
+
+    public int getSliderCount(String search) throws SQLException {
+        StringBuilder query = new StringBuilder("SELECT COUNT(*) FROM Slider");
+
+        // Nếu có tìm kiếm
+        if (search != null && !search.isEmpty()) {
+            query.append(" WHERE Title LIKE ? OR Description LIKE ?");
+        }
+
+        PreparedStatement ps = conn.prepareStatement(query.toString());
+
+        // Thêm tham số tìm kiếm nếu có
+        if (search != null && !search.isEmpty()) {
+            ps.setString(1, "%" + search + "%");
+            ps.setString(2, "%" + search + "%");
+        }
+
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+        return 0;
+    }
+
 }
