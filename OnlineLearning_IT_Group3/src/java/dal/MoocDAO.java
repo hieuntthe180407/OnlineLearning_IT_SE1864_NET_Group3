@@ -193,11 +193,12 @@ public class MoocDAO extends DBContext {
     }
 
     public boolean deleteMooc(String moocid, String courseid) {
-        String sql = "DELETE FROM Mooc WHERE MoocID = ? AND CourseID = ?";
+        String sql = "DELETE FROM Lessons WHERE MoocID = ? DELETE FROM Mooc WHERE MoocID = ? AND CourseID = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, Integer.parseInt(moocid));
-            preparedStatement.setInt(2, Integer.parseInt(courseid));
+            preparedStatement.setInt(2, Integer.parseInt(moocid));
+            preparedStatement.setInt(3, Integer.parseInt(courseid));
 
             int rowsAffected = preparedStatement.executeUpdate();
 
