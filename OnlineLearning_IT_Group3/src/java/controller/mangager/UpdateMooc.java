@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package controller.mangager;
 
 import dal.MoocDAO;
@@ -59,16 +58,19 @@ public class UpdateMooc extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Lấy các tham số từ URL, bao gồm moocid, courseid, moocnumber và name
         int moocid = Integer.parseInt(request.getParameter("moocid"));
         int courseid = Integer.parseInt(request.getParameter("courseid"));
         int moocnumber = Integer.parseInt(request.getParameter("moocnumber"));
         String name = request.getParameter("name");
 
-        request.setAttribute("moocid", moocid);
-        request.setAttribute("courseid", courseid);
-        request.setAttribute("lastnumber", moocnumber);
-        request.setAttribute("name", name);
+        // Lưu các tham số vào request để có thể sử dụng trong trang JSP
+        request.setAttribute("moocid", moocid); // Lưu moocid vào request
+        request.setAttribute("courseid", courseid); // Lưu courseid vào request
+        request.setAttribute("lastnumber", moocnumber); // Lưu moocnumber vào request
+        request.setAttribute("name", name); // Lưu name vào request
 
+        // Chuyển hướng yêu cầu đến trang updateMooc.jsp để hiển thị thông tin
         request.getRequestDispatcher("updateMooc.jsp").forward(request, response);
     }
 
@@ -83,16 +85,20 @@ public class UpdateMooc extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String courseId = request.getParameter("courseid");
-        String moocNumber = request.getParameter("moocnumber");
-        String moocName = request.getParameter("moocname");
-        String moocid = request.getParameter("moocid");
+        // Lấy các tham số được gửi từ form hoặc URL
+        String courseId = request.getParameter("courseid"); // Lấy courseid từ tham số yêu cầu
+        String moocNumber = request.getParameter("moocnumber"); // Lấy moocnumber từ tham số yêu cầu
+        String moocName = request.getParameter("moocname"); // Lấy moocname từ tham số yêu cầu
+        String moocid = request.getParameter("moocid"); // Lấy moocid từ tham số yêu cầu
 
+        // Tạo đối tượng MoocDAO để thực hiện thao tác với cơ sở dữ liệu
         MoocDAO mdao = new MoocDAO();
-        boolean update = mdao.updateMooc(moocid, moocName);
 
-        response.sendRedirect("mooc?courseID=" + courseId);
+        // Cập nhật thông tin Mooc trong cơ sở dữ liệu, sử dụng moocid và moocName
+        boolean update = mdao.updateMooc(moocid, moocName); // Gọi phương thức updateMooc để cập nhật
 
+        // Chuyển hướng người dùng về trang mooc với courseID tương ứng
+        response.sendRedirect("mooc?courseID=" + courseId); // Sau khi cập nhật, chuyển hướng về danh sách Mooc của khóa học
     }
 
     /**
@@ -106,4 +112,3 @@ public class UpdateMooc extends HttpServlet {
     }// </editor-fold>
 
 }
-

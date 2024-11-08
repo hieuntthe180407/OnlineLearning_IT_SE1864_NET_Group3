@@ -19,31 +19,34 @@
 
         <script>
             $(document).ready(function () {
+                // Khởi tạo DataTable với các tùy chọn
                 const table = $('#courseTable').DataTable({
-                    "paging": true,
-                    "lengthChange": true,
-                    "searching": true,
-                    "ordering": true,
-                    "info": true,
-                    "autoWidth": false,
-                    "responsive": true
+                    "paging": true, // Bật phân trang
+                    "lengthChange": true, // Cho phép thay đổi số lượng hiển thị trên mỗi trang
+                    "searching": true, // Bật tính năng tìm kiếm
+                    "ordering": true, // Bật tính năng sắp xếp
+                    "info": true, // Hiển thị thông tin về số lượng dữ liệu
+                    "autoWidth": false, // Tự động điều chỉnh chiều rộng của cột
+                    "responsive": true       // Bật tính năng tương thích với các màn hình nhỏ
                 });
 
+                // Khi thay đổi trạng thái trong form, thực hiện lọc
                 $('input[name="status"]').change(function () {
-                    const status = $(this).val();
+                    const status = $(this).val();  // Lấy giá trị trạng thái (active hoặc unactive)
 
                     // Lọc dựa trên trạng thái
                     if (status === "") {
-                        // Hiển thị tất cả
-                        table.columns(8).search('').draw();
+                        // Nếu trạng thái là rỗng, hiển thị tất cả các mục
+                        table.columns(8).search('').draw();  // Cột trạng thái nằm ở vị trí 8
                     } else {
-                        // Lọc theo trạng thái
+                        // Lọc theo trạng thái (Active hoặc UnActive)
                         const searchValue = status === "active" ? 'Active' : 'UnActive';
-                        table.columns(8).search(searchValue).draw();
+                        table.columns(8).search(searchValue).draw();  // Tìm kiếm và lọc ở cột trạng thái
                     }
                 });
             });
         </script>
+
 
     </head>
 

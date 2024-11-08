@@ -58,37 +58,55 @@ public class DeleteMooc extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        MoocDAO ld = new MoocDAO();
-        String moocid = request.getParameter("moocid");
-        String courseid = request.getParameter("courseid");
-        String moocnumber = request.getParameter("moocnumber");
-        ld.deleteMooc(moocid, courseid);
-        MoocDAO md = new MoocDAO();
-        int moocid1 = -1;
-        if (moocnumber.equals("1")) {
-            moocid1 = md.GetIdMooc(1 ,  Integer.parseInt(courseid));
-            if (moocid1 == -1) {
-                String msg = "mooc does not exist";
-                request.setAttribute("msg", msg);
-            } else {
-                MoocDAO md1 = new MoocDAO();
-                Mooc m = md1.selectById(moocid1);
-                request.setAttribute("mooc", m);
-            }
+   @Override
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    // Tạo đối tượng MoocDAO để tương tác với cơ sở dữ liệu
+    MoocDAO ld = new MoocDAO();
+    
+    // Lấy các tham số từ URL
+    String moocid = request.getParameter("moocid");
+    String courseid = request.getParameter("courseid");
+    String moocnumber = request.getParameter("moocnumber");
+    
+    // Xóa Mooc theo moocid và courseid
+    ld.deleteMooc(moocid, courseid);
+    
+    // Tạo lại đối tượng MoocDAO để lấy thông tin Mooc
+    MoocDAO md = new MoocDAO();
+    int moocid1 = -1;
+    
+    // Kiểm tra nếu moocnumber là "1", lấy Mooc đầu tiên của khóa học
+    if (moocnumber.equals("1")) {
+        // Lấy ID của Mooc đầu tiên từ courseid
+        moocid1 = md.GetIdMooc(1 ,  Integer.parseInt(courseid));
+        
+        // Nếu không tìm thấy Mooc đầu tiên, hiển thị thông báo lỗi
+        if (moocid1 == -1) {
+            String msg = "mooc does not exist";
+            request.setAttribute("msg", msg); // Thiết lập thông báo lỗi vào request
         } else {
-            int moocid2 = md.GetIdMooc((Integer.parseInt(moocnumber) - 1), Integer.parseInt(courseid));
+            // Nếu tìm thấy, lấy Mooc theo ID và đặt vào request
             MoocDAO md1 = new MoocDAO();
-            Mooc m = md1.selectById(moocid2);
+            Mooc m = md1.selectById(moocid1);
             request.setAttribute("mooc", m);
         }
-
-        request.setAttribute("courseid", Integer.parseInt(courseid));
-        request.getRequestDispatcher("mooc?courseID="+courseid).forward(request, response);
-
+    } else {
+        // Nếu moocnumber không phải "1", lấy Mooc theo moocnumber - 1
+        int moocid2 = md.GetIdMooc((Integer.parseInt(moocnumber) - 1), Integer.parseInt(courseid));
+        
+        // Lấy Mooc theo ID và đặt vào request
+        MoocDAO md1 = new MoocDAO();
+        Mooc m = md1.selectById(moocid2);
+        request.setAttribute("mooc", m);
     }
+
+    // Thiết lập lại courseid để truyền vào request
+    request.setAttribute("courseid", Integer.parseInt(courseid));
+    
+    // Điều hướng yêu cầu đến trang mooc và truyền tham số courseID
+    request.getRequestDispatcher("mooc?courseID=" + courseid).forward(request, response);
+}
 
     /**
      * Handles the HTTP <code>POST</code> method.
