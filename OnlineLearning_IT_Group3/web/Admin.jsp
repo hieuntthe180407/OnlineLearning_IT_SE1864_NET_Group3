@@ -102,6 +102,32 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 text-center shadow-sm">
+                    <div class="card-body d-flex flex-column justify-content-end">
+                        <h5 class="card-title">Slider List</h5>
+                         <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+    <img src="img/admin/list-question-icon.png" style="width: 250px; height: 250px;" />
+</div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="SliderController" class="btn btn-primary w-100">Slider list</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 text-center shadow-sm">
+                    <div class="card-body d-flex flex-column justify-content-end">
+                        <h5 class="card-title">Post List</h5>
+                         <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+    <img src="img/admin/list-question-icon.png" style="width: 250px; height: 250px;" />
+</div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="BlogManageController" class="btn btn-primary w-100">Post list</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

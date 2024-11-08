@@ -15,6 +15,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import model.Blog;
 import model.CategoryBlog;
@@ -29,22 +31,18 @@ import util.Upload;
         maxFileSize = 1024 * 1024 * 10, // 10 MB
         maxRequestSize = 1024 * 1024 * 50)
 public class BlogManageController extends HttpServlet {
-    // Khai báo BlogDAO để truy xuất dữ liệu liên quan đến blog
+
     private BlogDAO blogDAO = new BlogDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // Lấy tham số hành động (action) từ yêu cầu (request)
         String action = req.getParameter("action");
 
-        // Xử lý khi hành động là "viewDetail" để xem chi tiết blog
         if ("viewDetail".equals(action)) {
             int blogId = Integer.parseInt(req.getParameter("id"));
             Blog blog = blogDAO.viewBlogDetail(blogId);
             req.setAttribute("blog", blog);
             req.getRequestDispatcher("/blogView.jsp").forward(req, resp);
-            
-            // Xử lý khi hành động là "edit" để chỉnh sửa blog
         } else if ("edit".equals(action)) {
             CategoryBlogDAO categoryDao = new CategoryBlogDAO();
             List<CategoryBlog> categoryBlog = categoryDao.getAllCategories();
@@ -54,35 +52,55 @@ public class BlogManageController extends HttpServlet {
             req.setAttribute("blog", blog);
             req.getRequestDispatcher("/blogForm.jsp").forward(req, resp);
         }
-        
-        // Xử lý khi hành động là "add" để thêm blog mới
         if ("add".equals(action)) {
             CategoryBlogDAO categoryDao = new CategoryBlogDAO();
             List<CategoryBlog> categoryBlog = categoryDao.getAllCategories();
             req.setAttribute("categoryBlogs", categoryBlog);
             req.getRequestDispatcher("/blogAddForm.jsp").forward(req, resp);
-            
+
             // Mặc định là hiển thị danh sách blog
         } else {
-            List<Blog> blogs = blogDAO.getAllPost();
+            int page = 1;
+            int pageSize = 10;
+
+            if (req.getParameter("page") != null) {
+                page = Integer.parseInt(req.getParameter("page"));
+            }
+
+            // Retrieve search query and selected sorting columns
+            String searchQuery = req.getParameter("searchQuery") != null ? req.getParameter("searchQuery") : "";
+            String[] selectedColumns = req.getParameterValues("sortColumns");
+            List<String> sortColumns = selectedColumns != null ? Arrays.asList(selectedColumns) : Collections.emptyList();
+
+            // Join sortColumns into a comma-separated string for easy use in JSP
+            String sortColumnsParam = String.join("&sortColumns=", sortColumns);
+
+            BlogDAO blogDAO = new BlogDAO();
+            int totalBlogs = blogDAO.getFilteredBlogCount(searchQuery);
+            int totalPages = (int) Math.ceil((double) totalBlogs / pageSize);
+
+            List<Blog> blogs = blogDAO.getPagedFilteredAndSortedBlogs(searchQuery, sortColumns, page, pageSize);
+
             req.setAttribute("blogs", blogs);
+            req.setAttribute("currentPage", page);
+            req.setAttribute("totalPages", totalPages);
+            req.setAttribute("sortColumns", sortColumns);
+            req.setAttribute("sortColumnsParam", sortColumnsParam);
+            req.setAttribute("searchQuery", searchQuery);
+
             req.getRequestDispatcher("/blogManageList.jsp").forward(req, resp);
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        
-        // Lấy tham số hành động (action) từ yêu cầu (request)
         String action = req.getParameter("action");
-        
-        // Xử lý khi hành động là "add" để thêm blog mới
         if ("add".equals(action)) {
             String title = req.getParameter("title");
             String content = req.getParameter("content");
             String status = req.getParameter("status");
             Part imageUrl = req.getPart("featuredImage");
-            
+
             // Đường dẫn lưu ảnh blog
             String pathBlog = "./uploads/blog/";
             Upload upload = new Upload();
@@ -111,28 +129,23 @@ public class BlogManageController extends HttpServlet {
 
             resp.sendRedirect("BlogManageController");
             // Xử lý khi hành động là "update" để cập nhật blog
-        } else if ("update".equals(action)) {
+        }
+        if ("update".equals(action)) {
             int blogId = Integer.parseInt(req.getParameter("id"));
             String title = req.getParameter("title");
             String content = req.getParameter("content");
             String status = req.getParameter("status");
             String oldImage = req.getParameter("oldImage");
             Part imageUrl = req.getPart("featuredImage");
-            
-            // Đường dẫn lưu ảnh blog                                       
             String pathBlog = "./uploads/blog/";
             Upload upload = new Upload();
             String uploadPath = getServletContext().getRealPath(pathBlog);
             String nameImgBanner = upload.uploadImg(imageUrl, uploadPath);
-            
-            // Nếu không có ảnh mới, sử dụng ảnh cũ
             if (nameImgBanner == null) {
                 nameImgBanner = oldImage;
             } else {
                 nameImgBanner = pathBlog + nameImgBanner;
             }
-            
-            // Tạo đối tượng Blog và thiết lập thông tin
             Blog blog = new Blog();
             blog.setBlogId(blogId);
             blog.setTitle(title);
@@ -142,7 +155,6 @@ public class BlogManageController extends HttpServlet {
 
             boolean isUpdated = blogDAO.updateBlog(blog);
 
-            // Thiết lập thông báo về trạng thái cập nhật blog
             if (isUpdated) {
                 req.setAttribute("message", "Blog updated successfully!");
             } else {
@@ -151,7 +163,7 @@ public class BlogManageController extends HttpServlet {
 
             Blog updatedBlog = blogDAO.viewBlogDetail(blogId);
             req.setAttribute("blog", updatedBlog);
-            resp.sendRedirect("BlogManageController");
+            resp.sendRedirect("/BlogManageController");
         }
     }
 }
