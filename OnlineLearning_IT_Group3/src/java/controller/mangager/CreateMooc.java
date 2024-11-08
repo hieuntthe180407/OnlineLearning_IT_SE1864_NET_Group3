@@ -5,6 +5,8 @@
 
 package controller.mangager;
 
+import dal.CourseDAO;
+import dal.MoocDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,7 +19,8 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author DTC
  */
-@WebServlet(name="CreateMooc", urlPatterns={"/createMooc"})
+@WebServlet(name="CreateMooc", urlPatterns={"/CreateMooc"})
+
 public class CreateMooc extends HttpServlet {
    
     /** 
@@ -55,7 +58,13 @@ public class CreateMooc extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        String courseidp = request.getParameter("courseid");
+        int courseid = Integer.parseInt(courseidp);
+        CourseDAO cd = new CourseDAO();
+        int number = cd.getNumberMax(courseidp);
+        request.setAttribute("lastnumber", number+1);
+        request.setAttribute("courseid", courseid);
+        request.getRequestDispatcher("createMooc.jsp").forward(request, response);
     } 
 
     /** 
@@ -68,7 +77,18 @@ public class CreateMooc extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        String moocnumber = request.getParameter("moocnumber");
+        String moocname = request.getParameter("moocname");
+        String courseid = request.getParameter("courseid");
+        int number = Integer.parseInt(moocnumber);
+        int course = Integer.parseInt(courseid);
+        MoocDAO md = new MoocDAO();
+        boolean c = md.addANewMooc(moocnumber, moocname, courseid);
+        MoocDAO md1 = new MoocDAO();
+        int moocid = md1.GetIdMooc(number, course);
+        if(c){
+            response.sendRedirect("mooc?courseID="+courseid);
+        }
     }
 
     /** 
