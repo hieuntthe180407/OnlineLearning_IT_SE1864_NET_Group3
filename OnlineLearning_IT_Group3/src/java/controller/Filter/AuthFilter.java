@@ -17,6 +17,8 @@ import model.User;
     "/CourseInformationDetailController",
     "updateCourse",
 //    "/courseList",
+     "/deleteQuestionServlet", "/ImportServlet","/QuestionDetailServlet","/questionListShowHide","/ShowPageServlet",
+     
     "/forgot",
     "/home",
     "/logout",
@@ -83,11 +85,11 @@ public class AuthFilter implements Filter {
             "/userAdminEdit", "/userList", "/userDetail", "/managerCourse", "/logout"};
 
         // Danh sách các URL chỉ teacher có thể truy cập
-        String[] teacherPages = {"/blogs", "/ReviewAdd", "/UploadFileController", "/UploadImageController","updateCourse",
+        String[] teacherPages = {"/blogs", "/ReviewAdd", "/UploadFileController", "/UploadImageController","updateCourse","/editProfile","/userProfile","/changePassword","/addAnswerServlet","/deleteQuestionServlet","/ExportServlet", "/ImportServlet","/QuestionDetailServlet", "/QuestionListServlet","/questionListShowHide", "/removeOptionServlet", "/ShowPageServlet",
             "/courseEdit", "/courseEditSubmit", "/editStatusLesson", "/lessonEdit", "/managerCourse", "/logout", "/courseDetail", "/courseList","/courseDetailTeacher.jsp"};
 
         // Danh sách các URL chỉ student có thể truy cập
-        String[] studentPages = {"/courseList", "/courseDetail", "/userProfile", "/changePassword", 
+        String[] studentPages = {"/courseList", "/courseDetail", "/userProfile", "/changePassword","/editProfile", 
             "/verifyServlet", "/ReviewAdd", "/courseList", "/courseDetail", "/logout"};
 
         if (roleId == 3) {
