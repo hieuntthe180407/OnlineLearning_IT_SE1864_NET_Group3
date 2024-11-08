@@ -47,8 +47,8 @@
         <!-- Navbar Start -->
         <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
             <a href="home" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-                <p class="m-0 fw-bold" style="font-size: 25px;"><img src="img/icon.png" alt="" height="50px">Secret<span
-                        style="color: #fb873f;">Coder</span></p>
+                <p class="m-0 fw-bold" style="font-size: 25px;"><img src="img/icon.png" alt="" height="50px">IT Online<span
+                        style="color: #fb873f;">Learning</span></p>
             </a>
             <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="navbar-toggler-icon"></span>
@@ -72,6 +72,9 @@
                     style="position: absolute; right: 0; max-width: 250px; white-space: nowrap; padding: 10px; margin: 0; overflow: hidden;">
                     <c:choose>
                         <c:when test="${not empty sessionScope.acc}">
+                            <li>
+                                <a class="dropdown-item" href="MyCourse">My Course</a>
+                            </li>
                             <li>
                                 <a class="dropdown-item" href="userProfile">Welcome, ${sessionScope.acc.fullName}</a>
                             </li>

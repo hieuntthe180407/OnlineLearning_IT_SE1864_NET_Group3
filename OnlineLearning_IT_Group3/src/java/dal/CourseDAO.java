@@ -8,6 +8,7 @@ import java.sql.*;
 import java.util.*;
 import model.Category;
 import model.Course;
+import model.Enroll;
 import model.Price;
 
 import model.User;
@@ -128,6 +129,36 @@ public class CourseDAO extends DBContext {
                 c.setSalePrice(rs.getDouble("SalePrice"));
                 c.setIsActive(rs.getBoolean("IsActive"));
                 c.setDescription(rs.getString("Description"));
+                return c;
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+    public Course getCourseTeacherByID(int id) {
+        try {
+            String sql = "SELECT * FROM Price p, Course c, [dbo].[User] u where p.CourseID =c.CourseID and c.UserID=u.UserID AND c.CourseID=" +id;
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            if (rs.next()) {
+                Course c = new Course();
+                c.setCourseID(rs.getInt("CourseID"));
+                c.setDuration(rs.getInt("Duration"));
+                c.setReport(rs.getInt("Report"));
+                c.setCourseName(rs.getString("CourseName"));
+                c.setCourseImg(rs.getString("courseIMG"));
+                c.setPrice(rs.getDouble("ListPrice"));
+                c.setSalePrice(rs.getDouble("SalePrice"));
+                c.setIsActive(rs.getBoolean("IsActive"));
+                c.setDescription(rs.getString("Description"));
+                
+                User u = new User();
+                u.setAbout(rs.getString("About"));
+                u.setAvatar(rs.getString("Avatar"));
+                u.setFullName(rs.getString("FullName"));
+                u.setEmail(rs.getString("Email"));
+                c.setUserId(u);
                 return c;
             }
         } catch (Exception e) {
@@ -428,14 +459,15 @@ public class CourseDAO extends DBContext {
     }
 
     //thay đổi thông tin của course
-    public boolean updateCourse(int id, int Category, String name, String des) {
-        String sql = "update Course set CategoryID=? , courseName = ?, Description=?  where CourseID = ?";
+    public boolean updateCourse(int id, int Category, String name, String des, int uid) {
+        String sql = "update Course set CategoryID=? , courseName = ?, Description=?, UserID=?  where CourseID = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, Category);
             st.setString(2, name);
             st.setString(3, des);
-            st.setInt(4, id);
+            st.setInt(4, uid);
+            st.setInt(5, id);
             st.executeUpdate();
             st.close();
             return true;
@@ -446,14 +478,14 @@ public class CourseDAO extends DBContext {
     }
 
     //Thêm mới course
-    public boolean addCourse(String name, int CategoryID, String des, String img) {
+    public boolean addCourse(String name, int CategoryID, String des, String img, int uid) {
         try {
-            String sql = "Insert into Course(CourseName,CategoryID,Description,CourseImg) values(?,?,?,?)";
+            String sql = "Insert into Course(CourseName,CategoryID,Description,CourseImg,UserID) values(?,?,?,?,?)";
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, name);
             st.setInt(2, CategoryID);
             st.setString(4, "img/Course/" + img);
-
+            st.setInt(5, uid);
             st.setString(3, des);
 
             st.executeUpdate();
@@ -509,15 +541,17 @@ public class CourseDAO extends DBContext {
 
     public static void main(String[] args) {
         CourseDAO dao = new CourseDAO();
-        List<Course> courses = dao.getCoursesByTeacher(1);
-
-        for (Course c : courses) {
-            System.out.println(c.getUserId().getFullName());
-
-            System.out.println("------------------");
-        }
-
-        dao.addCourse("bruh", 1, "npthing", "course1.jpg");
+        
+//        List<Course> courses = dao.getEnrollCourse(21);
+//
+//        for (Course c : courses) {
+//            System.out.println(c);
+//
+//            System.out.println("------------------");
+//        }
+//
+//        dao.addCourse("bruh", 1, "npthing", "course1.jpg");
+//            System.out.println(dao.getCourseTeacherByID(2));
     }
 // check course xem có tồn tại hay không
 
@@ -664,5 +698,97 @@ public class CourseDAO extends DBContext {
             }
         }
     }
+    
+    public List<Course> getEnrollCourse(int uId)
+   {
+       List<Course> list = new ArrayList<>();
+       String sql = "Select * FROM Enroll e, Course c, [dbo].[User] u WHERE u.UserID= e.UserID AND c.CourseID=e.CourseID AND u.UserID= "+uId;
+
+        try {
+
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                
+                Course c = new Course();
+                c.setCourseID(rs.getInt("courseID"));
+                c.setDuration(rs.getInt("Duration"));
+                c.setReport(rs.getInt("Report"));
+                c.setCourseImg(rs.getString("courseIMG"));
+                c.setCourseName(rs.getString("courseName"));
+                c.setDescription(rs.getString("Description"));
+                
+               
+                list.add(c);
+                
+
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return list;
+   }
+    
+    
+
+ public int getNumberMax(String courseid) {
+        try {
+            String sql = "  select top(1) [MoocNumber] from [Mooc] where [CourseID] = " + courseid + " order by [MoocNumber] desc";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return 0;
+    }
+
+
+    public boolean insertCourse(int userId, int categoryId, String courseImg, String courseName, String description) {
+        String sql = "INSERT INTO [dbo].[Course] "
+                + "([CategoryID], [CourseImg], [CourseName], [Publish], [Duration], [Report], [IsDiscontinued], "
+                + "[NewVersionId], [Description], [UserID]) "
+                + "VALUES (?, ?, ?, 1, 0, NULL, 0, NULL, ?, ?)";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setInt(1, categoryId);
+            stmt.setString(2, courseImg);
+            stmt.setString(3, courseName);
+            stmt.setString(4, description);
+            stmt.setInt(5, userId);
+
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public boolean updateCourse1(int courseId, int categoryId, String courseName, String description, String imagePath) {
+        String sql = "UPDATE [Course] SET [CategoryID] = ?, [CourseName] = ?, [Description] = ?, [CourseImg] = ? WHERE [CourseID] = ?";
+        
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+             
+            // Thiết lập giá trị cho các tham số
+            ps.setInt(1, categoryId);           
+            ps.setString(2, courseName);        
+            ps.setString(3, description);       
+            ps.setString(4, imagePath);         
+            ps.setInt(5, courseId);           
+
+            int result = ps.executeUpdate();
+            
+            return result > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
 }

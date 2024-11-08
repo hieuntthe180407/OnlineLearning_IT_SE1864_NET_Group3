@@ -79,58 +79,36 @@
                         <label><input type="radio" name="status" value="active">Active</label>
                         <label><input type="radio" name="status" value="inactive">UnActive</label>
                     </div>
-                    <a href="addCourse.jsp" class="btn btn-success">Add New Course</a>
+                    <a href="CreateMooc?courseid=${idCourse}" class="btn btn-success">Add New Mooc</a>
                 </div>
                 <table id="courseTable" class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Name course</th>
-                            <th>Thời lượng</th>
-                            <th>Báo cáo</th>
-                            <th>Image</th>
-                            <th>Mô tả</th>
-                            <th>Price</th>
-                            <th>Giá khuyến mãi</th>
-                            <th>Active</th>
+                            <th>Mooc Number</th>
+                            <th>Mooc Name</th>
                             <th>Action</th>
+
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="course" items="${listCourse}">
+                        <c:forEach var="listMooc" items="${listMooc}">
                             <tr>
-                                <td>${course.courseID}</td>
-                                <td>${course.courseName}</td>
-                                <td>${course.duration}</td>
-                                <td>${course.report}</td>
-                                <td><img src="${course.courseImg}" alt="Course Image" width="100" class="img-fluid rounded" /></td>
-                                <td>${course.description}</td>
-                                <td>${course.price}</td>
-                                <td>${course.salePrice}</td>
+                                <td>${listMooc.moocId}</td>
+                                <td>${listMooc.moocNumber}</td>
+                                <td>${listMooc.moocName}</td>                       
+
                                 <td>
-                                    <c:choose>
-                                        <c:when test="${course.isActive}">
-                                            <span class="badge bg-success">Active</span>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <span class="badge bg-danger">UnActive</span>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </td>
-                                <td>
-                                    <a href="courseDetail?courseID=${course.courseID}">
-                                        <button class="btn btn-primary">Detail</button>
+                                    <a href="deleteMooc?moocid=${listMooc.moocId}&&courseid=${idCourse}&&moocnumber=${listMooc.moocNumber}">
+                                        <button class="btn btn-primary">Delete Mooc</button>
                                     </a>
-                                    <a href="mooc?courseID=${course.courseID}">
-                                        <button class="btn btn-primary">Mooc</button>
-                                    </a>
-                                    <a href="updateCourse?courseID=${course.courseID}">
-                                        <button class="btn btn-primary">Update Course</button>
+                                        <a href="updateMooc?moocid=${listMooc.moocId}&&courseid=${idCourse}&&moocnumber=${listMooc.moocNumber}&&name=${listMooc.moocName}">
+                                        <button class="btn btn-primary">Update Mooc</button>
                                     </a>
                                 </td>
                             </tr>
                         </c:forEach>
-                        <c:if test="${empty listCourse}">
+                        <c:if test="${empty listMooc}">
                             <tr>
                                 <td colspan="10" class="text-center">There is no course.</td>
                             </tr>

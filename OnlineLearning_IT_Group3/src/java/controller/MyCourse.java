@@ -5,7 +5,8 @@
 
 package controller;
 
-import dal.LessonDAO;
+
+import dal.CourseDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,33 +14,33 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import model.Course;
+
+import model.User;
 
 /**
  *
  * @author trong
  */
-@WebServlet(name="editStatusLesson", urlPatterns={"/editStatusLesson"})
-public class editStatusLesson extends HttpServlet {
-  
-
+@WebServlet(name="MyCourse", urlPatterns={"/MyCourse"})
+public class MyCourse extends HttpServlet {
+   
+   
     
+   
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String status = request.getParameter("status");
-        int id = Integer.parseInt(request.getParameter("LessonID"));
-        int cid =Integer.parseInt(request.getParameter("courseID"));
-        LessonDAO lDAO = new LessonDAO();
+        HttpSession session = request.getSession();
+        User u = (User)session.getAttribute("acc");
+       CourseDAO cDAO = new CourseDAO();
+       List<Course> list = cDAO.getEnrollCourse(u.getUserID());
        
-        
-       
-            //neu status nhan dc tu jsp la disabled
-             lDAO.activeLessonStatus(id, status);
-        
-        
-       response.sendRedirect("courseDetail?courseID=" + cid);
-        
+       request.setAttribute("list", list);
+       request.getRequestDispatcher("MyCourse.jsp").forward(request, response);
     } 
 
-    
+   
 }

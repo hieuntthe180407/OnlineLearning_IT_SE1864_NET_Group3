@@ -22,7 +22,7 @@ public class LessonDetailController extends HttpServlet {
         int lessonID = Integer.parseInt(lessonIdStr);
         
         // Lấy thông tin chi tiết của bài học từ lessonDAO dựa trên lessonID
-        Lesson lesson = lessonDAO.getLessonById(lessonID);
+        Lesson lesson = lessonDAO.getLessonByID(lessonID);
         
         // Chuyển đổi đối tượng bài học thành JSON để gửi về client
         Gson gson = new Gson();

@@ -6,6 +6,7 @@
 package controller.mangager;
 
 import dal.CourseDAO;
+import dal.MoocDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,17 +14,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.util.List;
-import model.Course;
-import model.User;
 
 /**
  *
  * @author DTC
  */
-@WebServlet(name="ManagerCourse", urlPatterns={"/managerCourse"})
-public class ManagerCourse extends HttpServlet {
+@WebServlet(name="CreateMooc", urlPatterns={"/CreateMooc"})
+
+public class CreateMooc extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -40,10 +38,10 @@ public class ManagerCourse extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ManagerCourse</title>");  
+            out.println("<title>Servlet CreateMooc</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ManagerCourse at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet CreateMooc at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,30 +58,13 @@ public class ManagerCourse extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-            //lấy session và kiểm tra người dùng chặn trang
-        HttpSession session = request.getSession();
-        
-        if(session.getAttribute("teacher") != null){
-            User u = (User)session.getAttribute("teacher");
-            int teacherId = u.getUserID();
-            CourseDAO cDao = new CourseDAO();
-             List<Course> listAllCourse = cDao.getCoursesByTeacher(teacherId);//lấy các khóa học của teacher qua id 
-            
-            request.setAttribute("listCourse", listAllCourse);
-        
-            request.getRequestDispatcher("managerCourse.jsp").forward(request, response);
-            
-        }else{
-            response.sendRedirect("login");
-        }
-
-            
-            
-//            int teacherId = 1;
-           
-       
-//            request.getRequestDispatcher("managerCourse.jsp").forward(request, response);
-
+        String courseidp = request.getParameter("courseid");
+        int courseid = Integer.parseInt(courseidp);
+        CourseDAO cd = new CourseDAO();
+        int number = cd.getNumberMax(courseidp);
+        request.setAttribute("lastnumber", number+1);
+        request.setAttribute("courseid", courseid);
+        request.getRequestDispatcher("createMooc.jsp").forward(request, response);
     } 
 
     /** 
@@ -96,7 +77,18 @@ public class ManagerCourse extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        String moocnumber = request.getParameter("moocnumber");
+        String moocname = request.getParameter("moocname");
+        String courseid = request.getParameter("courseid");
+        int number = Integer.parseInt(moocnumber);
+        int course = Integer.parseInt(courseid);
+        MoocDAO md = new MoocDAO();
+        boolean c = md.addANewMooc(moocnumber, moocname, courseid);
+        MoocDAO md1 = new MoocDAO();
+        int moocid = md1.GetIdMooc(number, course);
+        if(c){
+            response.sendRedirect("mooc?courseID="+courseid);
+        }
     }
 
     /** 

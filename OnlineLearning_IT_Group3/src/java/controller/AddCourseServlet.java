@@ -4,16 +4,21 @@
  */
 package controller;
 
+import dal.CategoryDAO;
 import dal.CourseDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.File;
+import java.util.List;
+import model.Category;
 import model.User;
 
 /**
@@ -21,114 +26,78 @@ import model.User;
  * @author DTC
  */
 @WebServlet(name = "AddCourseServlet", urlPatterns = {"/addCourse"})
+@MultipartConfig
 public class AddCourseServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet AddCourseServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet AddCourseServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
+    private static final String DATA_DIRECTORY = "imageStorage\\course"; // Cập nhật đường dẫn
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        CategoryDAO categoryDAO = new CategoryDAO();
+        List<Category> listCategory = categoryDAO.getAllCategory();
+        request.setAttribute("listCategory", listCategory);
+        request.getRequestDispatcher("addCourse.jsp").forward(request, response);
     }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-     private static final String UPLOAD_DIR = "uploads"; // Thư mục lưu trữ ảnh
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            String courseName = request.getParameter("courseName");
-            int duration = Integer.parseInt(request.getParameter("duration"));
-            int report = Integer.parseInt(request.getParameter("report"));
-            String description = request.getParameter("description");
-            double listPrice = Double.parseDouble(request.getParameter("price"));
-            double salePrice = Double.parseDouble(request.getParameter("salePrice"));
-            boolean isActive = Boolean.parseBoolean(request.getParameter("isActive"));
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("teacher");
 
-            // Xử lý file ảnh
-            Part filePart = request.getPart("courseImg");
-            String fileName = filePart.getSubmittedFileName();
-            String filePath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIR + File.separator + fileName;
+        if (user == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
 
-            // Lưu ảnh vào thư mục uploads
-            File uploadsDir = new File(getServletContext().getRealPath("") + File.separator + UPLOAD_DIR);
-            if (!uploadsDir.exists()) {
-                uploadsDir.mkdir(); // Tạo thư mục nếu không tồn tại
-            }
-            filePart.write(filePath);
+        CourseDAO courseDAO = new CourseDAO();
 
-            // Thêm khóa học vào cơ sở dữ liệu
-            CourseDAO courseDAO = new CourseDAO();
-            User currentUser = (User) request.getSession().getAttribute("currentUser"); // Giả định có user đang đăng nhập
-            if (currentUser == null) {
-                throw new Exception("User is not logged in");
+        int userId = 1;  // Có thể thay thế bằng user.getUserID()
+        int categoryId = Integer.parseInt(request.getParameter("category"));
+        String courseName = request.getParameter("courseName");
+        String description = request.getParameter("description");
+
+        Part part = request.getPart("courseImg");
+        String fileName = getFileName(part);
+
+        if (fileName != null) {
+            // Lưu ảnh vào thư mục
+            String path = getServletContext().getRealPath("") + File.separator + DATA_DIRECTORY;
+            File directory = new File(path);
+            if (!directory.exists()) {
+                directory.mkdirs();
             }
 
-            boolean isAdded = courseDAO.addCourse(courseName, duration, report, fileName, description, listPrice, salePrice, isActive, currentUser);
+            // Đường dẫn đầy đủ của file
+            File file = new File(path + File.separator + fileName);
+            part.write(file.getAbsolutePath());
 
-            if (isAdded) {
-                response.sendRedirect("courseList.jsp"); // Chuyển hướng đến danh sách khóa học
+            // Lưu đường dẫn vào cơ sở dữ liệu
+            boolean isInserted = courseDAO.insertCourse(userId, categoryId, DATA_DIRECTORY + File.separator + fileName, courseName, description);
+            if (isInserted) {
+                response.sendRedirect("managerCourse");
             } else {
-                request.setAttribute("errorMessage", "Thêm khóa học không thành công. Vui lòng thử lại.");
+                request.setAttribute("error", "Error inserting course.");
                 request.getRequestDispatcher("addCourse.jsp").forward(request, response);
             }
-        } catch (Exception e) {
-            // Xử lý lỗi
-            e.printStackTrace(); // In thông tin lỗi ra console
-            request.setAttribute("errorMessage", "Đã xảy ra lỗi: " + e.getMessage());
+        } else {
+            request.setAttribute("error", "Course image is required.");
             request.getRequestDispatcher("addCourse.jsp").forward(request, response);
         }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
+    private String getFileName(Part part) {
+        for (String content : part.getHeader("content-disposition").split(";")) {
+            if (content.trim().startsWith("filename")) {
+                return content.substring(content.indexOf('=') + 1).trim().replace("\"", "");
+            }
+        }
+        return null;
+    }
+
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+        return "Add Course Servlet";
+    }
 }

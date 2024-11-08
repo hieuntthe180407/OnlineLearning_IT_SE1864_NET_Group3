@@ -19,6 +19,7 @@ public class Course {
     private double salePrice;
     private boolean isActive;
     private User userId;
+    
 
     public Course() {
     }
@@ -123,6 +124,13 @@ public class Course {
     public void setDescription(String Description) {
         this.Description = Description;
     }
+
+    @Override
+    public String toString() {
+        return "Course{" + "courseID=" + courseID + ", duration=" + duration + ", report=" + report + ", courseImg=" + courseImg + ", courseName=" + courseName + ", Description=" + Description + ", price=" + price + ", salePrice=" + salePrice + ", isActive=" + isActive + ", userId=" + userId + '}';
+    }
+
+    
 
    
    

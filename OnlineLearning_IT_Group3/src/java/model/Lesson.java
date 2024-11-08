@@ -10,8 +10,17 @@ package model;
  */
 public class Lesson {
     private int LessonID;
-    private int CourseID;
+    private int MoocID;
     private int LessonNumber;
+    private String LessonImg;
+
+    public String getLessonImg() {
+        return LessonImg;
+    }
+
+    public void setLessonImg(String LessonImg) {
+        this.LessonImg = LessonImg;
+    }
     private String LessonURL;
      private String LessonName;
       private String Description;
@@ -20,9 +29,9 @@ public class Lesson {
     public Lesson() {
     }
 
-    public Lesson(int LessonID, int CourseID, int LessonNumber, String LessonURL, String LessonName, String Description, String Status) {
+    public Lesson(int LessonID, int MoocID, int LessonNumber, String LessonURL, String LessonName, String Description, String Status) {
         this.LessonID = LessonID;
-        this.CourseID = CourseID;
+        this.MoocID = MoocID;
         this.LessonNumber = LessonNumber;
         this.LessonURL = LessonURL;
         this.LessonName = LessonName;
@@ -51,14 +60,15 @@ public class Lesson {
         this.LessonID = LessonID;
     }
 
-    public int getCourseID() {
-        return CourseID;
+    public int getMoocID() {
+        return MoocID;
     }
 
-    public void setCourseID(int CourseID) {
-        this.CourseID = CourseID;
+    public void setMoocID(int MoocID) {
+        this.MoocID = MoocID;
     }
 
+   
     
 
     public String getLessonURL() {

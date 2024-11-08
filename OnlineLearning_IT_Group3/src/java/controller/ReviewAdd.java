@@ -29,7 +29,7 @@ public class ReviewAdd extends HttpServlet {
         int cID = Integer.parseInt(request.getParameter("CourseID"));
         String err="";
         try{
-            
+            //lay id tu session
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("acc");
         
@@ -39,7 +39,7 @@ public class ReviewAdd extends HttpServlet {
         String content = request.getParameter("ReviewContent");
         int rating = Integer.parseInt(request.getParameter("rating"));
         ReviewDAO rDAO = new ReviewDAO();
-        
+        //add review moi duoc tao vao db
         rDAO.addReview(cID, content, uID,rating);
         response.sendRedirect("courseDetail?courseID="+cID);
         
@@ -47,6 +47,7 @@ public class ReviewAdd extends HttpServlet {
         }
         catch(Exception e)
         {
+            // neu guest submit review thi hien thong bao yeu cau dang nhap
              err= "You have to login first to review a course";
             response.sendRedirect("courseDetail?courseID="+cID+"&err="+err);
         }

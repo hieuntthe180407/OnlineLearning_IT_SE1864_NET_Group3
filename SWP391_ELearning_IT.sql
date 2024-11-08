@@ -1,5 +1,8 @@
-﻿USE [SWP391_FALL2024]
-
+﻿Use [master]
+Go
+Create database [SWP391_FALL2024]
+GO
+USE [SWP391_FALL2024]
 GO
 /****** Object:  Table [dbo].[Blogs]    Script Date: 9/14/2024 10:13:41 PM ******/
 SET ANSI_NULLS ON
@@ -80,7 +83,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Course](
 	[CourseID] [int] IDENTITY(1,1) NOT NULL,
-	
+
 	[CategoryID] [int] NOT NULL,
 	[CourseImg] [varchar](255) NULL,
 	[CourseName] [varchar](255) NOT NULL,
@@ -159,14 +162,32 @@ CREATE TABLE [dbo].[Lessons](
 	[LessonID] [int] IDENTITY(1,1) NOT NULL,
 	[LessonNumber] [int] NULL,
 	[LessonName] [varchar](255) NOT NULL,
-	[CourseID] [int] NOT NULL,
+	[MoocID] [int] NOT NULL,
 	[LessonUrl] [varchar](255) NULL,
 	[Description] [text] NULL,
+	[Status] [varchar](255) NOT NULL,
+	[LessonImg] [varchar](255) NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[LessonID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Mooc]    Script Date: 9/14/2024 10:13:41 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Mooc](
+	[MoocID] [int] IDENTITY(1,1) NOT NULL,
+	[MoocNumber] [int] NULL,
+	[MoocName] [varchar](255) NOT NULL,
+	[CourseID] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[MoocID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
 GO
 
 
@@ -239,7 +260,7 @@ CREATE TABLE [dbo].[Review](
 	[Rating] [int] NULL,
 	[Time] [datetime] NULL,
 	[ReviewContent] [text] NULL,
-	[IsReport] [bit] NULL,
+	
 PRIMARY KEY CLUSTERED 
 (
 	[ReviewID] ASC
@@ -274,30 +295,7 @@ PRIMARY KEY CLUSTERED
 	[SliderID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]	 
-/****** Object:  Table [dbo].[Teacher]    Script Date: 9/14/2024 10:13:41 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[Teacher](
-	[TeacherID] [int] IDENTITY(1,1) NOT NULL,
-	[UserID] [int] NOT NULL,
-	[Position] [varchar](255) NULL,
-	[Workplace] [varchar](255) NULL,
-	[PersonalWebsite] [varchar](255) NULL,
-	[Facebook] [varchar](255) NULL,
-	[Linkedin] [varchar](255) NULL,
-	[DateJoin] [date] NULL,
-	[About] [text] NULL,
-	[CV] [varchar](255) NULL,
-	[Status] [varchar](50) NULL,
-	[DateRequest] [date] NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[TeacherID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-GO
+
 /****** Object:  Table [dbo].[User]    Script Date: 9/14/2024 10:13:41 PM ******/
 SET ANSI_NULLS ON
 GO
@@ -313,7 +311,7 @@ CREATE TABLE [dbo].[User](
 	[Address] [varchar](255) NULL,
 	[Gender] [varchar](10) NULL,
 	[RoleID] [int] NULL,
-	[Reason] [text] NULL,
+	[About] [text] NULL,
 	
 	[Avatar] [varchar](255) NULL,
 	[Status] [varchar](255) NULL,
@@ -406,9 +404,10 @@ GO
 
 ALTER TABLE [dbo].[User] ADD  DEFAULT (('Active')) FOR [Status]
 GO
-ALTER TABLE [dbo].[Review] ADD  DEFAULT ((0)) FOR [IsReport]
-GO
+
 ALTER TABLE [dbo].[Review] ADD  DEFAULT (getdate()) FOR [Time]
+GO
+ALTER TABLE [dbo].[Lessons] ADD  DEFAULT (('Active')) FOR [Status]
 GO
 
 
@@ -443,10 +442,12 @@ GO
 ALTER TABLE [dbo].[ExamDetail]  WITH CHECK ADD FOREIGN KEY([UserID])
 REFERENCES [dbo].[User] ([UserID])
 GO
-ALTER TABLE [dbo].[Lessons]  WITH CHECK ADD FOREIGN KEY([CourseID])
+ALTER TABLE [dbo].[Lessons]  WITH CHECK ADD FOREIGN KEY([MoocID])
+REFERENCES [dbo].[Mooc] ([MoocID])
+GO
+ALTER TABLE [dbo].[Mooc]  WITH CHECK ADD FOREIGN KEY([CourseID])
 REFERENCES [dbo].[Course] ([CourseID])
 GO
-
 ALTER TABLE [dbo].[Price]  WITH CHECK ADD FOREIGN KEY([CourseID])
 REFERENCES [dbo].[Course] ([CourseID])
 ON DELETE CASCADE
@@ -471,9 +472,7 @@ REFERENCES [dbo].[User] ([UserID])
 GO
 
 
-ALTER TABLE [dbo].[Teacher]  WITH CHECK ADD FOREIGN KEY([UserID])
-REFERENCES [dbo].[User] ([UserID])
-GO
+
 ALTER TABLE [dbo].[User]  WITH CHECK ADD FOREIGN KEY([RoleID])
 REFERENCES [dbo].[Role] ([RoleID])
 GO
@@ -486,3 +485,50 @@ GO
 
 ALTER TABLE [dbo].[Review]  WITH CHECK ADD CHECK  (([Rating]>=(1) AND [Rating]<=(5)))
 GO
+
+ALTER TABLE [dbo].[Category]
+ADD [Image] NVARCHAR(MAX);  
+
+ALTER TABLE [dbo].[Course]
+ADD UserID INT NULL;  
+
+ALTER TABLE [dbo].[Course]  WITH CHECK ADD FOREIGN KEY([UserID])
+REFERENCES [dbo].[User] ([UserID])
+GO
+
+CREATE TABLE [dbo].[GuestPhone](
+	[PhoneID] [int] IDENTITY(1,1) NOT NULL,
+	[GuestId] [int] NOT NULL,
+	
+	[PhoneNum] [varchar](255) NOT NULL
+	PRIMARY KEY CLUSTERED 
+(
+	[PhoneID] ASC
+)
+	)
+	
+
+
+CREATE TABLE [dbo].[Guest](
+	[GuestId] [int] IDENTITY(1,1) NOT NULL,
+	[PreferredPhone] [varchar](255) NOT NULL,
+	[Email] [varchar](255) NOT NULL,
+	[FullName] [varchar](255) NOT NULL,
+	[Address] [varchar](255) NOT NULL
+	PRIMARY KEY CLUSTERED 
+(
+	[GuestId] ASC
+)
+	)
+	ALTER TABLE Purchase
+		ADD GuestId int NULl;
+		ALTER TABLE Purchase
+		ALTER COLUMN UserID int  NULL;
+	ALTER TABLE [dbo].[GuestPhone]  WITH CHECK ADD FOREIGN KEY([GuestId])
+REFERENCES [dbo].[Guest] ([GuestId])
+ALTER TABLE [dbo].[Purchase]  WITH CHECK ADD FOREIGN KEY([GuestId])
+REFERENCES [dbo].[Guest] ([GuestId])
+
+Alter Table Enroll
+Alter column DateEnroll datetime
+ALTER TABLE [dbo].[Enroll] ADD  DEFAULT (getdate()) FOR [DateEnroll]

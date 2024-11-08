@@ -18,7 +18,7 @@ import model.User;
  * @author DTC
  */
 public class ReviewDAO extends DBContext {
-
+// lay toan bo review theo courseId
     public List<Review> getReviewByCourseId(int courseId) {
         List<Review> reviews = new ArrayList<>();
 
@@ -50,7 +50,7 @@ public class ReviewDAO extends DBContext {
                 review.setRating(rs.getInt("Rating"));
                 review.setTime(rs.getTimestamp("Time").toLocalDateTime()); // Convert to LocalDateTime
                 review.setReviewContent(rs.getString("ReviewContent"));
-                review.setIsReport(rs.getInt("IsReport"));
+               
 
                 reviews.add(review);
             }
@@ -62,7 +62,7 @@ public class ReviewDAO extends DBContext {
 
         return reviews;
     }
-
+// insert review duoc nhap boi user
     public void addReview(int cID, String content, int uID, int rating) {
         try {
             String sql = "Insert into Review(CourseID,UserID,ReviewContent,Rating) values(?,?,?,?)";

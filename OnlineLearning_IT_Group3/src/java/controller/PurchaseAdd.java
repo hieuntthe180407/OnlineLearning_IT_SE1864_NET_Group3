@@ -5,6 +5,7 @@
 
 package controller;
 
+import dal.EnrollDAO;
 import dal.PurchaseDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -37,30 +38,25 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
 throws ServletException, IOException {
     HttpSession session = request.getSession();
     User user = (User) session.getAttribute("acc");
-    
-    PrintWriter out = response.getWriter(); // Create PrintWriter for output
+ 
     int cID = Integer.parseInt(request.getParameter("CourseID"));
     
     PurchaseDAO pDAO = new PurchaseDAO();
     int priceID = pDAO.getPriceIDbyCourseID(cID);
     
-    out.println("Course ID: " + cID); // Debug output
-    out.println("Price ID: " + priceID); // Debug output
+    
 
     if (user == null) {
+        //neu la guest ch het phone numbers vao 1 list
         List<String> phoneNumbers = new ArrayList<>(Arrays.asList(request.getParameterValues("Phone")));
         
-        // Print the list of phone numbers for debugging
-        out.println("Phone Numbers: ");
-        for (String phoneNumber : phoneNumbers) {
-            out.println(phoneNumber); // Print each phone number
-        }
+        
         
         Integer phone1 = null;
         Integer phone2 = null;
         Integer phone3 = null;
 
-        // Check if the list is not null and has values
+        // Check neu phone list khong null va co gia tri
         if (phoneNumbers != null && !phoneNumbers.isEmpty()) {
             try {
                 if (!phoneNumbers.get(0).isEmpty()) {
@@ -73,7 +69,7 @@ throws ServletException, IOException {
                     phone3 = Integer.parseInt(phoneNumbers.get(2));
                 }
             } catch (NumberFormatException e) {
-                out.println("Error parsing phone numbers: " + e.getMessage());
+                
             }
         }
         
@@ -87,8 +83,13 @@ throws ServletException, IOException {
 
         pDAO.addPurchaseGuest(priceID, preferPhone, email, name, address, phoneNumbers);
     } else {
+        //neu la user da dang nhap
         pDAO.addPurchaseUser(user.getUserID(), priceID);
+        EnrollDAO e = new EnrollDAO();
+        e.addEnrollUser(user.getUserID(), cID);
     }
+    
+    response.sendRedirect("lessonList?courseID="+ cID);
 }
 
 

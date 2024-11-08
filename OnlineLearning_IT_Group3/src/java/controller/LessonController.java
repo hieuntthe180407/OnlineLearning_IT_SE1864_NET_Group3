@@ -30,7 +30,7 @@ public class LessonController extends HttpServlet {
         request.setAttribute("Course", course);
         
         // Lấy danh sách các bài học của khóa học từ lessonDAO dựa trên courseId
-        List<Lesson> lessons = lessonDAO.getLessonsByCourseId(courseId);
+        List<Lesson> lessons = lessonDAO.getAlllessonBycourseID(courseId);
         
         // Sắp xếp danh sách bài học vào các module theo số thứ tự của bài học
         Map<String, List<Lesson>> modules = new LinkedHashMap<>();

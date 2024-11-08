@@ -30,9 +30,10 @@ public class lessonEdit extends HttpServlet {
         try{
         String idParam = request.getParameter("LessonID");
         LessonDAO lDAO = new LessonDAO();
+        //lessonID khac null
         if(idParam !=null){
             int id = Integer.parseInt(idParam);
-        
+        // lay toan bo thong tin lesson theo lessonID
         Lesson l = lDAO.getLessonByID(id);
         
          request.setAttribute("lesson", l);
@@ -46,7 +47,7 @@ public class lessonEdit extends HttpServlet {
         catch (Exception e){
             System.out.println(e.getMessage());
             
-            response.sendRedirect("courseDetail");
+            
         }
         
     } 
@@ -54,28 +55,71 @@ public class lessonEdit extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        try{
-        String idParam = request.getParameter("LessonID");
+        String err="";
+        
+        int cID = Integer.parseInt(request.getParameter("CourseID"));
+        
+    String idParam = request.getParameter("LessonID");
+       
+      
+        LessonDAO l = new LessonDAO();
+        // neu co lessonID thi se nhay vao update page
+        if(idParam !=null){
+            try{
         String name = request.getParameter("lessonName");
         String url = request.getParameter("lessonUrl");
         String des = request.getParameter("description");
+        String img = request.getParameter("lessonImg");
         int num = Integer.parseInt(request.getParameter("LessonNumber"));
-        LessonDAO l = new LessonDAO();
-        if(idParam !=null){
+        if (name == null || name.trim().isEmpty() ||
+        url == null || url.trim().isEmpty() ||
+        des == null || des.trim().isEmpty() || img.trim().isEmpty()|| img.trim()==null)
+                 {
+
+        throw new IllegalArgumentException();
+    }
+        
             int id = Integer.parseInt(idParam);
-            l.updateLesson(id, name, url,des,num);
-             response.sendRedirect("courseList");    
+            l.updateLesson(id, name, url,des,num,img);
+            err="Lesson updated successfully";
+             response.sendRedirect("courseDetail?courseID="+cID+ "&err="+err); 
+            }
+            // neu name,url,description,number null thi se catch
+            catch(Exception e)
+                    {
+                        err="You must fill all the blank!";
+                        response.sendRedirect("lessonEdit?LessonID="+idParam +"&CourseID="+cID+"&err="+err);
+                    }
         }
+        //lessonID = null thi nhay vao trang add
         else{
-            int cID = Integer.parseInt(request.getParameter("CourseID"));
-            l.addLesson(name, url,cID,des,num);
-           response.sendRedirect("courseDetail?CourseID="+ cID);    
+            try{
+                String name = request.getParameter("lessonName");
+        String url = request.getParameter("lessonUrl");
+        String des = request.getParameter("description");
+        String img = request.getParameter("lessonImg");
+        int moocID = Integer.parseInt(request.getParameter("MoocID"));
+        int num = Integer.parseInt(request.getParameter("LessonNumber"));
+        if (name == null || name.trim().isEmpty() ||
+        url == null || url.trim().isEmpty() ||
+        des == null || des.trim().isEmpty()|| img.trim().isEmpty()|| img.trim()==null)
+                 {
+
+        throw new IllegalArgumentException();
+    }
+            
+            l.addLesson(name, url,moocID,des,num,img);
+            err="Lesson added successfully";
+           response.sendRedirect("courseDetail?courseID="+ cID+ "&err="+err);    
+            }
+            // neu name,url,description,number null thi se catch
+            catch(Exception e)
+                    {
+                        err="You must fill all the blank!";
+                        response.sendRedirect("lessonEdit.jsp?CourseID="+cID+"&err="+err);
+                    }
         }
-         }
-        catch (Exception e){
-            System.out.println(e.getMessage());
-            response.sendRedirect("lessonEdit");        
-        }
+        
     }
     
 

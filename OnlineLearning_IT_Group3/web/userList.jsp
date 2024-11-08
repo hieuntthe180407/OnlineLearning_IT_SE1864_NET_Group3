@@ -74,7 +74,7 @@
         
 <form id="userFilterForm" action="filterUser" method="GET">
     <label for="itemsPerPage">Users per page:</label>
-    <input type="number" name="itemsPerPage" id="itemsPerPage" />
+    <input type="number" name="itemsPerPage" id="itemsPerPage" value="<%=itemsPerPage%>" />
     <input type="text" name="query" placeholder="Search">
     <!-- Gender Dropdown -->
     <label for="gender">Gender:</label>
@@ -91,7 +91,7 @@
         <option value="">All Roles</option>
         <option value="admin" ${param.role == 'admin' ? 'selected' : ''}>Admin</option>
         <option value="user" ${param.role == 'user' ? 'selected' : ''}>User</option>
-        <option value="expert" ${param.role == 'expert' ? 'selected' : ''}>Expert</option>
+        <option value="teacher" ${param.role == 'teacher' ? 'selected' : ''}>Teacher</option>
     </select>
 
     <!-- Status Dropdown -->
@@ -104,7 +104,7 @@
     </select>
 
     <!-- Submit Button -->
-    <button type="submit">Filter Users</button>
+    <button type="submit">Search</button>
 </form>
 
     <style>
@@ -192,11 +192,6 @@
     }
 </style>
 <!-- Lay list User tu db -->
-
-
-<!-- Form for Items Per Page Selection -->
-
-
 
 <%
     List<User> list = (List<User>) request.getAttribute("users");
