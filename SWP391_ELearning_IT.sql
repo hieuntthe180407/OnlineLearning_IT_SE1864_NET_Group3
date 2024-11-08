@@ -1,5 +1,7 @@
-﻿
-
+﻿Use [master]
+Go
+Create database [SWP391_FALL2024]
+GO
 USE [SWP391_FALL2024]
 
 GO
