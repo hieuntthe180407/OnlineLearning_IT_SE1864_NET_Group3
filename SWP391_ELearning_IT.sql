@@ -3,7 +3,6 @@ Go
 Create database [SWP391_FALL2024]
 GO
 USE [SWP391_FALL2024]
-
 GO
 /****** Object:  Table [dbo].[Blogs]    Script Date: 9/14/2024 10:13:41 PM ******/
 SET ANSI_NULLS ON
