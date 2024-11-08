@@ -57,47 +57,61 @@ public class CourseListController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-         CourseDAO cDao = new CourseDAO();
-        List<Category> listTop8Category = cDao.getTop8Category();
-        request.setAttribute("listTop8Category", listTop8Category);
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
 
-        List<Course> listAllCourse = null;
-        //Lấy tham số action từ yêu cầu của người dùng (URL hoặc form) để xác định hành động mà người dùng muốn thực hiện.
-        String action = request.getParameter("action");
+    // Tạo đối tượng CourseDAO để thao tác với dữ liệu khóa học trong cơ sở dữ liệu
+    CourseDAO cDao = new CourseDAO();
 
-        // Check if action is null or empty
-        if (action == null || action.isEmpty()) {
+    // Lấy danh sách 8 danh mục khóa học phổ biến nhất
+    List<Category> listTop8Category = cDao.getTop8Category();
+    // Đặt danh sách 8 danh mục vào thuộc tính request để truyền sang trang JSP
+    request.setAttribute("listTop8Category", listTop8Category);
 
-            listAllCourse = cDao.getAllCourse();
+    // Khai báo danh sách khóa học để lưu kết quả tìm kiếm hoặc lọc
+    List<Course> listAllCourse = null;
 
-        } else if (action.equalsIgnoreCase("search")) {
-            // nếu hành động là search thì sẽ lấy ra text của nó và search course đó theo text đó
-            String text = request.getParameter("text");
-            listAllCourse = cDao.getAllCourseBySearch(text);
-        } else if (action.equalsIgnoreCase("category")) {
-              // nếu hành động là tìm kiếm theo category thì sẽ lấy ra giá trị của nó và tìm kiếm course đó theo text đó
-            String name = request.getParameter("name");
-            listAllCourse = cDao.getAllCoursesByCategory(name);
-        } else if (action.equalsIgnoreCase("filterPrice")) {
-            //Kiểm tra nếu action là "filterPrice", tức là người dùng muốn lọc khóa học theo khoảng giá.
-           double minPrice = Double.parseDouble(request.getParameter("minPrice"));
-           double maxPrice = Double.parseDouble(request.getParameter("maxPrice"));
-           //Gọi phương thức getCourseByMinMaxPrice(minPrice, maxPrice) để lấy các khóa học có giá nằm trong khoảng minPrice và maxPrice.
-           listAllCourse = cDao.getCourseByMinMaxPrice(minPrice,maxPrice);//
+    // Lấy tham số "action" từ yêu cầu của người dùng, xác định loại thao tác mà người dùng muốn thực hiện
+    String action = request.getParameter("action");
 
-        }
+    // Kiểm tra nếu "action" là null hoặc rỗng (không có hành động cụ thể), lấy toàn bộ danh sách khóa học
+    if (action == null || action.isEmpty()) {
+        listAllCourse = cDao.getAllCourse();
+        
+    } else if (action.equalsIgnoreCase("search")) {
+        // Nếu hành động là "search" (tìm kiếm), lấy từ khóa tìm kiếm từ tham số "text" và tìm các khóa học chứa từ khóa này
+        String text = request.getParameter("text");
+        listAllCourse = cDao.getAllCourseBySearch(text);
+        
+    } else if (action.equalsIgnoreCase("category")) {
+        // Nếu hành động là "category" (tìm kiếm theo danh mục), lấy tên danh mục từ tham số "name" và tìm các khóa học trong danh mục đó
+        String name = request.getParameter("name");
+        listAllCourse = cDao.getAllCoursesByCategory(name);
+        
+    } else if (action.equalsIgnoreCase("filterPrice")) {
+        // Nếu hành động là "filterPrice" (lọc theo giá), lấy khoảng giá tối thiểu và tối đa từ các tham số "minPrice" và "maxPrice"
+        double minPrice = Double.parseDouble(request.getParameter("minPrice"));
+        double maxPrice = Double.parseDouble(request.getParameter("maxPrice"));
+        
+        // Gọi phương thức getCourseByMinMaxPrice để lấy các khóa học có giá nằm trong khoảng minPrice và maxPrice
+        listAllCourse = cDao.getCourseByMinMaxPrice(minPrice, maxPrice);
+    }
 
-        double maxPrice = cDao.getMaxPrice();
-        request.setAttribute("maxPrice", maxPrice);
-        double minPrice = cDao.getMinPrice();
-        request.setAttribute("minPrice", minPrice);
+    // Lấy giá cao nhất của các khóa học từ cơ sở dữ liệu để hiển thị trên giao diện lọc
+    double maxPrice = cDao.getMaxPrice();
+    request.setAttribute("maxPrice", maxPrice);
 
-        request.setAttribute("listCourse", listAllCourse);
-        request.getRequestDispatcher("/courseList.jsp").forward(request, response);
-    
-    } 
+    // Lấy giá thấp nhất của các khóa học từ cơ sở dữ liệu để hiển thị trên giao diện lọc
+    double minPrice = cDao.getMinPrice();
+    request.setAttribute("minPrice", minPrice);
+
+    // Đặt danh sách các khóa học (sau khi tìm kiếm hoặc lọc) vào thuộc tính request để truyền sang trang JSP
+    request.setAttribute("listCourse", listAllCourse);
+
+    // Chuyển tiếp yêu cầu và dữ liệu đến trang "courseList.jsp" để hiển thị kết quả
+    request.getRequestDispatcher("/courseList.jsp").forward(request, response);
+}
+
 
     /** 
      * Handles the HTTP <code>POST</code> method.

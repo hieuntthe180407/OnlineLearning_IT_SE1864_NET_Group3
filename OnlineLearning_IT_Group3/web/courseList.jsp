@@ -204,8 +204,8 @@
                                         <div class="position-relative overflow-hidden text-light image">
                                             <img class="img-fluid" src="${listCourse.courseImg}" alt="${listCourse.courseName}">
                                             <c:if test="${listCourse.price == 0}">
-                                                        <div style="position:absolute;top: 15px;left: 16px; font-size:12px; border-radius:3px; background-color:#fb873f;" class="px-2 py-1 fw-bold text-uppercase">FREE</div>
-                                                    </c:if>
+                                                <div style="position:absolute;top: 15px;left: 16px; font-size:12px; border-radius:3px; background-color:#fb873f;" class="px-2 py-1 fw-bold text-uppercase">FREE</div>
+                                            </c:if>
                                         </div>
                                         <div class="p-2 pb-0">
                                             <h5 class="mb-1"><a href="courseDetail?courseID=${listCourse.courseID}" class="text-dark">${listCourse.courseName}</a></h5>
@@ -262,114 +262,114 @@
 
 
         <script>
-            const itemsPerPage = 12; // Number of items to display per page
-            let currentPage = 1;
+            const itemsPerPage = 12; // Số lượng mục hiển thị trên mỗi trang
+            let currentPage = 1; // Trang hiện tại, bắt đầu từ trang đầu tiên
 
-            const items = document.querySelectorAll('.course-item'); // Select all course items
-            const totalPages = Math.ceil(items.length / itemsPerPage); // Calculate total pages
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-            const pageInfo = document.getElementById('pageInfo');
+            const items = document.querySelectorAll('.course-item'); // Chọn tất cả các phần tử có class 'course-item' (mỗi phần tử đại diện cho một khóa học)
+            const totalPages = Math.ceil(items.length / itemsPerPage); // Tính tổng số trang cần có dựa trên số lượng mục và số mục mỗi trang
+            const prevBtn = document.getElementById('prevBtn'); // Lấy phần tử nút chuyển về trang trước
+            const nextBtn = document.getElementById('nextBtn'); // Lấy phần tử nút chuyển đến trang sau
+            const pageInfo = document.getElementById('pageInfo'); // Lấy phần tử hiển thị thông tin trang
 
             function updatePaginationNumbers() {
                 const paginationNumbers = document.getElementById('paginationNumbers');
-                paginationNumbers.innerHTML = ''; // Clear existing numbers
+                paginationNumbers.innerHTML = ''; // Xóa các số trang hiện tại
 
-                // Show page numbers based on the current page
-                const startPage = Math.max(1, currentPage - 1); // start from currentPage - 1, but not less than 1
-                const endPage = Math.min(totalPages, currentPage + 1); // end at currentPage + 1, but not more than totalPages
+                // Xác định số trang hiển thị dựa trên trang hiện tại
+                const startPage = Math.max(1, currentPage - 1); // Trang bắt đầu, không nhỏ hơn 1
+                const endPage = Math.min(totalPages, currentPage + 1); // Trang kết thúc, không lớn hơn tổng số trang
 
-                // Always show first page
+                // Luôn hiển thị trang đầu tiên
                 if (startPage > 1) {
-                    const firstPage = document.createElement('button');
-                    firstPage.className = 'btn btn-outline-primary mx-1';
-                    firstPage.innerText = '1';
+                    const firstPage = document.createElement('button'); // Tạo nút cho trang đầu
+                    firstPage.className = 'btn btn-outline-primary mx-1'; // Thêm class cho nút
+                    firstPage.innerText = '1'; // Đặt nội dung là số 1
                     firstPage.onclick = () => {
-                        currentPage = 1;
-                        showPage(currentPage);
+                        currentPage = 1; // Chuyển về trang đầu tiên
+                        showPage(currentPage); // Hiển thị trang đầu tiên
                     };
-                    paginationNumbers.appendChild(firstPage);
+                    paginationNumbers.appendChild(firstPage); // Thêm nút vào trong phần số trang
 
-                    if (startPage > 2) { // Show ... if there's a gap
+                    if (startPage > 2) { // Hiển thị dấu "..." nếu có khoảng trống giữa các trang
                         const ellipsis = document.createElement('span');
                         ellipsis.innerText = '...';
-                        paginationNumbers.appendChild(ellipsis);
+                        paginationNumbers.appendChild(ellipsis); // Thêm dấu "..." vào phần số trang
                     }
                 }
 
-                // Loop through page numbers
+                // Vòng lặp qua các số trang từ trang bắt đầu đến trang kết thúc
                 for (let i = startPage; i <= endPage; i++) {
-                    const pageNum = document.createElement('button');
-                    pageNum.className = 'btn btn-outline-primary mx-1';
-                    pageNum.innerText = i;
+                    const pageNum = document.createElement('button'); // Tạo nút cho từng trang
+                    pageNum.className = 'btn btn-outline-primary mx-1'; // Thêm class cho nút
+                    pageNum.innerText = i; // Đặt nội dung là số trang
                     pageNum.onclick = () => {
-                        currentPage = i;
-                        showPage(currentPage);
+                        currentPage = i; // Cập nhật trang hiện tại
+                        showPage(currentPage); // Hiển thị trang hiện tại
                     };
 
-                    // Highlight the current page
+                    // Đánh dấu trang hiện tại
                     if (i === currentPage) {
-                        pageNum.classList.add('active');
+                        pageNum.classList.add('active'); // Thêm class 'active' cho nút của trang hiện tại
                     }
 
-                    paginationNumbers.appendChild(pageNum);
+                    paginationNumbers.appendChild(pageNum); // Thêm nút vào trong phần số trang
                 }
 
-                // Always show the last page
+                // Luôn hiển thị trang cuối cùng
                 if (endPage < totalPages) {
-                    if (endPage < totalPages - 1) { // Show ... if there's a gap
+                    if (endPage < totalPages - 1) { // Hiển thị dấu "..." nếu có khoảng trống giữa các trang
                         const ellipsis = document.createElement('span');
                         ellipsis.innerText = '...';
-                        paginationNumbers.appendChild(ellipsis);
+                        paginationNumbers.appendChild(ellipsis); // Thêm dấu "..." vào phần số trang
                     }
 
-                    const lastPage = document.createElement('button');
+                    const lastPage = document.createElement('button'); // Tạo nút cho trang cuối
                     lastPage.className = 'btn btn-outline-primary mx-1';
-                    lastPage.innerText = totalPages;
+                    lastPage.innerText = totalPages; // Đặt nội dung là số trang cuối cùng
                     lastPage.onclick = () => {
-                        currentPage = totalPages;
-                        showPage(currentPage);
+                        currentPage = totalPages; // Chuyển đến trang cuối
+                        showPage(currentPage); // Hiển thị trang cuối
                     };
-                    paginationNumbers.appendChild(lastPage);
+                    paginationNumbers.appendChild(lastPage); // Thêm nút vào trong phần số trang
                 }
             }
 
-
             function showPage(page) {
-                // Hide all items
+                // Ẩn tất cả các mục
                 items.forEach((item, index) => {
-                    item.style.display = 'none'; // Initially hide all items
-                    // Show items for the current page
+                    item.style.display = 'none'; // Ban đầu ẩn tất cả các mục
+                    // Hiển thị các mục của trang hiện tại
                     if (index >= (page - 1) * itemsPerPage && index < page * itemsPerPage) {
-                        item.style.display = 'block'; // Show items for the current page
+                        item.style.display = 'block'; // Hiển thị các mục thuộc trang hiện tại
                     }
                 });
 
-                // Update page information
-                pageInfo.innerText = `Page ${page} of ${totalPages}`;
+                // Cập nhật thông tin trang
+                pageInfo.innerText = `Page ${page} of ${totalPages}`; // Hiển thị số trang hiện tại và tổng số trang
 
-                // Enable/disable buttons
-                prevBtn.disabled = page === 1; // Disable prev button on first page
-                nextBtn.disabled = page === totalPages; // Disable next button on last page
+                // Kích hoạt/vô hiệu hóa nút
+                prevBtn.disabled = page === 1; // Vô hiệu hóa nút "Trước" khi đang ở trang đầu
+                nextBtn.disabled = page === totalPages; // Vô hiệu hóa nút "Tiếp theo" khi đang ở trang cuối
 
-                // Update pagination numbers
+                // Cập nhật số trang trong phần phân trang
                 updatePaginationNumbers();
             }
 
             function changePage(direction) {
-                const newPage = currentPage + direction;
+                const newPage = currentPage + direction; // Xác định trang mới
 
-                // Ensure the new page is within valid bounds
+                // Đảm bảo trang mới nằm trong giới hạn hợp lệ
                 if (newPage >= 1 && newPage <= totalPages) {
-                    currentPage = newPage;
-                    showPage(currentPage); // Show the new page
+                    currentPage = newPage; // Cập nhật trang hiện tại
+                    showPage(currentPage); // Hiển thị trang mới
                 }
             }
 
-            // Display the first page when loading
+// Hiển thị trang đầu tiên khi tải trang
             document.addEventListener('DOMContentLoaded', function () {
-                showPage(currentPage);
+                showPage(currentPage); // Gọi hàm hiển thị trang
             });
+
         </script>
 
         <!-- Courses End -->
