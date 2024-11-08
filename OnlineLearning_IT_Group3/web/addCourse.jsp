@@ -32,8 +32,10 @@
             <div class="form-group">
                 <label for="category">Category:</label>
                 <select id="category" name="category" class="form-control" required>
-                    <c:forEach items="${listCategory}" var="listc">
-                        <option value="${listc.getCategoryID()}">${listc.getCategoryName()}</option>
+                     <c:forEach items="${listCategory}" var="category">
+                        <option value="${category.getCategoryID()}">
+                            ${category.getCategoryName()}
+                        </option>
                     </c:forEach>
                 </select>
             </div>

@@ -15,7 +15,11 @@ import model.User;
     "/BlogManageController",
     "/courseApprovalController",
     "/CourseInformationDetailController",
+
 //    "updateCourse",
+
+    //"updateCourse",
+
 //    "/courseList",
      "/deleteQuestionServlet", "/ImportServlet","/QuestionDetailServlet","/questionListShowHide","/ShowPageServlet",
      
