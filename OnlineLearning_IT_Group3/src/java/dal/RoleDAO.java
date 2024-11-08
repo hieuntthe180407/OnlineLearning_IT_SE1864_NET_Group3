@@ -13,6 +13,7 @@ import model.Role;
  * @author DTC
  */
 public class RoleDAO extends DBContext{
+    //Select Role thông qua role id của nó.
     public Role selecById(int id){
         Role role = null;
         try {
@@ -23,7 +24,7 @@ public class RoleDAO extends DBContext{
             ResultSet rs = st.executeQuery();
             
             
-            while (rs.next()) {
+            while (rs.next()) {//nếu tồn tại thì sẽ lấy thông tin và tạo ra 1 role mới
 
                 int roleId = rs.getInt("RoleID");
                 String roleName =rs.getString("RoleName");
