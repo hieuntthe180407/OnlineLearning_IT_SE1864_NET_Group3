@@ -1,9 +1,3 @@
-<%-- 
-    Document   : mooc
-    Created on : Nov 7, 2024, 8:39:06 AM
-    Author     : DTC
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -108,6 +102,9 @@
                                     <a href="deleteMooc?moocid=${listMooc.moocId}&&courseid=${idCourse}&&moocnumber=${listMooc.moocNumber}">
                                         <button class="btn btn-primary">Delete Mooc</button>
                                     </a>
+                                        <a href="updateMooc?moocid=${listMooc.moocId}&&courseid=${idCourse}&&moocnumber=${listMooc.moocNumber}&&name=${listMooc.moocName}">
+                                        <button class="btn btn-primary">Update Mooc</button>
+                                    </a>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -127,4 +124,3 @@
     </body>
 
 </html>
-

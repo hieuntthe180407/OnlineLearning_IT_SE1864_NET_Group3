@@ -747,4 +747,48 @@ public class CourseDAO extends DBContext {
     }
 
 
+    public boolean insertCourse(int userId, int categoryId, String courseImg, String courseName, String description) {
+        String sql = "INSERT INTO [dbo].[Course] "
+                + "([CategoryID], [CourseImg], [CourseName], [Publish], [Duration], [Report], [IsDiscontinued], "
+                + "[NewVersionId], [Description], [UserID]) "
+                + "VALUES (?, ?, ?, 1, 0, NULL, 0, NULL, ?, ?)";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setInt(1, categoryId);
+            stmt.setString(2, courseImg);
+            stmt.setString(3, courseName);
+            stmt.setString(4, description);
+            stmt.setInt(5, userId);
+
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public boolean updateCourse1(int courseId, int categoryId, String courseName, String description, String imagePath) {
+        String sql = "UPDATE [Course] SET [CategoryID] = ?, [CourseName] = ?, [Description] = ?, [CourseImg] = ? WHERE [CourseID] = ?";
+        
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+             
+            // Thiết lập giá trị cho các tham số
+            ps.setInt(1, categoryId);           
+            ps.setString(2, courseName);        
+            ps.setString(3, description);       
+            ps.setString(4, imagePath);         
+            ps.setInt(5, courseId);           
+
+            int result = ps.executeUpdate();
+            
+            return result > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
 }

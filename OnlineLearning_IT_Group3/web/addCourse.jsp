@@ -9,7 +9,6 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title>Add New Course</title>
@@ -22,44 +21,41 @@
 
     <div class="container mt-5">
         <h2 class="text-center mb-4">Add New Course</h2>
+        
+        <c:if test="${not empty error}">
+            <div class="alert alert-danger">
+                <strong>Error!</strong> ${error}
+            </div>
+        </c:if>
+
         <form action="addCourse" method="post" enctype="multipart/form-data">
-            <div class="mb-3">
-                <label for="courseName" class="form-label">Course Name</label>
-                <input type="text" class="form-control" id="courseName" name="courseName" required>
-            </div>
-            <div class="mb-3">
-                <label for="duration" class="form-label">Duration</label>
-                <input type="number" class="form-control" id="duration" name="duration" required>
-            </div>
-            <div class="mb-3">
-                <label for="report" class="form-label">Report</label>
-                <input type="number" class="form-control" id="report" name="report" required>
-            </div>
-            <div class="mb-3">
-                <label for="courseImg" class="form-label">Image</label>
-                <input type="file" class="form-control" id="courseImg" name="courseImg" accept="image/*" required>
-            </div>
-            <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
-                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="price" class="form-label">Price</label>
-                <input type="number" class="form-control" id="price" name="price" required>
-            </div>
-            <div class="mb-3">
-                <label for="salePrice" class="form-label">Sale Price</label>
-                <input type="number" class="form-control" id="salePrice" name="salePrice">
-            </div>
-            <div class="mb-3">
-                <label for="status" class="form-label">Status</label>
-                <select class="form-select" id="status" name="isActive" required>
-                    <option value="true">Active</option>
-                    <option value="false">Inactive</option>
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <select id="category" name="category" class="form-control" required>
+                    <c:forEach items="${listCategory}" var="listc">
+                        <option value="${listc.getCategoryID()}">${listc.getCategoryName()}</option>
+                    </c:forEach>
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary">Add Course</button>
-            <a href="courseList.jsp" class="btn btn-secondary">Cancel</a>
+
+            <div class="form-group">
+                <label for="courseImg">Course Image:</label>
+                <input type="file" id="courseImg" name="courseImg" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="courseName">Course Name:</label>
+                <input type="text" id="courseName" name="courseName" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" class="form-control" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Create Course</button>
+            </div>
         </form>
     </div>
 
@@ -69,6 +65,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
 </body>
-
 </html>
+
 
