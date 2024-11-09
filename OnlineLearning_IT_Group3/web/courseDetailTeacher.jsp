@@ -93,7 +93,7 @@
                                     </p>
 
                                     <div class="image-div text-left mt-3">
-                                        <img src="img/testimonial-2.jpg" alt=""
+                                        <img src="<%=c.getUserId().getAvatar()%>" 
                                              style="height: 40px; width: 40px; border-radius: 50%;">
                                         <span style="margin-left: 10px;"><b>Instructor Name</b> <%=c.getUserId().getFullName()%></span>
                                     </div>

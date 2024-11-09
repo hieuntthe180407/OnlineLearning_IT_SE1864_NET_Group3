@@ -115,8 +115,8 @@ public class lessonEdit extends HttpServlet {
             // neu name,url,description,number null thi se catch
             catch(Exception e)
                     {
-                        err="You must fill all the blank!";
-                        response.sendRedirect("lessonEdit.jsp?CourseID="+cID+"&err="+err);
+                        err="You must fill all the blank! Add fail";
+                        response.sendRedirect("courseDetail?courseID="+cID+"&err="+err);
                     }
         }
         

@@ -196,11 +196,12 @@ public class LessonDAO extends DBContext {
        
        public static void main(String[] args) {
         LessonDAO l = new LessonDAO();
-           List<Lesson> list = l.getLessons(0, 3, 2);
-           for(Lesson d :list)
-           {
-               System.out.println(d);
-           }
+        l.addLesson("a", "a", 2, "no", 1, "test");
+//           List<Lesson> list = l.getLessons(0, 3, 2);
+//           for(Lesson d :list)
+//           {
+//               System.out.println(d);
+//           }
        
        
         }

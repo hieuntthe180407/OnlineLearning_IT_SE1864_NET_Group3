@@ -93,7 +93,7 @@
                                     </p>
 
                                     <div class="image-div text-left mt-3">
-                                        <img src="img/testimonial-2.jpg" alt=""
+                                        <img src="<%=c.getUserId().getAvatar()%>" 
                                              style="height: 40px; width: 40px; border-radius: 50%;">
                                         <span style="margin-left: 10px;"><b>Instructor Name</b> <%=c.getUserId().getFullName()%></span>
                                     </div>
@@ -257,7 +257,7 @@
                                 <div class="image-div text-left mt-4">
                                     <div class="row">
                                         <div class="col-lg-3 col-md-6">
-                                            <img src="<%=c.getUserId().getAvatar()%>" alt=""
+                                            <img src="<%=c.getUserId().getAvatar()%>" 
                                                  style="height: 150px; width: 150px; border-radius: 50%;">
                                         </div>
                                         <div class="col-lg-9 col-md-6 mt-2">
@@ -286,7 +286,7 @@
                         <div class="col-lg-3 col-md-6 shadow wow fadeInUp" data-wow-delay="0.3s">
 
                             <div class="image text-center">
-                                <img class="img-fluid mt-2" src="img/course-1.jpg" alt="" height="200px" width="500px">
+                                <img class="img-fluid mt-2" src="<%=c.getCourseImg()%>"  height="200px" width="500px">
                             </div>
 
                             <h4 class="mt-2 p-2"><%=c.getSalePrice()%> <small></small></h4>
@@ -312,16 +312,10 @@
                             <div class="list mt-2">
                                 <div class="list1 d-flex justify-content-between pt-2 border-bottom">
                                     <p><i class="fa fa-clock"></i> Duration</p>
-                                    <p>2.0 Hrs</p>
+                                    <p><%=c.getDuration()%> Hrs</p>
                                 </div>
-                                <div class="list2 d-flex justify-content-between pt-2 border-bottom">
-                                    <p><i class="fa fa-book"></i> Lectures</p>
-                                    <p>4</p>
-                                </div>
-                                <div class="list3 d-flex justify-content-between pt-2 border-bottom">
-                                    <p><i class="fa fa-bolt"></i> Enrolled</p>
-                                    <p>240 students</p>
-                                </div>
+                              
+                                
                                 <div class="list4 d-flex justify-content-between pt-2 border-bottom">
                                     <p><i class="fa fa-google-translate"></i> Language</p>
                                     <p>English</p>
@@ -334,11 +328,7 @@
                                     <p><i class="fa fa-list"></i> Deadline</p>
                                     <p>Life Time</p>
                                 </div>
-                                <div class="list7 d-flex justify-content-between pt-2 border-bottom">
-                                    <p><i class="fa fa-certificate"></i> Certificate</p>
-                                    <p>Yes</p>
-                                </div>
-
+                                
                             </div>
 
 

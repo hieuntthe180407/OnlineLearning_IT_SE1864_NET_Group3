@@ -117,9 +117,9 @@
                 <input type="hidden" name="userId" value="<%= u.getUserID() %>">
 
                 <div class="detail-panel">
-                    <div class="avatar">AVATAR
-
-                    </div>
+                    <div class="avatar">
+        <img src="<%=u.getAvatar()%>" alt="Avatar" style="height: 150px; width: 150px;"/>
+    </div>
                     <div class="info">
                         <div>
                             <label for="fullName">Full Name:</label>
@@ -152,7 +152,7 @@
                                 <select id="roleSelect" name="role" class="form-control" style="width: auto;"> 
                                     <option value="<%=u.getRole().getRoleId()%>">Edit</option>
                                     <option value="1">Admin</option>
-                                    <option value="2">Expert</option>
+                                    <option value="2">Teacher</option>
                                     <option value="3">User</option>
                                 </select>
                             </div>
@@ -164,7 +164,7 @@
                                     <option value="<%=u.getStatus()%>">Edit</option>
                                     <option value="Active">Active</option>
                                     <option value="Inactive">Inactive</option>
-                                    <option value="Pending">Pending</option>
+                                    
                                 </select>
                             </div>
 

@@ -136,9 +136,10 @@ public class CourseDAO extends DBContext {
         }
         return null;
     }
+
     public Course getCourseTeacherByID(int id) {
         try {
-            String sql = "SELECT * FROM Price p, Course c, [dbo].[User] u where p.CourseID =c.CourseID and c.UserID=u.UserID AND c.CourseID=" +id;
+            String sql = "SELECT * FROM Price p, Course c, [dbo].[User] u where p.CourseID =c.CourseID and c.UserID=u.UserID AND c.CourseID=" + id;
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
@@ -152,7 +153,7 @@ public class CourseDAO extends DBContext {
                 c.setSalePrice(rs.getDouble("SalePrice"));
                 c.setIsActive(rs.getBoolean("IsActive"));
                 c.setDescription(rs.getString("Description"));
-                
+
                 User u = new User();
                 u.setAbout(rs.getString("About"));
                 u.setAvatar(rs.getString("Avatar"));
@@ -500,15 +501,10 @@ public class CourseDAO extends DBContext {
 
     public List<Course> getCoursesByTeacher(int teacherId) {
         List<Course> courses = new ArrayList<>();
-        String sql = "SELECT c.[CourseID], c.[UserID], c.[CategoryID], c.[CourseImg], c.[CourseName], "
-                + "c.[Publish], c.[Duration], c.[Report], c.[IsDiscontinued], c.[NewVersionId], "
-                + "c.[Description], p.[ListPrice], p.[SalePrice], p.[IsActive] "
-                + "FROM [dbo].[Course] c "
-                + "LEFT JOIN (SELECT [PriceID], [CourseID], [ListPrice], [SalePrice], [IsActive] "
-                + "            FROM [dbo].[Price] p1 "
-                + "            WHERE [PriceID] = (SELECT MAX([PriceID]) FROM [dbo].[Price] p2 "
-                + "                             WHERE p2.[CourseID] = p1.[CourseID]) ) p "
-                + "ON c.[CourseID] = p.[CourseID] WHERE c.UserID = ?"; // Adjust as necessary for your schema
+        String sql = "SELECT *\n"
+                + "FROM [dbo].[Course] c\n"
+                + "LEFT JOIN [dbo].[Price] p ON c.CourseID = p.CourseID\n"
+                + "WHERE c.UserID = ? OR c.Report IS NULL"; // Adjust as necessary for your schema
 
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, teacherId); // Set the teacher's UserID parameter
@@ -541,14 +537,15 @@ public class CourseDAO extends DBContext {
 
     public static void main(String[] args) {
         CourseDAO dao = new CourseDAO();
-        
-//        List<Course> courses = dao.getEnrollCourse(21);
-//
-//        for (Course c : courses) {
-//            System.out.println(c);
-//
-//            System.out.println("------------------");
-//        }
+
+//        System.out.println(dao.getCourseTeacherByID(2));
+        List<Course> courses = dao.getCoursesByTeacher(2);
+
+        for (Course c : courses) {
+            System.out.println(c);
+
+            System.out.println("------------------");
+        }
 //
 //        dao.addCourse("bruh", 1, "npthing", "course1.jpg");
 //            System.out.println(dao.getCourseTeacherByID(2));
@@ -698,11 +695,10 @@ public class CourseDAO extends DBContext {
             }
         }
     }
-    
-    public List<Course> getEnrollCourse(int uId)
-   {
-       List<Course> list = new ArrayList<>();
-       String sql = "Select * FROM Enroll e, Course c, [dbo].[User] u WHERE u.UserID= e.UserID AND c.CourseID=e.CourseID AND u.UserID= "+uId;
+
+    public List<Course> getEnrollCourse(int uId) {
+        List<Course> list = new ArrayList<>();
+        String sql = "Select * FROM Enroll e, Course c, [dbo].[User] u WHERE u.UserID= e.UserID AND c.CourseID=e.CourseID AND u.UserID= " + uId;
 
         try {
 
@@ -710,7 +706,7 @@ public class CourseDAO extends DBContext {
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
-                
+
                 Course c = new Course();
                 c.setCourseID(rs.getInt("courseID"));
                 c.setDuration(rs.getInt("Duration"));
@@ -718,10 +714,8 @@ public class CourseDAO extends DBContext {
                 c.setCourseImg(rs.getString("courseIMG"));
                 c.setCourseName(rs.getString("courseName"));
                 c.setDescription(rs.getString("Description"));
-                
-               
+
                 list.add(c);
-                
 
             }
 
@@ -729,11 +723,9 @@ public class CourseDAO extends DBContext {
             System.out.println(e);
         }
         return list;
-   }
-    
-    
+    }
 
- public int getNumberMax(String courseid) {
+    public int getNumberMax(String courseid) {
         try {
             String sql = "  select top(1) [MoocNumber] from [Mooc] where [CourseID] = " + courseid + " order by [MoocNumber] desc";
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -745,7 +737,6 @@ public class CourseDAO extends DBContext {
         }
         return 0;
     }
-
 
     public boolean insertCourse(int userId, int categoryId, String courseImg, String courseName, String description) {
         String sql = "INSERT INTO [dbo].[Course] "
@@ -769,26 +760,26 @@ public class CourseDAO extends DBContext {
             return false;
         }
     }
+
     public boolean updateCourse1(int courseId, int categoryId, String courseName, String description, String imagePath) {
         String sql = "UPDATE [Course] SET [CategoryID] = ?, [CourseName] = ?, [Description] = ?, [CourseImg] = ? WHERE [CourseID] = ?";
-        
+
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-             
+
             // Thiết lập giá trị cho các tham số
-            ps.setInt(1, categoryId);           
-            ps.setString(2, courseName);        
-            ps.setString(3, description);       
-            ps.setString(4, imagePath);         
-            ps.setInt(5, courseId);           
+            ps.setInt(1, categoryId);
+            ps.setString(2, courseName);
+            ps.setString(3, description);
+            ps.setString(4, imagePath);
+            ps.setInt(5, courseId);
 
             int result = ps.executeUpdate();
-            
+
             return result > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
-
 
 }

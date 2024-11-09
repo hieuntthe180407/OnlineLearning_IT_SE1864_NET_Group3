@@ -90,7 +90,7 @@ public class AuthFilter implements Filter {
 
         // Danh sách các URL chỉ teacher có thể truy cập
         String[] teacherPages = {"/blogs", "/ReviewAdd", "/UploadFileController", "/UploadImageController","updateCourse","/editProfile","/userProfile","/changePassword","/addAnswerServlet","/deleteQuestionServlet","/ExportServlet", "/ImportServlet","/QuestionDetailServlet", "/QuestionListServlet","/questionListShowHide", "/removeOptionServlet", "/ShowPageServlet",
-            "/courseEdit", "/courseEditSubmit", "/editStatusLesson", "/lessonEdit", "/managerCourse", "/logout", "/courseDetail", "/courseList","/courseDetailTeacher.jsp"};
+            "/courseEdit", "/courseEditSubmit", "/editStatusLesson", "/lessonEdit", "/managerCourse", "/logout", "/courseDetail", "/courseList","/courseDetailTeacher.jsp","/addCourse"};
 
         // Danh sách các URL chỉ student có thể truy cập
         String[] studentPages = {"/courseList", "/courseDetail", "/userProfile", "/changePassword","/editProfile", 

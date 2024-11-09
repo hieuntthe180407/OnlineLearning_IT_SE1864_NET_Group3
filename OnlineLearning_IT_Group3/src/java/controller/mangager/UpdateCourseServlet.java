@@ -63,7 +63,7 @@ public class UpdateCourseServlet extends HttpServlet {
         // Nếu người dùng tải ảnh mới lên, lưu ảnh vào thư mục và lấy đường dẫn mới
         String imagePath = null;
         if (fileName != null && !fileName.isEmpty()) {
-            imagePath = "images/" + fileName;
+            imagePath = "img/Course/" + fileName;
             courseImagePart.write(getServletContext().getRealPath("") + "images/" + fileName);
         }
         

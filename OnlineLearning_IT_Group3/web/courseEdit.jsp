@@ -255,8 +255,8 @@
     <label for="imageUpload">Upload Image:</label>
 <input type="file" id="imageUpload" name="image" accept="image/*" class="form-control" onchange="previewImage(event)">
 
-<label for="imageURL" class="mt-3">Or Enter Image URL:</label>
-<input type="text" id="imageURL" name="image" class="form-control" placeholder="Paste image URL here" oninput="previewImageFromURL(event)">
+<!--<label for="imageURL" class="mt-3">Or Enter Image URL:</label>
+<input type="text" id="imageURL" name="image" class="form-control" placeholder="Paste image URL here" oninput="previewImageFromURL(event)">-->
 
 <div class="col-12 mt-3">
     <img id="imagePreview" src="#" alt="Image Preview" style="max-width: 100px; display: none;">

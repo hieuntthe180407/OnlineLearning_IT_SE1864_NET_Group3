@@ -45,18 +45,34 @@
     </head>
 </head>
 <body>
+    <script>
+     
+
+        // Function to preview image from URL input
+        function previewImageFromURL(event) {
+            const url = event.target.value;
+            const preview = document.getElementById('imagePreview');
+
+            if (url) {
+                preview.src = url;
+                preview.style.display = 'block';
+            } else {
+                preview.style.display = 'none';
+            }
+        }
+    </script>
     <%@include file= "header.jsp" %>
     <!--Main container start -->
     <main class="ttr-wrapper">
-        
-      <%
-                 int CourseID = Integer.parseInt(request.getParameter("CourseID"));
+
+        <%
+                   int CourseID = Integer.parseInt(request.getParameter("CourseID"));
                  
-                Lesson l = (Lesson)request.getAttribute("lesson");
+                  Lesson l = (Lesson)request.getAttribute("lesson");
                 
-                if (l!=null){
+                  if (l!=null){
                  
-    int LessonID = Integer.parseInt(request.getParameter("LessonID"));
+      int LessonID = Integer.parseInt(request.getParameter("LessonID"));
    
         %>
         <!-- Neu trang nhan duoc lessonID thi nno se tro thanh trang update lesson -->
@@ -79,7 +95,7 @@
         </h3>
         <%
     }
-%>
+        %>
         <div class="container-fluid">
 
             <div class="row">
@@ -98,7 +114,7 @@
                                     </div>
                                     <input type="hidden" name="LessonID" value="<%= LessonID %>">
                                     <input type="hidden" name="CourseID" value="<%=CourseID%>">
-                                    
+
                                     <div class="form-group col-6">
                                         <label class="col-form-label">Lesson Name</label>
                                         <div>
@@ -117,32 +133,35 @@
                                             <input class="form-control" type="number" name="LessonNumber" value="<%=l.getLessonNumber()%>">
                                         </div>
                                     </div>
-                                        <div class="form-group col-6">
-                                        <label class="col-form-label">Lesson Image</label>
-                                        <div>
-                                            <input class="form-control" type="text" name="lessonImg" value="<%=l.getLessonURL() %>">
+                                        <!-- Insert anh tu Internet -->
+
+<div class="form-group col-6">
+                                        <label for="imageURL" class="mt-3">Enter Image URL:</label>
+                                        <input type="text" id="imageURL" name="lessonImg" class="form-control" placeholder="Paste image URL here" oninput="previewImageFromURL(event)" value="<%=l.getLessonImg() %>">
+
+                                        <div class="col-12 mt-3">
+                                            <img id="imagePreview" src="#"  alt="Image Preview" style="max-width: 100px; display: none;" >
+                                        </div>
+</div>
+                                        <div class="seperator"></div>
+
+                                        <div class="col-12 m-t20">
+                                            <div class="ml-auto m-b5">
+                                                <h3>2. Description</h3>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-12">
+                                            <label class="col-form-label">Lesson description</label>
+                                            <div>
+                                                <input class="form-control" type="text" name="description" value="<%=l.getDescription() %>">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12">
+
+                                            <button type="submit" class="btn">Confirm</button>
                                         </div>
                                     </div>
-
-                                    <div class="seperator"></div>
-
-                                    <div class="col-12 m-t20">
-                                        <div class="ml-auto m-b5">
-                                            <h3>2. Description</h3>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-12">
-                                        <label class="col-form-label">Lesson description</label>
-                                        <div>
-                                            <input class="form-control" type="text" name="description" value="<%=l.getDescription() %>">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12">
-
-                                        <button type="submit" class="btn">Confirm</button>
-                                    </div>
-                                </div>
                             </form>
                         </div>
                     </div>
@@ -176,7 +195,7 @@ int MoocID = Integer.parseInt(request.getParameter("MoocID"));
         </h3>
         <%
     }
-%>
+        %>
         <div class="container-fluid">
 
             <div class="row">
@@ -214,9 +233,11 @@ int MoocID = Integer.parseInt(request.getParameter("MoocID"));
                                         </div>
                                     </div>
                                     <div class="form-group col-6">
-                                        <label class="col-form-label">Lesson Image URL</label>
-                                        <div>
-                                            <input class="form-control" type="text" name="lessonImg" >
+                                        <label for="imageURL" class="mt-3">Enter Image URL:</label>
+                                        <input type="text" id="imageURL" name="lessonImg" class="form-control" placeholder="Paste image URL here" oninput="previewImageFromURL(event)">
+
+                                        <div class="col-12 mt-3">
+                                            <img id="imagePreview" src="#" alt="Image Preview" style="max-width: 100px; display: none;">
                                         </div>
                                     </div>
 
@@ -228,11 +249,11 @@ int MoocID = Integer.parseInt(request.getParameter("MoocID"));
                                         </div>
                                     </div>
                                     <div class="form-group col-12">
-                                        <label class="col-form-label">Lesson description</label>
-                                        <div>
-                                            <input class="form-control" type="text" name="description" >
-                                        </div>
-                                    </div>
+    <label class="col-form-label">Lesson description</label>
+    <div>
+        <textarea class="form-control" name="description" rows="3" style="resize: vertical;" name="description"></textarea>
+    </div>
+</div>
 
                                     <div class="col-12">
 

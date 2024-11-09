@@ -18,7 +18,22 @@
 
 <body>
     <%@ include file="header.jsp" %>
+ <script>
+    // Function to preview image from file upload
+    function previewImage(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById('imagePreview');
 
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+    </script>
     <div class="container mt-5">
         <h2 class="text-center mb-4">Update Course</h2>
         
@@ -44,8 +59,10 @@
 
             <div class="form-group">
                 <label for="courseImg">Course Image:</label>
-                <input type="file" id="courseImg" name="courseImg" class="form-control">
-                <img src="${pageContext.request.contextPath}/images/${course.getCourseImg()}" alt="Course Image" class="mt-2" width="100">
+                <input type="file" id="courseImg" name="courseImg" class="form-control"onchange="previewImage(event)">
+                <div class="col-12 mt-3">
+    <img id="imagePreview" src="#" alt="Image Preview" style="max-width: 100px; display: none;">
+</div>
             </div>
 
             <div class="form-group">
