@@ -119,7 +119,7 @@ public class CourseDAO extends DBContext {
                     + "                      WHERE p2.[CourseID] = p1.[CourseID])\n"
                     + "    ) p ON c.[CourseID] = p.[CourseID]\n"
                     + "WHERE \n"
-                    + "    c.[CourseID] = " + id + " AND c.[Publish] = 1";
+                    + "    c.[CourseID] = " + id ;
 
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -144,7 +144,11 @@ public class CourseDAO extends DBContext {
 
     public Course getCourseTeacherByID(int id) {
         try {
-            String sql = "SELECT * FROM Price p, Course c, [dbo].[User] u where p.CourseID =c.CourseID and c.UserID=u.UserID AND c.CourseID=" + id;
+            String sql = "SELECT * \n" +
+"FROM Course c\n" +
+"LEFT JOIN Price p ON p.CourseID = c.CourseID\n" +
+"LEFT JOIN [dbo].[User] u ON c.UserID = u.UserID\n" +
+"WHERE c.CourseID=" + id;
 
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -552,7 +556,7 @@ public class CourseDAO extends DBContext {
         CourseDAO dao = new CourseDAO();
 //        dao.updateCoursePublish(3, 0);
         System.out.println(dao.getTotalCourseCount("i"));
-        System.out.println(dao.getCourseTeacherByID(4));
+        System.out.println(dao.getCourseByID(19));
 //        List<Course> courses = dao.getCourseActive(2, 10);
 //
 //        for (Course c : courses) {
@@ -781,7 +785,7 @@ public class CourseDAO extends DBContext {
             }
         }
     }
-
+// Lay cac cuorse ma student da enroll
     public List<Course> getEnrollCourse(int uId) {
         List<Course> list = new ArrayList<>();
         String sql = "Select * FROM Enroll e, Course c, [dbo].[User] u WHERE u.UserID= e.UserID AND c.CourseID=e.CourseID AND u.UserID= " + uId;
@@ -828,7 +832,7 @@ public class CourseDAO extends DBContext {
         String sql = "INSERT INTO [dbo].[Course] "
                 + "([CategoryID], [CourseImg], [CourseName], [Publish], [Duration], [Report], [IsDiscontinued], "
                 + "[NewVersionId], [Description], [UserID]) "
-                + "VALUES (?, ?, ?, 1, 0, NULL, 0, NULL, ?, ?)";
+                + "VALUES (?, ?, ?, 0, 0, NULL, 0, NULL, ?, ?)";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 

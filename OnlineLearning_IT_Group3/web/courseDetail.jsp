@@ -87,7 +87,7 @@
                             <div class="row g-5 justify-content-center">
 
                                 <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.3s">
-                                    <h2><%=c.getCourseName()%></h2>
+                                    <h2>About This Course</h2>
                                     <p>
                                         <%=c.getDescription()%>
                                     </p>
@@ -106,11 +106,7 @@
                         <div class="container-fluid wow fadeInUp mt-5 tabs">
                             <div class="tab-content mt-4">
 
-                                <div class="tab-pane container active" id="Overview">
-                                    <h2>About this Course</h2>
-                                    <p><%= c.getDescription()%></p>
-
-                                </div>
+                              
 
                                 <div class="container" id="Curriculum">
                                     <!-- Lay list review la list lesson, mooc  -->
@@ -118,8 +114,8 @@
                                           List<Review> listr = (List<Review>) request.getAttribute("listr");
                                            List<Mooc> listm = (List<Mooc>) request.getAttribute("listm");
                                           User user = (User) session.getAttribute("acc");
-                                          if ( listl == null || listl.size() == 0 ) {
-                                              out.println("Empty list ");
+                                          if ( listm == null || listm.size() == 0 ) {
+                                              out.println("Empty list mooc ");
                                           } else {
                                     
                                     

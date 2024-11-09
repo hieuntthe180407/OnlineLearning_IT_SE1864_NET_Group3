@@ -47,6 +47,10 @@
     </head>
     <body>
          <%@include file= "header.jsp" %>
+         <div class="container-xxl py-5">
+        <div class="container">
+            
+            <div class="row g-4 py-2">
          <%
              
              List<Course> list = (List<Course>) request.getAttribute("list");
@@ -88,6 +92,11 @@
                 </div>
                                                     <%}}%>
          
+                
+            </div>
+
+        </div>
+    </div>
           <%@include file= "footer.jsp" %>
     </body>
 </html>
