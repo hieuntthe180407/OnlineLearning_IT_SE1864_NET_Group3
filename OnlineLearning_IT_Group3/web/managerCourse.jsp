@@ -32,17 +32,17 @@
 
                 // Khi thay đổi trạng thái trong form, thực hiện lọc
                 $('input[name="status"]').change(function () {
-                    const status = $(this).val();  // Lấy giá trị trạng thái (active hoặc unactive)
+                    const status = $(this).val();
 
                     if (status === "") {
-                        // Nếu trạng thái là "All", hiển thị tất cả các mục
-                        table.column(8).search('').draw();  // Cột trạng thái nằm ở vị trí 8
+                        // Hiển thị tất cả
+                        table.column(8).search('').draw();
                     } else if (status === "publish") {
-                        // Nếu chọn "Publish", lọc chỉ những khóa học có trạng thái "Publish"
-                        table.column(8).search('Publish').draw();  // Tìm kiếm và lọc ở cột trạng thái "Publish"
+                        // Lọc "Publish" (sử dụng regex để khớp chính xác từ "Publish")
+                        table.column(8).search('^\\s*Publish\\s*$', true, false).draw();
                     } else if (status === "unpublish") {
-                        // Nếu chọn "UnPublish", lọc chỉ những khóa học có trạng thái "UnPublish"
-                        table.column(8).search('UnPublish').draw();  // Tìm kiếm và lọc ở cột trạng thái "UnPublish"
+                        // Lọc "UnPublish" (sử dụng regex để khớp chính xác từ "UnPublish")
+                        table.column(8).search('^\\s*UnPublish\\s*$', true, false).draw();
                     }
                 });
             });
@@ -84,6 +84,7 @@
                         <label><input type="radio" name="status" value="publish">Publish</label>
                         <label><input type="radio" name="status" value="unpublish">UnPublish</label>
                     </div>
+
                     <a href="addCourse" class="btn btn-success">Add New Course</a>
                 </div>
                 <table id="courseTable" class="table table-bordered table-striped">
@@ -121,6 +122,7 @@
                                             <span class="badge bg-danger">UnPublish</span>
                                         </c:otherwise>
                                     </c:choose>
+
                                 </td>
                                 <td>
                                     <a href="courseDetail?courseID=${course.courseID}">
