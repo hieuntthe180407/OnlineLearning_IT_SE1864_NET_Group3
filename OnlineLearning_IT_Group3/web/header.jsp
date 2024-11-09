@@ -55,9 +55,9 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto p-4 p-lg-0">
-                    <a href="#" class="nav-item nav-link active">Home</a>
-                    <a href="#" class="nav-item nav-link">About</a>
-                    <a href="/OnlineLearning_IT_Group3/courseList" class="nav-item nav-link">Courses</a>
+                    <a href="home" class="nav-item nav-link active">Home</a>
+                    
+                    <a href="courseList" class="nav-item nav-link">Courses</a>
                     <a href="blogs" class="nav-item nav-link">Blog</a>
                     <a href="Admin.jsp" class="nav-item nav-link">Admin</a>
                 </div>
