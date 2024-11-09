@@ -83,7 +83,7 @@
 </div>
                     </div>
                     <div class="card-footer">
-                        <a href="adminPendingCourse.jsp" class="btn btn-primary w-100">Manage Courses</a>
+                        <a href="ActiveCourse" class="btn btn-primary w-100">Manage Courses</a>
                     </div>
                 </div>
             </div>

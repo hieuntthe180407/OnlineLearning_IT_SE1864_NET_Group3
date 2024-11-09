@@ -19,7 +19,7 @@ public class Course {
     private double salePrice;
     private boolean isActive;
     private User userId;
-    
+   
 
     public Course() {
     }

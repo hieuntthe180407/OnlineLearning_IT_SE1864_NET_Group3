@@ -537,18 +537,90 @@ public class CourseDAO extends DBContext {
 
     public static void main(String[] args) {
         CourseDAO dao = new CourseDAO();
-
-//        System.out.println(dao.getCourseTeacherByID(2));
-        List<Course> courses = dao.getCoursesByTeacher(2);
-
-        for (Course c : courses) {
-            System.out.println(c);
-
-            System.out.println("------------------");
-        }
+//        dao.updateCoursePublish(3, 0);
+        System.out.println(dao.getTotalCourseCount("i"));
+////        System.out.println(dao.getCourseTeacherByID(2));
+//        List<Course> courses = dao.getCourseActive(2, 10);
 //
+//        for (Course c : courses) {
+//            System.out.println(c);
+//
+//            System.out.println("------------------");
+//        }
+
 //        dao.addCourse("bruh", 1, "npthing", "course1.jpg");
 //            System.out.println(dao.getCourseTeacherByID(2));
+    }
+// lay tong so Course 
+    public int getTotalCourseCount(String search) {
+    // Use parameterized query to prevent SQL injection
+    String sql = "SELECT COUNT(*) FROM Course WHERE CourseName LIKE ?";
+    try (PreparedStatement st = connection.prepareStatement(sql)) {
+        // Set the search parameter with wildcards for 'LIKE' clause
+        st.setString(1, "%" + search + "%");
+        
+        try (ResultSet rs = st.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return 0; // Return 0 in case of any error
+}
+
+// lay tinh trang publish cua course
+    public List<Course> getCourseActive(int offset, int limit, String search) {
+
+        List<Course> list = new ArrayList<>();
+
+        String sql = "SELECT c.CourseID,c.Publish,c.CourseName ,u.FullName, u.Email\n"
+                + "FROM Course c ,[dbo].[User] u\n"
+                + "WHERE c.UserID=u.UserID AND c.CourseName LIKE ?\n"
+                + "ORDER BY CourseID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
+
+        try {
+
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(2, offset);
+            st.setInt(3, limit);
+            st.setString(1, "%"+search+"%");
+            ResultSet rs = st.executeQuery();
+            
+            while (rs.next()) {
+                Course c = new Course();
+                c.setCourseID(rs.getInt("CourseID"));
+                 c.setCourseName(rs.getString("CourseName"));
+                 c.setIsActive(rs.getBoolean("Publish"));
+                  User u = new User();
+                
+                u.setFullName(rs.getString("FullName"));
+                u.setEmail(rs.getString("Email"));
+                c.setUserId(u);
+                list.add(c);
+
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return list;
+    }
+    
+    public void updateCoursePublish(int id, int p) {
+        String sql = "UPDATE Course set Publish=? WHERE CourseID=? ";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, p);
+            
+            st.setInt(2, id);
+            st.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 // check course xem có tồn tại hay không
 
