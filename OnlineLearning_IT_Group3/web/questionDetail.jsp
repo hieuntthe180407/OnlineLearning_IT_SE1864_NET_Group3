@@ -236,7 +236,7 @@
                                 <!-- Sử dụng param.answerId như là phương án dự phòng nếu option.answerId là null -->
                                 <input type="hidden" name="answerOptionId" value="${param.answerOptionId != null ? param.answerOptionId : option.answerId}">
                                 <input type="text" name="answerOption" placeholder="Answer Option" 
-                                       value="${param.answerOption != null ? param.answerOption : option.optionContent}" required>
+                                       value="${param.answerOption != null ? fn:escapeXml(param.answerOption) : fn:escapeXml(option.optionContent)}" required>
                                 <div class="radio-container">
                                     <input type="radio" name="correctAnswer" value="${option.answerId}" 
                                            ${option.isCorrect ? 'checked' : ''}>                                    
