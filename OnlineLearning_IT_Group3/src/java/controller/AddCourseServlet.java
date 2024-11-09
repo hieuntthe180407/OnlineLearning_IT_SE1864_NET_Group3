@@ -46,6 +46,7 @@ public class AddCourseServlet extends HttpServlet {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("teacher");
 
+        // Kiểm tra xem người dùng có đăng nhập chưa
         if (user == null) {
             response.sendRedirect("login.jsp");
             return;
@@ -53,44 +54,55 @@ public class AddCourseServlet extends HttpServlet {
 
         CourseDAO courseDAO = new CourseDAO();
 
-        int userId = 1;  // Có thể thay thế bằng user.getUserID()
-        int categoryId = Integer.parseInt(request.getParameter("category"));
-        String courseName = request.getParameter("courseName");
-        String description = request.getParameter("description");
+        // Lấy thông tin từ form
+        int userId = user.getUserID();  // Sử dụng ID người dùng từ session
+        int categoryId = Integer.parseInt(request.getParameter("category"));  // ID danh mục
+        String courseName = request.getParameter("courseName");  // Tên khóa học
+        String description = request.getParameter("description");  // Mô tả khóa học
 
-        Part part = request.getPart("courseImg");
-        String fileName = getFileName(part);
+        // Kiểm tra xem các thông tin có hợp lệ không
+        if (courseName == null || courseName.isEmpty() || description == null || description.isEmpty()) {
+            request.setAttribute("error", "Course name and description cannot be empty.");
+            request.getRequestDispatcher("addCourse.jsp").forward(request, response);
+            return;
+        }
+
+        Part part = request.getPart("courseImg");  // Nhận ảnh khóa học từ form
+        String fileName = getFileName(part);  // Lấy tên file ảnh
 
         if (fileName != null) {
             // Lưu ảnh vào thư mục
             String path = getServletContext().getRealPath("") + File.separator + DATA_DIRECTORY;
             File directory = new File(path);
             if (!directory.exists()) {
-                directory.mkdirs();
+                directory.mkdirs();  // Tạo thư mục nếu chưa tồn tại
             }
 
             // Đường dẫn đầy đủ của file
             File file = new File(path + File.separator + fileName);
-            part.write(file.getAbsolutePath());
+            part.write(file.getAbsolutePath());  // Lưu file vào thư mục
 
-            // Lưu đường dẫn vào cơ sở dữ liệu
+            // Lưu thông tin khóa học vào cơ sở dữ liệu
             boolean isInserted = courseDAO.insertCourse(userId, categoryId, DATA_DIRECTORY + File.separator + fileName, courseName, description);
             if (isInserted) {
-                response.sendRedirect("managerCourse");
+                response.sendRedirect("managerCourse");  // Chuyển hướng đến trang quản lý khóa học
             } else {
+                // Nếu có lỗi trong việc thêm khóa học vào cơ sở dữ liệu
                 request.setAttribute("error", "Error inserting course.");
-                request.getRequestDispatcher("addCourse.jsp").forward(request, response);
+                request.getRequestDispatcher("addCourse.jsp").forward(request, response);  // Quay lại trang thêm khóa học
             }
         } else {
+            // Nếu không có ảnh được tải lên
             request.setAttribute("error", "Course image is required.");
-            request.getRequestDispatcher("addCourse.jsp").forward(request, response);
+            request.getRequestDispatcher("addCourse.jsp").forward(request, response);  // Quay lại trang thêm khóa học
         }
     }
 
+// Phương thức lấy tên file từ đối tượng Part
     private String getFileName(Part part) {
         for (String content : part.getHeader("content-disposition").split(";")) {
             if (content.trim().startsWith("filename")) {
-                return content.substring(content.indexOf('=') + 1).trim().replace("\"", "");
+                return content.substring(content.indexOf('=') + 1).trim().replace("\"", "");  // Trả về tên file
             }
         }
         return null;

@@ -208,7 +208,7 @@ public class UserDAO extends DBContext {
 
         return u;
     }
-
+//UPdate thông tin của người dùng
     public void updateUserProfile(User user) {
         String sql = "UPDATE [dbo].[User] "
                 + "SET [FullName] = ?, [DateOfBirth] = ?, [Phone] = ?, [Address] = ?, [Gender] = ?, [Avatar] = ? "
@@ -228,7 +228,7 @@ public class UserDAO extends DBContext {
             System.out.println(e);
         }
     }
-
+//Update password của người dùng
     public void updatePasswordById(int userId, String newPassword) {
         String sql = "UPDATE [dbo].[User] SET [Password] = ? WHERE [UserID] = ?;";
         try {
@@ -242,7 +242,7 @@ public class UserDAO extends DBContext {
             System.out.println(e);
         }
     }
-
+//Check xem có tồn tại người dùng  hay chưa thông qua email
     public boolean checkMailRegister(String email) {
         boolean check = false;
         try {
@@ -292,7 +292,7 @@ public class UserDAO extends DBContext {
         }
         return check;
     }
-
+//Đếm tổng số lượng người dùng
     public int getTotalUserCount() {
         String sql = "SELECT COUNT(*) FROM [dbo].[User]";
         try (PreparedStatement st = connection.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
