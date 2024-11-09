@@ -25,7 +25,7 @@ public class Course {
     }
 
 
-    public Course(int courseID, int duration, int report, String courseImg, String courseName, String Description, double price, double salePrice, boolean isActive, User userId) {
+    public Course(int courseID, int duration, int report, String courseImg, String courseName, String Description, double price, double salePrice, boolean isActice, User userId) {
         this.courseID = courseID;
         this.duration = duration;
         this.report = report;

@@ -71,7 +71,7 @@ public class CourseDAO extends DBContext {
                 c.setDescription(rs.getString("Description"));
                 c.setPrice(rs.getDouble("ListPrice"));
                 c.setSalePrice(rs.getDouble("SalePrice"));
-                c.setIsActive(rs.getBoolean("IsActive"));
+                c.setIsActive(rs.getBoolean("Publish"));
                 list.add(c);
 
             }
@@ -524,7 +524,7 @@ public class CourseDAO extends DBContext {
                     c.setDescription(rs.getString("Description"));
                     c.setPrice(rs.getDouble("ListPrice"));
                     c.setSalePrice(rs.getDouble("SalePrice"));
-                    c.setIsActive(rs.getBoolean("IsActive"));
+                    c.setIsActive(rs.getBoolean("Publish"));
                     courses.add(c);
                 }
             }

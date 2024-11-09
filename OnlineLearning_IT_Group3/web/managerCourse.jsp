@@ -34,17 +34,19 @@
                 $('input[name="status"]').change(function () {
                     const status = $(this).val();  // Lấy giá trị trạng thái (active hoặc unactive)
 
-                    // Lọc dựa trên trạng thái
                     if (status === "") {
-                        // Nếu trạng thái là rỗng, hiển thị tất cả các mục
-                        table.columns(8).search('').draw();  // Cột trạng thái nằm ở vị trí 8
-                    } else {
-                        // Lọc theo trạng thái (Active hoặc UnActive)
-                        const searchValue = status === "active" ? 'Active' : 'UnActive';
-                        table.columns(8).search(searchValue).draw();  // Tìm kiếm và lọc ở cột trạng thái
+                        // Nếu trạng thái là "All", hiển thị tất cả các mục
+                        table.column(8).search('').draw();  // Cột trạng thái nằm ở vị trí 8
+                    } else if (status === "publish") {
+                        // Nếu chọn "Publish", lọc chỉ những khóa học có trạng thái "Publish"
+                        table.column(8).search('Publish').draw();  // Tìm kiếm và lọc ở cột trạng thái "Publish"
+                    } else if (status === "unpublish") {
+                        // Nếu chọn "UnPublish", lọc chỉ những khóa học có trạng thái "UnPublish"
+                        table.column(8).search('UnPublish').draw();  // Tìm kiếm và lọc ở cột trạng thái "UnPublish"
                     }
                 });
             });
+
         </script>
 
 
@@ -79,8 +81,8 @@
                 <div class="d-flex justify-content-between mb-3">
                     <div>
                         <label><input type="radio" name="status" value="" checked>All</label>
-                        <label><input type="radio" name="status" value="active">Active</label>
-                        <label><input type="radio" name="status" value="inactive">UnActive</label>
+                        <label><input type="radio" name="status" value="publish">Publish</label>
+                        <label><input type="radio" name="status" value="unpublish">UnPublish</label>
                     </div>
                     <a href="addCourse" class="btn btn-success">Add New Course</a>
                 </div>
@@ -95,7 +97,7 @@
                             <th>Mô tả</th>
                             <th>Price</th>
                             <th>Giá khuyến mãi</th>
-                            <th>Active</th>
+                            <th>Publish</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -113,10 +115,10 @@
                                 <td>
                                     <c:choose>
                                         <c:when test="${course.isActive}">
-                                            <span class="badge bg-success">Active</span>
+                                            <span class="badge bg-success">Publish</span>
                                         </c:when>
                                         <c:otherwise>
-                                            <span class="badge bg-danger">UnActive</span>
+                                            <span class="badge bg-danger">UnPublish</span>
                                         </c:otherwise>
                                     </c:choose>
                                 </td>
