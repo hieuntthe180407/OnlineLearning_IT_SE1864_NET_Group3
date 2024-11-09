@@ -61,7 +61,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title">${course.courseName}</h5>
                                     <p class="card-text">${course.description}</p>
-                                    <a href="courseDetailUserView?courseId=${course.courseID}" class="btn btn-primary">View Course</a>
+                                    <a href="courseDetail?courseID=${course.courseID}" class="btn btn-primary">View Course</a>
                                 </div>
                             </div>
                         </div>

@@ -56,13 +56,22 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto p-4 p-lg-0">
                     <a href="home" class="nav-item nav-link active">Home</a>
-                    
+
                     <a href="courseList" class="nav-item nav-link">Courses</a>
                     <a href="blogs" class="nav-item nav-link">Blog</a>
-                    <a href="Admin.jsp" class="nav-item nav-link">Admin</a>
+
+                    <c:choose>
+                        <c:when test="${sessionScope.acc.getRole().getRoleId()==3}">
+                            <a href="Admin.jsp" class="nav-item nav-link">Admin</a>
+                        </c:when>
+                         <c:when test="${sessionScope.acc.getRole().getRoleId()==2}">
+                            <a href="managerCourse" class="nav-item nav-link">Teacher</a>
+                        </c:when>       
+                    </c:choose>
+                            
                 </div>
             </div>
-            <a href="#" class="nav-item nav-link">Contact</a>
+           
 
             <div class="nav-item dropdown" style="position: relative;">
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -88,6 +97,8 @@
                             </li>
                         </c:otherwise>
                     </c:choose>
+
+
                 </ul>
             </div>
 
