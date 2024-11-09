@@ -221,7 +221,7 @@
         <tr>
             <th>ID</th>
             <th>Course Name</th>
-            <th>Is Published</th>
+            <th>Status</th>
             <th>Teacher Name</th>
             <th>Teacher Email</th>
             <th>Go to Course</th>
@@ -235,7 +235,7 @@
         <tr>
             <td><%= c.getCourseID() %></td>
             <td><%= c.getCourseName() %></td>
-            <td><%= c.isIsActive() ? "Active" : "UnActive" %></td>
+            <td><%= c.isIsActive() ? "Active" : "InActive" %></td>
             <td><%= c.getUserId().getFullName() %></td>
             <td><%= c.getUserId().getEmail() %></td>
             <td>
@@ -244,7 +244,7 @@
             </td>
             <td>
                 <a href="publishCourse?courseID=<%=c.getCourseID()%>&publish=1"><input type="button" value="Active"/></a>
-                <a href="publishCourse?courseID=<%=c.getCourseID()%>&publish=0"><input type="button" value="UnActive"/></a>
+                <a href="publishCourse?courseID=<%=c.getCourseID()%>&publish=0"><input type="button" value="InActive"/></a>
             </td>
         </tr>
         <%
