@@ -164,7 +164,7 @@
                                             </h2>
 
 
-                                            <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                            <div id="flush-collapseOne" class="accordion-collapse collapse" >
 
                                                 <div class="accordion-body">
                                                     <ul>

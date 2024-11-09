@@ -196,12 +196,12 @@ public class LessonDAO extends DBContext {
        
        public static void main(String[] args) {
         LessonDAO l = new LessonDAO();
-        l.addLesson("a", "a", 2, "no", 1, "test");
-//           List<Lesson> list = l.getLessons(0, 3, 2);
-//           for(Lesson d :list)
-//           {
-//               System.out.println(d);
-//           }
+//        l.addLesson("Semantic elements", "https://blog.hubspot.com/website/html-elements", 11, "no", 3, "https://codefinity-content-media-v2.s3.eu-west-1.amazonaws.com/courses/392f24ac-0126-4c34-a28a-f2f26d12196b/section-1/tag%2C+attribute%2C+element+visualisation.png");
+           List<Lesson> list = l.getLessons(0, 10, 14);
+           for(Lesson d :list)
+           {
+               System.out.println(d);
+           }
        
        
         }

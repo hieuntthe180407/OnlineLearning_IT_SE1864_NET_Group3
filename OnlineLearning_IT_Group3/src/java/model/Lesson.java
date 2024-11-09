@@ -103,6 +103,11 @@ public class Lesson {
         this.Status = Status;
     }
 
+    @Override
+    public String toString() {
+        return "Lesson{" + "LessonID=" + LessonID + ", MoocID=" + MoocID + ", LessonNumber=" + LessonNumber + ", LessonImg=" + LessonImg + ", LessonURL=" + LessonURL + ", LessonName=" + LessonName + ", Description=" + Description + ", Status=" + Status + '}';
+    }
+
     
       
 }
