@@ -86,6 +86,8 @@
                     </div>
 
                     <a href="addCourse" class="btn btn-success">Add New Course</a>
+                    <a href="QuestionListServlet" class="btn btn-success">Qusetion Bank</a>
+
                 </div>
                 <table id="courseTable" class="table table-bordered table-striped">
                     <thead>
