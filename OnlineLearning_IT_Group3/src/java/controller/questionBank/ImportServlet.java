@@ -16,6 +16,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 
 import java.io.InputStream;
@@ -25,6 +26,7 @@ import model.Answer;
 
 import model.Course;
 import model.Question;
+import model.User;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -80,6 +82,11 @@ public class ImportServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        User currentUser = (User) session.getAttribute("acc");
+        int userId = currentUser.getUserID();
+        int roleId = currentUser.getRole().getRoleId();
+        
         String course = request.getParameter("course");
 
         Part filePart = request.getPart("fileInput"); // lấy file từ form
@@ -92,7 +99,7 @@ public class ImportServlet extends HttpServlet {
 
         //Check xem có course trong database
         CourseDAO courseDAO = new CourseDAO();
-        if (!courseDAO.checkCourseByName(course)) {
+        if (!courseDAO.checkCourseByNameOfUser(course,userId,roleId)) {
             request.setAttribute("errorImport", "Wrong course to add.");
             request.getRequestDispatcher("questionImport.jsp").forward(request, response);
             return;
@@ -205,7 +212,7 @@ public class ImportServlet extends HttpServlet {
                     //Ghi đường dẫn vào database
                     questionPath = "imgQuestion" + "/" + fileName;
 
-                }else{
+                } else {
                     questionPath = "No media";
                 }
                 //Từ đây cho question vào database
@@ -217,7 +224,7 @@ public class ImportServlet extends HttpServlet {
                 importedQuestion.setLevel(level);
                 importedQuestion.setStatus("Visible");
                 importedQuestion.setExplanation("Nothing");
-                
+
                 Course questionCourse = new Course();
                 questionCourse.setCourseID(courseID);
                 importedQuestion.setCourse(questionCourse);

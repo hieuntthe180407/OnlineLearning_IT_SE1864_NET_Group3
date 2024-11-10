@@ -76,7 +76,7 @@ public class QuestionDAO extends DBContext {
     }
 
 //Duyệt câu hỏi theo filter
-    public List<Question> getFilteredQuestions(String title, String course, String questionType, String level, String status, int page, int numberQuestion) {
+    public List<Question> getFilteredQuestions(String title, String course, String questionType, String level, String status, int page, int numberQuestion, int roleId, int userId) {
         List<Question> listQuestion = new ArrayList<>();
         PreparedStatement st = null;
         String sql = "SELECT q.QuestionID"
@@ -88,6 +88,11 @@ public class QuestionDAO extends DBContext {
                 + ", c.CourseName FROM Question q, Course c WHERE q.CourseID = c.CourseID";
         //Tạo list lưu câu lệnh
         List<String> params = new ArrayList<>();
+
+        if (roleId == 2) { // Nếu là Teacher, lọc theo userId
+            sql += " AND c.UserID = ?";
+            params.add(String.valueOf(userId));
+        }
 
         if (title != null && !title.isEmpty()) {
             sql += " AND q.QuestionTitle LIKE ?";
@@ -144,10 +149,15 @@ public class QuestionDAO extends DBContext {
     }
 //Lấy tổng số trang ( có thể phụ thuộc vào filter)
 
-    public int getTotalPages(String title, String course, String questionType, String level, String status, int numberQuestion) {
+    public int getTotalPages(String title, String course, String questionType, String level, String status, int numberQuestion, int roleId, int userId) {
         PreparedStatement st = null;
         String sql = "SELECT COUNT(*) FROM Question q, Course c WHERE q.CourseID = c.CourseID";
         List<String> params = new ArrayList<>();
+        
+        if (roleId == 2) { // Nếu là Teacher, lọc theo userId
+            sql += " AND c.UserID = ?";
+            params.add(String.valueOf(userId));
+        }
 
         // Điều kiện lọc tương tự như trong getFilteredQuestions
         if (title != null && !title.isEmpty()) {

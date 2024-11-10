@@ -119,7 +119,7 @@ public class CourseDAO extends DBContext {
                     + "                      WHERE p2.[CourseID] = p1.[CourseID])\n"
                     + "    ) p ON c.[CourseID] = p.[CourseID]\n"
                     + "WHERE \n"
-                    + "    c.[CourseID] = " + id ;
+                    + "    c.[CourseID] = " + id;
 
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -144,11 +144,11 @@ public class CourseDAO extends DBContext {
 
     public Course getCourseTeacherByID(int id) {
         try {
-            String sql = "SELECT * \n" +
-"FROM Course c\n" +
-"LEFT JOIN Price p ON p.CourseID = c.CourseID\n" +
-"LEFT JOIN [dbo].[User] u ON c.UserID = u.UserID\n" +
-"WHERE c.CourseID=" + id;
+            String sql = "SELECT * \n"
+                    + "FROM Course c\n"
+                    + "LEFT JOIN Price p ON p.CourseID = c.CourseID\n"
+                    + "LEFT JOIN [dbo].[User] u ON c.UserID = u.UserID\n"
+                    + "WHERE c.CourseID=" + id;
 
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -314,39 +314,38 @@ public class CourseDAO extends DBContext {
         }
 
         String sql = "  SELECT \n"
-            + "    c.[CourseID],\n"
-            + "    c.[UserID],\n"
-            + "    c.[CategoryID],\n"
-            + "    c.[CourseImg],\n"
-            + "    c.[CourseName],\n"
-            + "    c.[Publish],\n"
-            + "    c.[Duration],\n"
-            + "    c.[Report],\n"
-            + "    c.[IsDiscontinued],\n"
-            + "    c.[NewVersionId],\n"
-            + "    c.[Description],\n"
-            + "    p.[ListPrice],\n"
-            + "    p.[SalePrice],\n"
-            + "    p.[IsActive]\n"
-            + "FROM \n"
-            + "    [dbo].[Course] c\n"
-            + "LEFT JOIN \n"
-            + "    (SELECT \n"
-            + "         [PriceID],\n"
-            + "         [CourseID],\n"
-            + "         [ListPrice],\n"
-            + "         [SalePrice],\n"
-            + "         [IsActive]\n"
-            + "     FROM \n"
-            + "         [dbo].[Price] p1\n"
-            + "     WHERE \n"
-            + "         [PriceID] = (SELECT MAX([PriceID]) \n"
-            + "                      FROM [dbo].[Price] p2 \n"
-            + "                      WHERE p2.[CourseID] = p1.[CourseID])\n"
-            + "    ) p ON c.[CourseID] = p.[CourseID]\n"
-            + "WHERE \n"
-            + "    c.[CategoryID] = ? AND c.[Publish] = 1";
-
+                + "    c.[CourseID],\n"
+                + "    c.[UserID],\n"
+                + "    c.[CategoryID],\n"
+                + "    c.[CourseImg],\n"
+                + "    c.[CourseName],\n"
+                + "    c.[Publish],\n"
+                + "    c.[Duration],\n"
+                + "    c.[Report],\n"
+                + "    c.[IsDiscontinued],\n"
+                + "    c.[NewVersionId],\n"
+                + "    c.[Description],\n"
+                + "    p.[ListPrice],\n"
+                + "    p.[SalePrice],\n"
+                + "    p.[IsActive]\n"
+                + "FROM \n"
+                + "    [dbo].[Course] c\n"
+                + "LEFT JOIN \n"
+                + "    (SELECT \n"
+                + "         [PriceID],\n"
+                + "         [CourseID],\n"
+                + "         [ListPrice],\n"
+                + "         [SalePrice],\n"
+                + "         [IsActive]\n"
+                + "     FROM \n"
+                + "         [dbo].[Price] p1\n"
+                + "     WHERE \n"
+                + "         [PriceID] = (SELECT MAX([PriceID]) \n"
+                + "                      FROM [dbo].[Price] p2 \n"
+                + "                      WHERE p2.[CourseID] = p1.[CourseID])\n"
+                + "    ) p ON c.[CourseID] = p.[CourseID]\n"
+                + "WHERE \n"
+                + "    c.[CategoryID] = ? AND c.[Publish] = 1";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -416,39 +415,38 @@ public class CourseDAO extends DBContext {
         List<Course> courses = new ArrayList<>();
 
         String sql = "  SELECT \n"
-            + "    c.[CourseID],\n"
-            + "    c.[UserID],\n"
-            + "    c.[CategoryID],\n"
-            + "    c.[CourseImg],\n"
-            + "    c.[CourseName],\n"
-            + "    c.[Publish],\n"
-            + "    c.[Duration],\n"
-            + "    c.[Report],\n"
-            + "    c.[IsDiscontinued],\n"
-            + "    c.[NewVersionId],\n"
-            + "    c.[Description],\n"
-            + "    p.[ListPrice],\n"
-            + "    p.[SalePrice],\n"
-            + "    p.[IsActive]\n"
-            + "FROM \n"
-            + "    [dbo].[Course] c\n"
-            + "LEFT JOIN \n"
-            + "    (SELECT \n"
-            + "         [PriceID],\n"
-            + "         [CourseID],\n"
-            + "         [ListPrice],\n"
-            + "         [SalePrice],\n"
-            + "         [IsActive]\n"
-            + "     FROM \n"
-            + "         [dbo].[Price] p1\n"
-            + "     WHERE \n"
-            + "         [PriceID] = (SELECT MAX([PriceID]) \n"
-            + "                      FROM [dbo].[Price] p2 \n"
-            + "                      WHERE p2.[CourseID] = p1.[CourseID])\n"
-            + "    ) p ON c.[CourseID] = p.[CourseID]\n"
-            + "WHERE \n"
-            + "    p.[ListPrice] BETWEEN ? AND ? AND c.[Publish] = 1";
-
+                + "    c.[CourseID],\n"
+                + "    c.[UserID],\n"
+                + "    c.[CategoryID],\n"
+                + "    c.[CourseImg],\n"
+                + "    c.[CourseName],\n"
+                + "    c.[Publish],\n"
+                + "    c.[Duration],\n"
+                + "    c.[Report],\n"
+                + "    c.[IsDiscontinued],\n"
+                + "    c.[NewVersionId],\n"
+                + "    c.[Description],\n"
+                + "    p.[ListPrice],\n"
+                + "    p.[SalePrice],\n"
+                + "    p.[IsActive]\n"
+                + "FROM \n"
+                + "    [dbo].[Course] c\n"
+                + "LEFT JOIN \n"
+                + "    (SELECT \n"
+                + "         [PriceID],\n"
+                + "         [CourseID],\n"
+                + "         [ListPrice],\n"
+                + "         [SalePrice],\n"
+                + "         [IsActive]\n"
+                + "     FROM \n"
+                + "         [dbo].[Price] p1\n"
+                + "     WHERE \n"
+                + "         [PriceID] = (SELECT MAX([PriceID]) \n"
+                + "                      FROM [dbo].[Price] p2 \n"
+                + "                      WHERE p2.[CourseID] = p1.[CourseID])\n"
+                + "    ) p ON c.[CourseID] = p.[CourseID]\n"
+                + "WHERE \n"
+                + "    p.[ListPrice] BETWEEN ? AND ? AND c.[Publish] = 1";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -641,12 +639,42 @@ public class CourseDAO extends DBContext {
         }
     }
 // check course xem có tồn tại hay không
+//check xem user co quyen hay khong
+
+    public boolean checkCourseByNameOfUser(String courseName, int userId, int roleId) {
+        boolean exists = false;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            String sql;
+            if (roleId == 3) {
+                // Nếu là Admin (roleId = 3), không giới hạn người dùng
+                sql = "SELECT * FROM [Course] WHERE CourseName = ?";
+                st = connection.prepareStatement(sql);
+                st.setString(1, courseName);
+            } else {
+                // Nếu là giáo viên (roleId = 2), chỉ lấy những khóa học mà họ sở hữu
+                sql = "SELECT * FROM [Course] WHERE CourseName = ? AND UserID = ?";
+                st = connection.prepareStatement(sql);
+                st.setString(1, courseName);
+                st.setInt(2, userId);
+            }
+            rs = st.executeQuery();
+
+            if (rs.next()) {
+                exists = true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return exists;
+    }
 
     public boolean checkCourseByName(String courseName) {
         boolean exists = false;
         PreparedStatement st = null;
         ResultSet rs = null;
-
         try {
             String sql = "SELECT * FROM [Course] WHERE CourseName = ?";
             st = connection.prepareStatement(sql);
@@ -659,9 +687,10 @@ public class CourseDAO extends DBContext {
             System.out.println(e);
         }
         return exists;
-    }
-// lấy courseId thông qua courseName
 
+    }
+
+// lấy courseId thông qua courseName
     public int courseIdByCourseName(String courseName) {
         PreparedStatement st = null;
         ResultSet rs = null;
@@ -786,6 +815,7 @@ public class CourseDAO extends DBContext {
         }
     }
 // Lay cac cuorse ma student da enroll
+
     public List<Course> getEnrollCourse(int uId) {
         List<Course> list = new ArrayList<>();
         String sql = "Select * FROM Enroll e, Course c, [dbo].[User] u WHERE u.UserID= e.UserID AND c.CourseID=e.CourseID AND u.UserID= " + uId;

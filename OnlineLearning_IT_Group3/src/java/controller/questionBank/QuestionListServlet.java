@@ -12,8 +12,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Question;
+import model.User;
 
 /**
  *
@@ -49,6 +51,10 @@ public class QuestionListServlet extends HttpServlet {
             throws ServletException, IOException {
         QuestionDAO qDao = new QuestionDAO();
 
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("acc");
+        int roleId = user.getRole().getRoleId();
+        int userId = user.getUserID();
         // Kiểm tra tham số "page"
         String pageParam = request.getParameter("page");
         int page = 1; // Giá trị mặc định
@@ -77,7 +83,9 @@ public class QuestionListServlet extends HttpServlet {
                 request.getParameter("questionType"),
                 request.getParameter("questionLevel"),
                 request.getParameter("questionStatus"),
-                questionPerPage
+                questionPerPage,
+                roleId,
+                userId
         );
         // Lấy danh sách câu hỏi với các tham số đã xác định
         List<Question> listQuestion = qDao.getFilteredQuestions(
@@ -87,7 +95,9 @@ public class QuestionListServlet extends HttpServlet {
                 request.getParameter("questionLevel"),
                 request.getParameter("questionStatus"),
                 page,
-                questionPerPage
+                questionPerPage,
+                roleId,
+                userId
         );
         request.setAttribute("listQuestion", listQuestion);
         request.setAttribute("page", page);
@@ -111,7 +121,10 @@ public class QuestionListServlet extends HttpServlet {
         String questionType = request.getParameter("questionType");
         String questionLevel = request.getParameter("questionLevel");
         String questionStatus = request.getParameter("questionStatus");
-
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("acc");
+        int roleId = user.getRole().getRoleId();
+        int userId = user.getUserID();
         // Kiểm tra tham số "page"
         String pageParam = request.getParameter("page");
         int page = 1; // Giá trị mặc định
@@ -136,9 +149,9 @@ public class QuestionListServlet extends HttpServlet {
 
         QuestionDAO qDao = new QuestionDAO();
         //List question theo filter
-        List<Question> listQuestion = qDao.getFilteredQuestions(questionTitle, questionCourse, questionType, questionLevel, questionStatus, page, questionPerPage);
+        List<Question> listQuestion = qDao.getFilteredQuestions(questionTitle, questionCourse, questionType, questionLevel, questionStatus, page, questionPerPage,roleId,userId);
         //Lấy tổng số trang
-        int totalPages = qDao.getTotalPages(questionTitle, questionCourse, questionType, questionLevel, questionStatus, questionPerPage);
+        int totalPages = qDao.getTotalPages(questionTitle, questionCourse, questionType, questionLevel, questionStatus, questionPerPage,roleId,userId);
 
         request.setAttribute("page", page);
         request.setAttribute("totalPages", totalPages);
